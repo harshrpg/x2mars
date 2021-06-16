@@ -1,37 +1,52 @@
 import * as React from "react"
+import Logo from "../Logo/logo";
+import { Link } from "gatsby";
 
 const Navbar = () => {
   const [isActive, setIsActive] = React.useState(false)
   return (
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <a class="navbar-item" href="https://bulma.io">
-          <img
-            src="https://bulma.io/images/bulma-logo.png"
-            alt="Bulma: Free, open source, and modern CSS framework based on Flexbox"
-            width="112"
-            height="28"
-          />
-        </a>
-
-        <a
-        onClick={() => setIsActive(!isActive)}
-          role="button"
-          class={`navbar-burger ${isActive ? "is-active" : ""}`}
+        <Logo />
+        <button
+          onClick={() => setIsActive(!isActive)}
+          class={`hamburger hamburger--emphatic ${isActive ? "is-active" : ""}`}
+          type="button"
           aria-label="menu"
           aria-expanded="false"
+          data-target="navbar-x2m"
+        >
+          <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+          </span>
+        </button>
+
+        {/* <a
+          onClick={() => setIsActive(!isActive)}
+          role="button"
+          class={`hamburger--elastic ${isActive ? "is-active" : ""}`}
+          aria-label="menu"
+          aria-expanded="false"
+          data-target="navbar-x2m"
         >
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
-        </a>
+        </a> */}
       </div>
-      <div class={`navbar-menu ${isActive ? "is-active" : ""}`}>
+      <div id="navbar-x2m" class={`navbar-menu ${isActive ? "is-active" : ""}`}>
         <div class="navbar-start">
-          Test
+        <Link to="/" class="navbar-item is-size-5" activeClassName="navbar-item">
+            about
+        </Link>
+        <Link to="/" class="navbar-item is-size-5" activeClassName="navbar-item">
+            blog
+        </Link>
         </div>
         <div class="navbar-end">
-          Test
+        <Link to="/" class="navbar-item" activeClassName="navbar-item">
+            Home
+          </Link>
         </div>
       </div>
     </nav>
