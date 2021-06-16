@@ -1,6 +1,7 @@
 import * as React from "react"
-import Logo from "../Logo/logo";
-import { Link } from "gatsby";
+import Logo from "../Logo/logo"
+import { Link } from "gatsby"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const Navbar = () => {
   const [isActive, setIsActive] = React.useState(false)
@@ -36,16 +37,33 @@ const Navbar = () => {
       </div>
       <div id="navbar-x2m" class={`navbar-menu ${isActive ? "is-active" : ""}`}>
         <div class="navbar-start">
-        <Link to="/" class="navbar-item is-size-5" activeClassName="navbar-item">
+          <Link
+            to="/"
+            class="navbar-item is-size-5"
+            activeClassName="navbar-item"
+          >
             about
-        </Link>
-        <Link to="/" class="navbar-item is-size-5" activeClassName="navbar-item">
+          </Link>
+          <Link
+            to="/"
+            class="navbar-item is-size-5"
+            activeClassName="navbar-item"
+          >
             blog
-        </Link>
+          </Link>
         </div>
         <div class="navbar-end">
-        <Link to="/" class="navbar-item" activeClassName="navbar-item">
-            Home
+          <Link to="/" class="navbar-item is-size-5" activeClassName="navbar-item">
+            <FontAwesomeIcon icon={["fab", "telegram-plane"]} />
+          </Link>
+          <Link to="/" class="navbar-item is-size-5" activeClassName="navbar-item">
+            <FontAwesomeIcon icon={["fab", "medium-m"]} />
+          </Link>
+          <Link to="/" class="navbar-item is-size-5" activeClassName="navbar-item">
+            <FontAwesomeIcon icon={["fab", "twitter"]} />
+          </Link>
+          <Link to="/" class="navbar-item is-size-5" activeClassName="navbar-item">
+            <FontAwesomeIcon icon={["fab", "discord"]} />
           </Link>
         </div>
       </div>
