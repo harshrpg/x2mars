@@ -1,0 +1,17 @@
+@charset "utf-8";
+// If need, change your variables before importing Bulma
+$title-color: #ff0000;
+
+.navbar-brand {
+  float: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.navbar {
+  margin: 2rem;
+}
+
+@import "~bulma/bulma.sass";
