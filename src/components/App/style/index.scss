@@ -3,12 +3,14 @@
 @import url("https://use.typekit.net/rlw7mil.css");
 @import "hamburgers";
 
-$title-color: #ff0000;
+
 $logo-family: "Rift", sans-serif;
 $charcoal: #2f4858;
 $hero-image-float-text: #f7ecca;
 $family-sans-serif: roboto-slab, serif;
 $family-primary: $family-sans-serif;
+$title-family: $family-primary;
+$title-color: $charcoal;
 
 @mixin primaryFontFamily($fontWeight: 400, $textTransform: none) {
   font-family: $family-sans-serif;
