@@ -9,13 +9,15 @@ const Discord = () => {
             <div class="columns is-gapless">
               <div class="column ">
                 <span class="is-size-6">
-                  The only protocol designed to build more protocols. Join the
-                  conversation.
+                  Join others in the discussion. Build your own token now.
                 </span>
               </div>
-              <div class="column is-one-fifth has-text-left">
-                <button class="button is-light">Join Telegram</button>
+              <div class="column">
+                <button class="button is-light">Join Discord</button>
               </div>
+              {/* <div class="column">
+                <button class="button is-light">Join Telegram</button>
+              </div> */}
             </div>
           </div>
         </div>

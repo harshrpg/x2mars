@@ -87,6 +87,12 @@ const Navbar = () => {
           <Link to="/" class="navbar-item is-size-5" activeClassName="navbar-item">
             <FontAwesomeIcon icon={["fab", "discord"]} />
           </Link>
+          <Link to="/" class="navbar-item is-size-5" activeClassName="navbar-item">
+            <FontAwesomeIcon icon={["fab", "youtube"]} />
+          </Link>
+          <Link to="/" class="navbar-item is-size-5" activeClassName="navbar-item">
+            <FontAwesomeIcon icon={["fab", "facebook"]} />
+          </Link>
         </div>
       </div>
     </nav>
