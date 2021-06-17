@@ -59,7 +59,7 @@ const Hero = () => {
                 <span class="is-size-6">
                   X2Mars is a new token factory protocol allowing anyone to make
                   their FOT crypto currency and launch it on Binance Smart
-                  Chain. Read out our whitepaper to know more
+                  Chain.
                 </span>
               </div>
             </div>

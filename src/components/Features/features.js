@@ -5,7 +5,7 @@ import "./style/features.scss"
 
 const Features = () => {
   return (
-    <section class="section is-medium is-fullheight">
+    <section class="section is-fullheight">
       <span class="floater">
         <StaticImage class="image" src="../../images/feat.png" />
       </span>

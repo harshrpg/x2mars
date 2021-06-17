@@ -52,6 +52,27 @@ const Navbar = () => {
           >
             blog
           </Link>
+          <Link
+            to="/"
+            class="navbar-item is-size-5"
+            activeClassName="navbar-item"
+          >
+            whitepaper
+          </Link>
+          <Link
+            to="/"
+            class="navbar-item is-size-5"
+            activeClassName="navbar-item"
+          >
+            buy x2m
+          </Link>
+          <Link
+            to="/"
+            class="navbar-item is-size-5"
+            activeClassName="navbar-item"
+          >
+            open app
+          </Link>
         </div>
         <div class="navbar-end">
           <Link to="/" class="navbar-item is-size-5" activeClassName="navbar-item">
