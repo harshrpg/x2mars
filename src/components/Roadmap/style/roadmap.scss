@@ -6,12 +6,15 @@ $cyan: #afe0d4;
     position: relative;
     width: 100%;
     background-color: $cyan ;
+    min-height: auto !important;
 }
 
 .is-roadmap {
-    margin-top: 25% !important;
+    margin: 25% 0 5% 0 !important;
+    align-items: flex-start !important; 
+    justify-content: flex-start !important;
 }
 
-.hero.is-halfheight .hero-body, .hero.is-fullheight .hero-body, .hero.is-fullheight-with-navbar .hero-body {
-    align-items: flex-start;
-}
+// .hero.is-halfheight .hero-body, .hero.is-fullheight .hero-body, .hero.is-fullheight-with-navbar .hero-body {
+//     align-items: flex-start;
+// }

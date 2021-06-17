@@ -4,6 +4,7 @@ import "./style/roadmap.scss"
 
 const RoadMap = () => {
   return (
+    <>
     <section class="hero is-fullheight is-roadmap">
       <div class="hero-body">
         <div class="columns has-text-centered">
@@ -14,11 +15,12 @@ const RoadMap = () => {
           </p>
           </div>
           <div class="column">
-          <StaticImage class="image" src="../../images/roadmap_1250.png" height="100vh"/>
+          <StaticImage class="image" src="../../images/roadmap_1250.png"/>
           </div>
         </div>
       </div>
     </section>
+    </>
   )
 }
 
