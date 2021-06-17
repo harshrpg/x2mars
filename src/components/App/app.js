@@ -9,6 +9,7 @@ import { library } from "@fortawesome/fontawesome-svg-core"
 import { fab } from "@fortawesome/free-brands-svg-icons"
 
 import "./style/index.scss";
+import RoadMap from "../Roadmap/roadmap"
 const App = props => {
     library.add(fab)
   return (
@@ -16,6 +17,7 @@ const App = props => {
       <Seo title={props.pageTitle} />
       <Hero />
       <Features />
+      <RoadMap />
     </Layout>
   )
 }

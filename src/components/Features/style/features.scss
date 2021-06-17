@@ -1,6 +1,10 @@
 @import "../../App/style/index.scss";
 
 $yellow: #f7bb60;
+.hero {
+    align-items: flex-start !important; 
+    justify-content: flex-start !important;
+}
 
 .is-fullheight {
     position: relative;

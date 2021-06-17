@@ -1,0 +1,17 @@
+@import "../../App/style/index.scss";
+
+$cyan: #afe0d4;
+
+.is-fullheight {
+    position: relative;
+    width: 100%;
+    background-color: $cyan ;
+}
+
+.is-roadmap {
+    margin-top: 25% !important;
+}
+
+.hero.is-halfheight .hero-body, .hero.is-fullheight .hero-body, .hero.is-fullheight-with-navbar .hero-body {
+    align-items: flex-start;
+}

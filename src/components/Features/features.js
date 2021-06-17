@@ -10,7 +10,7 @@ const Features = () => {
         <StaticImage class="image" src="../../images/feat.png" />
       </span>
       <section class="hero is-medium is-feat">
-        <div class="hero-body">
+        <div class="hero-body has-text-centered">
           <p class="title is-size-3 is-size-5-mobile">THE TOKEN FACTORY</p>
           <p class="subtitle is-size-6 is-size-6-mobile">
             BUILD YOUR NEXT FOT TOKEN WITH EASE
@@ -21,10 +21,6 @@ const Features = () => {
           </p>
         </div>
       </section>
-      {/* <div class="hero-body">
-        <div class="">
-        </div>
-      </div> */}
     </section>
   )
 }
