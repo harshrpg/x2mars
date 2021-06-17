@@ -1,0 +1,37 @@
+@charset "utf-8";
+@import "../../App/style/index.scss";
+
+.columns {
+  align-items: center;
+}
+
+.section {
+  position: relative !important;
+  z-index: 1;
+}
+
+.hero-banner {
+  position: absolute;
+  z-index: 1;
+  margin-bottom: 2rem !important;
+}
+
+.float-image {
+  position: absolute;
+  z-index: 5;
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 80%;
+  transform: translate(-50%, -50%);
+  color: $hero-image-float-text;
+}
+
+.custom-button {
+  padding: 1.5rem 3rem 1.5rem 3rem !important;
+  background-color: #104352 !important;
+  border-color: #f7ecca !important;
+  color: #f7ecca !important;
+}

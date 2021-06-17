@@ -3,6 +3,9 @@ import { graphql, useStaticQuery } from "gatsby"
 import { getImage } from "gatsby-plugin-image"
 import { BgImage } from "gbimage-bridge"
 
+import "./style/hero.css"
+import "./style/hero.scss"
+
 const Hero = () => {
   const { backgroundImage123 } = useStaticQuery(
     graphql`
@@ -33,7 +36,7 @@ const Hero = () => {
           <div class="columns is-gapless">
             <div class="column ">
               <span class="is-size-6">
-                The only protocol designed to make you rich. Join the
+                The only protocol designed to build more protocols. Join the
                 conversation.
               </span>
             </div>
@@ -44,11 +47,6 @@ const Hero = () => {
         </div>
       </div>
       <div class="container is-fluid float-image">
-        {/* <StaticImage class="image" src="../../images/hero.png" alt="hero" /> */}
-        {/* <div class="centered">Centered</div> */}
-        {/* <BackgroundImage Tag="section" {...bgImage}>
-          Test
-        </BackgroundImage> */}
         <BgImage image={pluginImage} className="hero-image">
           <div class="centered has-text-centered">
             <div class="columns">

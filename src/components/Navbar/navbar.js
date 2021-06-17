@@ -3,6 +3,7 @@ import Logo from "../Logo/logo"
 import { Link } from "gatsby"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
+import "./style/navbar.scss"
 const Navbar = () => {
   const [isActive, setIsActive] = React.useState(false)
   return (

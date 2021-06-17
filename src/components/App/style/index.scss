@@ -1,0 +1,29 @@
+@charset "utf-8";
+
+@import url("https://use.typekit.net/rlw7mil.css");
+@import "hamburgers";
+
+$title-color: #ff0000;
+$logo-family: "Rift", sans-serif;
+$charcoal: #2f4858;
+$hero-image-float-text: #f7ecca;
+$family-sans-serif: roboto-slab, serif;
+$family-primary: $family-sans-serif;
+
+@mixin primaryFontFamily($fontWeight: 400, $textTransform: none) {
+  font-family: $family-sans-serif;
+  font-weight: $fontWeight;
+  font-style: normal;
+  text-transform: $textTransform;
+}
+
+@mixin bordercolor($color: black, $style: solid) {
+  border: 1px $style $color;
+}
+
+
+.border-class {
+  @include bordercolor();
+}
+
+@import "~bulma/bulma.sass";
