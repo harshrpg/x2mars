@@ -10,12 +10,12 @@ const Hero = () => {
   const { backgroundImage123 } = useStaticQuery(
     graphql`
       query {
-        backgroundImage123: file(relativePath: { eq: "hero.png" }) {
+        backgroundImage123: file(relativePath: { eq: "Hero2.png" }) {
           childImageSharp {
             gatsbyImageData(
-              width: 2000
-              quality: 50
-              webpOptions: { quality: 70 }
+              width: 1024
+              quality: 100
+              webpOptions: { quality: 100 }
             )
           }
         }
@@ -26,46 +26,32 @@ const Hero = () => {
   const pluginImage = getImage(backgroundImage123)
   return (
     <section class="section">
-      <div class="container hero-banner is-max-desktop has-text-centered ">
-        <div id="hero-banner-text-title">
-          <span class="is-size-1 is-size-3-mobile">
-            World's 1st Token Factory
-          </span>
-        </div>
-        <div id="hero-banner-text-subtitle" class=" has-text-centered">
-          <div class="columns is-gapless">
-            <div class="column ">
-              <span class="is-size-6">
-                The only protocol designed to build more protocols. Join the
-                conversation.
-              </span>
-            </div>
-            <div class="column is-one-fifth has-text-left">
-              <button class="button is-light">Join Telegram</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="container is-fluid float-image">
+      <div class="hero">
         <BgImage image={pluginImage} className="hero-image">
-          <div class="centered has-text-centered">
+          <div class="centered has-text-left">
             <div class="columns">
               <div class="column">
-                <span class="is-size-4">MISSION MARS</span>
+                <div id="hero-banner-text-title">
+                  <span class="is-size-1 is-size-3-mobile">
+                    World's 1st Decentralized
+                    <br /> Token Factory
+                  </span>
+                </div>
               </div>
             </div>
             <div class="columns">
               <div class="column">
                 <span class="is-size-6">
-                  X2Mars is a new token factory protocol allowing anyone to make
-                  their FOT crypto currency and launch it on Binance Smart
-                  Chain.
+                  The only protocol designed to build more protocols. <br />
+                  X2Mars is a token factory protocol allowing anyone without
+                  technical knowledge to build and deploy their crypto currency
+                  on Binance Smart Chain.
                 </span>
               </div>
             </div>
             <div class="columns">
               <div class="column">
-              <button class="button custom-button">WHITEPAPER</button>
+                <button class="button custom-button">WHITEPAPER</button>
               </div>
             </div>
           </div>

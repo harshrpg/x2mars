@@ -8,6 +8,7 @@
 .section {
   position: relative !important;
   z-index: 1;
+  padding: 2rem;
 }
 
 .hero-banner {
@@ -23,15 +24,16 @@
 
 .centered {
   position: absolute;
-  top: 50%;
-  left: 80%;
+  top: 35%;
+  left: 10%;
   transform: translate(-50%, -50%);
-  color: $hero-image-float-text;
+  // color: $hero-image-float-text;
 }
 
 .custom-button {
+  border-radius: 0% !important;
+  border-width: 5px !important;
   padding: 1.5rem 3rem 1.5rem 3rem !important;
-  background-color: #104352 !important;
-  border-color: #f7ecca !important;
-  color: #f7ecca !important;
+  background-color: transparent !important;
+  border-color: #807FC6 !important;
 }

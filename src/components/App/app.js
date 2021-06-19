@@ -12,6 +12,7 @@ import { fab } from "@fortawesome/free-brands-svg-icons"
 import "./style/index.scss";
 import RoadMap from "../Roadmap/roadmap";
 import Pricing from "../pricing/pricing";
+import Pricing from "../Timeline/timeline";
 
 const App = props => {
     library.add(fab)

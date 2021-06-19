@@ -1,0 +1,32 @@
+[
+    {
+        "title": "Initialize Protocol & Launch Token Factory",
+        "quarter": "Q2-2021",
+        "description": "Launching Token Factory to support community to be able to build their custom tokens from the platform."
+    },
+    {
+        "title": "Launch Governance Token & Community Distribution",
+        "quarter": "Q3-2021",
+        "description": "The X2M governance token is launched and distributed amongst the community supporters"
+    },
+    {
+        "title": "Institute Launchpad & Time Lock facilities",
+        "quarter": "Q4-2021",
+        "description": "Dex launchpad support for tokens along with capbility to lock LP tokens"
+    },
+    {
+        "title": "Bots on Rent",
+        "quarter": "Q1-2022",
+        "description": "An exciting new feature for the community. Stay tuned"
+    },
+    {
+        "title": "Initialization of Wallet and Exchange Protocol",
+        "quarter": "Q2-2022",
+        "description": "Wallet supporting to hold many tokens along with ease of exchange amongst them"
+    },
+    {
+        "title": "NFT Market Place",
+        "quarter": "Q3-2022",
+        "description": "NFT Market place with a twist"
+    }
+]
