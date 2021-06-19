@@ -11,6 +11,7 @@ import { fab } from "@fortawesome/free-brands-svg-icons"
 
 import "./style/index.scss";
 import RoadMap from "../Roadmap/roadmap"
+import Timeline from "../Roadmap/timeline"
 const App = props => {
     library.add(fab)
   return (
@@ -19,6 +20,8 @@ const App = props => {
       <Hero />
       <Features />
       <RoadMap />
+      <Timeline />
+      {/* <AnimationTimeline /> */}
       <Discord />
     </Layout>
   )
