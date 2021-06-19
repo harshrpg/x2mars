@@ -5,6 +5,8 @@ import Seo from "../seo"
 import Hero from "../Hero/hero"
 import Features from "../Features/features"
 import Discord from "../Discord/discord"
+import Telegram from "../Telegram/telegram"
+import Newsletter from "../Newsletter/newsletter"
 
 import { library } from "@fortawesome/fontawesome-svg-core"
 import { fab } from "@fortawesome/free-brands-svg-icons"
@@ -12,7 +14,7 @@ import { fab } from "@fortawesome/free-brands-svg-icons"
 import "./style/index.scss";
 import RoadMap from "../Roadmap/roadmap";
 import Pricing from "../pricing/pricing";
-import Pricing from "../Timeline/timeline";
+import Timeline from "../Timeline/timeline";
 
 const App = props => {
     library.add(fab)
@@ -20,10 +22,13 @@ const App = props => {
     <Layout>
       <Seo title={props.pageTitle} />
       <Hero />
+      <Telegram />
       <Features />
+      <Discord />
       <Pricing />
       <RoadMap />
-      <Discord />
+      <Timeline />
+      <Newsletter />
     </Layout>
   )
 }
