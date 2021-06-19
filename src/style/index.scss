@@ -11,11 +11,12 @@ $hero-image-float-text: #f7ecca;
 // Setting default font family
 $family-sans-serif: roboto-slab, serif;
 $family-primary: $family-sans-serif;
+$column-gap: 1.5rem;
 
 @mixin primaryFontFamily($fontWeight: 400, $textTransform: none) {
   font-family: $family-sans-serif;
   font-weight: $fontWeight;
-  font-style: normal;
+  font-style: thin;
   text-transform: $textTransform;
 }
 
