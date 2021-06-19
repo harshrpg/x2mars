@@ -18,10 +18,10 @@ const App = props => {
     <Layout>
       <Seo title={props.pageTitle} />
       <Hero />
-      <Features />
+      {/* <Features />
       <RoadMap />
       <Timeline />
-      <Discord />
+      <Discord /> */}
     </Layout>
   )
 }
