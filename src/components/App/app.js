@@ -10,7 +10,9 @@ import { library } from "@fortawesome/fontawesome-svg-core"
 import { fab } from "@fortawesome/free-brands-svg-icons"
 
 import "./style/index.scss";
-import RoadMap from "../Roadmap/roadmap"
+import RoadMap from "../Roadmap/roadmap";
+import Pricing from "../pricing/pricing";
+
 const App = props => {
     library.add(fab)
   return (
@@ -18,6 +20,7 @@ const App = props => {
       <Seo title={props.pageTitle} />
       <Hero />
       <Features />
+      <Pricing />
       <RoadMap />
       <Discord />
     </Layout>
