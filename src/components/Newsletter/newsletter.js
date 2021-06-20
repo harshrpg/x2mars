@@ -1,6 +1,6 @@
 import * as React from "react"
-import "./style/discord.scss"
-const Discord = () => {
+import "./style/newsletter.scss"
+const Newsletter = () => {
   return (
     <>
       <section class="section is-comm">
@@ -9,11 +9,11 @@ const Discord = () => {
             <div class="columns is-gapless tele">
               <div class="column ">
                 <span class="is-size-6">
-                  Join others in the discussion. Build your own token now.
+                  Signup to our newsletter and get the latest updates.
                 </span>
               </div>
               <div class="column">
-                <button class="button is-light">Join Discord</button>
+                <button class="button is-light">Subscribe</button>
               </div>
               {/* <div class="column">
                 <button class="button is-light">Join Telegram</button>
@@ -26,4 +26,4 @@ const Discord = () => {
   )
 }
 
-export default Discord;
+export default Newsletter;
