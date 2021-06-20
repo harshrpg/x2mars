@@ -13,7 +13,7 @@ const Newsletter = () => {
                 </span>
               </div>
               <div class="column">
-                <button class="button is-light">Subscribe</button>
+                <button class="button is-light custom-button">Subscribe</button>
               </div>
               {/* <div class="column">
                 <button class="button is-light">Join Telegram</button>

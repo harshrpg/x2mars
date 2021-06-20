@@ -13,7 +13,7 @@ const Discord = () => {
                 </span>
               </div>
               <div class="column">
-                <button class="button is-light">Join Discord</button>
+                <button class="button is-light custom-button">Join Discord</button>
               </div>
               {/* <div class="column">
                 <button class="button is-light">Join Telegram</button>

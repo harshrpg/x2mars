@@ -13,7 +13,7 @@ const Telegram = () => {
                 </span>
               </div>
               <div class="column">
-                <button class="button is-light">Join Telegram</button>
+                <button class="button is-light custom-button">Join Telegram</button>
               </div>
               {/* <div class="column">
                 <button class="button is-light">Join Telegram</button>
