@@ -30,9 +30,9 @@
   
   .slideshowDot {
     display: inline-block;
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
+    height: 15px;
+    width: 15px;
+    // border-radius: 50%;
   
     cursor: pointer;
     margin: 15px 7px 0px;
@@ -41,5 +41,32 @@
   }
   
   .slideshowDot.active {
-    background-color: #6a0dad;
+    background-color: #FFF;
+    border: 3px solid #2B75AC;
   }
+
+  .explainer {
+    margin: 10% 0 5% 0 !important;
+  }
+
+  .is-explainer-active {
+    animation: effect 2.2s linear infinite alternate;
+  }
+
+  @keyframes effect {
+    0% {
+      color: #2f4858;
+    }
+    25% {
+      color: #FF8300;
+    }
+    50% {
+      color: #FF8300;
+    }
+    75% {
+      color: #FF8300;
+    }
+    100% {
+      color: #FF8300;
+    }
+}
