@@ -25,13 +25,13 @@ const Features = () => {
       <div class="container">
         <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-4-fullhd">
           <div class="column">
-            <p class="title is-size-3-desktop is-size-3-fullhd is-size-3-widescreen is-size-4-tablet is-size-4-mobile">
+            <p class="title is-size-3-desktop is-size-3-fullhd is-size-3-widescreen is-size-4-tablet is-size-7-mobile">
               Benefits of Factory
             </p>
             <div class="content">
               <ul>
                 {benefitsContent.map((content, _) => (
-                  <li class="subtitle is-size-5-desktop is-size-5-fullhd is-size-5-widescreen is-size-6-tablet is-size-6-mobile">
+                  <li class="subtitle is-size-5-desktop is-size-5-fullhd is-size-5-widescreen is-size-6-tablet is-size-7-mobile">
                     {content}
                   </li>
                 ))}

@@ -9,17 +9,27 @@ import "./style/hero.scss"
 const Hero = () => {
   const { backgroundImage123 } = useStaticQuery(
     graphql`
-      query {
-        backgroundImage123: file(relativePath: { eq: "Hero2.png" }) {
-          childImageSharp {
-            gatsbyImageData(
-              width: 1024
-              quality: 100
-              webpOptions: { quality: 100 }
-            )
-          }
+    query {
+      backgroundImage123: file(relativePath: { eq: "Hero2.png" }) {
+        childImageSharp {
+          gatsbyImageData(
+            width: 1024
+            quality: 100
+            webpOptions: { quality: 100 }
+          )
         }
       }
+      backgroundImage123_mobile: file(relativePath: { eq: "Hero2.png" }) {
+        childImageSharp {
+          gatsbyImageData(
+            width: 320
+            height: 320
+            quality: 100
+            webpOptions: { quality: 100 }
+          )
+        }
+      }
+    }
     `
   )
 
