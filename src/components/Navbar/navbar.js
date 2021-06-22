@@ -22,53 +22,40 @@ const Navbar = () => {
             <span class="hamburger-inner"></span>
           </span>
         </button>
-
-        {/* <a
-          onClick={() => setIsActive(!isActive)}
-          role="button"
-          class={`hamburger--elastic ${isActive ? "is-active" : ""}`}
-          aria-label="menu"
-          aria-expanded="false"
-          data-target="navbar-x2m"
-        >
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a> */}
       </div>
       <div id="navbar-x2m" class={`navbar-menu ${isActive ? "is-active" : ""}`}>
         <div class="navbar-start">
           <Link
             to="/"
-            class="navbar-item is-size-5"
+            class="navbar-item"
             activeClassName="navbar-item"
           >
             about
           </Link>
           <Link
             to="/"
-            class="navbar-item is-size-5"
+            class="navbar-item"
             activeClassName="navbar-item"
           >
             blog
           </Link>
           <Link
             to="/"
-            class="navbar-item is-size-5"
+            class="navbar-item"
             activeClassName="navbar-item"
           >
             whitepaper
           </Link>
           <Link
             to="/"
-            class="navbar-item is-size-5"
+            class="navbar-item"
             activeClassName="navbar-item"
           >
             buy x2m
           </Link>
           <Link
-            to="/"
-            class="navbar-item is-size-5"
+            to="/interface"
+            class="navbar-item"
             activeClassName="navbar-item"
           >
             open app
