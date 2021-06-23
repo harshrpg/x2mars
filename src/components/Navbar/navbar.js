@@ -62,22 +62,22 @@ const Navbar = () => {
           </Link>
         </div>
         <div class="navbar-end">
-          <Link to="/" class="navbar-item is-size-5" activeClassName="navbar-item">
+          <Link to="/" class="navbar-item" activeClassName="navbar-item">
             <FontAwesomeIcon icon={["fab", "telegram-plane"]} />
           </Link>
-          <Link to="/" class="navbar-item is-size-5" activeClassName="navbar-item">
+          <Link to="/" class="navbar-item" activeClassName="navbar-item">
             <FontAwesomeIcon icon={["fab", "medium-m"]} />
           </Link>
-          <Link to="/" class="navbar-item is-size-5" activeClassName="navbar-item">
+          <Link to="/" class="navbar-item" activeClassName="navbar-item">
             <FontAwesomeIcon icon={["fab", "twitter"]} />
           </Link>
-          <Link to="/" class="navbar-item is-size-5" activeClassName="navbar-item">
+          <Link to="/" class="navbar-item" activeClassName="navbar-item">
             <FontAwesomeIcon icon={["fab", "discord"]} />
           </Link>
-          <Link to="/" class="navbar-item is-size-5" activeClassName="navbar-item">
+          <Link to="/" class="navbar-item" activeClassName="navbar-item">
             <FontAwesomeIcon icon={["fab", "youtube"]} />
           </Link>
-          <Link to="/" class="navbar-item is-size-5" activeClassName="navbar-item">
+          <Link to="/" class="navbar-item" activeClassName="navbar-item">
             <FontAwesomeIcon icon={["fab", "facebook"]} />
           </Link>
         </div>
