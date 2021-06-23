@@ -6,6 +6,7 @@ const Constants =  {
     KOVAN : 42,
     SMART_CHAIN_TESTNET : 97,
     SMART_CHAIN_MAINNET : 56,
+    MINIMUM_COIN_TO_PROCEED: 2,
 }
 
 export default Constants;

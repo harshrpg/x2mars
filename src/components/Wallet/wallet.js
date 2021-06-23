@@ -56,7 +56,7 @@ const Wallet = () => {
     <div>
       {active ? (
         <div>
-          Account: {account} Balance: {balance}
+          {balance > Constants.MINIMUM_COIN_TO_PROCEED ? `Account: ${account} Balance: ${balance}` : `Not enough balance`}
         </div>
       ) : (
         <button type="button" onClick={connectWallet}>
