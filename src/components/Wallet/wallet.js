@@ -4,17 +4,18 @@ import { formatEther } from "@ethersproject/units"
 import BigNumber from "bignumber.js"
 import useSWR from "swr"
 import * as React from "react"
-import Constants from "./util/Constants"
+import { NetworkConstants, FactoryConstants } from "../../util/Constants"
+import Factory from "../Factory/factory"
 
 export const injectedConnector = new InjectedConnector({
   supportedChainIds: [
-    Constants.MAINNET_ETHEREUM,
-    Constants.ROPSTEN,
-    Constants.RINKEBY,
-    Constants.GOERLI,
-    Constants.KOVAN,
-    Constants.SMART_CHAIN_TESTNET,
-    Constants.SMART_CHAIN_MAINNET,
+    NetworkConstants.MAINNET_ETHEREUM,
+    NetworkConstants.ROPSTEN,
+    NetworkConstants.RINKEBY,
+    NetworkConstants.GOERLI,
+    NetworkConstants.KOVAN,
+    NetworkConstants.SMART_CHAIN_TESTNET,
+    NetworkConstants.SMART_CHAIN_MAINNET,
   ],
 })
 
@@ -56,7 +57,11 @@ const Wallet = () => {
     <div>
       {active ? (
         <div>
-          {balance > Constants.MINIMUM_COIN_TO_PROCEED ? `Account: ${account} Balance: ${balance}` : `Not enough balance`}
+          {balance > FactoryConstants.MINIMUM_COIN_TO_PROCEED ? (
+            <Factory account={account} balance={balance} />
+          ) : (
+            `Not enough balance`
+          )}
         </div>
       ) : (
         <button type="button" onClick={connectWallet}>
