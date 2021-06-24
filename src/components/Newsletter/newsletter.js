@@ -1,5 +1,6 @@
 import * as React from "react"
 import "./style/newsletter.scss"
+import "./style/newsletter.css"
 const Newsletter = () => {
   return (
     <>
@@ -13,7 +14,7 @@ const Newsletter = () => {
                 </span>
               </div>
               <div class="column">
-                <button class="button is-light custom-button">Subscribe</button>
+                <button class="button is-light custom-button community-mobile">Subscribe</button>
               </div>
               {/* <div class="column">
                 <button class="button is-light">Join Telegram</button>

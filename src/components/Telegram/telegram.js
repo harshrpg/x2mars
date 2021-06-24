@@ -1,5 +1,7 @@
 import * as React from "react"
 import "./style/telegram.scss"
+import "./style/telegram.css"
+
 const Telegram = () => {
   return (
     <>
@@ -13,7 +15,7 @@ const Telegram = () => {
                 </span>
               </div>
               <div class="column">
-                <button class="button is-light custom-button">Join Telegram</button>
+                <button class="button is-light custom-button community-mobile">Join Telegram</button>
               </div>
               {/* <div class="column">
                 <button class="button is-light">Join Telegram</button>

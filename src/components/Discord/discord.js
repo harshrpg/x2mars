@@ -1,5 +1,6 @@
 import * as React from "react"
 import "./style/discord.scss"
+import "./style/discord.css"
 const Discord = () => {
   return (
     <>
@@ -13,7 +14,7 @@ const Discord = () => {
                 </span>
               </div>
               <div class="column">
-                <button class="button is-light custom-button">Join Discord</button>
+                <button class="button is-light custom-button community-mobile">Join Discord</button>
               </div>
               {/* <div class="column">
                 <button class="button is-light">Join Telegram</button>

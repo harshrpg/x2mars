@@ -23,7 +23,7 @@ const Features = () => {
         </div>
       </div>
       <div class="container">
-        <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-4-fullhd">
+        <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-4-fullhd factoryimgparent">
           <div class="column">
             <p class="title is-size-3-desktop is-size-3-fullhd is-size-3-widescreen is-size-4-tablet is-size-7-mobile">
               Benefits of Factory
@@ -39,7 +39,7 @@ const Features = () => {
               </ul>
             </div>
           </div>
-          <div class="column">
+          <div class="column factoryimg">
             <StaticImage src="../../images/factory_alone.png" />
           </div>
         </div>

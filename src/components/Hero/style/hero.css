@@ -3,3 +3,31 @@
     width: 60%;
     min-height: 100vh;
   }
+
+  @media screen and (max-width: 1024px) {
+    .section{
+      margin-top: 30px;
+    }
+
+    .centered {
+      position:absolute;
+      top: 45%;
+      left: 36%;
+      transform: translate(-50%, -50%);
+    }
+
+    .has-text-left{
+      text-align: center;
+    }
+
+    .hero-image {
+      left: 2%;
+      width: 100%;
+      min-height: 65vh;
+    }
+
+    .is-size-6-mobile{
+     background-color:rgba(255, 255, 255, 0.711) !important;
+    }
+  
+  }
