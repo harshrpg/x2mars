@@ -2,21 +2,19 @@
 
 @import url("https://use.typekit.net/rlw7mil.css");
 @import "hamburgers";
-// If need, change your variables before importing Bulma
-$title-color: #ff0000;
-// $title-family: "Rift", sans-serif;
+
 $logo-family: "Rift", sans-serif;
 $charcoal: #2f4858;
 $hero-image-float-text: #f7ecca;
-// Setting default font family
 $family-sans-serif: roboto-slab, serif;
 $family-primary: $family-sans-serif;
-$column-gap: 1.5rem;
+$title-family: $family-primary;
+$title-color: $charcoal;
 
 @mixin primaryFontFamily($fontWeight: 400, $textTransform: none) {
   font-family: $family-sans-serif;
   font-weight: $fontWeight;
-  font-style: thin;
+  font-style: normal;
   text-transform: $textTransform;
 }
 
@@ -24,97 +22,9 @@ $column-gap: 1.5rem;
   border: 1px $style $color;
 }
 
-.navbar {
-  margin: 0.5rem;
-}
 
 .border-class {
   @include bordercolor();
-}
-
-.navbar-item {
-  @include primaryFontFamily($textTransform: uppercase);
-}
-
-.container {
-  @include primaryFontFamily();
-}
-
-.columns {
-  align-items: center;
-}
-
-.section {
-  position: relative !important;
-  z-index: 1;
-}
-
-.hero-banner {
-  position: absolute;
-  z-index: 1;
-  margin-bottom: 2rem !important;
-}
-
-.float-image {
-  position: absolute;
-  z-index: 5;
-}
-
-.centered {
-  position: absolute;
-  top: 50%;
-  left: 80%;
-  transform: translate(-50%, -50%);
-  color: $hero-image-float-text;
-}
-
-.custom-button {
-  padding: 1.5rem 3rem 1.5rem 3rem !important;
-  background-color: #104352 !important;
-  border-color: #f7ecca !important;
-  color: #f7ecca !important;
-}
-
-@media screen and (min-width: 1024px) {
-  .navbar {
-    align-items: center !important;
-    display: flex;
-    margin: 2rem;
-    position: fixed;
-  }
-  .hamburger {
-    display: none;
-  }
-
-  .navbar-brand {
-    float: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-}
-
-@media screen and (max-width: 1024px) {
-  .navbar-brand {
-    justify-content: space-between;
-  }
-
-  .hamburger {
-    padding: 0%;
-  }
-}
-
-.hamburger-inner,
-.hamburger-inner::before,
-.hamburger-inner::after {
-  background-color: $charcoal !important;
-}
-.logo {
-  font-family: rift, sans-serif;
-  font-style: italic;
-  font-weight: bolder !important;
-  color: $charcoal;
 }
 
 @import "~bulma/bulma.sass";

@@ -1,4 +1,3 @@
-import { StaticImage } from "gatsby-plugin-image"
 import * as React from "react"
 import "./style/slideshow.scss"
 
@@ -93,7 +92,7 @@ const SlideShow = () => {
             {imageContent.map((content, idx) => (
               <li
                 class={`explainer subtitle is-size-5-desktop is-size-5-fullhd is-size-5-widescreen is-size-6-tablet is-size-6-mobile${
-                  index == idx ? " is-explainer-active" : ""
+                  index === idx ? " is-explainer-active" : ""
                 }`}
               >
                 {content}
