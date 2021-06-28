@@ -1,5 +1,6 @@
 import * as React from "react";
 import Layout from "../components/layout";
+import AppLayout from "../components/applayout";
 import Seo from "../components/seo";
 import "../style/index.scss"
 // import { useStaticQuery, graphql } from "gatsby"
@@ -27,7 +28,7 @@ const Interface = () => {
 //   `)
   library.add(fab)
     return (
-        <Layout>
+        <AppLayout>
             <Seo title="App" />
             {/* <Web3ReactProvider getLibrary={getLibrary}>
                 <Factory />
@@ -35,7 +36,7 @@ const Interface = () => {
             <Web3ReactProvider getLibrary={getLibrary}>
                 <Wallet />
             </Web3ReactProvider>
-        </Layout>
+        </AppLayout>
         
     )
 }

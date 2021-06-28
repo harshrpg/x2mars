@@ -6,6 +6,7 @@ import useSWR from "swr"
 import * as React from "react"
 import { NetworkConstants, FactoryConstants } from "../../util/Constants"
 import Factory from "../Factory/factory"
+import "./wallet.css"
 
 export const injectedConnector = new InjectedConnector({
   supportedChainIds: [
@@ -64,9 +65,11 @@ const Wallet = () => {
           )}
         </div>
       ) : (
-        <button type="button" onClick={connectWallet}>
+        <div>
+        <button class="button is-link walletbutton" type="button" onClick={connectWallet}>
           Connect Wallet
         </button>
+        </div>
       )}
     </div>
   )

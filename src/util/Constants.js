@@ -9,7 +9,7 @@ export const NetworkConstants =  {
 }
 
 export const FactoryConstants = {
-    MINIMUM_COIN_TO_PROCEED: 2,
+    MINIMUM_COIN_TO_PROCEED: -1,
 }
 
 // export default Constants;
