@@ -11,9 +11,12 @@ import {
 } from "../../util/Constants"
 import Factory from "../Factory/factory"
 import "./wallet.css"
-import ABI from "../../resources/ERC20.abi.json"
+import ABI from "../../resources/ERC20.abi.json";
+import FactoryContractArtifact from "../../resources/X2MTokenFactory.json"
 import { Contract } from "@ethersproject/contracts"
 import { isAddress } from "@ethersproject/address"
+import { ethers } from "ethers"
+import data from "../../resources/test/dummy.json"
 
 export const injectedConnector = new InjectedConnector({
   supportedChainIds: [
@@ -26,6 +29,8 @@ export const injectedConnector = new InjectedConnector({
     NetworkConstants.SMART_CHAIN_MAINNET,
   ],
 })
+
+// export const web3 = new Web3(NetworkConstants.RPC_URL);
 
 const fetcher = (library, abi) => (...args) => {
   const [arg1, arg2, ...params] = args
@@ -110,12 +115,41 @@ export const TokenList = ({ chainId }) => {
   )
 }
 
-export const Test = data => {
-  console.log("Received data: ", data)
+export const Test = (props) => {
+  let [tokenAddress, setTokenAddress] = React.useState("");
+  const provider = props.provider;
+  const signer = provider.getSigner();
+  const factoryAddress = "0xe9E62B468D6BAefb82d5F62c3ef474Ce9430f18E";
+  const factoryContract = new ethers.Contract(factoryAddress, FactoryContractArtifact.abi, provider);
+  const factoryWithSigner = factoryContract.connect(signer);
+  const deployContract = () => {
+    const tx = factoryWithSigner.createStandardToken(
+      data.name,
+      data.symbol,
+      data.totalSupply,
+      data.isDex,
+      data.dexAddress
+    )
+  }
+  factoryContract.on("TokenCreated", (newAddress, event) => {
+    console.log("New Token Address",newAddress);
+    setTokenAddress(newAddress);
+  })
+  return (
+    <div>
+      <button type="button" onClick={deployContract}>
+      Deploy Test Governance Contract
+    </button>
+    <p>New Token Address: {tokenAddress}</p>
+    </div>
+    
+  )
 }
 
-const Wallet = () => {
+const Wallet = (props) => {
   const { chainId, account, activate, active, library } = useWeb3React()
+  
+  // const provider = library.getProvider();
   const connectWallet = () => {
     activate(injectedConnector)
   }
@@ -144,7 +178,11 @@ const Wallet = () => {
         <div>
           {balance > FactoryConstants.MINIMUM_COIN_TO_PROCEED ? (
             // <Factory account={account} balance={balance} />
+            <>
+            {/* <Factory account={account} balance={balance} /> */}
             <TokenList chainId={chainId} />
+            <Test provider={library}/>
+            </>
           ) : (
             `Not enough balance`
           )}

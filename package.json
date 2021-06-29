@@ -1,9 +1,9 @@
 {
-  "name": "gatsby-starter-default",
+  "name": "x2-mars-factory",
   "private": true,
-  "description": "A simple starter to get up and developing quickly with Gatsby",
+  "description": "A simple factory to quickly make and deploy ethereum or smart chain tokens",
   "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "author": "Harsh Gupta & Likhith BP",
   "dependencies": {
     "@ethersproject/address": "^5.4.0",
     "@ethersproject/contracts": "^5.4.0",
@@ -17,6 +17,7 @@
     "@web3-react/injected-connector": "^6.0.7",
     "bignumber.js": "^9.0.1",
     "bulma": "^0.9.2",
+    "ethers": "^5.4.0",
     "gatsby": "^3.6.2",
     "gatsby-background-image": "^1.5.3",
     "gatsby-plugin-fontawesome-css": "^1.1.0",
