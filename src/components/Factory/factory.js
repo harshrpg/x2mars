@@ -1,7 +1,38 @@
 import * as React from "react"
 import "./factory.css"
+import Cardselection from "../cardSelect/cardselect"
 
 const Factory = props => {
+  const [tokenSelection, setToken] = React.useState("None")
+  const [blockchainSelection, setBlockchain] = React.useState("None")
+  const [dexSelection, setDex] = React.useState("")
+
+  const handleClickFactory = e => {
+    //e.preventDefault();
+    if (e.target.id == "") {
+      console.log("empty")
+    } else {
+      if (e.target.id == "selected-item-1") {
+        setToken("Governance Token")
+      } else if (e.target.id == "selected-item-2") {
+        setToken("Fee on Transfer")
+      } else if (e.target.id == "selected-item-3") {
+        setBlockchain("Ethereum")
+      } else if (e.target.id == "selected-item-4") {
+        setBlockchain("Binance")
+      } else if (e.target.id == "selected-item-5") {
+        setDex("Uniswap")
+      } else {
+        setDex("PancakeSwap")
+        console.log("states",tokenSelection,blockchainSelection,dexSelection);
+      }
+
+      // if(tokenSelection == "Governance Token"){
+      //    console.log("Governance",document.querySelector("#___gatsby").querySelector("#selected-item-1").checked = true);
+      // }
+    }
+  }
+
   return (
     <div>
       <section class="appbanner">
@@ -15,158 +46,182 @@ const Factory = props => {
         </div>
       </section>
 
-      <div class="cardcontainer">
-        <a class="card1" href="#">
-          <h3>This is option 1</h3>
-          <p class="small">
-            Card description with lots of great facts and interesting details.
-          </p>
-          <div class="go-corner" href="#">
-            <div class="go-arrow">→</div>
-          </div>
+      <h1>Lets Create!</h1>
+      <br></br>
+      <br></br>
+      <div class="headings">
+        <div class="circle">1</div>
+        <span class="h2">
+          <h2>Select Token Type</h2>
+        </span>
+      </div>
+
+      <div class="cradcontainerdummy">
+        <a onClick={handleClickFactory}>
+          <Cardselection
+            title1="Governance Token"
+            subtitle1="Price: ____"
+            id1="selected-item-1"
+          />
         </a>
 
-        <a class="card2" href="#">
-          <h3>This is option 2</h3>
-          <p class="small">
-            Card description with lots of great facts and interesting details.
-          </p>
-
-          <div class="go-corner" href="#">
-            <div class="go-arrow">→</div>
-          </div>
-        </a>
-
-        <a class="card3" href="#">
-          <h3>This is option 3</h3>
-          <p class="small">
-            Card description with lots of great facts and interesting details.
-          </p>
-          <div class="dimmer"></div>
-          <div class="go-corner" href="#">
-            <div class="go-arrow">→</div>
-          </div>
+        <a onClick={handleClickFactory}>
+        <Cardselection
+          title1="Fee On Transfer"
+          subtitle1="Price: ____"
+          id1="selected-item-2"
+        />
         </a>
       </div>
 
-      <section class="section is-large">
-        <h1 class="title">1. Section</h1>
-        <h2 class="subtitle">Fill in all the details</h2>
+      <hr></hr>
+      <div class="headings" id="blockchain">
+        <div class="circle">2</div>
+        <span class="h2">
+          <h2>Select Blockchain</h2>
+        </span>
+      </div>
 
-        <div class="field">
-          <label class="label">Normal input</label>
-          <div class="control has-icons-left has-icons-right">
-            <input class="input" type="email" placeholder="Extra small"></input>
-            <span class="icon is-small is-left">
-              <i class="fas fa-envelope fa-xs"></i>
-            </span>
-            <span class="icon is-small is-right">
-              <i class="fas fa-check fa-xs"></i>
-            </span>
-          </div>
-        </div>
+      <div class="cradcontainerdummy">
+      <a onClick={handleClickFactory}>
+        <Cardselection title1="Ethereum" subtitle1="" id1="selected-item-3" />
+      </a>
+      <a onClick={handleClickFactory}>
+        <Cardselection title1="Binance" subtitle1="" id1="selected-item-4" />
+      </a>
+      </div>
 
-        <div class="field">
-          <div class="control has-icons-left has-icons-right">
-            <input class="input" type="email" placeholder="Normal"></input>
-            <span class="icon is-left">
-              <i class="fas fa-envelope"></i>
-            </span>
-            <span class="icon is-right">
-              <i class="fas fa-check"></i>
-            </span>
-          </div>
-        </div>
-      </section>
+      <hr></hr>
+      <div class="headings" id="form">
+        <div class="circle">3</div>
+        <span class="h2">
+          <h2>Enter Token Details</h2>
+        </span>
+      </div>
 
       <section class="section is-large">
-        <h1 class="title">2. Section</h1>
-        <h2 class="subtitle">Fill in all the details</h2>
-
-        <div class="field">
-          <label class="label">Normal input</label>
-          <div class="control has-icons-left has-icons-right">
-            <input class="input" type="email" placeholder="Extra small"></input>
-            <span class="icon is-small is-left">
-              <i class="fas fa-envelope fa-xs"></i>
-            </span>
-            <span class="icon is-small is-right">
-              <i class="fas fa-check fa-xs"></i>
-            </span>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Name</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="Token Name"
+                ></input>
+                <span class="icon-text">
+        <span class="icon has-text-info">
+    <i class="fas fa-info-circle"></i>
+  </span>
+    </span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="field">
-          <div class="control has-icons-left has-icons-right">
-            <input class="input" type="email" placeholder="Normal"></input>
-            <span class="icon is-left">
-              <i class="fas fa-envelope"></i>
-            </span>
-            <span class="icon is-right">
-              <i class="fas fa-check"></i>
-            </span>
+        
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Symbol</label>
           </div>
-        </div>
-      </section>
-
-      <section class="section is-large">
-        <h1 class="title">3. Section</h1>
-        <h2 class="subtitle">Fill in all the details</h2>
-
-        <div class="field">
-          <label class="label">Normal input</label>
-          <div class="control has-icons-left has-icons-right">
-            <input class="input" type="email" placeholder="Extra small"></input>
-            <span class="icon is-small is-left">
-              <i class="fas fa-envelope fa-xs"></i>
-            </span>
-            <span class="icon is-small is-right">
-              <i class="fas fa-check fa-xs"></i>
-            </span>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="Token Symbol in Letters"
+                ></input>
+                <span class="icon-text">
+        <span class="icon has-text-info">
+    <i class="fas fa-info-circle"></i>
+  </span>
+    </span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="field">
-          <div class="control has-icons-left has-icons-right">
-            <input class="input" type="email" placeholder="Normal"></input>
-            <span class="icon is-left">
-              <i class="fas fa-envelope"></i>
-            </span>
-            <span class="icon is-right">
-              <i class="fas fa-check"></i>
-            </span>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Total Supply</label>
           </div>
-        </div>
-      </section>
-
-      <section class="section is-large">
-        <h1 class="title">4. Section</h1>
-        <h2 class="subtitle">Fill in all the details</h2>
-
-        <div class="field">
-          <label class="label">Normal input</label>
-          <div class="control has-icons-left has-icons-right">
-            <input class="input" type="email" placeholder="Extra small"></input>
-            <span class="icon is-small is-left">
-              <i class="fas fa-envelope fa-xs"></i>
-            </span>
-            <span class="icon is-small is-right">
-              <i class="fas fa-check fa-xs"></i>
-            </span>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="Pool of tokens"
+                ></input>
+                <span class="icon-text">
+        <span class="icon has-text-info">
+    <i class="fas fa-info-circle"></i>
+  </span>
+    </span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="field">
-          <div class="control has-icons-left has-icons-right">
-            <input class="input" type="email" placeholder="Normal"></input>
-            <span class="icon is-left">
-              <i class="fas fa-envelope"></i>
-            </span>
-            <span class="icon is-right">
-              <i class="fas fa-check"></i>
-            </span>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Decimal</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="With 18 decimal places"
+                  disabled
+                ></input>
+                <span class="icon-text">
+        <span class="icon has-text-info">
+    <i class="fas fa-info-circle"></i>
+  </span>
+    </span>
+              </div>
+            </div>
           </div>
         </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label">
+            <label class="label">Do you need a Dex pair?</label>
+            <span class="icon-text">
+        <span class="icon has-text-info">
+    <i class="fas fa-info-circle"></i>
+  </span>
+    </span>
+          </div>
+          <div class="field-body">
+            <div class="field is-narrow">
+              <div class="control"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cradcontainerdummy">
+        <a onClick={handleClickFactory}>
+          <Cardselection title1="Uniswap" subtitle1="" id1="selected-item-5" />
+        </a>
+
+        <a onClick={handleClickFactory}>
+          <Cardselection
+            title1="PancakeSwap"
+            subtitle1=""
+            id1="selected-item-6"
+          />
+          </a>
+        </div>
+
+        <button class="button is-success deploy">Deploy</button>
       </section>
     </div>
   )
