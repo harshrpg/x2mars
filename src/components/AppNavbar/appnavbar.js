@@ -1,5 +1,5 @@
 import * as React from "react"
-import Logo from "../Logo/logo"
+import AppLogo from "../Logo/applogo"
 import { Link } from "gatsby"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
@@ -9,7 +9,7 @@ const AppNavbar = () => {
   return (
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <Logo />
+        <AppLogo />
         <button
           onClick={() => setIsActive(!isActive)}
           class={`hamburger hamburger--emphatic ${isActive ? "is-active" : ""}`}
@@ -30,29 +30,15 @@ const AppNavbar = () => {
             class="navbar-item"
             activeClassName="navbar-item"
           >
-            Home
+           <h1 style={{fontStyle: "italic"}}> X </h1>
           </Link>
           
         </div>
         <div class="navbar-end">
           <Link to="/" class="navbar-item" activeClassName="navbar-item">
-            <FontAwesomeIcon icon={["fab", "telegram-plane"]} />
+          <button class="button is-light custom-button app-button">Connect Wallet</button>
           </Link>
-          <Link to="/" class="navbar-item" activeClassName="navbar-item">
-            <FontAwesomeIcon icon={["fab", "medium-m"]} />
-          </Link>
-          <Link to="/" class="navbar-item" activeClassName="navbar-item">
-            <FontAwesomeIcon icon={["fab", "twitter"]} />
-          </Link>
-          <Link to="/" class="navbar-item" activeClassName="navbar-item">
-            <FontAwesomeIcon icon={["fab", "discord"]} />
-          </Link>
-          <Link to="/" class="navbar-item" activeClassName="navbar-item">
-            <FontAwesomeIcon icon={["fab", "youtube"]} />
-          </Link>
-          <Link to="/" class="navbar-item" activeClassName="navbar-item">
-            <FontAwesomeIcon icon={["fab", "facebook"]} />
-          </Link>
+          
         </div>
       </div>
     </nav>

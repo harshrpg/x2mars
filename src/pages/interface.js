@@ -10,6 +10,7 @@ import { Web3ReactProvider } from "@web3-react/core";
 
 import Wallet from "../components/Wallet/wallet";
 import { Web3Provider } from "@ethersproject/providers";
+import Factory from "../components/Factory/factory"
 
 const getLibrary = (provider) => {
     const library = new Web3Provider(provider, "any");
@@ -30,12 +31,12 @@ const Interface = () => {
     return (
         <AppLayout>
             <Seo title="App" />
-            {/* <Web3ReactProvider getLibrary={getLibrary}>
-                <Factory />
-            </Web3ReactProvider> */}
             <Web3ReactProvider getLibrary={getLibrary}>
-                <Wallet />
+                <Factory />
             </Web3ReactProvider>
+            {/* <Web3ReactProvider getLibrary={getLibrary}>
+                <Wallet />
+            </Web3ReactProvider> */}
         </AppLayout>
         
     )
