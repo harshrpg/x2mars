@@ -10,7 +10,7 @@ import PropTypes from "prop-types"
 
 import Navbar from "./Navbar/navbar"
 import AppNavbar from "./AppNavbar/appnavbar"
-import Footer from "./footer"
+import AppFooter from "../components/AppFooter/appfooter"
 import "bulma/css/bulma.css"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "./applayout.css"
@@ -30,7 +30,7 @@ const Layout = ({ children }) => {
           
         </div>
       </div>
-      <Footer />
+      <AppFooter />
     </div>
     </>
   )
