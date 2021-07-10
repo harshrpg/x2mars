@@ -140,30 +140,9 @@ const Steps = props => {
             </a>
           </div>
         </div>
+        
         <div class="mySlides">
-          <div class="headings" id="blockchain">
-            <div class="circle">2</div>
-            <span class="h2">
-              <h2>Select Blockchain</h2>
-            </span>
-          </div>
-
-          <div class="cradcontainerdummy">
-            <a onClick={handleClickFactory}>
-              <Cardselection
-                title1="Ethereum"
-                subtitle1=""
-                id1="selected-item-3"
-              />
-            </a>
-            <a onClick={handleClickFactory}>
-              <Cardselection
-                title1="Binance"
-                subtitle1=""
-                id1="selected-item-4"
-              />
-            </a>
-          </div>
+          
         </div>
 
         <div class="mySlides">

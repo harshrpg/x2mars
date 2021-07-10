@@ -19,7 +19,7 @@ img {
 }
 
 .selection-wrapper{
-  margin-left: 3%;
+  margin-left: 10%;
 }
 
 .top-text-wrapper {
@@ -82,6 +82,11 @@ img {
   grid-gap: 15px;
   place-content: center;
   transition: 0.3s ease-in-out all;
+  border: 2px solid rgb(92, 127, 243);
+}
+
+.selected-content:hover {
+  border: solid 4px #6566b9;
 }
 
 .selected-content img {
@@ -145,7 +150,24 @@ img {
 }
 .selected-label input:checked ~ .selected-content {
   box-shadow: 0 2px 4px 0 rgba(219, 215, 215, 0.5);
-  border: solid 2px #3057d5;
+  border: solid 4px #6566b9;
 }
 
 
+.fees{
+  text-align: left;
+  padding: 0%;
+  color: #000;
+  display:inline !important;
+  border: solid 2px #000000;
+}
+
+.feeslabel{
+  margin-left: 3%;
+  padding-right: 3%;
+  border-right: solid 2px #000000;
+}
+
+.feestag{
+  margin-left: 3%;
+}
