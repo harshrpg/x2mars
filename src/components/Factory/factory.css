@@ -396,3 +396,8 @@ h1 {
 .noselect:focus {
 	outline: none;
 }
+
+.custom-steps-container {
+  display: flex;
+  justify-content: center;
+}

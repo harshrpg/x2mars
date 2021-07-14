@@ -1,10 +1,10 @@
-export const Steps = () => {
-  [
+export const Steps = {
+  data: [
     {
       title: "Select Token Type",
-      options: ["Governance Token", "Fee On Transfer Token"],
-      optionData: [
+      cardData: [
         {
+          title: "Governance Token",
           type: "select",
           price: {
             eth: 1.0,
@@ -13,6 +13,7 @@ export const Steps = () => {
           img: "gtoken.png",
         },
         {
+          title: "Fee On Transfer Token",
           type: "select",
           price: {
             eth: 5.0,
@@ -138,5 +139,5 @@ export const Steps = () => {
             }
         ]
     }
-  ]
+  ],
 }

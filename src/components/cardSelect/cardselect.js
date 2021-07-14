@@ -1,6 +1,7 @@
 import * as React from "react"
 import "./style/cardstyle.css"
 import { StaticImage } from "gatsby-plugin-image"
+import Card from "./card"
 
 const Cardselect = props => {
 
@@ -35,4 +36,10 @@ const Cardselect = props => {
   )
 }
 
-export default Cardselect
+const TestCardSelect = ({type, error, cardData, network}) => {
+  return (
+    <Card type={type} error={error} cardData={cardData} network={network}/>
+  )
+}
+
+export default TestCardSelect

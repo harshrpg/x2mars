@@ -1,0 +1,44 @@
+@charset "utf-8";
+@import "../../../style/index.scss";
+
+.custom-card {
+    height: 100%;
+    width: 100%;
+    border-width: 4px;
+    border-style: solid;
+    border-color: $primary-color;
+    flex-direction: column;
+    padding: 2rem;
+    margin: 0 2rem 0 2rem;
+}
+
+.custom-card:hover {
+    cursor: pointer;
+}
+
+.add-border {
+    border: 2px solid black;
+}
+
+.error-container {
+    width: max-content;
+    padding: 0 2rem 0 2rem;
+    color: white;
+    border: 2px solid $unsucessful-color;
+    background-color: $unsucessful-color;
+}
+
+.custom-container-fees {
+    padding: 0 !important;
+    border: 2px solid $charcoal;
+    margin: 0 2rem 1rem 2rem;
+}
+
+.static-fee-column {
+    border-right: 2px solid $charcoal;
+    padding: 0 !important;
+}
+
+.icon-style {
+    color: $primary-color;
+}

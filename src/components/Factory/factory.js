@@ -16,6 +16,7 @@ const formatBalance = balance => {
 }
 
 const Factory = () => {
+  let connectedNetwork = "eth"
   const [stepCount, setStepCount] = React.useState(0)
   const [accountBalanceChanged, setAccountBalanceChanged] = React.useState(
     false
@@ -54,6 +55,7 @@ const Factory = () => {
         hasBalanceChanged={accountBalanceChanged}
         callback={setCart}
         accountBalance={accountBalance}
+        network={connectedNetwork}
       />
     </>
   )
