@@ -57,6 +57,7 @@ const Navbar = () => {
             to="/interface"
             class="navbar-item"
             activeClassName="navbar-item"
+            type="openapp"
           >
             open app
           </Link>

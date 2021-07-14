@@ -1,5 +1,6 @@
 import * as React from "react"
 import "./style/cardstyle.css"
+import { StaticImage } from "gatsby-plugin-image"
 
 const Cardselect = props => {
 
@@ -16,9 +17,10 @@ const Cardselect = props => {
             <span class="icon"></span>
             <div class="selected-content">
               <img
-                src="https://image.freepik.com/free-vector/people-putting-puzzle-pieces-together_52683-28610.jpg"
+                src={props.img}
                 alt=""
               ></img>
+              <StaticImage src={props.img} />
               <h4>
                 <strong>{props.title1}</strong>
               </h4>

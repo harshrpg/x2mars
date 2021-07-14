@@ -31,6 +31,7 @@ const Interface = () => {
     return (
         <AppLayout>
             <Seo title="App" />
+            
             <Web3ReactProvider getLibrary={getLibrary}>
                 <Factory />
             </Web3ReactProvider>
