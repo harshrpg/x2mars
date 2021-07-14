@@ -28,6 +28,7 @@ const Layout = ({ children }) => {
   return (
     <>
     <AppNavbar />
+    <AppFooter />
     {/* <div class="app">
       <div class="container appcontainer">
       <Web3ReactProvider getLibrary={getLibrary}>
@@ -42,7 +43,7 @@ const Layout = ({ children }) => {
           
         </div>
       </div>
-      <AppFooter />
+      
     </div> */}
     </>
   )
