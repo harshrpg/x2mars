@@ -20,9 +20,6 @@
     margin: 2rem;
     position: fixed;
   }
-  .hamburger {
-    display: none !important;
-  }
 
   .navbar-brand {
     float: none;
@@ -37,20 +34,22 @@
   }
 }
 
-@media screen and (max-width: 1024px) {
-  .navbar-brand {
+@media screen and (max-width: 768px) {
+  .navbar{
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-  }
-
-  .hamburger {
-    padding: 0%;
+    flex-wrap:nowrap;
   }
 }
 
-.hamburger-inner,
-.hamburger-inner::before,
-.hamburger-inner::after {
-  background-color: $charcoal !important;
+@media screen and (max-width: 571px) {
+  .navbar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 }
 
 .app-button {

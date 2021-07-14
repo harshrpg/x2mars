@@ -77,61 +77,47 @@ const AppNavbar = () => {
   const [isActive, setIsActive] = React.useState(false)
   return (
     <nav class="navbar" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand">
-        <div class="factory-title">The Token Factory</div>
-        <button
-          onClick={() => setIsActive(!isActive)}
-          class={`hamburger hamburger--emphatic ${isActive ? "is-active" : ""}`}
-          type="button"
-          aria-label="menu"
-          aria-expanded="false"
-          data-target="navbar-x2m"
-        >
-          <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-          </span>
-        </button>
+      <div class="navbar-start">
+        <AppLogo />
       </div>
-      <div id="navbar-x2m" class={`navbar-menu ${isActive ? "is-active" : ""}`}>
-        <div class="navbar-start">
-          <Link to="/" class="navbar-item" activeClassName="navbar-item">
-            <AppLogo />
-          </Link>
-        </div>
 
-        <div class="navbar-end">
-          {active ? (
-            <div>
-              {balance > FactoryConstants.MINIMUM_COIN_TO_PROCEED ? (
-                <div>
-                  {/* <button class="button is-light custom-button app-button" type="button">{account}</button> */}
-                  <button
-                    class="button is-light custom-button app-button-withdata"
-                    type="button"
-                  >
-                    {balance}
-                    <br></br>
-                    {account.slice(0, 6) +
-                      "...." +
-                      account.substring(account.length - 3)}
-                  </button>
-                </div>
-              ) : (
-                `Not enough balance`
-              )}
-            </div>
-          ) : (
-            <div>
-              <button
-                class="button is-light custom-button app-button"
-                type="button"
-                onClick={connectWallet}
-              >
-                Connect Wallet
-              </button>
-            </div>
-          )}
-        </div>
+      <div class="navbar-brand">
+        <Link to="/" class="navbar-item" activeClassName="navbar-item">
+          <div class="factory-title">The Token Factory</div>
+        </Link>
+      </div>
+      <div class="navbar-end">
+        {active ? (
+          <div>
+            {balance > FactoryConstants.MINIMUM_COIN_TO_PROCEED ? (
+              <div>
+                {/* <button class="button is-light custom-button app-button" type="button">{account}</button> */}
+                <button
+                  class="button is-light custom-button app-button-withdata"
+                  type="button"
+                >
+                  {balance}
+                  <br></br>
+                  {account.slice(0, 6) +
+                    "...." +
+                    account.substring(account.length - 3)}
+                </button>
+              </div>
+            ) : (
+              `Not enough balance`
+            )}
+          </div>
+        ) : (
+          <div>
+            <button
+              class="button is-light custom-button app-button"
+              type="button"
+              onClick={connectWallet}
+            >
+              Connect Wallet
+            </button>
+          </div>
+        )}
       </div>
     </nav>
   )
