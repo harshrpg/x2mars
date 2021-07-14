@@ -4,10 +4,8 @@ import Cardselection from "../cardSelect/cardselect"
 import govToken from "../../images/Governance Token.png"
 import fotToken from "../../images/FOT Icon.png"
 import uniswap from "../../images/uniswap-uni-logo.svg"
-import { StaticImage } from "gatsby-plugin-image"
 
 const Steps = props => {
-  //console.log("active?",active);
   const [tokenSelection, setToken] = React.useState("None")
   const [blockchainSelection, setBlockchain] = React.useState("None")
   const [dexSelection, setDex] = React.useState("")
@@ -368,4 +366,15 @@ const Steps = props => {
   )
 }
 
-export default Steps
+const TestSteps = (props) => {
+  const [active, setActive] = React.useState(props.isConnectionActive);
+  return (
+    <div>
+      {active ? setActive() : `Connect wallet first`}
+    </div>
+  )
+}
+
+
+
+export default TestSteps

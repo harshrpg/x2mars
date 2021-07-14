@@ -14,37 +14,21 @@ import AppFooter from "../components/AppFooter/appfooter"
 import "bulma/css/bulma.css"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "./applayout.css"
-import { Web3ReactProvider } from "@web3-react/core";
-import { Web3Provider } from "@ethersproject/providers";
+import { Web3ReactProvider } from "@web3-react/core"
+import { Web3Provider } from "@ethersproject/providers"
 
 const Layout = ({ children }) => {
-
-  const getLibrary = (provider) => {
-    const library = new Web3Provider(provider, "any");
-    library.pollingInterval = 12000;
-    return library;
+  const getLibrary = provider => {
+    const library = new Web3Provider(provider, "any")
+    library.pollingInterval = 12000
+    return library
   }
 
   return (
     <>
-    <AppNavbar />
-    <AppFooter />
-    {/* <div class="app">
-      <div class="container appcontainer">
-      <Web3ReactProvider getLibrary={getLibrary}>
-        <AppNavbar />
-        </Web3ReactProvider> 
-        <div
-          style={{
-            margin: `0 auto`,
-          }}
-        >
-          <main>{children}</main>
-          
-        </div>
-      </div>
-      
-    </div> */}
+      <AppNavbar />
+      <main>{children}</main>
+      <AppFooter />
     </>
   )
 }

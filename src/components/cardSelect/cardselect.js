@@ -20,7 +20,7 @@ const Cardselect = props => {
                 src={props.img}
                 alt=""
               ></img>
-              <StaticImage src={props.img} />
+              {/* <StaticImage src={props.img} /> */}
               <h4>
                 <strong>{props.title1}</strong>
               </h4>

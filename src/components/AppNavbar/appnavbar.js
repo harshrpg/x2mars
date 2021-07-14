@@ -38,12 +38,6 @@ const formatBalance = balance => {
   return parseFloat(formatEther(balance)).toPrecision(4)
 }
 
-const getLibrary = provider => {
-  const library = new Web3Provider(provider, "any")
-  library.pollingInterval = 12000
-  return library
-}
-
 const AppNavbar = () => {
   //connect wallet code
   const { account, activate, active, library } = useWeb3React()
