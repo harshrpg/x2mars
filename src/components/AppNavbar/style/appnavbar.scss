@@ -1,61 +1,67 @@
 @import "../../../style/index.scss";
 
-
-
 .navbar-item {
-    @include primaryFontFamily($textTransform: uppercase);
-  }
+  @include primaryFontFamily($textTransform: uppercase);
+}
 
-  
 .navbar {
-    margin: 0.5rem;
-  }
+  margin: 0.5rem;
+}
+
+.factory-title {
+  font-size: 2rem;
+  color: $charcoal !important;
+}
 
 @media screen and (min-width: 1024px) {
-    .navbar {
-      align-items: center !important;
-      display: flex;
-      margin: 2rem;
-      position: fixed;
-    }
-    .hamburger {
-      display: none !important;
-    }
-  
-    .navbar-brand {
-      float: none;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
+  .navbar {
+    align-items: center !important;
+    display: flex;
+    margin: 2rem;
+    position: fixed;
   }
-  
-  @media screen and (max-width: 1024px) {
-    .navbar-brand {
-      justify-content: space-between;
-    }
-  
-    .hamburger {
-      padding: 0%;
-    }
-  }
-  
-  .hamburger-inner,
-  .hamburger-inner::before,
-  .hamburger-inner::after {
-    background-color: $charcoal !important;
+  .hamburger {
+    display: none !important;
   }
 
-  .app-button{
-    padding: 1rem 2rem 1rem 2rem !important;
-    border-width: 3px !important;
-    border-color: #4484e4 !important;
+  .navbar-brand {
+    float: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
-  .app-button-withdata{
-    padding: 1.5rem 2.2rem 1.5rem 2.2rem !important;
-    border-width: 3px !important;
-    border-color: #b1a3f1 !important;
-    font-weight: bold;
+  .navbar-end {
+    align-items: center !important;
   }
+}
+
+@media screen and (max-width: 1024px) {
+  .navbar-brand {
+    justify-content: space-between;
+  }
+
+  .hamburger {
+    padding: 0%;
+  }
+}
+
+.hamburger-inner,
+.hamburger-inner::before,
+.hamburger-inner::after {
+  background-color: $charcoal !important;
+}
+
+.app-button {
+  padding: 1rem 2rem 1rem 2rem !important;
+  border-width: 3px !important;
+  border-color: #4484e4 !important;
+}
+
+.app-button-withdata {
+  padding: 1.5rem 2.2rem 1.5rem 2.2rem !important;
+  border-width: 3px !important;
+  border-color: #b1a3f1 !important;
+  font-weight: bold;
+}

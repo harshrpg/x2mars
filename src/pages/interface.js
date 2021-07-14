@@ -18,28 +18,14 @@ const getLibrary = (provider) => {
     return library;
 }
 const Interface = () => {
-//     const data = useStaticQuery(graphql`
-//     query SiteTitleQuery {
-//       site {
-//         siteMetadata {
-//           title
-//         }
-//       }
-//     }
-//   `)
   library.add(fab)
     return (
         <AppLayout>
             <Seo title="App" />
-            
             <Web3ReactProvider getLibrary={getLibrary}>
                 <Factory />
             </Web3ReactProvider>
-            {/* <Web3ReactProvider getLibrary={getLibrary}>
-                <Wallet />
-            </Web3ReactProvider> */}
         </AppLayout>
-        
     )
 }
 

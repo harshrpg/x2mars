@@ -5,11 +5,17 @@
 
 $logo-family: "Rift", sans-serif;
 $charcoal: #2f4858;
+$primary-color: #2B75AC;
+$secondary-color: #807FC6;
+$inactive-color: #C4C4C4;
+$unsucessful-color: #E53935;
+$successfull-color: #00C853;
 $hero-image-float-text: #f7ecca;
 $family-sans-serif: roboto-slab, serif;
 $family-primary: $family-sans-serif;
 $title-family: $family-primary;
 $title-color: $charcoal;
+$font-color: $charcoal;
 
 @mixin primaryFontFamily($fontWeight: 400, $textTransform: none) {
   font-family: $family-sans-serif;

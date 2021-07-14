@@ -13,8 +13,8 @@ import useSWR from "swr"
 import { NetworkConstants, FactoryConstants } from "../../util/Constants"
 import { library } from "@fortawesome/fontawesome-svg-core"
 import { fab } from "@fortawesome/free-brands-svg-icons"
-import { Web3ReactProvider } from "@web3-react/core";
-import { Web3Provider } from "@ethersproject/providers";
+import { Web3ReactProvider } from "@web3-react/core"
+import { Web3Provider } from "@ethersproject/providers"
 
 export const injectedConnector = new InjectedConnector({
   supportedChainIds: [
@@ -38,10 +38,10 @@ const formatBalance = balance => {
   return parseFloat(formatEther(balance)).toPrecision(4)
 }
 
-const getLibrary = (provider) => {
-  const library = new Web3Provider(provider, "any");
-  library.pollingInterval = 12000;
-  return library;
+const getLibrary = provider => {
+  const library = new Web3Provider(provider, "any")
+  library.pollingInterval = 12000
+  return library
 }
 
 const AppNavbar = () => {
@@ -71,14 +71,14 @@ const AppNavbar = () => {
 
   //library.add(fab)
 
-  console.log("active?",active);
+  console.log("active?", active)
 
   //create token code
   const [isActive, setIsActive] = React.useState(false)
   return (
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <AppLogo />
+        <div class="factory-title">The Token Factory</div>
         <button
           onClick={() => setIsActive(!isActive)}
           class={`hamburger hamburger--emphatic ${isActive ? "is-active" : ""}`}
@@ -94,38 +94,43 @@ const AppNavbar = () => {
       </div>
       <div id="navbar-x2m" class={`navbar-menu ${isActive ? "is-active" : ""}`}>
         <div class="navbar-start">
-          <Link
-            to="/"
-            class="navbar-item"
-            activeClassName="navbar-item"
-          >
-           <h1 style={{fontStyle: "italic"}}> X </h1>
+          <Link to="/" class="navbar-item" activeClassName="navbar-item">
+            <AppLogo />
           </Link>
-          
         </div>
 
         <div class="navbar-end">
-        
-            
-      {active ? (
-        <div>
-          {balance > FactoryConstants.MINIMUM_COIN_TO_PROCEED ? (
+          {active ? (
             <div>
-            {/* <button class="button is-light custom-button app-button" type="button">{account}</button> */}
-            <button class="button is-light custom-button app-button-withdata" type="button">{balance}<br></br>{(account.slice(0,6)+"...."+(account.substring(account.length - 3)))}</button>
+              {balance > FactoryConstants.MINIMUM_COIN_TO_PROCEED ? (
+                <div>
+                  {/* <button class="button is-light custom-button app-button" type="button">{account}</button> */}
+                  <button
+                    class="button is-light custom-button app-button-withdata"
+                    type="button"
+                  >
+                    {balance}
+                    <br></br>
+                    {account.slice(0, 6) +
+                      "...." +
+                      account.substring(account.length - 3)}
+                  </button>
+                </div>
+              ) : (
+                `Not enough balance`
+              )}
             </div>
           ) : (
-            `Not enough balance`
+            <div>
+              <button
+                class="button is-light custom-button app-button"
+                type="button"
+                onClick={connectWallet}
+              >
+                Connect Wallet
+              </button>
+            </div>
           )}
-        </div>
-      ) : (
-        <div>
-        <button class="button is-light custom-button app-button" type="button" onClick={connectWallet}>
-          Connect Wallet
-        </button>
-        </div>
-      )}
-      
         </div>
       </div>
     </nav>
