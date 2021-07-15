@@ -11,6 +11,7 @@ export const Steps = {
             bnb: 10.0,
           },
           img: "gtoken.png",
+          selected: false,
         },
         {
           title: "Fee On Transfer Token",
@@ -20,6 +21,7 @@ export const Steps = {
             bnb: 15.0,
           },
           img: "fotoken.png",
+          selected: false,
         },
       ],
     },

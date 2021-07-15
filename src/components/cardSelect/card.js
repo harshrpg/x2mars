@@ -14,7 +14,7 @@ const Card = props => {
         <div class="column is-full">
           <div class="columns">
             <div class="column is-one-quarter">
-              {props.type === "select" ? <CustomCheckBox /> : `No Change`}
+              {props.type === "select" ? <CustomCheckBox index={props.cardIndex} stepCallback={props.stepCallback}/> : `No Change`}
             </div>
             <div class="column">
               {props.error !== null ? <ErrorBox error={props.error} /> : ``}
@@ -29,11 +29,15 @@ const Card = props => {
   )
 }
 
-const CustomCheckBox = () => {
+const CustomCheckBox = (props) => {
   const [checked, setChecked] = React.useState(false)
+  const checkAndCallback = (checked) => {
+    setChecked(checked);
+    props.stepCallback(checked);
+  }
   return (
     <label class="checkbox-container">
-      <input type="checkbox" checked={checked ? `checked` : ``} onClick={() => setChecked(!checked)} />
+      <input type="checkbox" checked={checked ? `checked` : ``} onClick={() => checkAndCallback(!checked)} />
       <span class="checkmark"></span>
     </label>
   )

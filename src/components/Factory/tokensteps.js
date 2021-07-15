@@ -405,19 +405,26 @@ const getImageDataForCard = (data) => {
   return getImage(myImage.node.childrenImageSharp[0]);
 }
 
+const step1SelectionCallback = (data) => {
+  console.log("Step 1 Selection callbacked", data);
+}
+
+
 const TestSteps = props => {
   let computedCardError = computeError(props.isConnectionActive);
   let cardDataArray = Steps.data[props.stepNumber].cardData;
 
   return (
     <div className="container has-text-centered custom-steps-container">
-      {cardDataArray.map(cardData => 
+      {cardDataArray.map((cardData, index, _) => 
         <TestCardSelect
           type={cardData.type}
           error={computedCardError}
           cardData={cardData}
           cardImage={getImageDataForCard(cardData.img)}
           network={props.network}
+          stepCallback={props.stepNumber === 0? step1SelectionCallback : props.callback}
+          cardIndex={index}
         />
       )}
     </div>
