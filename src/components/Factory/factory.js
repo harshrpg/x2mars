@@ -16,7 +16,7 @@ const formatBalance = balance => {
 }
 
 const Factory = () => {
-  let connectedNetwork = "eth"
+  let connectedNetwork = "bnb"
   const [stepCount, setStepCount] = React.useState(0)
   const [accountBalanceChanged, setAccountBalanceChanged] = React.useState(
     false

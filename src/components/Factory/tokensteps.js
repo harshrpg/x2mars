@@ -367,23 +367,59 @@ import { Steps } from "../../util/factory-steps"
 //   )
 // }
 
+import { graphql, useStaticQuery } from "gatsby"
+import { getImage } from "gatsby-plugin-image"
+
+const GetAllImages = () => {
+  const { images } = useStaticQuery(graphql`
+    query {
+      images: allFile {
+        edges {
+          node {
+            relativePath
+            name
+            childrenImageSharp {
+              gatsbyImageData(
+                width: 200
+                height: 200
+                webpOptions: { quality: 100 }
+              )
+            }
+          }
+        }
+      }
+    }
+  `)
+  return images
+}
+
 const computeError = state => {
   return !state ? "Connect Wallet First" : null
 }
 
+const getImageDataForCard = (data) => {
+  const images = GetAllImages();
+  const myImage = images.edges.find(n => {
+    return n.node.relativePath.includes(data)
+  });
+  return getImage(myImage.node.childrenImageSharp[0]);
+}
+
 const TestSteps = props => {
-  const [active, setActive] = React.useState(props.isConnectionActive)
-  let computedCardError = computeError(active)
-  let cardData = Steps.data[props.stepNumber].cardData[0]
-  console.log("Card Data: ", cardData)
+  let computedCardError = computeError(props.isConnectionActive);
+  let cardDataArray = Steps.data[props.stepNumber].cardData;
+
   return (
     <div className="container has-text-centered custom-steps-container">
-      <TestCardSelect
-        type="select"
-        error={computedCardError}
-        cardData={cardData}
-        network={props.network}
-      />
+      {cardDataArray.map(cardData => 
+        <TestCardSelect
+          type={cardData.type}
+          error={computedCardError}
+          cardData={cardData}
+          cardImage={getImageDataForCard(cardData.img)}
+          network={props.network}
+        />
+      )}
     </div>
   )
 }

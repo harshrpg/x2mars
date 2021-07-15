@@ -36,9 +36,10 @@ const Cardselect = props => {
   )
 }
 
-const TestCardSelect = ({type, error, cardData, network}) => {
+const TestCardSelect = ({type, error, cardData, network, cardImage}) => {
+  console.log("Card Image Found: ", cardImage);
   return (
-    <Card type={type} error={error} cardData={cardData} network={network}/>
+    <Card type={type} error={error} cardData={cardData} network={network} cardImage={cardImage} />
   )
 }
 

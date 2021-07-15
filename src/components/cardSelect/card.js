@@ -4,10 +4,12 @@ import { Steps } from "../../util/factory-steps"
 import { StaticImage } from "gatsby-plugin-image"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { GatsbyImage } from "gatsby-plugin-image"
+import BNB from "../../images/assets/bnb.svg";
 
 const Card = props => {
   return (
-    <div class="conatiner">
+    <div class="conatiner card-container">
       <div class="columns custom-card">
         <div class="column is-full">
           <div class="columns">
@@ -20,7 +22,7 @@ const Card = props => {
           </div>
         </div>
         <div class="column is-full">
-          <Data cardData={props.cardData} network={props.network} />
+          <Data cardData={props.cardData} network={props.network} cardImage={props.cardImage} />
         </div>
       </div>
     </div>
@@ -58,14 +60,14 @@ const ErrorBox = ({ error }) => {
   return <div class="error-container">{error}</div>
 }
 
-const Data = ({ cardData, network }) => {
-  let fees = cardData.price[network]
+const Data = ({ cardData, network, cardImage }) => {
+  let fees = cardData.price !== undefined ? cardData.price[network] : undefined;
 
   return (
     <div className="conatiner has-text-centered">
       <div class="columns">
         <div class="column">
-          <StaticImage src="../../images/gtoken.png" height={200} width={200} />
+          {cardImage !== undefined || cardImage !== null ? <GatsbyImage image={cardImage} /> : `Some other hero data`}
         </div>
       </div>
       <div className="columns">
@@ -75,7 +77,7 @@ const Data = ({ cardData, network }) => {
       </div>
       <div className="columns">
         <div className="column">
-          <Fee fee={fees} network={network} />
+          { fees !== undefined ? <Fee fee={fees} network={network} /> : `Free of cost`}
         </div>
       </div>
     </div>
@@ -106,7 +108,8 @@ const Fee = ({ fee, network }) => {
         </div>
         <div class="column">
           <span class="is-size-5 is-size-7-mobile has-text-centered icon-style">
-            <FontAwesomeIcon icon={["fab", "ethereum"]} />
+            {network === "eth" ? <FontAwesomeIcon icon={["fab", "ethereum"]} /> : <StaticImage src="../../images/assets/bnb.svg" width={30} height={30} />}
+            
           </span>
         </div>
       </div>
