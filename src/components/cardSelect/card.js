@@ -12,7 +12,7 @@ const Card = props => {
         <div class="column is-full">
           <div class="columns">
             <div class="column is-one-quarter">
-              {props.type === "select" ? <CheckBox /> : `No Change`}
+              {props.type === "select" ? <CustomCheckBox /> : `No Change`}
             </div>
             <div class="column">
               {props.error !== null ? <ErrorBox error={props.error} /> : ``}
@@ -20,10 +20,20 @@ const Card = props => {
           </div>
         </div>
         <div class="column is-full">
-          <Data cardData={props.cardData} network={props.network}/>
+          <Data cardData={props.cardData} network={props.network} />
         </div>
       </div>
     </div>
+  )
+}
+
+const CustomCheckBox = () => {
+  const [checked, setChecked] = React.useState(false)
+  return (
+    <label class="checkbox-container">
+      <input type="checkbox" checked={checked ? `checked` : ``} onClick={() => setChecked(!checked)} />
+      <span class="checkmark"></span>
+    </label>
   )
 }
 
@@ -49,7 +59,7 @@ const ErrorBox = ({ error }) => {
 }
 
 const Data = ({ cardData, network }) => {
-    let fees = cardData.price[network];
+  let fees = cardData.price[network]
 
   return (
     <div className="conatiner has-text-centered">
@@ -65,7 +75,7 @@ const Data = ({ cardData, network }) => {
       </div>
       <div className="columns">
         <div className="column">
-          <Fee fee={fees} network={network}/>
+          <Fee fee={fees} network={network} />
         </div>
       </div>
     </div>
@@ -87,8 +97,18 @@ const Fee = ({ fee, network }) => {
         <div class="column is-one-quarter is-half-mobile static-fee-column">
           <span class="is-size-5 is-size-7-mobile has-text-centered">Fees</span>
         </div>
-        <div class="column"><span class="is-size-5 is-size-7-mobile has-text-centered">{fee}{` `}{network === "eth" ? `ETH` : `BNB`}</span></div>
-        <div class="column"><span class="is-size-5 is-size-7-mobile has-text-centered icon-style"><FontAwesomeIcon icon={["fab", "ethereum"]} /></span></div>
+        <div class="column">
+          <span class="is-size-5 is-size-7-mobile has-text-centered">
+            {fee}
+            {` `}
+            {network === "eth" ? `ETH` : `BNB`}
+          </span>
+        </div>
+        <div class="column">
+          <span class="is-size-5 is-size-7-mobile has-text-centered icon-style">
+            <FontAwesomeIcon icon={["fab", "ethereum"]} />
+          </span>
+        </div>
       </div>
     </div>
   )
