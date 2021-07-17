@@ -2,6 +2,7 @@
 @import "../../../style/index.scss";
 
 .card-container {
+   width: 33%;
     margin: 2rem;
 }
 
@@ -25,8 +26,7 @@
 }
 
 .error-container {
-  width: max-content;
-  padding: 0 2rem 0 2rem;
+  padding: 0 1.5rem 0 1.5rem;
   color: white;
   border: 2px solid $unsucessful-color;
   background-color: $unsucessful-color;
@@ -38,9 +38,24 @@
   margin: 0 2rem 1rem 2rem;
 }
 
+.container-fees{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.fees{
+  font-size: 1.3rem !important;
+  border: none;
+}
+
 .static-fee-column {
   border-right: 2px solid $charcoal;
   padding: 0 !important;
+}
+
+.amount-cover{
+  margin-left: 0% !important;
+  padding-right: 0% !important;
 }
 
 .icon-style {
@@ -117,4 +132,126 @@
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 //   transform: translate(-50%, -50%);
+}
+
+
+
+/*media queries*/
+@media screen and (max-width: 1450px) {
+  .card-title{
+    font-size: 22px !important;
+  }
+
+  .error-container {
+    font-size: 13px !important;
+    padding: 0 1rem 0 1rem !important;
+  }
+
+  .custom-container-fees {
+    margin: 0.2rem 1.5rem 1rem 1.5rem !important;
+  }
+
+  .fees{
+    font-size: 1rem !important;
+    padding-left: 5% !important;
+  }
+}
+
+@media screen and (max-width: 1250px) {
+  .card-title{
+    font-size: 17px !important;
+  }
+
+  .error-container {
+    font-size: 10px !important;
+    padding: 0.2rem 0.7rem 0 0.7rem !important;
+  }
+
+  .custom-container-fees {
+    margin: 0.2rem 1.2rem 1rem 1.2rem !important;
+  }
+
+  .fees{
+    font-size: 0.8rem !important;
+    border: none;
+    padding-left: 5% !important;
+  }
+
+  .custom-card {
+    padding: 1.5rem !important;
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .card-title{
+    font-size: 15px !important;
+  }
+
+  .error-container {
+    font-size: 8px !important;
+    padding: 0.2rem 0.7rem 0 0.7rem !important;
+  }
+
+  .custom-container-fees {
+    margin: 0.2rem 1.2rem 1rem 1.2rem !important;
+  }
+
+  .fees{
+    font-size: 0.7rem !important;
+    border: none;
+    padding: 0% !important;
+    padding-left: 2% !important;
+  }
+
+  .custom-card {
+    padding: 1rem !important;
+  }
+
+  .fees-title{
+    width: 32% !important;
+    padding: 0% !important;
+    margin: 0% !important;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .card-title{
+    font-size: 15px !important;
+  }
+
+  .error-container {
+    padding: 0% !important;
+    width: 60% !important;
+    text-align: center !important;
+    margin-left: 17% !important;
+  }
+
+  .custom-card {
+    margin: 0 !important;
+    padding: 0.5rem !important;
+  }
+
+  .card-container {
+    width: 65% !important;
+     margin: 1rem !important;
+ }
+
+ .fees{
+  font-size: 0.6rem !important;
+  border: none;
+  padding: 0% !important;
+  padding-left: 1% !important;
+  font-weight: bold !important;
+}
+
+ .fees-title{
+   width: 32% !important;
+   padding: 0% !important;
+   margin: 0% !important;
+ }
+
+ .checkmark{
+   height: 1.3rem !important;
+   width: 1.3rem !important;
+ }
 }

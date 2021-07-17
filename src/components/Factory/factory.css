@@ -399,5 +399,6 @@ h1 {
 
 .custom-steps-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
 }

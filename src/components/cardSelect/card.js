@@ -90,7 +90,7 @@ const Data = ({ cardData, network, cardImage }) => {
 
 const CardTitle = ({ title }) => {
   return (
-    <div className="is-size-3 is-size-5-mobile is-capitalized has-text-centered">
+    <div className="is-size-3 is-size-5-mobile is-capitalized has-text-centered card-title">
       {title}
     </div>
   )
@@ -99,12 +99,12 @@ const CardTitle = ({ title }) => {
 const Fee = ({ fee, network }) => {
   return (
     <div className="container custom-container-fees">
-      <div class="columns">
-        <div class="column is-one-quarter is-half-mobile static-fee-column">
-          <span class="is-size-5 is-size-7-mobile has-text-centered">Fees</span>
+      <div class="columns container-fees">
+        <div class="column is-one-quarter is-half-mobile static-fee-column fees-title">
+          <span class="is-size-5 is-size-7-mobile has-text-centered fees">Fees</span>
         </div>
-        <div class="column">
-          <span class="is-size-5 is-size-7-mobile has-text-centered">
+        <div class="column amount-cover">
+          <span class="is-size-5 is-size-7-mobile has-text-centered fees">
             {fee}
             {` `}
             {network === "eth" ? `ETH` : `BNB`}

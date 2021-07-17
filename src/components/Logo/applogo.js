@@ -4,7 +4,7 @@ import "./style/logo.scss"
 
 const AppLogo = () => (
     <div class="logo is-size-1">
-        <span>X</span>
+        <span>X &nbsp;  &nbsp;</span>
     </div>
 );
 

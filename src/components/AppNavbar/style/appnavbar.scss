@@ -34,7 +34,7 @@
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1020px) {
   .navbar{
     display: flex;
     align-items: center;
@@ -45,10 +45,10 @@
 
 @media screen and (max-width: 571px) {
   .navbar{
-    display: flex;
+    display: flexbox;
     align-items: center;
-    justify-content: center;
     flex-wrap: wrap;
+    justify-content: center;
   }
 }
 
