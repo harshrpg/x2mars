@@ -38,11 +38,23 @@ const getImageDataForCard = data => {
   return getImage(myImage.node.childrenImageSharp[0])
 }
 
+const setActiveStep = (activeStepNumber) => {
+
+}
+
 const TestSteps = props => {
+  const [successStep, setSuccessStep] = React.useState(-1);
+  console.log('CARD: success step ', successStep);
   return (
     <div className="container has-text-centered custom-steps-container">
       <div className="columns step-columns">
-        <Step1 network={props.network} />
+        <div className="column">
+        <Step1 network={props.network} onSuccess={() => setSuccessStep(1)}/>
+        </div>
+        <div className="column">
+          <StepBreadCrumb key={successStep} activeStep={1} successStep={successStep} />
+        </div>
+        
       </div>
     </div>
   )
@@ -72,6 +84,12 @@ const Step1 = props => {
   //   setCard2Error(null);
   // }
 
+  const setSelection = (selectedOption) => {
+    setSelectedOption(selectedOption);
+    props.onSuccess(1);
+  }
+
+
   return (
     
       <div class="columns step-columns">
@@ -91,7 +109,7 @@ const Step1 = props => {
                 network={props.network}
                 cardIndex={0}
                 selected={selectedOption === 0 ? true : false}
-                onPress={() => setSelectedOption(0)}
+                onPress={() => setSelection(0)}
               />
             </div>
             <div class="column">
@@ -104,7 +122,7 @@ const Step1 = props => {
                 network={props.network}
                 cardIndex={1}
                 selected={selectedOption === 1 ? true : false}
-                onPress={() => setSelectedOption(1)}
+                onPress={() => setSelection(1)}
               />
             </div>
           </div>
@@ -131,6 +149,8 @@ const StepBreadCrumb = props => {
   if (successStep === null || successStep === undefined) {
     setSuccessStep(-1)
   }
+
+  console.log("CARD::BREADCRUMB:: success step ", successStep);
 
   return (
     <div className="columns step-rows">
