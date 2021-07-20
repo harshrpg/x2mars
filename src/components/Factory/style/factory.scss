@@ -421,3 +421,19 @@
     justify-content: center;
     padding-top: 0 !important;
   }
+
+  .app-button {
+    padding: 0.5rem 1rem 0.5rem 1rem !important;
+    border-width: 2px !important;
+    border-color: $primary-color !important;
+  }
+
+  .disabled {
+      color: $inactive-color !important;
+      border-color: $inactive-color !important;
+  }
+
+  .success {
+    color: $successfull-color !important;
+    border-color: $successfull-color !important;
+}

@@ -39,11 +39,17 @@ const getImageDataForCard = data => {
 }
 
 const TestSteps = props => {
-  return <Step1 network={props.network} />
+  return (
+    <div className="container has-text-centered custom-steps-container">
+      <div className="columns step-columns">
+        <Step1 network={props.network} />
+      </div>
+    </div>
+  )
 }
 
 const Step1 = props => {
-  const [step1, setStep1] = React.useState(Steps.Step1)
+  const [step1, _] = React.useState(Steps.Step1)
   // there are two parts in step1
   const step1Card1 = step1.cardData[0]
   const step1Card2 = step1.cardData[1]
@@ -67,7 +73,7 @@ const Step1 = props => {
   // }
 
   return (
-    <div className="container has-text-centered custom-steps-container">
+    
       <div class="columns step-columns">
         <div class="column">
           <StepTitle title={step1.title} />
@@ -104,14 +110,71 @@ const Step1 = props => {
           </div>
         </div>
       </div>
-    </div>
   )
 }
 
 const StepTitle = props => {
   return (
     <div className="constainer has-text-centered custom-step-title">
-      <div className="is-size-3 is-size-5-mobile">{props.title}</div>
+      <div className="is-size-5 is-size-6-mobile">{props.title}</div>
+    </div>
+  )
+}
+
+const StepBreadCrumb = props => {
+  const [activeStep, setActiveStep] = React.useState(props.activeStep)
+  const [successStep, setSuccessStep] = React.useState(props.successStep)
+  if (activeStep === null || activeStep === undefined) {
+    setActiveStep(1)
+  }
+
+  if (successStep === null || successStep === undefined) {
+    setSuccessStep(-1)
+  }
+
+  return (
+    <div className="columns step-rows">
+      <div className="column">
+        <BreadCrumbButton
+          value="Step 1"
+          disabled={activeStep !== 1 ? true : false}
+          isSuccess={successStep === 1 ? true : false}
+        />
+      </div>
+      <div className="column">
+        <BreadCrumbButton
+          value="Step 2"
+          disabled={activeStep !== 2 ? true : false}
+          isSuccess={successStep === 2 ? true : false}
+        />
+      </div>
+      <div className="column">
+        <BreadCrumbButton
+          value="Step 3"
+          disabled={activeStep !== 3 ? true : false}
+          isSuccess={successStep === 3 ? true : false}
+        />
+      </div>
+      <div className="column">
+        <BreadCrumbButton
+          value="Step 4"
+          disabled={activeStep !== 4 ? true : false}
+          isSuccess={successStep === 4 ? true : false}
+        />
+      </div>
+    </div>
+  )
+}
+
+const BreadCrumbButton = props => {
+  return (
+    <div
+      className={`button is-light custom-button app-button${
+        props.disabled ? " disabled" : ""
+      }${props.isSuccess ? " success" : ""}`}
+      type="button"
+    >
+      {props.value}
     </div>
   )
 }
