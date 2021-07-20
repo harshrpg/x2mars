@@ -1,6 +1,6 @@
 import { useWeb3React } from "@web3-react/core"
 import * as React from "react"
-import "./factory.css"
+import "./style/factory.scss"
 import TestSteps from "./tokensteps"
 import useSWR from "swr"
 import BigNumber from "bignumber.js"
