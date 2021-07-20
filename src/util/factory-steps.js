@@ -1,20 +1,19 @@
 export const Steps = {
-  data: [
-    {
+    Step1: {
       title: "Select Token Type",
       cardData: [
         {
-          title: "Governance Token",
+          title: "Governance",
           type: "select",
           price: {
             eth: 1.0,
             bnb: 10.0,
           },
           img: "gtoken.png",
-          selected: false,
+          selected: true,
         },
         {
-          title: "Fee On Transfer Token",
+          title: "Fee On Transfer",
           type: "select",
           price: {
             eth: 5.0,
@@ -25,7 +24,7 @@ export const Steps = {
         },
       ],
     },
-    {
+    Step2: {
       title: "Provide Token Details",
       options: [
         "Protocol Basic Info",
@@ -52,7 +51,7 @@ export const Steps = {
         },
       ],
     },
-    {
+    Step3: {
       title: "Select Token Features",
       options: [
         "Anti Whale Protection",
@@ -118,7 +117,7 @@ export const Steps = {
         }
       ],
     },
-    {
+    Step4: {
         title: "Provide Launchpad details",
         options: ["Launchpad Card"],
         optionData: [
@@ -132,7 +131,7 @@ export const Steps = {
             }
         ]
     },
-    {
+    Step5: {
         title: "Pay and Deploy",
         options: ["Deploy Card"],
         optionData: [
@@ -141,5 +140,4 @@ export const Steps = {
             }
         ]
     }
-  ],
 }

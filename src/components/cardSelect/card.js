@@ -5,7 +5,7 @@ import { StaticImage } from "gatsby-plugin-image"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { GatsbyImage } from "gatsby-plugin-image"
-import BNB from "../../images/assets/bnb.svg";
+import BNB from "../../images/assets/bnb.svg"
 
 const Card = props => {
   return (
@@ -14,7 +14,16 @@ const Card = props => {
         <div class="column is-full">
           <div class="columns">
             <div class="column is-one-quarter">
-              {props.type === "select" ? <CustomCheckBox index={props.cardIndex} stepCallback={props.stepCallback}/> : `No Change`}
+              {props.type === "select" ? (
+                <CustomCheckBox
+                  key={props.selected}
+                  index={props.cardIndex}
+                  selected={props.selected}
+                  onPress={props.onPress}
+                />
+              ) : (
+                `No Change`
+              )}
             </div>
             <div class="column">
               {props.error !== null ? <ErrorBox error={props.error} /> : ``}
@@ -22,41 +31,29 @@ const Card = props => {
           </div>
         </div>
         <div class="column is-full">
-          <Data cardData={props.cardData} network={props.network} cardImage={props.cardImage} />
+          <Data
+            cardData={props.cardData}
+            network={props.network}
+            cardImage={props.cardImage}
+          />
         </div>
       </div>
     </div>
   )
 }
 
-const CustomCheckBox = (props) => {
-  const [checked, setChecked] = React.useState(false)
-  const checkAndCallback = (checked) => {
-    setChecked(checked);
-    props.stepCallback(checked);
-  }
+const CustomCheckBox = props => {
+  const [checked, setChecked] = React.useState(props.selected)
   return (
     <label class="checkbox-container">
-      <input type="checkbox" checked={checked ? `checked` : ``} onClick={() => checkAndCallback(!checked)} />
+      <input
+        type="checkbox"
+        key={checked}
+        checked={checked ? `checked` : ``}
+        onClick={() => props.onPress(props.index)}
+      />
       <span class="checkmark"></span>
     </label>
-  )
-}
-
-const CheckBox = () => {
-  const [checked, setChecked] = React.useState(false)
-  return (
-    <div class="field">
-      <input
-        class="is-checkradio is-success is-circle"
-        id="exampleCheckboxSuccessCircle"
-        type="checkbox"
-        name="exampleCheckboxSuccessCircle"
-        checked={checked ? `checked` : ``}
-        onClick={() => setChecked(!checked)}
-      />
-      <label for="exampleCheckboxSuccessCircle"> </label>
-    </div>
   )
 }
 
@@ -65,13 +62,17 @@ const ErrorBox = ({ error }) => {
 }
 
 const Data = ({ cardData, network, cardImage }) => {
-  let fees = cardData.price !== undefined ? cardData.price[network] : undefined;
+  let fees = cardData.price !== undefined ? cardData.price[network] : undefined
 
   return (
     <div className="conatiner has-text-centered">
       <div class="columns">
         <div class="column">
-          {cardImage !== undefined || cardImage !== null ? <GatsbyImage image={cardImage} /> : `Some other hero data`}
+          {cardImage !== undefined || cardImage !== null ? (
+            <GatsbyImage image={cardImage} />
+          ) : (
+            `Some other hero data`
+          )}
         </div>
       </div>
       <div className="columns">
@@ -81,7 +82,11 @@ const Data = ({ cardData, network, cardImage }) => {
       </div>
       <div className="columns">
         <div className="column">
-          { fees !== undefined ? <Fee fee={fees} network={network} /> : `Free of cost`}
+          {fees !== undefined ? (
+            <Fee fee={fees} network={network} />
+          ) : (
+            `Free of cost`
+          )}
         </div>
       </div>
     </div>
@@ -112,8 +117,15 @@ const Fee = ({ fee, network }) => {
         </div>
         <div class="column">
           <span class="is-size-5 is-size-7-mobile has-text-centered icon-style">
-            {network === "eth" ? <FontAwesomeIcon icon={["fab", "ethereum"]} /> : <StaticImage src="../../images/assets/bnb.svg" width={30} height={30} />}
-            
+            {network === "eth" ? (
+              <FontAwesomeIcon icon={["fab", "ethereum"]} />
+            ) : (
+              <StaticImage
+                src="../../images/assets/bnb.svg"
+                width={30}
+                height={30}
+              />
+            )}
           </span>
         </div>
       </div>

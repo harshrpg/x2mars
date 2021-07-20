@@ -369,6 +369,7 @@ import { Steps } from "../../util/factory-steps"
 
 import { graphql, useStaticQuery } from "gatsby"
 import { getImage } from "gatsby-plugin-image"
+import Card from "../cardSelect/card"
 
 const GetAllImages = () => {
   const { images } = useStaticQuery(graphql`
@@ -397,36 +398,115 @@ const computeError = state => {
   return !state ? "Connect Wallet First" : null
 }
 
-const getImageDataForCard = (data) => {
-  const images = GetAllImages();
+const getImageDataForCard = data => {
+  const images = GetAllImages()
   const myImage = images.edges.find(n => {
     return n.node.relativePath.includes(data)
-  });
-  return getImage(myImage.node.childrenImageSharp[0]);
+  })
+  return getImage(myImage.node.childrenImageSharp[0])
 }
-
-const step1SelectionCallback = (data) => {
-  console.log("Step 1 Selection callbacked", data);
-}
-
 
 const TestSteps = props => {
-  let computedCardError = computeError(props.isConnectionActive);
-  let cardDataArray = Steps.data[props.stepNumber].cardData;
+  const [cardDataArray, setCardDataArray] = React.useState(Steps.Step1.cardData)
+  let computedCardError = computeError(props.isConnectionActive)
+
+  const step1SelectionCallback = data => {
+    console.log("TOKEN STEPS: Step 1 Selection callbacked", data)
+    if (data.index === 0) {
+      cardDataArray[data.index].selected = data.checked
+      if (data.checked) {
+        cardDataArray[1].selected = !data.checked
+      }
+      setCardDataArray(cardDataArray)
+    } else if (data.index === 1) {
+      cardDataArray[data.index].selected = data.checked
+      if (data.checked) {
+        cardDataArray[0].selected = !data.checked
+      }
+      setCardDataArray(cardDataArray)
+    }
+    console.log("TOKEN STEPS: Selected Card", cardDataArray)
+  }
+
+  return (
+    // <div className="container has-text-centered custom-steps-container">
+    //   {cardDataArray.map((cardData, index, _) => (
+    //     <Card
+    //       type={cardData.type}
+    //       error={computedCardError}
+    //       cardData={cardData}
+    //       cardImage={getImageDataForCard(cardData.img)}
+    //       network={props.network}
+    //       stepCallback={
+    //         props.stepNumber === 0 ? step1SelectionCallback : props.callback
+    //       }
+    //       cardIndex={index}
+    //       selected={cardData.selected}
+    //     />
+    //   ))}
+    // </div>
+    <Step1 network={props.network} />
+  )
+}
+
+const Step1 = props => {
+  const card1 = 0
+  const card2 = 1
+  const [step1, setStep1] = React.useState(Steps.Step1.cardData)
+  // there are two parts in step1
+  const [step1Card1, setStep1Card1] = React.useState(step1[0])
+  const [step1Card2, setStep1Card2] = React.useState(step1[1])
+
+  const [selectedOption, setSelectedOption] = React.useState(-1)
+
+  // TODO: call metamask hook here
+  // TODO: Get metamask balance
+  // TODO: Set errors based on balances
+  // const [card1Error, setCard1Error] = React.useState("Connect Wallet");
+  // const [card2Error, setCard2Error] = React.useState("Not Enough Balance");
+
+  // TODO: Set check status based on balances
+
+  // const [ableToPurchase, setAbleToPurchase] = React.useState({card1: true, card2: true});
+  // if (ableToPurchase.card1) {
+  //   setCard1Error(null);
+  // }
+  // if (ableToPurchase.card2) {
+  //   setCard2Error(null);
+  // }
+
+  const logSelection = data => {
+    if (data === 0) {
+      console.log("Card 1 is clicked")
+    } else if (data === 1) {
+      console.log("Card 2 is clicked")
+    }
+  }
 
   return (
     <div className="container has-text-centered custom-steps-container">
-      {cardDataArray.map((cardData, index, _) => 
-        <TestCardSelect
-          type={cardData.type}
-          error={computedCardError}
-          cardData={cardData}
-          cardImage={getImageDataForCard(cardData.img)}
-          network={props.network}
-          stepCallback={props.stepNumber === 0? step1SelectionCallback : props.callback}
-          cardIndex={index}
-        />
-      )}
+      <Card
+        id="step1-card1"
+        type={step1Card1.type}
+        error={null}
+        cardData={step1Card1}
+        cardImage={getImageDataForCard(step1Card1.img)}
+        network={props.network}
+        cardIndex={0}
+        selected={selectedOption === 0 ? true : false}
+        onPress={() => setSelectedOption(0)}
+      />
+      <Card
+        id="step1-card2"
+        type={step1Card2.type}
+        error={null}
+        cardData={step1Card2}
+        cardImage={getImageDataForCard(step1Card2.img)}
+        network={props.network}
+        cardIndex={1}
+        selected={selectedOption === 1 ? true : false}
+        onPress={() => setSelectedOption(1)}
+      />
     </div>
   )
 }
