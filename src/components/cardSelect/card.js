@@ -8,8 +8,15 @@ import { GatsbyImage } from "gatsby-plugin-image"
 import BNB from "../../images/assets/bnb.svg"
 
 const Card = props => {
+  let style = {opacity:1};
+  if (props.error !== null) {
+    style = {opacity:0.5}
+  }
+  if (!props.selected) {
+    style = {opacity:0.5}
+  }
   return (
-    <div class="conatiner card-container">
+    <div class="conatiner card-container" style={style}>
       <div class="columns custom-card">
         <div class="column is-full">
           <div class="columns">
@@ -20,6 +27,7 @@ const Card = props => {
                   index={props.cardIndex}
                   selected={props.selected}
                   onPress={props.onPress}
+                  isError={props.error}
                 />
               ) : (
                 `No Change`
@@ -51,6 +59,7 @@ const CustomCheckBox = props => {
         key={checked}
         checked={checked ? `checked` : ``}
         onClick={() => props.onPress(props.index)}
+        disabled={props.isError !== null ? true : false}
       />
       <span class="checkmark"></span>
     </label>

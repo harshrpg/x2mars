@@ -475,17 +475,10 @@ const Step1 = props => {
   //   setCard2Error(null);
   // }
 
-  const logSelection = data => {
-    if (data === 0) {
-      console.log("Card 1 is clicked")
-    } else if (data === 1) {
-      console.log("Card 2 is clicked")
-    }
-  }
-
   return (
     <div className="container has-text-centered custom-steps-container">
       <Card
+        className="card-steps"
         id="step1-card1"
         type={step1Card1.type}
         error={null}
