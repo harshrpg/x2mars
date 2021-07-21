@@ -71,14 +71,14 @@ const AppNavbar = () => {
   const [isActive, setIsActive] = React.useState(false)
   return (
     <nav class="navbar" role="navigation" aria-label="main navigation">
-      <div class="navbar-start">
+      <Link to="/" class="navbar-start">
         <AppLogo />
-      </div>
+      </Link>
 
       <div class="navbar-brand">
-        <Link to="/" class="navbar-item" activeClassName="navbar-item">
+        <div class="navbar-item" activeClassName="navbar-item">
           <div class="factory-title">The Token Factory</div>
-        </Link>
+        </div>
       </div>
       <div class="navbar-end">
         {active ? (

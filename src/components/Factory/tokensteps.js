@@ -47,6 +47,11 @@ const TestSteps = props => {
   console.log('CARD: success step ', successStep);
   return (
     <div className="container has-text-centered custom-steps-container">
+      <div className="columns">
+        <div className="column">
+          TEST
+        </div>
+      </div>
       <div className="columns step-columns">
         <div className="column">
         <Step1 network={props.network} onSuccess={() => setSuccessStep(1)}/>
@@ -55,6 +60,11 @@ const TestSteps = props => {
           <StepBreadCrumb key={successStep} activeStep={1} successStep={successStep} />
         </div>
         
+      </div>
+      <div className="columns">
+        <div className="column">
+          TEST
+        </div>
       </div>
     </div>
   )
