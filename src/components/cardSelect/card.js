@@ -115,16 +115,16 @@ const Fee = ({ fee, network }) => {
     <div className="container custom-container-fees">
       <div class="columns">
         <div class="column is-one-quarter is-half-mobile static-fee-column">
-          <span class="is-size-5 is-size-7-mobile has-text-centered">Fees</span>
+          <span class="is-size-7 is-size-8-mobile has-text-centered">Fees</span>
         </div>
         <div class="column">
-          <span class="is-size-5 is-size-7-mobile has-text-centered">
+          <span class="is-size-6 is-size-7-mobile has-text-centered">
             {fee}
             {` `}
             {network === "eth" ? `ETH` : `BNB`}
           </span>
         </div>
-        <div class="column">
+        <div class="column is-one-quarter">
           <span class="is-size-5 is-size-7-mobile has-text-centered icon-style">
             {network === "eth" ? (
               <FontAwesomeIcon icon={["fab", "ethereum"]} />
