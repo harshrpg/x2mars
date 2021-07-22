@@ -5,7 +5,10 @@
 }
 
 .step-columns {
+    overflow: hidden;
     flex-direction: column !important;
+    margin: 0 1rem 0 1rem !important;
+    max-width: 1000px;
 }
 
 .step-rows {
@@ -445,4 +448,14 @@
 
 .chevron-active {
   color: $primary-color !important;
+  size: 2rem ;
+}
+
+.steps-displayer {
+  white-space: nowrap;
+  transition: ease 1000ms;
+}
+
+.chevrons:hover {
+  cursor: pointer;
 }

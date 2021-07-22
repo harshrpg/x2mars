@@ -35,7 +35,7 @@ const GetAllImages = () => {
   `)
   return images
 }
-
+const delay = 4500
 const getImageDataForCard = data => {
   const images = GetAllImages()
   const myImage = images.edges.find(n => {
@@ -49,17 +49,37 @@ const setActiveStep = activeStepNumber => {}
 const TestSteps = props => {
   const [successStep, setSuccessStep] = React.useState(-1)
   const [currentStep, setCurrentStep] = React.useState(1)
+  const [index, setIndex] = React.useState(0)
+  const incrementStep = by => {
+    console.log("Current Step: ", currentStep, " Success Step", successStep)
+    if (currentStep == successStep) {
+      setIndex(by)
+    }
+  }
   console.log("CARD: success step ", successStep)
   return (
     <div className="container has-text-centered custom-steps-container">
       <div className="columns">
-        <div className="column">
-          <FontAwesomeIcon icon={faChevronLeft} className={`${currentStep == 1 ? "chevron-inactive" : "chevron-active"}`} />
+        <div className="column chevrons" type="button">
+          <FontAwesomeIcon
+            icon={faChevronLeft}
+            className={`${
+              currentStep == 1 ? "chevron-inactive" : "chevron-active"
+            }`}
+            onClick={() => setIndex(0)}
+          />
         </div>
       </div>
       <div className="columns step-columns">
-        <div className="column">
-          <Step1 network={props.network} onSuccess={() => setSuccessStep(1)} />
+        <div
+          className="column steps-displayer"
+          style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}
+        >
+          <Step1
+            network={props.network}
+            onSuccess={() => setSuccessStep(1)}
+            key={0}
+          />
         </div>
         <div className="column">
           <StepBreadCrumb
@@ -70,8 +90,18 @@ const TestSteps = props => {
         </div>
       </div>
       <div className="columns">
-        <div className="column">
-          <FontAwesomeIcon icon={faChevronRight} className={`${successStep == currentStep ? "chevron-active" : "chevron-inactive"}`} />
+        <div
+          className={`column chevrons`}
+          type="button"
+          disabled={successStep == currentStep ? false : true}
+          onClick={() => incrementStep(1)}
+        >
+          <FontAwesomeIcon
+            icon={faChevronRight}
+            className={`${
+              successStep == currentStep ? "chevron-active" : "chevron-inactive"
+            }`}
+          />
         </div>
       </div>
     </div>
