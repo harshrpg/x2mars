@@ -437,3 +437,12 @@
     color: $successfull-color !important;
     border-color: $successfull-color !important;
 }
+
+.chevron-inactive {
+  color: $inactive-color !important;
+  opacity: 0.5;
+}
+
+.chevron-active {
+  color: $primary-color !important;
+}

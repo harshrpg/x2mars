@@ -5,6 +5,12 @@ import { getImage } from "gatsby-plugin-image"
 import { Steps } from "../../util/factory-steps"
 import Card from "../cardSelect/card"
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons"
+
 import "./style/factory.scss"
 
 const GetAllImages = () => {
@@ -38,32 +44,34 @@ const getImageDataForCard = data => {
   return getImage(myImage.node.childrenImageSharp[0])
 }
 
-const setActiveStep = (activeStepNumber) => {
-
-}
+const setActiveStep = activeStepNumber => {}
 
 const TestSteps = props => {
-  const [successStep, setSuccessStep] = React.useState(-1);
-  console.log('CARD: success step ', successStep);
+  const [successStep, setSuccessStep] = React.useState(-1)
+  const [currentStep, setCurrentStep] = React.useState(1)
+  console.log("CARD: success step ", successStep)
   return (
     <div className="container has-text-centered custom-steps-container">
       <div className="columns">
         <div className="column">
-          TEST
+          <FontAwesomeIcon icon={faChevronLeft} className={`${currentStep == 1 ? "chevron-inactive" : "chevron-active"}`} />
         </div>
       </div>
       <div className="columns step-columns">
         <div className="column">
-        <Step1 network={props.network} onSuccess={() => setSuccessStep(1)}/>
+          <Step1 network={props.network} onSuccess={() => setSuccessStep(1)} />
         </div>
         <div className="column">
-          <StepBreadCrumb key={successStep} activeStep={1} successStep={successStep} />
+          <StepBreadCrumb
+            key={successStep}
+            activeStep={1}
+            successStep={successStep}
+          />
         </div>
-        
       </div>
       <div className="columns">
         <div className="column">
-          TEST
+          <FontAwesomeIcon icon={faChevronRight} className={`${successStep == currentStep ? "chevron-active" : "chevron-inactive"}`} />
         </div>
       </div>
     </div>
@@ -94,50 +102,48 @@ const Step1 = props => {
   //   setCard2Error(null);
   // }
 
-  const setSelection = (selectedOption) => {
-    setSelectedOption(selectedOption);
-    props.onSuccess(1);
+  const setSelection = selectedOption => {
+    setSelectedOption(selectedOption)
+    props.onSuccess(1)
   }
 
-
   return (
-    
-      <div class="columns step-columns">
-        <div class="column">
-          <StepTitle title={step1.title} />
-        </div>
-        <div class="column">
-          <div class="columns step-rows">
-            <div class="column">
-              <Card
-                className="card-steps"
-                id="step1-card1"
-                type={step1Card1.type}
-                error={null}
-                cardData={step1Card1}
-                cardImage={getImageDataForCard(step1Card1.img)}
-                network={props.network}
-                cardIndex={0}
-                selected={selectedOption === 0 ? true : false}
-                onPress={() => setSelection(0)}
-              />
-            </div>
-            <div class="column">
-              <Card
-                id="step1-card2"
-                type={step1Card2.type}
-                error={null}
-                cardData={step1Card2}
-                cardImage={getImageDataForCard(step1Card2.img)}
-                network={props.network}
-                cardIndex={1}
-                selected={selectedOption === 1 ? true : false}
-                onPress={() => setSelection(1)}
-              />
-            </div>
+    <div class="columns step-columns">
+      <div class="column">
+        <StepTitle title={step1.title} />
+      </div>
+      <div class="column">
+        <div class="columns step-rows">
+          <div class="column">
+            <Card
+              className="card-steps"
+              id="step1-card1"
+              type={step1Card1.type}
+              error={null}
+              cardData={step1Card1}
+              cardImage={getImageDataForCard(step1Card1.img)}
+              network={props.network}
+              cardIndex={0}
+              selected={selectedOption === 0 ? true : false}
+              onPress={() => setSelection(0)}
+            />
+          </div>
+          <div class="column">
+            <Card
+              id="step1-card2"
+              type={step1Card2.type}
+              error={null}
+              cardData={step1Card2}
+              cardImage={getImageDataForCard(step1Card2.img)}
+              network={props.network}
+              cardIndex={1}
+              selected={selectedOption === 1 ? true : false}
+              onPress={() => setSelection(1)}
+            />
           </div>
         </div>
       </div>
+    </div>
   )
 }
 
@@ -160,7 +166,7 @@ const StepBreadCrumb = props => {
     setSuccessStep(-1)
   }
 
-  console.log("CARD::BREADCRUMB:: success step ", successStep);
+  console.log("CARD::BREADCRUMB:: success step ", successStep)
 
   return (
     <div className="columns step-rows">
