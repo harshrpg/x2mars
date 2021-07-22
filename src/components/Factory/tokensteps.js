@@ -71,15 +71,30 @@ const TestSteps = props => {
         </div>
       </div>
       <div className="columns step-columns">
-        <div
-          className="column steps-displayer"
-          style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}
-        >
-          <Step1
-            network={props.network}
-            onSuccess={() => setSuccessStep(1)}
-            key={0}
-          />
+        <div className="column">
+          <div className="steps-displayer">
+            <div
+              className="columns steps-slider"
+              style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}
+            >
+              <div className="column">
+                <Step1
+                  className="ind-step"
+                  network={props.network}
+                  onSuccess={() => setSuccessStep(1)}
+                  key={0}
+                />
+              </div>
+              <div className="column">
+                <Step1
+                  className="ind-step"
+                  network={props.network}
+                  onSuccess={() => setSuccessStep(1)}
+                  key={1}
+                />
+              </div>
+            </div>
+          </div>
         </div>
         <div className="column">
           <StepBreadCrumb
