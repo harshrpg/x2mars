@@ -47,14 +47,27 @@ const getImageDataForCard = data => {
 const setActiveStep = activeStepNumber => {}
 
 const TestSteps = props => {
-  const [successStep, setSuccessStep] = React.useState(-1)
+  const [successStep, setSuccessStep] = React.useState(new Set([0]))
   const [currentStep, setCurrentStep] = React.useState(1)
   const [index, setIndex] = React.useState(0)
-  const incrementStep = by => {
-    console.log("Current Step: ", currentStep, " Success Step", successStep)
-    if (currentStep == successStep) {
-      setIndex(by)
+  const incrementStep = () => {
+    console.debug("Current Step: ", currentStep, " Success Step", successStep)
+
+    if (successStep.has(currentStep)) {
+      setIndex(index + 1)
+      setCurrentStep(currentStep + 1)
     }
+    console.log("Moving to step number: ", currentStep)
+  }
+
+  const decrementStep = () => {
+    console.debug("Current Step: ", currentStep, " Success Step", successStep)
+    // if (currentStep == successStep) {
+    //   setSuccessStep(successStep - 1)
+    // }
+    setIndex(index - 1)
+    setCurrentStep(currentStep - 1)
+    console.log("Moving to step number: ", currentStep)
   }
   console.log("CARD: success step ", successStep)
   return (
@@ -66,7 +79,7 @@ const TestSteps = props => {
             className={`${
               currentStep == 1 ? "chevron-inactive" : "chevron-active"
             }`}
-            onClick={() => setIndex(0)}
+            onClick={() => decrementStep()}
           />
         </div>
       </div>
@@ -81,7 +94,7 @@ const TestSteps = props => {
                 <Step1
                   className="ind-step"
                   network={props.network}
-                  onSuccess={() => setSuccessStep(1)}
+                  onSuccess={() => setSuccessStep(new Set(successStep).add(1))}
                   key={0}
                 />
               </div>
@@ -89,8 +102,24 @@ const TestSteps = props => {
                 <Step1
                   className="ind-step"
                   network={props.network}
-                  onSuccess={() => setSuccessStep(1)}
+                  onSuccess={() => setSuccessStep(new Set(successStep).add(2))}
                   key={1}
+                />
+              </div>
+              <div className="column">
+                <Step1
+                  className="ind-step"
+                  network={props.network}
+                  onSuccess={() => setSuccessStep(new Set(successStep).add(3))}
+                  key={2}
+                />
+              </div>
+              <div className="column">
+                <Step1
+                  className="ind-step"
+                  network={props.network}
+                  onSuccess={() => setSuccessStep(new Set(successStep).add(4))}
+                  key={3}
                 />
               </div>
             </div>
@@ -98,8 +127,8 @@ const TestSteps = props => {
         </div>
         <div className="column">
           <StepBreadCrumb
-            key={successStep}
-            activeStep={1}
+            key={[successStep, currentStep]}
+            activeStep={currentStep}
             successStep={successStep}
           />
         </div>
@@ -108,13 +137,17 @@ const TestSteps = props => {
         <div
           className={`column chevrons`}
           type="button"
-          disabled={successStep == currentStep ? false : true}
-          onClick={() => incrementStep(1)}
+          disabled={
+            successStep.has(currentStep) && currentStep !== 4 ? false : true
+          }
+          onClick={() => incrementStep()}
         >
           <FontAwesomeIcon
             icon={faChevronRight}
             className={`${
-              successStep == currentStep ? "chevron-active" : "chevron-inactive"
+              successStep.has(currentStep) && currentStep !== 4
+                ? "chevron-active"
+                : "chevron-inactive"
             }`}
           />
         </div>
@@ -211,7 +244,7 @@ const StepBreadCrumb = props => {
     setSuccessStep(-1)
   }
 
-  console.log("CARD::BREADCRUMB:: success step ", successStep)
+  console.debug("CARD::BREADCRUMB:: success step ", successStep, " :: active step", activeStep)
 
   return (
     <div className="columns step-rows">
@@ -219,28 +252,28 @@ const StepBreadCrumb = props => {
         <BreadCrumbButton
           value="Step 1"
           disabled={activeStep !== 1 ? true : false}
-          isSuccess={successStep === 1 ? true : false}
+          isSuccess={activeStep === 1 ? false : successStep.has(1) ? true : false}
         />
       </div>
       <div className="column">
         <BreadCrumbButton
           value="Step 2"
           disabled={activeStep !== 2 ? true : false}
-          isSuccess={successStep === 2 ? true : false}
+          isSuccess={activeStep === 2 ? false : successStep.has(2) ? true : false}
         />
       </div>
       <div className="column">
         <BreadCrumbButton
           value="Step 3"
           disabled={activeStep !== 3 ? true : false}
-          isSuccess={successStep === 3 ? true : false}
+          isSuccess={activeStep === 3 ? false : successStep.has(3) ? true : false}
         />
       </div>
       <div className="column">
         <BreadCrumbButton
           value="Step 4"
           disabled={activeStep !== 4 ? true : false}
-          isSuccess={successStep === 4 ? true : false}
+          isSuccess={activeStep === 4 ? false : successStep.has(4) ? true : false}
         />
       </div>
     </div>
