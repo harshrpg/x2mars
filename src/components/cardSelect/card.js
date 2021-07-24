@@ -123,7 +123,7 @@ const CustomData = ({ cardData, network }) => {
           {cardData.id === "step2-1" ? (
             <Step2Card1 cardData={cardData} network={network} />
           ) : cardData.id === "step2-2" ? (
-            <Step2Card2 />
+            <Step2Card2 cardData={cardData} network={network} />
           ) : (
             ``
           )}
@@ -150,7 +150,7 @@ const Step2Card1 = ({ cardData, network }) => {
     <>
       <div className="columns">
         <div className="column">
-          <CardTitle title={cardData.title} />
+          <CardTitle title={cardData.title} size="small" />
         </div>
       </div>
       <div className="columns">
@@ -158,40 +158,152 @@ const Step2Card1 = ({ cardData, network }) => {
           <NetworkIcon network={network} />
         </div>
         <div className="column">
-          <span className="is-size-6">{tokenSymbol}</span>
+          <span className="is-size-4">{tokenSymbol}</span>
         </div>
       </div>
       <div className="columns">
         <div className="column">
-          <input
-            class={`input ${tokenName === "" ? " is-danger" : " is-primary"} custom-form-input`}
-            type="text"
-            placeholder="Token Name"
-            onChange={handleTokenNameChange}
-          />
+          <div class="centerinput">
+            <div className={`input-block ${tokenName !== "" ? "success" : ""}`}>
+              <input
+                type="text"
+                onChange={handleTokenNameChange}
+                id="nameinput"
+                required="required"
+                spellcheck="false"
+              />
+              <span class="placeholder">Token Name</span>
+            </div>
+          </div>
         </div>
       </div>
       <div className="columns">
         <div className="column">
-          <input
-            class={`input ${tokenSymbol === "" ? "is-danger" : "is-primary"}`}
-            type="text"
-            placeholder="Token Symbol"
-            onChange={handleTokenSymbolChange}
-          />
+          <div class="centerinput">
+            <div
+              className={`input-block ${tokenSymbol !== "" ? "success" : ""}`}
+            >
+              <input
+                type="text"
+                onChange={handleTokenSymbolChange}
+                id="symbolinput"
+                required="required"
+                spellcheck="false"
+              />
+              <span class="placeholder">Token Symbol</span>
+            </div>
+          </div>
         </div>
       </div>
     </>
   )
 }
 
-const Step2Card2 = () => {
-  return <div>TEST</div>
+
+const Step2Card2 = ({ cardData, network }) => {
+  const [tokenSupply, setTokenSupply] = React.useState(0)
+  const [tokenSupplyUnits, setTokenSupplyUnits] = React.useState("Units")
+  const [decimals, setDecimals] = React.useState(18)
+
+  const handleTokenSupplyChange = event => {
+    let supply = event.target.value
+    if (supply < 1 || supply > 100) {
+      setTokenSupply(0)
+    } else {
+      setTokenSupply(event.target.value)
+    }
+  }
+
+  const handleTokenSupplyUnitsChange = event => {
+    console.debug("Token Supply Units changed", event.target.value)
+    setTokenSupplyUnits(event.target.value)
+  }
+  return (
+    <>
+      <div className="columns">
+        <div className="column">
+          <CardTitle title={cardData.title} size="small" />
+        </div>
+      </div>
+      <div className="columns">
+        <div className="column">
+          <NetworkIcon network={network} />
+        </div>
+        <div className="column">
+          <span className="is-size-6">{tokenSupply}{` `}{tokenSupplyUnits}{` tokens`}</span>
+        </div>
+      </div>
+      <div className="columns">
+        <div className="column is-half">
+          <div class="centerinput">
+            <div
+              className={`input-block ${tokenSupply !== 0 ? "success" : ""}`}
+            >
+              <input
+                type="number"
+                onChange={handleTokenSupplyChange}
+                id="supplyinput"
+                required="required"
+                spellcheck="false"
+                min="1"
+                max="100"
+              />
+              <span class="placeholder">1-100</span>
+            </div>
+          </div>
+        </div>
+        <div className="column is-half">
+          <div
+            className={`select custom-select ${
+              tokenSupplyUnits !== "Units" ? "success" : ""
+            }`}
+          >
+            <select
+              className="is-hovered"
+              onChange={handleTokenSupplyUnitsChange}
+            >
+              <option>Units</option>
+              <option>Thousand</option>
+              <option>Millions</option>
+              <option>Billions</option>
+              <option>Trillions</option>
+              <option>Quadrillions</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div className="columns">
+        <div className="column">
+          <div class="centerinput">
+            <div
+              className={`input-block inactive`}
+            >
+              <input
+                type="text"
+                id="symbolinput"
+                required="required"
+                spellcheck="false"
+                disabled={true}
+                value={decimals}
+              />
+              <span class="placeholder">Decimals</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
 }
 
-const CardTitle = ({ title }) => {
+const CardTitle = ({ title, size }) => {
   return (
-    <div className="is-size-3 is-size-5-mobile is-capitalized has-text-centered">
+    <div
+      className={`${
+        size === "small"
+          ? "is-size-5 is-size-7-mobile"
+          : "is-size-3 is-size-5-mobile"
+      } is-capitalized has-text-centered`}
+    >
       {title}
     </div>
   )

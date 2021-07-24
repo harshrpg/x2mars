@@ -233,11 +233,10 @@
   }
   
   .centerinput {
-    width: 30%;
     padding: 3%;
     position: relative;
     background: #fff;
-    border: 3px solid rgb(48, 129, 177) !important;
+    // border: 3px solid rgb(48, 129, 177) !important;
     margin-left: 3%;
   }
   .centerinput h1 {
@@ -314,6 +313,37 @@
     padding: 10px;
     font-size: 1.2em;
   }
+
+  .centerinput .input-block.inactive input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid $inactive-color;
+    outline: none;
+    background: none;
+    padding: 10px;
+    font-size: 1.2em;
+    color: $inactive-color;
+  }
+
+  .custom-select {
+    margin-bottom: 1.4rem;
+  }
+
+  .select.custom-select select.is-hovered {
+    border: none;
+    border-bottom: 2px solid rgb(209, 52, 52);
+    outline: none;
+  }
+
+  .select.custom-select.success select.is-hovered {
+    border: none;
+    border-bottom: 2px solid $successfull-color;
+    outline: none;
+  }
+
   
   .centerinput .input-block span.placeholder {
     position: absolute;
@@ -335,12 +365,43 @@
   .centerinput .input-block input:valid + span.placeholder,
   .centerinput .input-block input:focus + span.placeholder {
     transform: scale(0.8) translateY(-30px);
-    background: rgb(233, 233, 233);
+    color: $inactive-color;
+    // background: rgb(233, 233, 233);
+  }
+
+  .centerinput .input-block.inactive input:valid + span.placeholder,
+  .centerinput .input-block.inactive span.placeholder {
+    transform: scale(0.8) translateY(-30px);
+    color: $inactive-color;
+    // background: rgb(233, 233, 233);
   }
   
   .centerinput .input-block input:focus{
     color: #284B63;
     border-color: #45ee4d;
+  }
+
+  .centerinput .input-block input::after {
+    color: #284B63;
+    border-color: #45ee4d;
+  }
+
+  .centerinput .input-block input::first-letter {
+    color: #284B63;
+    font-size: 2rem;
+  }
+
+  .centerinput .input-block.success input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #45ee4d;
+    outline: none;
+    background: none;
+    padding: 10px;
+    font-size: 1.2em;
   }
   
   .centerinput .input-block input:focus + span.placeholder {
@@ -495,4 +556,9 @@
   border-top: 0;
   border-left: 0;
   border-right: 0;
+}
+
+.token-details-displayer {
+  display: flex;
+  justify-content: center;
 }

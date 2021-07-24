@@ -212,6 +212,7 @@ const Step1 = props => {
   )
 }
 
+
 const Step2 = props => {
   const [step, _] = React.useState(Steps.Step2)
   const card1 = step.cardData[0]
