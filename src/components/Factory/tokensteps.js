@@ -236,7 +236,7 @@ const Step2 = props => {
   }
 
   return (
-    <div class="columns step-columns">
+    <div class="columns step-columns step-ind">
       <div class="column">
         <StepTitle title={step.title} />
       </div>

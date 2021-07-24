@@ -9,6 +9,7 @@
 }
 
 .step-ind {
+  display: inline-block;
   max-width: max-content !important;
 }
 
@@ -463,12 +464,19 @@
 }
 
 .steps-displayer {
+  position: relative;
+  display: inline-block;
     margin: 0 auto;
     overflow: hidden;
     max-width: 1000px;
+    height: 100%;
 }
 
 .steps-slider {
+  position:absolute;
+    left:0;
+    right:0;
+  z-index: 100;
   white-space: nowrap;
   transition: ease 1000ms;
 }
