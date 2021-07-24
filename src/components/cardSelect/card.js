@@ -53,7 +53,7 @@ const Card = props => {
 
         <div class="column is-full">
           {props.type === "custom" ? (
-            <CustomData cardData={props.cardData} network={props.network} />
+            <CustomData cardData={props.cardData} network={props.network} callback={props.callback} />
           ) : (
             <Data
               cardData={props.cardData}
@@ -95,7 +95,7 @@ const Data = ({ cardData, network, cardImage }) => {
       <div class="columns">
         <div class="column">
           {cardImage !== undefined || cardImage !== null ? (
-            <GatsbyImage image={cardImage} />
+            <GatsbyImage image={cardImage} width={30} height={30}/>
           ) : (
             `Some other hero data`
           )}
@@ -103,7 +103,7 @@ const Data = ({ cardData, network, cardImage }) => {
       </div>
       <div className="columns">
         <div className="column">
-          <CardTitle title={cardData.title} />
+          <CardTitle title={cardData.title} size="small" />
         </div>
       </div>
       <div className="columns">
@@ -115,15 +115,15 @@ const Data = ({ cardData, network, cardImage }) => {
   )
 }
 
-const CustomData = ({ cardData, network }) => {
+const CustomData = ({ cardData, network, callback }) => {
   return (
     <div className="container has-text-centered">
       <div className="columns">
         <div className="column">
           {cardData.id === "step2-1" ? (
-            <Step2Card1 cardData={cardData} network={network} />
+            <Step2Card1 cardData={cardData} network={network} callback={callback} />
           ) : cardData.id === "step2-2" ? (
-            <Step2Card2 cardData={cardData} network={network} />
+            <Step2Card2 cardData={cardData} network={network} callback={callback} />
           ) : (
             ``
           )}
@@ -133,7 +133,7 @@ const CustomData = ({ cardData, network }) => {
   )
 }
 
-const Step2Card1 = ({ cardData, network }) => {
+const Step2Card1 = ({ cardData, network, callback }) => {
   const [tokenSymbol, setTokenSymbol] = React.useState("")
   const [tokenName, setTokenName] = React.useState("")
 
@@ -171,6 +171,7 @@ const Step2Card1 = ({ cardData, network }) => {
                 id="nameinput"
                 required="required"
                 spellcheck="false"
+                onBlur={callback[0]}
               />
               <span class="placeholder">Token Name</span>
             </div>
@@ -189,6 +190,7 @@ const Step2Card1 = ({ cardData, network }) => {
                 id="symbolinput"
                 required="required"
                 spellcheck="false"
+                onBlur={callback[1]}
               />
               <span class="placeholder">Token Symbol</span>
             </div>
@@ -199,11 +201,11 @@ const Step2Card1 = ({ cardData, network }) => {
   )
 }
 
-
-const Step2Card2 = ({ cardData, network }) => {
+const Step2Card2 = ({ cardData, network, callback }) => {
   const [tokenSupply, setTokenSupply] = React.useState(0)
   const [tokenSupplyUnits, setTokenSupplyUnits] = React.useState("Units")
   const [decimals, setDecimals] = React.useState(18)
+
 
   const handleTokenSupplyChange = event => {
     let supply = event.target.value
@@ -218,6 +220,13 @@ const Step2Card2 = ({ cardData, network }) => {
     console.debug("Token Supply Units changed", event.target.value)
     setTokenSupplyUnits(event.target.value)
   }
+
+  React.useEffect(() => {
+    if (tokenSupply !== 0 && tokenSupplyUnits !== "Units") {
+      console.debug("Effect in supply details: ", tokenSupply + " " + tokenSupplyUnits)
+      callback(tokenSupply + " " + tokenSupplyUnits)
+    }
+  }, [tokenSupply, tokenSupplyUnits])
   return (
     <>
       <div className="columns">
@@ -264,10 +273,10 @@ const Step2Card2 = ({ cardData, network }) => {
             >
               <option>Units</option>
               <option>Thousand</option>
-              <option>Millions</option>
-              <option>Billions</option>
-              <option>Trillions</option>
-              <option>Quadrillions</option>
+              <option>Million</option>
+              <option>Billion</option>
+              <option>Trillion</option>
+              <option>Quadrillion</option>
             </select>
           </div>
         </div>

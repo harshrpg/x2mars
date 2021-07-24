@@ -38,7 +38,7 @@ export const Steps = {
           id: "step2-2",
         },
         {
-          title: "Exchange Selection",
+          title: "Create DEX Pool",
           type: "select",
           price: {
             eth: 0.2,

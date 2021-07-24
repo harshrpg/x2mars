@@ -212,18 +212,56 @@ const Step1 = props => {
   )
 }
 
-
 const Step2 = props => {
   const [step, _] = React.useState(Steps.Step2)
   const card1 = step.cardData[0]
   const card2 = step.cardData[1]
   const card3 = step.cardData[2]
 
-  const [selectedOption, setSelectedOption] = React.useState(-1)
-  const setSelection = selectedOption => {
-    setSelectedOption(selectedOption)
-    props.onSuccess(1)
+  const [tokenDetails, setTokenDetails] = React.useState({
+    'Name': null,
+    'Symbol': null,
+    'Supply': null,
+    'Decimals': 18
+  })
+
+  const [dexSelected, setDexSelected] = React.useState(false)
+  const setSelection = () => {
+    setDexSelected(!dexSelected)
   }
+
+  const tokenNameCb = (tokenName) => {
+    console.debug("TOKEN STEPS:: TOKEN Name SUPPLIED", tokenName.target.value)
+    tokenDetails.Name = tokenName.target.value
+    setTokenDetails({
+      ...tokenDetails,
+    })
+    console.debug("TOKEN STEPS:: STATE is at", tokenDetails)
+  }
+
+  const tokenSymbolCb = (tokenSymbol) => {
+    console.debug("TOKEN STEPS:: TOKEN Name SUPPLIED", tokenSymbol.target.value)
+    tokenDetails.Symbol = tokenSymbol.target.value
+    setTokenDetails({
+      ...tokenDetails,
+    })
+    console.debug("TOKEN STEPS:: STATE is at", tokenDetails)
+  }
+
+  const tokenSupplyCb = (tokenSupplyDetails) => {
+    console.debug("TOKEN STEPS:: TOKEN SUPPLY SUPPLIED", tokenSupplyDetails)
+    tokenDetails.Supply = tokenSupplyDetails
+    setTokenDetails({
+      ...tokenDetails,
+    })
+    console.debug("TOKEN STEPS:: STATE is at", tokenDetails)
+  }
+
+  React.useEffect(() => {
+    if (tokenDetails.Name !== null && tokenDetails.Symbol !== null && tokenDetails.Supply !== null && tokenDetails.Decimals !== 0) {
+      props.onSuccess(2);
+    }
+  }, [tokenDetails])
 
   return (
     <div class="columns step-columns step-ind">
@@ -238,7 +276,7 @@ const Step2 = props => {
               type={card1.type}
               error={null}
               cardData={card1}
-              // cardImage={getImageDataForCard(card1.img)}
+              callback={[tokenNameCb, tokenSymbolCb]}
               network={props.network}
               cardIndex={0}
             />
@@ -249,7 +287,7 @@ const Step2 = props => {
               type={card2.type}
               error={null}
               cardData={card2}
-              // cardImage={getImageDataForCard(card2.img)}
+              callback={tokenSupplyCb}
               network={props.network}
               cardIndex={1}
             />
@@ -260,9 +298,11 @@ const Step2 = props => {
               type={card3.type}
               error={null}
               cardData={card3}
-              // cardImage={getImageDataForCard(card2.img)}
+              cardImage={getImageDataForCard(card3.img[props.network])}
               network={props.network}
               cardIndex={1}
+              selected={dexSelected}
+              onPress={setSelection}
             />
           </div>
         </div>
