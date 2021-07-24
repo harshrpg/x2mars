@@ -83,47 +83,50 @@ const FactorySteps = props => {
         </div>
       </div>
       <div className="columns step-columns">
-        <div className="column">
-          <div className="steps-displayer">
-            <div
-              className="columns steps-slider"
-              style={{ transform: `translate3d(${-index * 100}%, 0, 0)`}}
-            >
-              <div className="column is-full">
-                <Step1
-                  className="ind-step"
-                  network={props.network}
-                  onSuccess={() => setSuccessStep(new Set(successStep).add(1))}
-                  key={0}
-                />
-              </div>
-              <div className="column is-full">
-                <Step2
-                  className="ind-step"
-                  network={props.network}
-                  onSuccess={() => setSuccessStep(new Set(successStep).add(2))}
-                  key={1}
-                />
-              </div>
-              <div className="column">
-                <Step1
-                  className="ind-step"
-                  network={props.network}
-                  onSuccess={() => setSuccessStep(new Set(successStep).add(3))}
-                  key={2}
-                />
-              </div>
-              <div className="column">
-                <Step1
-                  className="ind-step"
-                  network={props.network}
-                  onSuccess={() => setSuccessStep(new Set(successStep).add(4))}
-                  key={3}
-                />
-              </div>
-            </div>
-          </div>
+        <div className="column is-full">
+          {currentStep === 1 ? (
+            <Step1
+              network={props.network}
+              onSuccess={() => setSuccessStep(new Set(successStep).add(1))}
+              key={0}
+            />
+          ) : currentStep === 2 ? (
+            <Step2
+              className="ind-step"
+              network={props.network}
+              onSuccess={() => setSuccessStep(new Set(successStep).add(2))}
+              key={1}
+            />
+          ) : currentStep === 3 ? (
+            <Step1
+              className="ind-step"
+              network={props.network}
+              onSuccess={() => setSuccessStep(new Set(successStep).add(3))}
+              key={2}
+            />
+          ) : (
+            <Step1
+              className="ind-step"
+              network={props.network}
+              onSuccess={() => setSuccessStep(new Set(successStep).add(4))}
+              key={3}
+            />
+          )}
         </div>
+        {/* <div className="column is-full">
+          
+        </div>
+        <div className="column is-full">
+          
+        </div>
+        <div className="column is-full"> */}
+        {/* <Step1
+            className="ind-step"
+            network={props.network}
+            onSuccess={() => setSuccessStep(new Set(successStep).add(4))}
+            key={3}
+          />
+        </div> */}
         <div className="column">
           <StepBreadCrumb
             key={[successStep, currentStep]}
@@ -224,7 +227,7 @@ const Step1 = props => {
 }
 
 const Step2 = props => {
-  const [step, _] = React.useState(Steps.Step2);
+  const [step, _] = React.useState(Steps.Step2)
   const card1 = step.cardData[0]
   const card2 = step.cardData[1]
   const card3 = step.cardData[2]
@@ -300,7 +303,12 @@ const StepBreadCrumb = props => {
     setSuccessStep(-1)
   }
 
-  console.debug("CARD::BREADCRUMB:: success step ", successStep, " :: active step", activeStep)
+  console.debug(
+    "CARD::BREADCRUMB:: success step ",
+    successStep,
+    " :: active step",
+    activeStep
+  )
 
   return (
     <div className="columns step-rows">
@@ -308,28 +316,36 @@ const StepBreadCrumb = props => {
         <BreadCrumbButton
           value="Step 1"
           disabled={activeStep !== 1 ? true : false}
-          isSuccess={activeStep === 1 ? false : successStep.has(1) ? true : false}
+          isSuccess={
+            activeStep === 1 ? false : successStep.has(1) ? true : false
+          }
         />
       </div>
       <div className="column">
         <BreadCrumbButton
           value="Step 2"
           disabled={activeStep !== 2 ? true : false}
-          isSuccess={activeStep === 2 ? false : successStep.has(2) ? true : false}
+          isSuccess={
+            activeStep === 2 ? false : successStep.has(2) ? true : false
+          }
         />
       </div>
       <div className="column">
         <BreadCrumbButton
           value="Step 3"
           disabled={activeStep !== 3 ? true : false}
-          isSuccess={activeStep === 3 ? false : successStep.has(3) ? true : false}
+          isSuccess={
+            activeStep === 3 ? false : successStep.has(3) ? true : false
+          }
         />
       </div>
       <div className="column">
         <BreadCrumbButton
           value="Step 4"
           disabled={activeStep !== 4 ? true : false}
-          isSuccess={activeStep === 4 ? false : successStep.has(4) ? true : false}
+          isSuccess={
+            activeStep === 4 ? false : successStep.has(4) ? true : false
+          }
         />
       </div>
     </div>
