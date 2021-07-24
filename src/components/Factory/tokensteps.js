@@ -113,20 +113,6 @@ const FactorySteps = props => {
             />
           )}
         </div>
-        {/* <div className="column is-full">
-          
-        </div>
-        <div className="column is-full">
-          
-        </div>
-        <div className="column is-full"> */}
-        {/* <Step1
-            className="ind-step"
-            network={props.network}
-            onSuccess={() => setSuccessStep(new Set(successStep).add(4))}
-            key={3}
-          />
-        </div> */}
         <div className="column">
           <StepBreadCrumb
             key={[successStep, currentStep]}

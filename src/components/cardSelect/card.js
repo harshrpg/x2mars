@@ -121,7 +121,7 @@ const CustomData = ({ cardData, network }) => {
       <div className="columns">
         <div className="column">
           {cardData.id === "step2-1" ? (
-            <Step2Card1 cardData={cardData} />
+            <Step2Card1 cardData={cardData} network={network} />
           ) : cardData.id === "step2-2" ? (
             <Step2Card2 />
           ) : (
@@ -133,7 +133,19 @@ const CustomData = ({ cardData, network }) => {
   )
 }
 
-const Step2Card1 = ({ cardData }) => {
+const Step2Card1 = ({ cardData, network }) => {
+  const [tokenSymbol, setTokenSymbol] = React.useState("")
+  const [tokenName, setTokenName] = React.useState("")
+
+  const handleTokenNameChange = event => {
+    console.debug("Token Name changed to: ", event.target.value)
+    setTokenName(event.target.value)
+  }
+
+  const handleTokenSymbolChange = event => {
+    console.debug("Token Symbol changed to: ", event.target.value)
+    setTokenSymbol(event.target.value)
+  }
   return (
     <>
       <div className="columns">
@@ -143,10 +155,29 @@ const Step2Card1 = ({ cardData }) => {
       </div>
       <div className="columns">
         <div className="column">
+          <NetworkIcon network={network} />
+        </div>
+        <div className="column">
+          <span className="is-size-6">{tokenSymbol}</span>
+        </div>
+      </div>
+      <div className="columns">
+        <div className="column">
           <input
-            class="input is-danger"
+            class={`input ${tokenName === "" ? " is-danger" : " is-primary"} custom-form-input`}
             type="text"
-            placeholder="Danger input"
+            placeholder="Token Name"
+            onChange={handleTokenNameChange}
+          />
+        </div>
+      </div>
+      <div className="columns">
+        <div className="column">
+          <input
+            class={`input ${tokenSymbol === "" ? "is-danger" : "is-primary"}`}
+            type="text"
+            placeholder="Token Symbol"
+            onChange={handleTokenSymbolChange}
           />
         </div>
       </div>
@@ -181,20 +212,22 @@ const Fee = ({ fee, network }) => {
           </span>
         </div>
         <div class="column is-one-quarter">
-          <span class="is-size-5 is-size-7-mobile has-text-centered icon-style">
-            {network === "eth" ? (
-              <FontAwesomeIcon icon={["fab", "ethereum"]} />
-            ) : (
-              <StaticImage
-                src="../../images/assets/bnb.svg"
-                width={30}
-                height={30}
-              />
-            )}
-          </span>
+          <NetworkIcon network={network} />
         </div>
       </div>
     </div>
+  )
+}
+
+const NetworkIcon = ({ network }) => {
+  return (
+    <span class="is-size-5 is-size-7-mobile has-text-centered icon-style">
+      {network === "eth" ? (
+        <FontAwesomeIcon icon={["fab", "ethereum"]} />
+      ) : (
+        <StaticImage src="../../images/assets/bnb.svg" width={30} height={30} />
+      )}
+    </span>
   )
 }
 
