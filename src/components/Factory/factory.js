@@ -1,7 +1,7 @@
 import { useWeb3React } from "@web3-react/core"
 import * as React from "react"
 import "./style/factory.scss"
-import TestSteps from "./tokensteps"
+import FactorySteps from "./tokensteps"
 import useSWR from "swr"
 import BigNumber from "bignumber.js"
 import { formatEther } from "@ethersproject/units"
@@ -49,7 +49,7 @@ const Factory = () => {
   }
   return (
     <>
-      <TestSteps
+      <FactorySteps
         stepNumber={stepCount}
         isConnectionActive={active}
         hasBalanceChanged={accountBalanceChanged}

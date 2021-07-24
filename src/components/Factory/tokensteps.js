@@ -13,6 +13,7 @@ import {
 
 import "./style/factory.scss"
 
+// TODO: Make this into a reusable hook and use it in the rest of the application
 const GetAllImages = () => {
   const { images } = useStaticQuery(graphql`
     query {
@@ -35,7 +36,7 @@ const GetAllImages = () => {
   `)
   return images
 }
-const delay = 4500
+
 const getImageDataForCard = data => {
   const images = GetAllImages()
   const myImage = images.edges.find(n => {
@@ -44,9 +45,7 @@ const getImageDataForCard = data => {
   return getImage(myImage.node.childrenImageSharp[0])
 }
 
-const setActiveStep = activeStepNumber => {}
-
-const TestSteps = props => {
+const FactorySteps = props => {
   const [successStep, setSuccessStep] = React.useState(new Set([0]))
   const [currentStep, setCurrentStep] = React.useState(1)
   const [index, setIndex] = React.useState(0)
@@ -71,7 +70,7 @@ const TestSteps = props => {
   }
   console.log("CARD: success step ", successStep)
   return (
-    <div className="container has-text-centered custom-steps-container">
+    <div className="custom-steps-container">
       <div className="columns">
         <div className="column chevrons" type="button">
           <FontAwesomeIcon
@@ -88,9 +87,9 @@ const TestSteps = props => {
           <div className="steps-displayer">
             <div
               className="columns steps-slider"
-              style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}
+              style={{ transform: `translate3d(${-index * 100}%, 0, 0)`}}
             >
-              <div className="column">
+              <div className="column is-full">
                 <Step1
                   className="ind-step"
                   network={props.network}
@@ -98,8 +97,8 @@ const TestSteps = props => {
                   key={0}
                 />
               </div>
-              <div className="column">
-                <Step1
+              <div className="column is-full">
+                <Step2
                   className="ind-step"
                   network={props.network}
                   onSuccess={() => setSuccessStep(new Set(successStep).add(2))}
@@ -186,7 +185,7 @@ const Step1 = props => {
   }
 
   return (
-    <div class="columns step-columns">
+    <div class="columns step-columns has-text-centered step-ind">
       <div class="column">
         <StepTitle title={step1.title} />
       </div>
@@ -194,7 +193,6 @@ const Step1 = props => {
         <div class="columns step-rows">
           <div class="column">
             <Card
-              className="card-steps"
               id="step1-card1"
               type={step1Card1.type}
               error={null}
@@ -217,6 +215,64 @@ const Step1 = props => {
               cardIndex={1}
               selected={selectedOption === 1 ? true : false}
               onPress={() => setSelection(1)}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const Step2 = props => {
+  const [step, _] = React.useState(Steps.Step2);
+  const card1 = step.cardData[0]
+  const card2 = step.cardData[1]
+  const card3 = step.cardData[2]
+
+  const [selectedOption, setSelectedOption] = React.useState(-1)
+  const setSelection = selectedOption => {
+    setSelectedOption(selectedOption)
+    props.onSuccess(1)
+  }
+
+  return (
+    <div class="columns step-columns">
+      <div class="column">
+        <StepTitle title={step.title} />
+      </div>
+      <div class="column">
+        <div class="columns step-rows">
+          <div class="column">
+            <Card
+              id="step2-card1"
+              type={card1.type}
+              error={null}
+              cardData={card1}
+              // cardImage={getImageDataForCard(card1.img)}
+              network={props.network}
+              cardIndex={0}
+            />
+          </div>
+          <div class="column">
+            <Card
+              id="step2-card2"
+              type={card2.type}
+              error={null}
+              cardData={card2}
+              // cardImage={getImageDataForCard(card2.img)}
+              network={props.network}
+              cardIndex={1}
+            />
+          </div>
+          <div class="column">
+            <Card
+              id="step2-card3"
+              type={card3.type}
+              error={null}
+              cardData={card3}
+              // cardImage={getImageDataForCard(card2.img)}
+              network={props.network}
+              cardIndex={1}
             />
           </div>
         </div>
@@ -293,4 +349,4 @@ const BreadCrumbButton = props => {
   )
 }
 
-export default TestSteps
+export default FactorySteps

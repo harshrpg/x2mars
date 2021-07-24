@@ -8,42 +8,59 @@ import { GatsbyImage } from "gatsby-plugin-image"
 import BNB from "../../images/assets/bnb.svg"
 
 const Card = props => {
-  let style = {opacity:1};
+  let style = { opacity: 1 }
   if (props.error !== null) {
-    style = {opacity:0.5}
+    style = { opacity: 0.5 }
   }
   if (!props.selected) {
-    style = {opacity:0.5}
+    style = { opacity: 0.5 }
   }
   return (
-    <div class="conatiner card-container" style={style}>
+    <div
+      class="conatiner card-container"
+      style={props.type === "select" ? style : { opacity: 1 }}
+    >
       <div class="columns custom-card">
-        <div class="column is-full">
-          <div class="columns">
-            <div class="column is-one-quarter">
+        {props.type === "select" || props.error !== null ? (
+          <div class="column is-full">
+            <div class="columns">
               {props.type === "select" ? (
-                <CustomCheckBox
-                  key={props.selected}
-                  index={props.cardIndex}
-                  selected={props.selected}
-                  onPress={props.onPress}
-                  isError={props.error}
-                />
+                <div class="column is-one-quarter">
+                  <CustomCheckBox
+                    key={props.selected}
+                    index={props.cardIndex}
+                    selected={props.selected}
+                    onPress={props.onPress}
+                    isError={props.error}
+                  />
+                </div>
               ) : (
-                `No Change`
+                ``
+              )}
+
+              {props.error !== null ? (
+                <div class="column">
+                  <ErrorBox error={props.error} />
+                </div>
+              ) : (
+                ``
               )}
             </div>
-            <div class="column">
-              {props.error !== null ? <ErrorBox error={props.error} /> : ``}
-            </div>
           </div>
-        </div>
+        ) : (
+          ``
+        )}
+
         <div class="column is-full">
-          <Data
-            cardData={props.cardData}
-            network={props.network}
-            cardImage={props.cardImage}
-          />
+          {props.type === "custom" ? (
+            <CustomData cardData={props.cardData} network={props.network} />
+          ) : (
+            <Data
+              cardData={props.cardData}
+              network={props.network}
+              cardImage={props.cardImage}
+            />
+          )}
         </div>
       </div>
     </div>
@@ -91,15 +108,54 @@ const Data = ({ cardData, network, cardImage }) => {
       </div>
       <div className="columns">
         <div className="column">
-          {fees !== undefined ? (
-            <Fee fee={fees} network={network} />
+          {fees !== undefined ? <Fee fee={fees} network={network} /> : ``}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const CustomData = ({ cardData, network }) => {
+  return (
+    <div className="container has-text-centered">
+      <div className="columns">
+        <div className="column">
+          {cardData.id === "step2-1" ? (
+            <Step2Card1 cardData={cardData} />
+          ) : cardData.id === "step2-2" ? (
+            <Step2Card2 />
           ) : (
-            `Free of cost`
+            ``
           )}
         </div>
       </div>
     </div>
   )
+}
+
+const Step2Card1 = ({ cardData }) => {
+  return (
+    <>
+      <div className="columns">
+        <div className="column">
+          <CardTitle title={cardData.title} />
+        </div>
+      </div>
+      <div className="columns">
+        <div className="column">
+          <input
+            class="input is-danger"
+            type="text"
+            placeholder="Danger input"
+          />
+        </div>
+      </div>
+    </>
+  )
+}
+
+const Step2Card2 = () => {
+  return <div>TEST</div>
 }
 
 const CardTitle = ({ title }) => {

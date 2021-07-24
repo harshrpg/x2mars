@@ -1,19 +1,21 @@
 @import "../../../style/index.scss";
 
-.card-steps {
-    opacity: 0.5 !important;
-}
 
 .step-columns {
     overflow: hidden;
     flex-direction: column !important;
-    margin: 0 1rem 0 1rem !important;
-    max-width: 900px;
+    justify-content: space-between;
+    // margin: 0 1rem 0 1rem !important;
 }
 
-// .ind-step {
-//   display: inline-block;
-// }
+.step-ind {
+  max-width: max-content !important;
+}
+
+.ind-step {
+  display: inline-block;
+  padding-right: 100px;
+}
 
 .step-rows {
     flex-direction: row !important;
@@ -431,8 +433,7 @@
   
   .custom-steps-container {
     display: flex;
-    justify-content: center;
-    padding: 0 0 2rem 0 !important;
+    justify-content: space-around;
   }
 
   .app-button {
@@ -464,12 +465,16 @@
 .steps-displayer {
     margin: 0 auto;
     overflow: hidden;
-    max-width: 900px;
+    max-width: 1000px;
 }
 
 .steps-slider {
   white-space: nowrap;
   transition: ease 1000ms;
+}
+
+.chevrons {
+  font-size: 2rem;
 }
 
 .chevrons:hover {

@@ -26,19 +26,19 @@ export const Steps = {
     },
     Step2: {
       title: "Provide Token Details",
-      options: [
-        "Protocol Basic Info",
-        "Token Supply Info",
-        "Exchange Selection",
-      ],
-      optionData: [
+      cardData: [
         {
+          title: "Token Details",
           type: "custom",
+          id: "step2-1",
         },
         {
+          title: "Token Supply",
           type: "custom",
+          id: "step2-2",
         },
         {
+          title: "Exchange Selection",
           type: "select",
           price: {
             eth: 0.2,
