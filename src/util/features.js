@@ -1,0 +1,1 @@
+const Features = ['Automatic Liquidation', 'Anti Whale Protection', 'Automatic Burn per Transaction', 'Charity Donation', 'RFI Static Rewards']

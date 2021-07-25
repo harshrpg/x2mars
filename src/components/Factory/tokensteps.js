@@ -311,6 +311,11 @@ const Step2 = props => {
   )
 }
 
+const Step3 = props => {
+  const [step, _] = React.useState(Steps.Step3);
+  
+}
+
 const StepTitle = props => {
   return (
     <div className="constainer has-text-centered custom-step-title">
