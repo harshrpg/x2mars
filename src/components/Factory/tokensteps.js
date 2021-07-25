@@ -47,7 +47,7 @@ const getImageDataForCard = data => {
 
 const FactorySteps = props => {
   const [successStep, setSuccessStep] = React.useState(new Set([0]))
-  const [currentStep, setCurrentStep] = React.useState(1)
+  const [currentStep, setCurrentStep] = React.useState(3)
   const [index, setIndex] = React.useState(0)
   const incrementStep = () => {
     console.debug("Current Step: ", currentStep, " Success Step", successStep)
