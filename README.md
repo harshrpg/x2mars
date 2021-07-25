@@ -107,3 +107,8 @@ Gatsby Cloud is an end-to-end cloud platform specifically built for the Gatsby f
 1. Periscope
 2. Forumbee
 3. 
+
+## Quick Bug Fixes
+
+1. Hero Image
+2. Change font for input placeholders

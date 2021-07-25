@@ -8,6 +8,7 @@ import { GatsbyImage } from "gatsby-plugin-image"
 import BNB from "../../images/assets/bnb.svg"
 
 const Card = props => {
+  console.debug("Making Card of type: ", props.type);
   let style = { opacity: 1 }
   if (props.error !== null) {
     style = { opacity: 0.5 }
@@ -18,13 +19,13 @@ const Card = props => {
   return (
     <div
       class="conatiner card-container"
-      style={props.type === "select" ? style : { opacity: 1 }}
+      style={props.type === "select" || props.type === "feature-select" ? style : { opacity: 1 }}
     >
       <div class="columns custom-card">
-        {props.type === "select" || props.error !== null ? (
+        {props.type === "select" || props.error !== null || props.type === "feature-select" ? (
           <div class="column is-full">
             <div class="columns">
-              {props.type === "select" ? (
+              {props.type === "select" || props.type === "feature-select" ? (
                 <div class="column is-one-quarter">
                   <CustomCheckBox
                     key={props.selected}
@@ -88,7 +89,7 @@ const ErrorBox = ({ error }) => {
 }
 
 const Data = ({ cardData, network, cardImage }) => {
-  let fees = cardData.price !== undefined ? cardData.price[network] : undefined
+  let fees = cardData.price !== undefined ? cardData.price[network] : "Free"
 
   return (
     <div className="conatiner has-text-centered">
@@ -329,7 +330,7 @@ const Fee = ({ fee, network }) => {
           <span class="is-size-6 is-size-7-mobile has-text-centered">
             {fee}
             {` `}
-            {network === "eth" ? `ETH` : `BNB`}
+            {fee !== "Free" ? network === "eth" ? `ETH` : `BNB` : ``}
           </span>
         </div>
         <div class="column is-one-quarter">

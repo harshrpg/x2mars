@@ -98,7 +98,7 @@ const FactorySteps = props => {
               key={1}
             />
           ) : currentStep === 3 ? (
-            <Step1
+            <Step3
               className="ind-step"
               network={props.network}
               onSuccess={() => setSuccessStep(new Set(successStep).add(3))}
@@ -219,10 +219,10 @@ const Step2 = props => {
   const card3 = step.cardData[2]
 
   const [tokenDetails, setTokenDetails] = React.useState({
-    'Name': null,
-    'Symbol': null,
-    'Supply': null,
-    'Decimals': 18
+    Name: null,
+    Symbol: null,
+    Supply: null,
+    Decimals: 18,
   })
 
   const [dexSelected, setDexSelected] = React.useState(false)
@@ -230,7 +230,7 @@ const Step2 = props => {
     setDexSelected(!dexSelected)
   }
 
-  const tokenNameCb = (tokenName) => {
+  const tokenNameCb = tokenName => {
     console.debug("TOKEN STEPS:: TOKEN Name SUPPLIED", tokenName.target.value)
     tokenDetails.Name = tokenName.target.value
     setTokenDetails({
@@ -239,7 +239,7 @@ const Step2 = props => {
     console.debug("TOKEN STEPS:: STATE is at", tokenDetails)
   }
 
-  const tokenSymbolCb = (tokenSymbol) => {
+  const tokenSymbolCb = tokenSymbol => {
     console.debug("TOKEN STEPS:: TOKEN Name SUPPLIED", tokenSymbol.target.value)
     tokenDetails.Symbol = tokenSymbol.target.value
     setTokenDetails({
@@ -248,7 +248,7 @@ const Step2 = props => {
     console.debug("TOKEN STEPS:: STATE is at", tokenDetails)
   }
 
-  const tokenSupplyCb = (tokenSupplyDetails) => {
+  const tokenSupplyCb = tokenSupplyDetails => {
     console.debug("TOKEN STEPS:: TOKEN SUPPLY SUPPLIED", tokenSupplyDetails)
     tokenDetails.Supply = tokenSupplyDetails
     setTokenDetails({
@@ -258,8 +258,13 @@ const Step2 = props => {
   }
 
   React.useEffect(() => {
-    if (tokenDetails.Name !== null && tokenDetails.Symbol !== null && tokenDetails.Supply !== null && tokenDetails.Decimals !== 0) {
-      props.onSuccess(2);
+    if (
+      tokenDetails.Name !== null &&
+      tokenDetails.Symbol !== null &&
+      tokenDetails.Supply !== null &&
+      tokenDetails.Decimals !== 0
+    ) {
+      props.onSuccess(2)
     }
   }, [tokenDetails])
 
@@ -300,7 +305,7 @@ const Step2 = props => {
               cardData={card3}
               cardImage={getImageDataForCard(card3.img[props.network])}
               network={props.network}
-              cardIndex={1}
+              cardIndex={2}
               selected={dexSelected}
               onPress={setSelection}
             />
@@ -312,8 +317,85 @@ const Step2 = props => {
 }
 
 const Step3 = props => {
-  const [step, _] = React.useState(Steps.Step3);
-  
+  const [step, _] = React.useState(Steps.Step3)
+  const card1 = step.cardData[0]
+  const card2 = step.cardData[1]
+  const card3 = step.cardData[2]
+  const card4 = step.cardData[3]
+  const card5 = step.cardData[4]
+
+  console.log("##################",card1.img[props.network]);
+
+  return (
+    <>
+      <div className="columns step-columns step-ind">
+        <div className="column">
+          <StepTitle title={step.title} />
+        </div>
+        <div className="column">
+          <div className="columns step-rows">
+            <div className="column">
+              <Card
+                id="step3-card1"
+                type={card1.type}
+                error={null}
+                cardData={card1}
+                network={props.network}
+                selected={true} // TODO: True if FOT Token Selected else it should be false
+                cardImage={getImageDataForCard(card1.img[props.network])}
+                cardIndex={0}
+              />
+            </div>
+          </div>
+          <div className="columns step-rows">
+            <div class="column">
+              <Card
+                id="step3-card2"
+                type={card2.type}
+                error={null}
+                cardData={card2}
+                network={props.network}
+                cardIndex={1}
+              />
+            </div>
+            <div class="column">
+              <Card
+                id="step3-card3"
+                type={card3.type}
+                error={null}
+                cardData={card3}
+                network={props.network}
+                cardIndex={2}
+              />
+            </div>
+          </div>
+
+          <div className="columns step-rows">
+            <div className="column">
+              <Card
+                id="step3-card4"
+                type={card4.type}
+                error={null}
+                cardData={card4}
+                network={props.network}
+                cardIndex={3}
+              />
+            </div>
+            <div className="column">
+              <Card
+                id="step3-card5"
+                type={card5.type}
+                error={null}
+                cardData={card5}
+                network={props.network}
+                cardIndex={4}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
 }
 
 const StepTitle = props => {

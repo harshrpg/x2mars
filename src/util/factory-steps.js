@@ -63,7 +63,10 @@ export const Steps = {
           min: 5,
           max: 15,
         },
-        img: "pool.png",
+        img: {
+          eth: "al_eth.png",
+          bnb: "al_bnb.png",
+        }
       },
       {
         title: "RFI Static Rewards",
