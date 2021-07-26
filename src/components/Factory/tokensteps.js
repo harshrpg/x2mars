@@ -47,7 +47,7 @@ const getImageDataForCard = data => {
 
 const FactorySteps = props => {
   const [successStep, setSuccessStep] = React.useState(new Set([0]))
-  const [currentStep, setCurrentStep] = React.useState(3)
+  const [currentStep, setCurrentStep] = React.useState(1)
   const [index, setIndex] = React.useState(0)
   const incrementStep = () => {
     console.debug("Current Step: ", currentStep, " Success Step", successStep)
@@ -333,6 +333,9 @@ const Step3 = props => {
           <StepTitle title={step.title} />
         </div>
         <div className="column">
+          Total Fee Charged Placeholder
+        </div>
+        <div className="column">
           <div className="columns step-rows">
             <div className="column">
               <Card
@@ -355,6 +358,8 @@ const Step3 = props => {
                 error={null}
                 cardData={card2}
                 network={props.network}
+                selected={true}
+                cardImage={getImageDataForCard(card2.img)}
                 cardIndex={1}
               />
             </div>
@@ -365,6 +370,8 @@ const Step3 = props => {
                 error={null}
                 cardData={card3}
                 network={props.network}
+                selected={true}
+                cardImage={getImageDataForCard(card3.img)}
                 cardIndex={2}
               />
             </div>
@@ -378,6 +385,8 @@ const Step3 = props => {
                 error={null}
                 cardData={card4}
                 network={props.network}
+                selected={true}
+                cardImage={getImageDataForCard(card4.img)}
                 cardIndex={3}
               />
             </div>
@@ -388,6 +397,8 @@ const Step3 = props => {
                 error={null}
                 cardData={card5}
                 network={props.network}
+                selected={true}
+                cardImage={getImageDataForCard(card5.img)}
                 cardIndex={4}
               />
             </div>

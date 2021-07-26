@@ -8,7 +8,7 @@ import { GatsbyImage } from "gatsby-plugin-image"
 import BNB from "../../images/assets/bnb.svg"
 
 const Card = props => {
-  console.debug("Making Card of type: ", props.type);
+  console.debug("Making Card of type: ", props.type)
   let style = { opacity: 1 }
   if (props.error !== null) {
     style = { opacity: 0.5 }
@@ -19,10 +19,16 @@ const Card = props => {
   return (
     <div
       class="conatiner card-container"
-      style={props.type === "select" || props.type === "feature-select" ? style : { opacity: 1 }}
+      style={
+        props.type === "select" || props.type === "feature-select"
+          ? style
+          : { opacity: 1 }
+      }
     >
       <div class="columns custom-card">
-        {props.type === "select" || props.error !== null || props.type === "feature-select" ? (
+        {props.type === "select" ||
+        props.error !== null ||
+        props.type === "feature-select" ? (
           <div class="column is-full">
             <div class="columns">
               {props.type === "select" || props.type === "feature-select" ? (
@@ -54,12 +60,17 @@ const Card = props => {
 
         <div class="column is-full">
           {props.type === "custom" ? (
-            <CustomData cardData={props.cardData} network={props.network} callback={props.callback} />
+            <CustomData
+              cardData={props.cardData}
+              network={props.network}
+              callback={props.callback}
+            />
           ) : (
             <Data
               cardData={props.cardData}
               network={props.network}
               cardImage={props.cardImage}
+              type={props.type}
             />
           )}
         </div>
@@ -88,15 +99,18 @@ const ErrorBox = ({ error }) => {
   return <div class="error-container">{error}</div>
 }
 
-const Data = ({ cardData, network, cardImage }) => {
+const Data = ({ cardData, network, cardImage, type }) => {
   let fees = cardData.price !== undefined ? cardData.price[network] : "Free"
-
+  const [featureInput, setFeatureInput] = React.useState(0)
+  const handleFeatureInputChange = event => {
+    console.debug("Feature Input changed: ", event.target.value);
+  }
   return (
     <div className="conatiner has-text-centered">
       <div class="columns">
         <div class="column">
           {cardImage !== undefined || cardImage !== null ? (
-            <GatsbyImage image={cardImage} width={30} height={30}/>
+            <GatsbyImage image={cardImage} width={30} height={30} />
           ) : (
             `Some other hero data`
           )}
@@ -107,6 +121,30 @@ const Data = ({ cardData, network, cardImage }) => {
           <CardTitle title={cardData.title} size="small" />
         </div>
       </div>
+      {type === "feature-select" ? (
+        <div className="columns">
+          <div className="column">
+          <div class="centerinput">
+            <div
+              className={`input-block ${featureInput !== 0 ? "success" : ""}`}
+            >
+              <input
+                type="number"
+                onChange={handleFeatureInputChange}
+                id="featureInput"
+                required="required"
+                spellcheck="false"
+                min={cardData.inputData.min}
+                max={cardData.inputData.max}
+              />
+              <span class="placeholder">{cardData.inputData.name + ` (` + cardData.inputData.min + `% - ` + cardData.inputData.max + `%)`}</span>
+            </div>
+          </div>
+          </div>
+        </div>
+      ) : (
+        ``
+      )}
       <div className="columns">
         <div className="column">
           {fees !== undefined ? <Fee fee={fees} network={network} /> : ``}
@@ -122,9 +160,17 @@ const CustomData = ({ cardData, network, callback }) => {
       <div className="columns">
         <div className="column">
           {cardData.id === "step2-1" ? (
-            <Step2Card1 cardData={cardData} network={network} callback={callback} />
+            <Step2Card1
+              cardData={cardData}
+              network={network}
+              callback={callback}
+            />
           ) : cardData.id === "step2-2" ? (
-            <Step2Card2 cardData={cardData} network={network} callback={callback} />
+            <Step2Card2
+              cardData={cardData}
+              network={network}
+              callback={callback}
+            />
           ) : (
             ``
           )}
@@ -207,7 +253,6 @@ const Step2Card2 = ({ cardData, network, callback }) => {
   const [tokenSupplyUnits, setTokenSupplyUnits] = React.useState("Units")
   const [decimals, setDecimals] = React.useState(18)
 
-
   const handleTokenSupplyChange = event => {
     let supply = event.target.value
     if (supply < 1 || supply > 100) {
@@ -224,7 +269,10 @@ const Step2Card2 = ({ cardData, network, callback }) => {
 
   React.useEffect(() => {
     if (tokenSupply !== 0 && tokenSupplyUnits !== "Units") {
-      console.debug("Effect in supply details: ", tokenSupply + " " + tokenSupplyUnits)
+      console.debug(
+        "Effect in supply details: ",
+        tokenSupply + " " + tokenSupplyUnits
+      )
       callback(tokenSupply + " " + tokenSupplyUnits)
     }
   }, [tokenSupply, tokenSupplyUnits])
@@ -240,7 +288,12 @@ const Step2Card2 = ({ cardData, network, callback }) => {
           <NetworkIcon network={network} />
         </div>
         <div className="column">
-          <span className="is-size-6">{tokenSupply}{` `}{tokenSupplyUnits}{` tokens`}</span>
+          <span className="is-size-6">
+            {tokenSupply}
+            {` `}
+            {tokenSupplyUnits}
+            {` tokens`}
+          </span>
         </div>
       </div>
       <div className="columns">
@@ -285,9 +338,7 @@ const Step2Card2 = ({ cardData, network, callback }) => {
       <div className="columns">
         <div className="column">
           <div class="centerinput">
-            <div
-              className={`input-block inactive`}
-            >
+            <div className={`input-block inactive`}>
               <input
                 type="text"
                 id="symbolinput"
@@ -330,7 +381,7 @@ const Fee = ({ fee, network }) => {
           <span class="is-size-6 is-size-7-mobile has-text-centered">
             {fee}
             {` `}
-            {fee !== "Free" ? network === "eth" ? `ETH` : `BNB` : ``}
+            {fee !== "Free" ? (network === "eth" ? `ETH` : `BNB`) : ``}
           </span>
         </div>
         <div class="column is-one-quarter">

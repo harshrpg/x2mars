@@ -81,7 +81,7 @@ export const Steps = {
           min: 5,
           max: 15,
         },
-        img: "reward.png",
+        img: "rfi.png",
       },
       {
         title: "Anti Whale Protection",
@@ -96,7 +96,7 @@ export const Steps = {
           min: 5,
           max: 15,
         },
-        img: "antiwhale.png",
+        img: "awp.png",
       },
       {
         title: "Automatic Burn per Transaction",
@@ -111,7 +111,7 @@ export const Steps = {
           min: 5,
           max: 15,
         },
-        img: "autoBurn.png",
+        img: "ab.png",
       },
       {
         title: "Automatic Charity Donation",
@@ -126,7 +126,7 @@ export const Steps = {
           min: 5,
           max: 15,
         },
-        img: "charity.png",
+        img: "ac.png",
       },
     ],
   },
