@@ -86,7 +86,7 @@ const FactorySteps = props => {
 
   return (
     <div className="custom-steps-container">
-      <div className="columns">
+      <div className="columns" id="chevrom-left">
         <div className="column chevrons" type="button">
           <FontAwesomeIcon
             icon={faChevronLeft}
@@ -97,8 +97,8 @@ const FactorySteps = props => {
           />
         </div>
       </div>
-      <div className="columns step-columns">
-        <div className="column is-full">
+      <div className="columns step-columns" id="steps-container">
+        <div className="column is-full" id="steps">
           {currentStep === 1 ? (
             <Step1
               network={props.network}
@@ -130,7 +130,7 @@ const FactorySteps = props => {
             />
           )}
         </div>
-        <div className="column">
+        <div className="column" id="breadcrumb">
           <StepBreadCrumb
             key={[successStep, currentStep]}
             activeStep={currentStep}
@@ -138,7 +138,7 @@ const FactorySteps = props => {
           />
         </div>
       </div>
-      <div className="columns">
+      <div className="columns" id="chevrom-right">
         <div
           className={`column chevrons`}
           type="button"

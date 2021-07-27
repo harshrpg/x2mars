@@ -111,13 +111,16 @@ Gatsby Cloud is an end-to-end cloud platform specifically built for the Gatsby f
 ## Quick Bug Fixes
 
 1. Hero Image
-2. Change font for input placeholders
+2. Change font for input placeholders - Done
 3. Previous step loosing state
-4. Deactivate all inputs when card is deactivated
+4. Deactivate all inputs when card is deactivated - Done
 5. Regex check for launchpad inputs
 
 ## Features
 
-1. Step 3 if available should be skipable only if none of the available options are unselected, if any option selected then provide mandatory input values
-2. Step 4 should follow step 3
+1. Step 3 if available should be skipable only if none of the available options are unselected, if any option selected then provide mandatory input values - Done
+2. Step 4 should follow step 3 - Done
 3. Step 5: Review details and deploy
+4. Connect Wallet and Set Errors based on wallet balance
+5. Create sub-graph
+6. Create user profile
