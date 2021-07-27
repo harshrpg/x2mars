@@ -103,7 +103,7 @@ const Data = ({ cardData, network, cardImage, type }) => {
   let fees = cardData.price !== undefined ? cardData.price[network] : "Free"
   const [featureInput, setFeatureInput] = React.useState(0)
   const handleFeatureInputChange = event => {
-    console.debug("Feature Input changed: ", event.target.value);
+    console.debug("Feature Input changed: ", event.target.value)
   }
   return (
     <div className="conatiner has-text-centered">
@@ -124,22 +124,39 @@ const Data = ({ cardData, network, cardImage, type }) => {
       {type === "feature-select" ? (
         <div className="columns">
           <div className="column">
-          <div class="centerinput">
-            <div
-              className={`input-block ${featureInput !== 0 ? "success" : ""}`}
-            >
-              <input
-                type="number"
-                onChange={handleFeatureInputChange}
-                id="featureInput"
-                required="required"
-                spellcheck="false"
-                min={cardData.inputData.min}
-                max={cardData.inputData.max}
-              />
-              <span class="placeholder">{cardData.inputData.name + ` (` + cardData.inputData.min + `% - ` + cardData.inputData.max + `%)`}</span>
+            <div class="centerinput">
+              {cardData.inputData !== null && cardData.inputData !== undefined
+                ? cardData.inputData.map(input => (
+                    <div
+                      className={`input-block ${
+                        featureInput !== 0 ? "success" : ""
+                      }`}
+                    >
+                      <input
+                        type={input.type}
+                        onChange={handleFeatureInputChange}
+                        id="featureInput"
+                        required="required"
+                        spellcheck="false"
+                        min={input.min}
+                        max={input.max}
+                      />
+
+                      <span class="placeholder">
+                        {input.type === "number"
+                          ? input.name +
+                            ` (` +
+                            input.min +
+                            `% - ` +
+                            input.max +
+                            `%)`
+                          : input.name}
+                        {}
+                      </span>
+                    </div>
+                  ))
+                : ``}
             </div>
-          </div>
           </div>
         </div>
       ) : (

@@ -113,6 +113,8 @@ Gatsby Cloud is an end-to-end cloud platform specifically built for the Gatsby f
 1. Hero Image
 2. Change font for input placeholders
 3. Previous step loosing state
+4. Deactivate all inputs when card is deactivated
+5. Regex check for launchpad inputs
 
 ## Features
 

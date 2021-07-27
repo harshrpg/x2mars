@@ -57,16 +57,18 @@ export const Steps = {
       {
         title: "Automatic Liquidation",
         type: "feature-select",
-        inputData: {
-          name: "Liquidation Fee",
-          type: "slider",
-          min: 5,
-          max: 15,
-        },
+        inputData: [
+          {
+            name: "Liquidation Fee",
+            type: "number",
+            min: 5,
+            max: 15,
+          },
+        ],
         img: {
           eth: "al_eth.png",
           bnb: "al_bnb.png",
-        }
+        },
       },
       {
         title: "RFI Static Rewards",
@@ -75,12 +77,14 @@ export const Steps = {
           eth: 0.2,
           bnb: 2,
         },
-        inputData: {
-          name: "Reward Fee",
-          type: "slider",
-          min: 5,
-          max: 15,
-        },
+        inputData: [
+          {
+            name: "Reward Fee",
+            type: "number",
+            min: 5,
+            max: 15,
+          },
+        ],
         img: "rfi.png",
       },
       {
@@ -90,12 +94,14 @@ export const Steps = {
           eth: 0.2,
           bnb: 2,
         },
-        inputData: {
-          name: "Max Transaction Amount",
-          type: "slider",
-          min: 5,
-          max: 15,
-        },
+        inputData: [
+          {
+            name: "Max Transaction Amount",
+            type: "number",
+            min: 5,
+            max: 15,
+          },
+        ],
         img: "awp.png",
       },
       {
@@ -105,12 +111,14 @@ export const Steps = {
           eth: 0.2,
           bnb: 2,
         },
-        inputData: {
-          name: "Burn Fee",
-          type: "slider",
-          min: 5,
-          max: 15,
-        },
+        inputData: [
+          {
+            name: "Burn Fee",
+            type: "number",
+            min: 5,
+            max: 15,
+          },
+        ],
         img: "ab.png",
       },
       {
@@ -120,12 +128,14 @@ export const Steps = {
           eth: 0.2,
           bnb: 2,
         },
-        inputData: {
-          name: "Charity Fee",
-          type: "slider",
-          min: 5,
-          max: 15,
-        },
+        inputData: [
+          {
+            name: "Charity Fee",
+            type: "number",
+            min: 5,
+            max: 15,
+          },
+        ],
         img: "ac.png",
       },
     ],
@@ -135,12 +145,32 @@ export const Steps = {
     cardData: [
       {
         title: "Launchpad",
-        type: "select",
+        type: "feature-select",
         price: {
           eth: 5.0,
           bnb: 50.0,
         },
-        img: "lp.png"
+        inputData: [
+          {
+            name: "Website URL",
+            type: "text",
+            min: "",
+            max: "",
+          },
+          {
+            name: "Whitepaper Link",
+            type: "text",
+            min: "",
+            max: "",
+          },
+          {
+            name: "Contact Email",
+            type: "text",
+            min: "",
+            max: "",
+          },
+        ],
+        img: "lp.png",
       },
     ],
   },
