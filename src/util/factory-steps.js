@@ -175,11 +175,20 @@ export const Steps = {
     ],
   },
   Step5: {
-    title: "Pay and Deploy",
-    options: ["Deploy Card"],
-    optionData: [
+    title: "Purchase Summary",
+    cardData: [
       {
-        type: "custom",
+        title: "Summary of your selection",
+        type: "summary",
+        displayData: [
+          "Type of Token",
+          "Name",
+          "Symbol",
+          "Supply",
+          "Create Pair on DEX",
+          "Features",
+          "Launchpad Access"
+        ]
       },
     ],
   },

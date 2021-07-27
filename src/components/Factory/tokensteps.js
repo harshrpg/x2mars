@@ -47,7 +47,7 @@ const getImageDataForCard = data => {
 
 const FactorySteps = props => {
   const [successStep, setSuccessStep] = React.useState(new Set([0]))
-  const [currentStep, setCurrentStep] = React.useState(1)
+  const [currentStep, setCurrentStep] = React.useState(5)
   const [index, setIndex] = React.useState(0)
   const [tokenType, setTokenType] = React.useState(null)
   const incrementStep = () => {
@@ -73,7 +73,7 @@ const FactorySteps = props => {
   }
 
   React.useEffect(() => {
-    if ((currentStep === 3 && tokenType === 0) || (currentStep == 4)) {
+    if ((currentStep === 3 && tokenType === 0) || currentStep == 4) {
       console.debug(
         "Effect: Current Step: ",
         currentStep,
@@ -121,12 +121,18 @@ const FactorySteps = props => {
               key={2}
               type={tokenType}
             />
-          ) : (
+          ) : currentStep === 4 ? (
             <Step4
               className="ind-step"
               network={props.network}
               onSuccess={() => setSuccessStep(new Set(successStep).add(4))}
               key={3}
+            />
+          ) : (
+            <Step1
+              network={props.network}
+              onSuccess={typeSelected => setTypeAndSuccess(typeSelected, 1)}
+              key={0}
             />
           )}
         </div>
@@ -451,7 +457,7 @@ const Step4 = props => {
   const [isLaunchpad, setIsLaunchpad] = React.useState(true)
   const card1 = step.cardData[0]
 
-  const setLaunchpadDetails = ({website, email, whitepaperUrl}) => {
+  const setLaunchpadDetails = ({ website, email, whitepaperUrl }) => {
     console.debug("Launchpad: ", website, email, whitepaperUrl)
   }
 
@@ -468,7 +474,7 @@ const Step4 = props => {
         <div className="column">
           <div className="columns step-rows">
             <div className="column">
-            <Card
+              <Card
                 id="step4-card1"
                 type={card1.type}
                 error={null}
@@ -480,6 +486,32 @@ const Step4 = props => {
                 onPress={() => setIsLaunchpad(!isLaunchpad)}
               />
             </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+const Step5 = props => {
+  const [step, _] = React.useState(Steps.Step5)
+  const card1 = step.cardData[0]
+  return (
+    <>
+      <div className="columns step-columns step-ind">
+        <div className="column">
+          <StepTitle title={step.title} />
+        </div>
+        <div className="columns step-rows">
+          <div className="column">
+            <Card
+              id="step5-card1"
+              type={card1.type}
+              error={null}
+              cardData={card1}
+              network={props.network}
+              cardIndex={0}
+            />
           </div>
         </div>
       </div>
@@ -548,6 +580,15 @@ const StepBreadCrumb = props => {
           disabled={activeStep !== 4 ? true : false}
           isSuccess={
             activeStep === 4 ? false : successStep.has(4) ? true : false
+          }
+        />
+      </div>
+      <div className="column">
+        <BreadCrumbButton
+          value="Step 5"
+          disabled={activeStep !== 5 ? true : false}
+          isSuccess={
+            activeStep === 5 ? false : successStep.has(5) ? true : false
           }
         />
       </div>
