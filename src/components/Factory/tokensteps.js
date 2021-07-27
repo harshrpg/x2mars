@@ -47,7 +47,7 @@ const getImageDataForCard = data => {
 
 const FactorySteps = props => {
   const [successStep, setSuccessStep] = React.useState(new Set([0]))
-  const [currentStep, setCurrentStep] = React.useState(4)
+  const [currentStep, setCurrentStep] = React.useState(1)
   const [index, setIndex] = React.useState(0)
   const [tokenType, setTokenType] = React.useState(null)
   const incrementStep = () => {
@@ -355,10 +355,6 @@ const Step3 = props => {
   const card4 = step.cardData[3]
   const card5 = step.cardData[4]
 
-  // if (props.type === 0) {
-  //   props.onSuccess(3)
-  // }
-
   return (
     <>
       <div className="columns step-columns step-ind">
@@ -380,7 +376,8 @@ const Step3 = props => {
                 error={null}
                 cardData={card1}
                 network={props.network}
-                selected={props.type === 1 ? true : false} // TODO: Remove False and make it selectable using callback
+                selected={props.type === 1 ? true : false}
+                disabled={props.type === 1 ? false : true}
                 cardImage={getImageDataForCard(card1.img[props.network])}
                 cardIndex={0}
               />
@@ -394,7 +391,8 @@ const Step3 = props => {
                 error={null}
                 cardData={card2}
                 network={props.network}
-                selected={props.type === 1 ? true : false} // TODO: Remove False and make it selectable using callback
+                selected={props.type === 1 ? true : false}
+                disabled={props.type === 1 ? false : true} // TODO: Remove False and make it selectable using callback
                 cardImage={getImageDataForCard(card2.img)}
                 cardIndex={1}
               />
@@ -406,7 +404,8 @@ const Step3 = props => {
                 error={null}
                 cardData={card3}
                 network={props.network}
-                selected={props.type === 1 ? true : false} // TODO: Remove False and make it selectable using callback
+                selected={props.type === 1 ? true : false}
+                disabled={props.type === 1 ? false : true} // TODO: Remove False and make it selectable using callback
                 cardImage={getImageDataForCard(card3.img)}
                 cardIndex={2}
               />
@@ -421,7 +420,8 @@ const Step3 = props => {
                 error={null}
                 cardData={card4}
                 network={props.network}
-                selected={props.type === 1 ? true : false} // TODO: Remove False and make it selectable using callback
+                selected={props.type === 1 ? true : false}
+                disabled={props.type === 1 ? false : true} // TODO: Remove False and make it selectable using callback
                 cardImage={getImageDataForCard(card4.img)}
                 cardIndex={3}
               />
@@ -433,7 +433,8 @@ const Step3 = props => {
                 error={null}
                 cardData={card5}
                 network={props.network}
-                selected={props.type === 1 ? true : false} // TODO: Remove False and make it selectable using callback
+                selected={props.type === 1 ? true : false}
+                disabled={props.type === 1 ? false : true} // TODO: Remove False and make it selectable using callback
                 cardImage={getImageDataForCard(card5.img)}
                 cardIndex={4}
               />

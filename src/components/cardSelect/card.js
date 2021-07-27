@@ -39,6 +39,7 @@ const Card = props => {
                     selected={props.selected}
                     onPress={props.onPress}
                     isError={props.error}
+                    disabled={props.disabled}
                   />
                 </div>
               ) : (
@@ -71,6 +72,8 @@ const Card = props => {
               network={props.network}
               cardImage={props.cardImage}
               type={props.type}
+              disabled={props.disabled}
+              selected={props.selected}
             />
           )}
         </div>
@@ -88,7 +91,7 @@ const CustomCheckBox = props => {
         key={checked}
         checked={checked ? `checked` : ``}
         onClick={() => props.onPress(props.index)}
-        disabled={props.isError !== null ? true : false}
+        disabled={props.disabled ? true : props.isError !== null ? true : false}
       />
       <span class="checkmark"></span>
     </label>
@@ -99,11 +102,25 @@ const ErrorBox = ({ error }) => {
   return <div class="error-container">{error}</div>
 }
 
-const Data = ({ cardData, network, cardImage, type }) => {
+const Data = ({ cardData, network, cardImage, type, disabled, selected }) => {
   let fees = cardData.price !== undefined ? cardData.price[network] : "Free"
-  const [featureInput, setFeatureInput] = React.useState(0)
-  const handleFeatureInputChange = event => {
+  const [featureInput, setFeatureInput] = React.useState({features: []})
+  // let featureInput = []
+  // if (cardData.inputData !== null && cardData.inputData !== undefined) {
+  //   const newArray = Array.from(featureInput.features);
+  //   cardData.inputData.map((_, i) => {
+  //     newArray[i] = null
+  //   });
+  //   setFeatureInput({features: newArray})
+  // }
+
+  console.log("Feature Input: ",featureInput);
+  const handleFeatureInputChange = (i, event) => {
     console.debug("Feature Input changed: ", event.target.value)
+    const newArray = Array.from(featureInput.features);
+    newArray[i] = event.target.value
+    setFeatureInput({features: newArray})
+    console.log("Feature Input on change" ,featureInput)
   }
   return (
     <div className="conatiner has-text-centered">
@@ -126,20 +143,27 @@ const Data = ({ cardData, network, cardImage, type }) => {
           <div className="column">
             <div class="centerinput">
               {cardData.inputData !== null && cardData.inputData !== undefined
-                ? cardData.inputData.map(input => (
+                ? cardData.inputData.map((input, i) => (
+                  <> {console.log("Feature Input value: ", featureInput, " index: ", i)}
                     <div
                       className={`input-block ${
-                        featureInput !== 0 ? "success" : ""
+                        !selected
+                          ? "disabled"
+                          : featureInput.features[i] !== undefined && featureInput.features[i] !== ""
+                          ? "success"
+                          : ""
                       }`}
                     >
                       <input
+                        key={featureInput}
                         type={input.type}
-                        onChange={handleFeatureInputChange}
+                        onBlur={(event) => handleFeatureInputChange(i, event)}
                         id="featureInput"
                         required="required"
                         spellcheck="false"
                         min={input.min}
                         max={input.max}
+                        disabled={!selected}
                       />
 
                       <span class="placeholder">
@@ -154,6 +178,7 @@ const Data = ({ cardData, network, cardImage, type }) => {
                         {}
                       </span>
                     </div>
+                    </>
                   ))
                 : ``}
             </div>

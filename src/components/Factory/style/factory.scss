@@ -349,11 +349,10 @@
     position: absolute;
     margin: 17px 0;
     padding: 0 4px;
-    font-family: Roboto, sans-serif;
     color:  #6c757d;
     display: flex;
     align-items: center;
-    font-size: 1rem;
+    font-size: 0.75rem;
     top: 0;
     left: 17px;
     transition: all 0.2s;
@@ -398,6 +397,19 @@
     width: 100%;
     border: none;
     border-bottom: 2px solid #45ee4d;
+    outline: none;
+    background: none;
+    padding: 10px;
+    font-size: 1.2em;
+  }
+
+  .centerinput .input-block.disabled input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid $inactive-color;
     outline: none;
     background: none;
     padding: 10px;
