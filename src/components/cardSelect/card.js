@@ -66,6 +66,8 @@ const Card = props => {
               network={props.network}
               callback={props.callback}
             />
+          ) : props.type === "summary" ? (
+            <SummaryData displayData={props.cardData} network={props.network} />
           ) : (
             <Data
               cardData={props.cardData}
@@ -104,7 +106,7 @@ const ErrorBox = ({ error }) => {
 
 const Data = ({ cardData, network, cardImage, type, disabled, selected }) => {
   let fees = cardData.price !== undefined ? cardData.price[network] : "Free"
-  const [featureInput, setFeatureInput] = React.useState({features: []})
+  const [featureInput, setFeatureInput] = React.useState({ features: [] })
   // let featureInput = []
   // if (cardData.inputData !== null && cardData.inputData !== undefined) {
   //   const newArray = Array.from(featureInput.features);
@@ -114,13 +116,13 @@ const Data = ({ cardData, network, cardImage, type, disabled, selected }) => {
   //   setFeatureInput({features: newArray})
   // }
 
-  console.log("Feature Input: ",featureInput);
+  console.log("Feature Input: ", featureInput)
   const handleFeatureInputChange = (i, event) => {
     console.debug("Feature Input changed: ", event.target.value)
-    const newArray = Array.from(featureInput.features);
+    const newArray = Array.from(featureInput.features)
     newArray[i] = event.target.value
-    setFeatureInput({features: newArray})
-    console.log("Feature Input on change" ,featureInput)
+    setFeatureInput({ features: newArray })
+    console.log("Feature Input on change", featureInput)
   }
   return (
     <div className="conatiner has-text-centered">
@@ -144,40 +146,48 @@ const Data = ({ cardData, network, cardImage, type, disabled, selected }) => {
             <div class="centerinput">
               {cardData.inputData !== null && cardData.inputData !== undefined
                 ? cardData.inputData.map((input, i) => (
-                  <> {console.log("Feature Input value: ", featureInput, " index: ", i)}
-                    <div
-                      className={`input-block ${
-                        !selected
-                          ? "disabled"
-                          : featureInput.features[i] !== undefined && featureInput.features[i] !== ""
-                          ? "success"
-                          : ""
-                      }`}
-                    >
-                      <input
-                        key={featureInput}
-                        type={input.type}
-                        onBlur={(event) => handleFeatureInputChange(i, event)}
-                        id="featureInput"
-                        required="required"
-                        spellcheck="false"
-                        min={input.min}
-                        max={input.max}
-                        disabled={!selected}
-                      />
+                    <>
+                      {" "}
+                      {console.log(
+                        "Feature Input value: ",
+                        featureInput,
+                        " index: ",
+                        i
+                      )}
+                      <div
+                        className={`input-block ${
+                          !selected
+                            ? "disabled"
+                            : featureInput.features[i] !== undefined &&
+                              featureInput.features[i] !== ""
+                            ? "success"
+                            : ""
+                        }`}
+                      >
+                        <input
+                          key={featureInput}
+                          type={input.type}
+                          onBlur={event => handleFeatureInputChange(i, event)}
+                          id="featureInput"
+                          required="required"
+                          spellcheck="false"
+                          min={input.min}
+                          max={input.max}
+                          disabled={!selected}
+                        />
 
-                      <span class="placeholder">
-                        {input.type === "number"
-                          ? input.name +
-                            ` (` +
-                            input.min +
-                            `% - ` +
-                            input.max +
-                            `%)`
-                          : input.name}
-                        {}
-                      </span>
-                    </div>
+                        <span class="placeholder">
+                          {input.type === "number"
+                            ? input.name +
+                              ` (` +
+                              input.min +
+                              `% - ` +
+                              input.max +
+                              `%)`
+                            : input.name}
+                          {}
+                        </span>
+                      </div>
                     </>
                   ))
                 : ``}
@@ -219,6 +229,59 @@ const CustomData = ({ cardData, network, callback }) => {
         </div>
       </div>
     </div>
+  )
+}
+
+const SummaryData = props => {
+  return (
+    <>
+      <div className="box columns summary-columns">
+        <div className="column">Type of Token</div>
+        <div className="column">Type of Token </div>
+        <div className="column is-2">
+          <NetworkIcon network={props.network} />
+        </div>
+      </div>
+      <div className="box columns summary-columns">
+        <div className="column">Type of Token</div>
+        <div className="column">Type of Token </div>
+        <div className="column is-2">
+          <NetworkIcon network={props.network} />
+        </div>
+      </div>
+      <div className="box columns summary-columns">
+        <div className="column">Type of Token</div>
+        <div className="column">Type of Token </div>
+        <div className="column is-2">
+          <NetworkIcon network={props.network} />
+        </div>
+      </div>
+      <div className="box columns summary-columns">
+        <div className="column">Type of Token</div>
+        <div className="column">Type of Token </div>
+        <div className="column is-2">
+          <NetworkIcon network={props.network} />
+        </div>
+      </div>
+      <div className="box columns summary-columns">
+        <div className="column">Type of Token</div>
+        <div className="column">Type of Token </div>
+        <div className="column is-2">
+          <NetworkIcon network={props.network} />
+        </div>
+      </div>
+      <div className="box columns summary-columns">
+        <div className="column">Type of Token</div>
+        <div className="column">Type of Token </div>
+        <div className="column is-2">
+          <NetworkIcon network={props.network} />
+        </div>
+      </div>
+      <div className="columns summary-columns">
+        <div className="column is-half"><PaymmentButton /></div>
+        <div className="column is-half"><DeployButton /></div>
+      </div>
+    </>
   )
 }
 
@@ -446,4 +509,19 @@ const NetworkIcon = ({ network }) => {
   )
 }
 
+const PaymmentButton = (props) => {
+  return (
+    <>
+      <div className="custom-card-button has-text-centered" type="button">Pay Now</div>
+    </>
+  )
+}
+
+const DeployButton = (props) => {
+  return (
+    <>
+      <div className="custom-card-button has-text-centered" type="button">Deploy & Create Contract</div>
+    </>
+  )
+}
 export default Card

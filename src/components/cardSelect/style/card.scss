@@ -17,6 +17,17 @@
   margin: 0 2rem 0 0;
 }
 
+.custom-card-button {
+  height: 100%;
+  width: 100%;
+  border-width: 2px;
+  border-style: solid;
+  border-color: $primary-color;
+  flex-direction: column;
+  padding: 2rem;
+  margin: 0 2rem 0 0;
+}
+
 .add-border {
   border: 2px solid black;
 }
@@ -118,4 +129,9 @@
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 //   transform: translate(-50%, -50%);
+}
+
+.summary-columns {
+  margin: 1rem 0 1rem 0 !important;
+  white-space: nowrap;
 }

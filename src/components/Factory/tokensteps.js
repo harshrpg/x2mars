@@ -129,11 +129,7 @@ const FactorySteps = props => {
               key={3}
             />
           ) : (
-            <Step1
-              network={props.network}
-              onSuccess={typeSelected => setTypeAndSuccess(typeSelected, 1)}
-              key={0}
-            />
+            <Step5 network={props.network} key={4} />
           )}
         </div>
         <div className="column" id="breadcrumb">
@@ -502,17 +498,41 @@ const Step5 = props => {
         <div className="column">
           <StepTitle title={step.title} />
         </div>
-        <div className="columns step-rows">
-          <div className="column">
-            <Card
-              id="step5-card1"
-              type={card1.type}
-              error={null}
-              cardData={card1}
-              network={props.network}
-              cardIndex={0}
-            />
+        <div className="column">
+          <div className="columns step-rows">
+            <div className="column">
+              <Card
+                id="step5-card1"
+                type={card1.type}
+                error={null}
+                cardData={card1.displayData}
+                network={props.network}
+                cardIndex={0}
+              />
+            </div>
           </div>
+          {/* <div className="columns step-rows">
+            <div className="column">
+              <Card
+                id="step5-card2"
+                type={`payment-button`}
+                error={null}
+                network={props.network}
+                cardData={card1}
+                cardIndex={1}
+              />
+            </div>
+            <div className="column">
+              <Card
+                id="step5-card3"
+                type={`deploy-button`}
+                error={null}
+                cardData={card1}
+                network={props.network}
+                cardIndex={2}
+              />
+            </div>
+          </div> */}
         </div>
       </div>
     </>
