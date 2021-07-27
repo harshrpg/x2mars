@@ -132,15 +132,15 @@ export const Steps = {
   },
   Step4: {
     title: "Provide Launchpad details",
-    options: ["Launchpad Card"],
-    optionData: [
+    cardData: [
       {
-        type: "custom",
+        title: "Launchpad",
+        type: "select",
         price: {
           eth: 5.0,
           bnb: 50.0,
         },
-        input: ["Website url, Email address, Whitepaper link"],
+        img: "lp.png"
       },
     ],
   },

@@ -49,6 +49,7 @@ const FactorySteps = props => {
   const [successStep, setSuccessStep] = React.useState(new Set([0]))
   const [currentStep, setCurrentStep] = React.useState(1)
   const [index, setIndex] = React.useState(0)
+  const [tokenType, setTokenType] = React.useState(null)
   const incrementStep = () => {
     console.debug("Current Step: ", currentStep, " Success Step", successStep)
 
@@ -61,14 +62,28 @@ const FactorySteps = props => {
 
   const decrementStep = () => {
     console.debug("Current Step: ", currentStep, " Success Step", successStep)
-    // if (currentStep == successStep) {
-    //   setSuccessStep(successStep - 1)
-    // }
     setIndex(index - 1)
     setCurrentStep(currentStep - 1)
     console.log("Moving to step number: ", currentStep)
   }
-  console.log("CARD: success step ", successStep)
+
+  const setTypeAndSuccess = (typeSelected, newSuccessStep) => {
+    setTokenType(typeSelected)
+    setSuccessStep(new Set(successStep).add(newSuccessStep))
+  }
+
+  React.useEffect(() => {
+    if (currentStep === 3 && tokenType === 0) {
+      console.debug(
+        "Effect: Current Step: ",
+        currentStep,
+        " tokenType: ",
+        tokenType
+      )
+      setSuccessStep(new Set(successStep).add(3))
+    }
+  }, [currentStep, tokenType])
+
   return (
     <div className="custom-steps-container">
       <div className="columns">
@@ -87,7 +102,7 @@ const FactorySteps = props => {
           {currentStep === 1 ? (
             <Step1
               network={props.network}
-              onSuccess={() => setSuccessStep(new Set(successStep).add(1))}
+              onSuccess={typeSelected => setTypeAndSuccess(typeSelected, 1)}
               key={0}
             />
           ) : currentStep === 2 ? (
@@ -96,6 +111,7 @@ const FactorySteps = props => {
               network={props.network}
               onSuccess={() => setSuccessStep(new Set(successStep).add(2))}
               key={1}
+              type={tokenType}
             />
           ) : currentStep === 3 ? (
             <Step3
@@ -103,9 +119,10 @@ const FactorySteps = props => {
               network={props.network}
               onSuccess={() => setSuccessStep(new Set(successStep).add(3))}
               key={2}
+              type={tokenType}
             />
           ) : (
-            <Step1
+            <Step4
               className="ind-step"
               network={props.network}
               onSuccess={() => setSuccessStep(new Set(successStep).add(4))}
@@ -170,7 +187,7 @@ const Step1 = props => {
 
   const setSelection = selectedOption => {
     setSelectedOption(selectedOption)
-    props.onSuccess(1)
+    props.onSuccess(selectedOption)
   }
 
   return (
@@ -217,6 +234,9 @@ const Step2 = props => {
   const card1 = step.cardData[0]
   const card2 = step.cardData[1]
   const card3 = step.cardData[2]
+
+  let tokenType =
+    props.type === 0 ? "Governance Tokens" : "Fee on Transfer Tokens"
 
   const [tokenDetails, setTokenDetails] = React.useState({
     Name: null,
@@ -273,6 +293,17 @@ const Step2 = props => {
       <div class="column">
         <StepTitle title={step.title} />
       </div>
+      <div className="column">
+        {tokenDetails.Supply !== null && tokenDetails.Symbol !== null
+          ? `Creating ` +
+            tokenDetails.Supply +
+            ` ` +
+            tokenDetails.Symbol +
+            ` ` +
+            tokenType
+          : ` Your tokenomics should display here`}
+        {/* TODO */}
+      </div>
       <div class="column">
         <div class="columns step-rows">
           <div class="column">
@@ -324,7 +355,9 @@ const Step3 = props => {
   const card4 = step.cardData[3]
   const card5 = step.cardData[4]
 
-  console.log("##################",card1.img[props.network]);
+  // if (props.type === 0) {
+  //   props.onSuccess(3)
+  // }
 
   return (
     <>
@@ -333,7 +366,10 @@ const Step3 = props => {
           <StepTitle title={step.title} />
         </div>
         <div className="column">
-          Total Fee Charged Placeholder
+          {props.type === 0
+            ? `These options can only be selected for Fee On Transfer type tokens`
+            : `Total Fee Charged Placeholder`}
+          {/* TODO */}
         </div>
         <div className="column">
           <div className="columns step-rows">
@@ -344,7 +380,7 @@ const Step3 = props => {
                 error={null}
                 cardData={card1}
                 network={props.network}
-                selected={true} // TODO: True if FOT Token Selected else it should be false
+                selected={props.type === 1 ? true : false} // TODO: Remove False and make it selectable using callback
                 cardImage={getImageDataForCard(card1.img[props.network])}
                 cardIndex={0}
               />
@@ -358,7 +394,7 @@ const Step3 = props => {
                 error={null}
                 cardData={card2}
                 network={props.network}
-                selected={true}
+                selected={props.type === 1 ? true : false} // TODO: Remove False and make it selectable using callback
                 cardImage={getImageDataForCard(card2.img)}
                 cardIndex={1}
               />
@@ -370,7 +406,7 @@ const Step3 = props => {
                 error={null}
                 cardData={card3}
                 network={props.network}
-                selected={true}
+                selected={props.type === 1 ? true : false} // TODO: Remove False and make it selectable using callback
                 cardImage={getImageDataForCard(card3.img)}
                 cardIndex={2}
               />
@@ -385,7 +421,7 @@ const Step3 = props => {
                 error={null}
                 cardData={card4}
                 network={props.network}
-                selected={true}
+                selected={props.type === 1 ? true : false} // TODO: Remove False and make it selectable using callback
                 cardImage={getImageDataForCard(card4.img)}
                 cardIndex={3}
               />
@@ -397,9 +433,50 @@ const Step3 = props => {
                 error={null}
                 cardData={card5}
                 network={props.network}
-                selected={true}
+                selected={props.type === 1 ? true : false} // TODO: Remove False and make it selectable using callback
                 cardImage={getImageDataForCard(card5.img)}
                 cardIndex={4}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+const Step4 = props => {
+  const [step, _] = React.useState(Steps.Step4)
+  const [isLaunchpad, setIsLaunchpad] = React.useState(true)
+  const card1 = step.cardData[0]
+
+  const setLaunchpadDetails = ({website, email, whitepaperUrl}) => {
+    console.debug("Launchpad: ", website, email, whitepaperUrl)
+  }
+
+  return (
+    <>
+      <div className="columns step-columns step-ind">
+        <div className="column">
+          <StepTitle title={step.title} />
+        </div>
+        <div className="column">
+          Decription goes here
+          {/* TODO */}
+        </div>
+        <div className="column">
+          <div className="columns step-rows">
+            <div className="column">
+            <Card
+                id="step4-card1"
+                type={card1.type}
+                error={null}
+                cardData={card1}
+                network={props.network}
+                selected={isLaunchpad} // TODO: Remove False and make it selectable using callback
+                cardImage={getImageDataForCard(card1.img)}
+                cardIndex={0}
+                onPress={() => setIsLaunchpad(!isLaunchpad)}
               />
             </div>
           </div>
