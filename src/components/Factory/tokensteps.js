@@ -74,6 +74,11 @@ const FactorySteps = props => {
     setSuccessStep(new Set(successStep).add(newSuccessStep))
   }
 
+  const handleFailure = index => {
+    successStep.delete(index)
+    setSuccessStep(new Set(successStep))
+  }
+
   React.useEffect(() => {
     if ((currentStep === 3 && tokenType === 0) || currentStep == 4) {
       console.debug(
@@ -120,6 +125,7 @@ const FactorySteps = props => {
               className="ind-step"
               network={props.network}
               onSuccess={() => setSuccessStep(new Set(successStep).add(3))}
+              onFailure={() => handleFailure(3)}
               key={2}
               type={tokenType}
             />
@@ -147,7 +153,7 @@ const FactorySteps = props => {
           className={`column chevrons`}
           type="button"
           disabled={
-            successStep.has(currentStep) && currentStep !== 4 ? false : true
+            successStep.has(currentStep) && currentStep !== 5 ? false : true
           }
           onClick={() => incrementStep()}
         >
@@ -249,10 +255,20 @@ const Step2 = props => {
     Decimals: 18,
   })
 
-  const [dexSelected, setDexSelected] = React.useState(false)
+  const [dexSelected, setDexSelected] = React.useState(
+    props.type === 0 ? false : true
+  )
   const setSelection = () => {
-    setDexSelected(!dexSelected)
+    if (props.type === 0) {
+      setDexSelected(!dexSelected)
+    }
   }
+
+  if (props.type === 1) {
+    card3.price = undefined
+  }
+
+  console.debug("Price changes in card3: ", card3)
 
   const tokenNameCb = tokenName => {
     console.debug("TOKEN STEPS:: TOKEN Name SUPPLIED", tokenName.target.value)
@@ -358,6 +374,99 @@ const Step3 = props => {
   const card3 = step.cardData[2]
   const card4 = step.cardData[3]
   const card5 = step.cardData[4]
+  const featureSelection = {
+    liquidation: {
+      selected: props.type === 1 ? true : false,
+      value: 0,
+    },
+    rfi: {
+      selected: false,
+      value: 0,
+    },
+    whaleProtection: {
+      selected: false,
+      value: 0,
+    },
+    burn: {
+      selected: false,
+      value: 0,
+    },
+    charity: {
+      selected: false,
+      value: 0,
+    },
+  }
+
+  const featureSelectionArr =
+    props.type === 1
+      ? [true, false, false, false, false]
+      : [false, false, false, false, false]
+  const [featuresSelected, setFeaturesSelected] = React.useState({
+    features: featureSelectionArr,
+  })
+  const [featureFees, setFeatureFees] = React.useState({
+    featureFees: [0, 0, 0, 0, 0],
+  })
+  const setSelection = (index, isSelected) => {
+    console.debug("Selection: ", featuresSelected)
+    const newArray = Array.from(featuresSelected.features)
+    newArray[index] = isSelected
+    setFeaturesSelected({ features: newArray })
+    console.debug("Selection: ", featuresSelected)
+  }
+
+  const setFees = (index, fee) => {
+    console.debug("FOT Fee: Liquidation Fee selected: ", fee)
+    if (featuresSelected.features[index] && fee > 0 && fee < 16) {
+      const newArray = Array.from(featureFees.featureFees)
+      newArray[index] = fee
+      setFeatureFees({ featureFees: newArray })
+    } else if (featuresSelected.features[index]) {
+      console.error(
+        "Feature not selected and fee being tried to set",
+        featuresSelected.features[index]
+      )
+    } else if (fee <= 0) {
+      console.error("Incorrect fee value", fee)
+    }
+  }
+
+  React.useEffect(() => {
+    if (props.type === 1) {
+      console.debug("Feature Effect: ", featuresSelected, featureFees)
+      let reqFullfilled = 0
+      let failedReq = 0
+      step.cardData.map((_, index) => {
+        if (
+          featuresSelected.features[index] &&
+          featureFees.featureFees[index] > 0
+        ) {
+          reqFullfilled++
+        }
+        if (
+          (featuresSelected.features[index] &&
+            featureFees.featureFees[index] === 0) ||
+          (!featuresSelected.features[index] &&
+            featureFees.featureFees[index] > 0)
+        ) {
+          failedReq++
+        }
+      })
+      if (reqFullfilled > 0) {
+        props.onSuccess()
+      }
+      if (failedReq > 0) {
+        console.debug(
+          "Feature Effect failed: ",
+          featuresSelected.features,
+          featureFees.featureFees
+        )
+        props.onFailure()
+      }
+    } else if (props.type === 0) {
+      props.onSuccess()
+    }
+  }, [featuresSelected, featureFees])
 
   return (
     <>
@@ -380,10 +489,12 @@ const Step3 = props => {
                 error={null}
                 cardData={card1}
                 network={props.network}
-                selected={props.type === 1 ? true : false}
+                selected={featuresSelected.features[0]}
                 disabled={props.type === 1 ? false : true}
                 cardImage={getImageDataForCard(card1.img[props.network])}
                 cardIndex={0}
+                onPress={() => setSelection(0, true)}
+                callback={event => setFees(0, event.target.value)}
               />
             </div>
           </div>
@@ -395,10 +506,13 @@ const Step3 = props => {
                 error={null}
                 cardData={card2}
                 network={props.network}
-                selected={props.type === 1 ? true : false}
-                disabled={props.type === 1 ? false : true} // TODO: Remove False and make it selectable using callback
+                // selected={props.type === 1 ? true : false}
+                selected={featuresSelected.features[1]}
+                disabled={props.type === 1 ? false : true}
                 cardImage={getImageDataForCard(card2.img)}
                 cardIndex={1}
+                onPress={event => setSelection(1, event.target.checked)}
+                callback={event => setFees(1, event.target.value)}
               />
             </div>
             <div class="column">
@@ -408,10 +522,12 @@ const Step3 = props => {
                 error={null}
                 cardData={card3}
                 network={props.network}
-                selected={props.type === 1 ? true : false}
-                disabled={props.type === 1 ? false : true} // TODO: Remove False and make it selectable using callback
+                selected={featuresSelected.features[2]}
+                disabled={props.type === 1 ? false : true}
                 cardImage={getImageDataForCard(card3.img)}
                 cardIndex={2}
+                onPress={event => setSelection(2, event.target.checked)}
+                callback={event => setFees(2, event.target.value)}
               />
             </div>
           </div>
@@ -424,10 +540,12 @@ const Step3 = props => {
                 error={null}
                 cardData={card4}
                 network={props.network}
-                selected={props.type === 1 ? true : false}
-                disabled={props.type === 1 ? false : true} // TODO: Remove False and make it selectable using callback
+                selected={featuresSelected.features[3]}
+                disabled={props.type === 1 ? false : true}
                 cardImage={getImageDataForCard(card4.img)}
                 cardIndex={3}
+                onPress={event => setSelection(3, event.target.checked)}
+                callback={event => setFees(3, event.target.value)}
               />
             </div>
             <div className="column">
@@ -437,10 +555,12 @@ const Step3 = props => {
                 error={null}
                 cardData={card5}
                 network={props.network}
-                selected={props.type === 1 ? true : false}
-                disabled={props.type === 1 ? false : true} // TODO: Remove False and make it selectable using callback
+                selected={featuresSelected.features[4]}
+                disabled={props.type === 1 ? false : true}
                 cardImage={getImageDataForCard(card5.img)}
                 cardIndex={4}
+                onPress={event => setSelection(4, event.target.checked)}
+                callback={event => setFees(4, event.target.value)}
               />
             </div>
           </div>

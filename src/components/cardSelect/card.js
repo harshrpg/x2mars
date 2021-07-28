@@ -76,6 +76,7 @@ const Card = props => {
               type={props.type}
               disabled={props.disabled}
               selected={props.selected}
+              callback={props.callback}
             />
           )}
         </div>
@@ -92,7 +93,7 @@ const CustomCheckBox = props => {
         type="checkbox"
         key={checked}
         checked={checked ? `checked` : ``}
-        onClick={() => props.onPress(props.index)}
+        onClick={(event) => props.onPress(event)}
         disabled={props.disabled ? true : props.isError !== null ? true : false}
       />
       <span class="checkmark"></span>
@@ -104,7 +105,7 @@ const ErrorBox = ({ error }) => {
   return <div class="error-container">{error}</div>
 }
 
-const Data = ({ cardData, network, cardImage, type, disabled, selected }) => {
+const Data = ({ cardData, network, cardImage, type, disabled, selected, callback }) => {
   let fees = cardData.price !== undefined ? cardData.price[network] : "Free"
   const [featureInput, setFeatureInput] = React.useState({ features: [] })
   // let featureInput = []
@@ -123,6 +124,7 @@ const Data = ({ cardData, network, cardImage, type, disabled, selected }) => {
     newArray[i] = event.target.value
     setFeatureInput({ features: newArray })
     console.log("Feature Input on change", featureInput)
+    callback(event)
   }
   return (
     <div className="conatiner has-text-centered">
@@ -147,13 +149,6 @@ const Data = ({ cardData, network, cardImage, type, disabled, selected }) => {
               {cardData.inputData !== null && cardData.inputData !== undefined
                 ? cardData.inputData.map((input, i) => (
                     <>
-                      {" "}
-                      {console.log(
-                        "Feature Input value: ",
-                        featureInput,
-                        " index: ",
-                        i
-                      )}
                       <div
                         className={`input-block ${
                           !selected
@@ -174,6 +169,7 @@ const Data = ({ cardData, network, cardImage, type, disabled, selected }) => {
                           min={input.min}
                           max={input.max}
                           disabled={!selected}
+                          value={!selected?``:featureInput.features[i]}
                         />
 
                         <span class="placeholder">
