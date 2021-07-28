@@ -47,7 +47,7 @@ const getImageDataForCard = data => {
 
 const FactorySteps = props => {
   const [successStep, setSuccessStep] = React.useState(new Set([0]))
-  const [currentStep, setCurrentStep] = React.useState(5)
+  const [currentStep, setCurrentStep] = React.useState(1)
   const [index, setIndex] = React.useState(0)
   const [tokenType, setTokenType] = React.useState(null)
   const incrementStep = () => {
@@ -62,9 +62,11 @@ const FactorySteps = props => {
 
   const decrementStep = () => {
     console.debug("Current Step: ", currentStep, " Success Step", successStep)
-    setIndex(index - 1)
-    setCurrentStep(currentStep - 1)
-    console.log("Moving to step number: ", currentStep)
+    if (currentStep !== 1) {
+      setIndex(index - 1)
+      setCurrentStep(currentStep - 1)
+      console.debug("Moving to step number: ", currentStep)
+    }
   }
 
   const setTypeAndSuccess = (typeSelected, newSuccessStep) => {
@@ -152,7 +154,7 @@ const FactorySteps = props => {
           <FontAwesomeIcon
             icon={faChevronRight}
             className={`${
-              successStep.has(currentStep) && currentStep !== 4
+              successStep.has(currentStep) && currentStep !== 5
                 ? "chevron-active"
                 : "chevron-inactive"
             }`}
