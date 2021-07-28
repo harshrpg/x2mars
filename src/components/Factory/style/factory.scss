@@ -5,6 +5,7 @@
     overflow: hidden;
     flex-direction: column !important;
     justify-content: space-between;
+    align-items: stretch;
     // margin: 0 1rem 0 1rem !important;
 }
 
@@ -573,4 +574,22 @@
 .token-details-displayer {
   display: flex;
   justify-content: center;
+}
+
+// SUBTITLE
+
+.sub-title-container {
+  position: relative;
+  border-radius: 0% !important;
+  // border-color: #807FC6 !important;
+  border: 2px solid #ffc421;
+}
+
+.floating-warn{
+  position: absolute;
+  top: 50%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+  color: #ffc421;
+  font-size: 2rem;
 }

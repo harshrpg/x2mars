@@ -33,19 +33,22 @@ export const Steps = {
     cardData: [
       {
         title: "Token Details",
-        description: "Token Name and Token Symbol are mandatory to create any contract based tokens",
+        description:
+          "Token Name and Token Symbol are mandatory to create any contract based tokens",
         type: "custom",
         id: "step2-1",
       },
       {
         title: "Token Supply",
-        description: "Token Supply is mandatory to create any contract based tokens",
+        description:
+          "Token Supply is mandatory to create any contract based tokens",
         type: "custom",
         id: "step2-2",
       },
       {
         title: "Create DEX Pool",
-        description: "DEX Pool allows you to create a pair of your token and the native coin for availing transactions of your coin",
+        description:
+          "DEX Pool allows you to create a pair of your token and the native coin for availing transactions of your coin. It is created for free when you are making a Fee On Transfer token",
         type: "select",
         price: {
           eth: 0.2,
@@ -63,7 +66,8 @@ export const Steps = {
     cardData: [
       {
         title: "Automatic Liquidation",
-        description: "A certain fee of every transaction is added back to the pool on the DEX pair created in the previous step",
+        description:
+          "A certain fee of every transaction is added back to the pool on the DEX pair created in the previous step",
         type: "feature-select",
         inputData: [
           {
@@ -80,7 +84,8 @@ export const Steps = {
       },
       {
         title: "RFI Static Rewards",
-        description: "A certain fee of every transaction is shared with all the current holders of your token",
+        description:
+          "A certain fee of every transaction is shared with all the current holders of your token",
         type: "feature-select",
         price: {
           eth: 0.2,
@@ -98,7 +103,8 @@ export const Steps = {
       },
       {
         title: "Anti Whale Protection",
-        description: "A limit is imposed on the number of tokens that can be included per transaction",
+        description:
+          "A limit is imposed on the number of tokens that can be included per transaction",
         type: "feature-select",
         price: {
           eth: 0.2,
@@ -157,7 +163,8 @@ export const Steps = {
     cardData: [
       {
         title: "Launchpad",
-        description: "Every member of our community will be notified about your project and will become a member of your community",
+        description:
+          "Every member of our community will be notified about your project and will become a member of your community",
         type: "feature-select",
         price: {
           eth: 5.0,

@@ -10,6 +10,7 @@ import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons"
+import { RiErrorWarningLine } from "@react-icons/all-files/ri/RiErrorWarningLine";
 
 import "./style/factory.scss"
 
@@ -219,6 +220,7 @@ const Step1 = props => {
               cardIndex={0}
               selected={selectedOption === 0 ? true : false}
               onPress={() => setSelection(0)}
+              selectionText="Select"
             />
           </div>
           <div class="column">
@@ -232,6 +234,7 @@ const Step1 = props => {
               cardIndex={1}
               selected={selectedOption === 1 ? true : false}
               onPress={() => setSelection(1)}
+              selectionText="Select"
             />
           </div>
         </div>
@@ -247,7 +250,7 @@ const Step2 = props => {
   const card3 = step.cardData[2]
 
   let tokenType =
-    props.type === 0 ? "Governance Tokens" : "Fee on Transfer Tokens"
+    props.type === 0 ? "Governance Token" : "Fee on Transfer Token"
 
   const [tokenDetails, setTokenDetails] = React.useState({
     Name: null,
@@ -314,7 +317,23 @@ const Step2 = props => {
       <div class="column">
         <StepTitle title={step.title} />
       </div>
-      <div className="column">
+      <div className="column has-text-centered sub-title-container">
+        <StepSubTitle
+          subtitleMain={`Creating a ${tokenType}`}
+          subtitleSub={`${
+            tokenDetails.Supply !== null && tokenDetails.Symbol !== null
+              ? `Creating ` +
+                tokenDetails.Supply +
+                ` ` +
+                tokenDetails.Symbol +
+                ` ` +
+                tokenType
+              : ` Your tokenomics should display here`
+          }`}
+        />
+        <span className="floating-warn"><RiErrorWarningLine /></span>
+      </div>
+      {/* <div className="column">
         {tokenDetails.Supply !== null && tokenDetails.Symbol !== null
           ? `Creating ` +
             tokenDetails.Supply +
@@ -323,8 +342,7 @@ const Step2 = props => {
             ` ` +
             tokenType
           : ` Your tokenomics should display here`}
-        {/* TODO */}
-      </div>
+      </div> */}
       <div class="column">
         <div class="columns step-rows">
           <div class="column">
@@ -360,6 +378,7 @@ const Step2 = props => {
               cardIndex={2}
               selected={dexSelected}
               onPress={setSelection}
+              selectionText="Add to Contract"
             />
           </div>
         </div>
@@ -580,8 +599,8 @@ const Step4 = props => {
     console.debug("Launchpad: ", website, email, whitepaperUrl)
   }
 
-  const testCb = () =>  {
-    console.log("test");
+  const testCb = () => {
+    console.log("test")
   }
 
   return (
@@ -672,6 +691,19 @@ const StepTitle = props => {
     <div className="constainer has-text-centered custom-step-title">
       <div className="is-size-5 is-size-6-mobile">{props.title}</div>
     </div>
+  )
+}
+
+const StepSubTitle = props => {
+  return (
+    <>
+      <div className="columns">
+        <div className="column">{props.subtitleMain}</div>
+      </div>
+      <div className="columns">
+        <div className="column">{props.subtitleSub}</div>
+      </div>
+    </>
   )
 }
 

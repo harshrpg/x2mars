@@ -23,14 +23,7 @@ const Card = props => {
 
   console.log("ERROR:: ", props.error)
   return (
-    <div
-      class="conatiner card-container"
-      style={
-        props.type === "select" || props.type === "feature-select"
-          ? style
-          : { opacity: 1 }
-      }
-    >
+    <div class="conatiner card-container">
       <div class="columns custom-card">
         <div className="column is-full">
           <div className="columns">
@@ -65,8 +58,9 @@ const Card = props => {
           )}
         </div>
         {props.type === "select" || props.type === "feature-select" ? (
-          <div className="column is-full">
+          <div className="column is-full has-text-centered">
             <AddToCartButton
+              selectionText={props.selectionText}
               key={props.selected}
               index={props.cardIndex}
               selected={props.selected}
@@ -117,12 +111,14 @@ const AddToCartButton = props => {
   }, [selected])
   return (
     <button
-      className={`button add-to-cart-button ${props.isError ? "inactive" : ""} ${selected && !waitForSelection ? "success" : ""} `}
+      className={`button add-to-cart-button ${
+        props.isError ? "inactive" : ""
+      } ${selected && !waitForSelection ? "success" : ""} `}
       type="button"
       onClick={handleSelection}
       disabled={props.isError}
     >
-      <span>Select</span>
+      <span>{props.selectionText}</span>
       <span class="icon">
         {selected ? (
           waitForSelection ? (
