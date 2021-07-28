@@ -71,7 +71,7 @@ const Card = props => {
               index={props.cardIndex}
               selected={props.selected}
               onPress={props.onPress}
-              isError={props.error}
+              isError={props.error !== null}
               disabled={props.disabled}
             />
           </div>
@@ -103,7 +103,7 @@ const AddToCartButton = props => {
   const [selected, setSelected] = React.useState(props.selected)
   const [waitForSelection, setWaitForSelection] = React.useState(true)
   const handleSelection = () => {
-    if (!selected) {
+    if (!props.isError && !selected) {
       setSelected(!selected)
       props.onPress()
     }
@@ -117,9 +117,10 @@ const AddToCartButton = props => {
   }, [selected])
   return (
     <button
-      className={`button add-to-cart-button ${selected && !waitForSelection ? "success" : ""} `}
+      className={`button add-to-cart-button ${props.isError ? "inactive" : ""} ${selected && !waitForSelection ? "success" : ""} `}
       type="button"
       onClick={handleSelection}
+      disabled={props.isError}
     >
       <span>Select</span>
       <span class="icon">
