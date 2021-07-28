@@ -99,14 +99,16 @@ const AddToCartButton = props => {
   const handleSelection = () => {
     if (!props.isError && !selected) {
       setSelected(!selected)
-      props.onPress()
     }
   }
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
       setWaitForSelection(!waitForSelection)
-    }, 3000)
+    }, 3000);
+    if (selected) {
+      props.onPress(selected)
+    }
     return () => clearTimeout(timer)
   }, [selected])
   return (
@@ -196,14 +198,6 @@ const Data = ({
 }) => {
   let fees = cardData.price !== undefined ? cardData.price[network] : "Free"
   const [featureInput, setFeatureInput] = React.useState({ features: [] })
-  // let featureInput = []
-  // if (cardData.inputData !== null && cardData.inputData !== undefined) {
-  //   const newArray = Array.from(featureInput.features);
-  //   cardData.inputData.map((_, i) => {
-  //     newArray[i] = null
-  //   });
-  //   setFeatureInput({features: newArray})
-  // }
 
   console.log("Feature Input: ", featureInput)
   const handleFeatureInputChange = (i, event) => {

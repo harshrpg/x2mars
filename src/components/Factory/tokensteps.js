@@ -10,7 +10,7 @@ import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons"
-import { RiErrorWarningLine } from "@react-icons/all-files/ri/RiErrorWarningLine";
+import { RiErrorWarningLine } from "@react-icons/all-files/ri/RiErrorWarningLine"
 
 import "./style/factory.scss"
 
@@ -196,10 +196,12 @@ const Step1 = props => {
   //   setCard2Error(null);
   // }
 
-  const setSelection = selectedOption => {
+  const setSelection = (selectedOption, selection) => {
     console.debug("STEP 1: Callback:: ", selectedOption)
-    setSelectedOption(selectedOption)
-    props.onSuccess(selectedOption)
+    if (selection) {
+      setSelectedOption(selectedOption)
+      props.onSuccess(selectedOption)
+    }
   }
 
   return (
@@ -219,7 +221,7 @@ const Step1 = props => {
               network={props.network}
               cardIndex={0}
               selected={selectedOption === 0 ? true : false}
-              onPress={() => setSelection(0)}
+              onPress={selection => setSelection(0, selection)}
               selectionText="Select"
             />
           </div>
@@ -233,7 +235,7 @@ const Step1 = props => {
               network={props.network}
               cardIndex={1}
               selected={selectedOption === 1 ? true : false}
-              onPress={() => setSelection(1)}
+              onPress={selection => setSelection(1, selection)}
               selectionText="Select"
             />
           </div>
@@ -331,7 +333,9 @@ const Step2 = props => {
               : ` Your tokenomics should display here`
           }`}
         />
-        <span className="floating-warn"><RiErrorWarningLine /></span>
+        <span className="floating-warn">
+          <RiErrorWarningLine />
+        </span>
       </div>
       {/* <div className="column">
         {tokenDetails.Supply !== null && tokenDetails.Symbol !== null
@@ -378,7 +382,9 @@ const Step2 = props => {
               cardIndex={2}
               selected={dexSelected}
               onPress={setSelection}
-              selectionText="Add to Contract"
+              selectionText={
+                props.type === 0 ? "Add to Contract" : "In Contract"
+              }
             />
           </div>
         </div>
@@ -416,6 +422,9 @@ const Step3 = props => {
       value: 0,
     },
   }
+
+  let tokenType =
+    props.type === 0 ? "Governance Token" : "Fee on Transfer Token"
 
   const featureSelectionArr =
     props.type === 1
@@ -494,11 +503,18 @@ const Step3 = props => {
         <div className="column">
           <StepTitle title={step.title} />
         </div>
-        <div className="column">
-          {props.type === 0
-            ? `These options can only be selected for Fee On Transfer type tokens`
-            : `Total Fee Charged Placeholder`}
-          {/* TODO */}
+        <div className="column has-text-centered sub-title-container">
+          <StepSubTitle
+            subtitleMain={`Creating a ${tokenType}`}
+            subtitleSub={`${
+              props.type === 0
+                ? `These options can only be selected for Fee On Transfer type tokens`
+                : `Total Fee Charged Placeholder`
+            }`}
+          />
+          <span className="floating-warn">
+            <RiErrorWarningLine />
+          </span>
         </div>
         <div className="column">
           <div className="columns step-rows">
@@ -506,7 +522,7 @@ const Step3 = props => {
               <Card
                 id="step3-card1"
                 type={card1.type}
-                error="Error"
+                error={null}
                 cardData={card1}
                 network={props.network}
                 selected={featuresSelected.features[0]}
@@ -515,6 +531,9 @@ const Step3 = props => {
                 cardIndex={0}
                 onPress={() => setSelection(0, true)}
                 callback={event => setFees(0, event.target.value)}
+                selectionText={
+                  props.type === 0 ? "Cannot add to token" : "In Contract"
+                }
               />
             </div>
           </div>
@@ -531,8 +550,11 @@ const Step3 = props => {
                 disabled={props.type === 1 ? false : true}
                 cardImage={getImageDataForCard(card2.img)}
                 cardIndex={1}
-                onPress={event => setSelection(1, event.target.checked)}
+                onPress={select => setSelection(1, select)}
                 callback={event => setFees(1, event.target.value)}
+                selectionText={
+                  props.type === 0 ? "Cannot add to token" : "Add to contract"
+                }
               />
             </div>
             <div class="column">
@@ -546,8 +568,11 @@ const Step3 = props => {
                 disabled={props.type === 1 ? false : true}
                 cardImage={getImageDataForCard(card3.img)}
                 cardIndex={2}
-                onPress={event => setSelection(2, event.target.checked)}
+                onPress={select => setSelection(2, select)}
                 callback={event => setFees(2, event.target.value)}
+                selectionText={
+                  props.type === 0 ? "Cannot add to token" : "Add to contract"
+                }
               />
             </div>
           </div>
@@ -564,8 +589,11 @@ const Step3 = props => {
                 disabled={props.type === 1 ? false : true}
                 cardImage={getImageDataForCard(card4.img)}
                 cardIndex={3}
-                onPress={event => setSelection(3, event.target.checked)}
+                onPress={select => setSelection(3, select)}
                 callback={event => setFees(3, event.target.value)}
+                selectionText={
+                  props.type === 0 ? "Cannot add to token" : "Add to contract"
+                }
               />
             </div>
             <div className="column">
@@ -579,8 +607,11 @@ const Step3 = props => {
                 disabled={props.type === 1 ? false : true}
                 cardImage={getImageDataForCard(card5.img)}
                 cardIndex={4}
-                onPress={event => setSelection(4, event.target.checked)}
+                onPress={select => setSelection(4, select)}
                 callback={event => setFees(4, event.target.value)}
+                selectionText={
+                  props.type === 0 ? "Cannot add to token" : "Add to contract"
+                }
               />
             </div>
           </div>
