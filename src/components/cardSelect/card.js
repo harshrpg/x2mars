@@ -5,17 +5,23 @@ import { StaticImage } from "gatsby-plugin-image"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { GatsbyImage } from "gatsby-plugin-image"
-import BNB from "../../images/assets/bnb.svg"
+// import { BsArrowRight } from "react-icons/all-files/bs/BsArrowRight";
+import { BsArrowRight } from "@react-icons/all-files/bs/BsArrowRight"
+import { BsQuestion } from "@react-icons/all-files/bs/BsQuestion"
+import { AiOutlineCodeSandbox } from "@react-icons/all-files/ai/AiOutlineCodeSandbox"
+import { GoCheck } from "@react-icons/all-files/go/GoCheck"
 
 const Card = props => {
   console.debug("Making Card of type: ", props.type)
   let style = { opacity: 1 }
   if (props.error !== null) {
-    style = { opacity: 0.5 }
+    style = { opacity: 1 }
   }
   if (!props.selected) {
-    style = { opacity: 0.5 }
+    style = { opacity: 1 }
   }
+
+  console.log("ERROR:: ", props.error)
   return (
     <div
       class="conatiner card-container"
@@ -26,38 +32,16 @@ const Card = props => {
       }
     >
       <div class="columns custom-card">
-        {props.type === "select" ||
-        props.error !== null ||
-        props.type === "feature-select" ? (
-          <div class="column is-full">
-            <div class="columns">
-              {props.type === "select" || props.type === "feature-select" ? (
-                <div class="column is-one-quarter">
-                  <CustomCheckBox
-                    key={props.selected}
-                    index={props.cardIndex}
-                    selected={props.selected}
-                    onPress={props.onPress}
-                    isError={props.error}
-                    disabled={props.disabled}
-                  />
-                </div>
-              ) : (
-                ``
-              )}
-
-              {props.error !== null ? (
-                <div class="column">
-                  <ErrorBox error={props.error} />
-                </div>
-              ) : (
-                ``
-              )}
+        <div className="column is-full">
+          <div className="columns">
+            <div class="column is-8">
+              {props.error !== null ? <ErrorBox error={props.error} /> : ``}
+            </div>
+            <div className="column is-4">
+              <HelpButton cardData={props.cardData} />
             </div>
           </div>
-        ) : (
-          ``
-        )}
+        </div>
 
         <div class="column is-full">
           {props.type === "custom" ? (
@@ -80,6 +64,20 @@ const Card = props => {
             />
           )}
         </div>
+        {props.type === "select" || props.type === "feature-select" ? (
+          <div className="column is-full">
+            <AddToCartButton
+              key={props.selected}
+              index={props.cardIndex}
+              selected={props.selected}
+              onPress={props.onPress}
+              isError={props.error}
+              disabled={props.disabled}
+            />
+          </div>
+        ) : (
+          ``
+        )}
       </div>
     </div>
   )
@@ -93,7 +91,7 @@ const CustomCheckBox = props => {
         type="checkbox"
         key={checked}
         checked={checked ? `checked` : ``}
-        onClick={(event) => props.onPress(event)}
+        onClick={event => props.onPress(event)}
         disabled={props.disabled ? true : props.isError !== null ? true : false}
       />
       <span class="checkmark"></span>
@@ -101,11 +99,104 @@ const CustomCheckBox = props => {
   )
 }
 
+const AddToCartButton = props => {
+  const [selected, setSelected] = React.useState(props.selected)
+  const [waitForSelection, setWaitForSelection] = React.useState(true)
+  const handleSelection = () => {
+    if (!selected) {
+      setSelected(!selected)
+      props.onPress()
+    }
+  }
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setWaitForSelection(!waitForSelection)
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [selected])
+  return (
+    <button
+      className={`button add-to-cart-button ${selected && !waitForSelection ? "success" : ""} `}
+      type="button"
+      onClick={handleSelection}
+    >
+      <span>Select</span>
+      <span class="icon">
+        {selected ? (
+          waitForSelection ? (
+            <AiOutlineCodeSandbox className="spinner" />
+          ) : (
+            <GoCheck />
+          )
+        ) : waitForSelection ? (
+          <AiOutlineCodeSandbox className="spinner" />
+        ) : (
+          <BsArrowRight />
+        )}
+      </span>
+    </button>
+  )
+}
+
+const HelpButton = props => {
+  const [isActive, setIsActive] = React.useState(false)
+  return (
+    <>
+      <button
+        className="button help-button"
+        type="button"
+        onClick={() => setIsActive(!isActive)}
+      >
+        <span class="icon">
+          <BsQuestion />
+        </span>
+      </button>
+      <div className={`modal ${isActive ? "is-active" : ""}`}>
+        <div class="modal-background"></div>
+        <div class="modal-content">
+          <HelpDescription cardData={props.cardData} />
+        </div>
+        <button
+          class="modal-close is-large"
+          aria-label="close"
+          onClick={() => setIsActive(!isActive)}
+        ></button>
+      </div>
+    </>
+  )
+}
+
+const HelpDescription = props => {
+  return (
+    <>
+      <div className="container modal-container is-clipped">
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-2">{props.cardData.title}</span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">{props.cardData.description}</div>
+        </div>
+      </div>
+    </>
+  )
+}
+
 const ErrorBox = ({ error }) => {
   return <div class="error-container">{error}</div>
 }
 
-const Data = ({ cardData, network, cardImage, type, disabled, selected, callback }) => {
+const Data = ({
+  cardData,
+  network,
+  cardImage,
+  type,
+  disabled,
+  selected,
+  callback,
+}) => {
   let fees = cardData.price !== undefined ? cardData.price[network] : "Free"
   const [featureInput, setFeatureInput] = React.useState({ features: [] })
   // let featureInput = []
@@ -131,7 +222,7 @@ const Data = ({ cardData, network, cardImage, type, disabled, selected, callback
       <div class="columns">
         <div class="column">
           {cardImage !== undefined || cardImage !== null ? (
-            <GatsbyImage image={cardImage} width={30} height={30} />
+            <GatsbyImage image={cardImage} width={30} height={30} alt="" />
           ) : (
             `Some other hero data`
           )}
@@ -169,7 +260,7 @@ const Data = ({ cardData, network, cardImage, type, disabled, selected, callback
                           min={input.min}
                           max={input.max}
                           disabled={!selected}
-                          value={!selected?``:featureInput.features[i]}
+                          value={!selected ? `` : featureInput.features[i]}
                         />
 
                         <span class="placeholder">
@@ -274,8 +365,12 @@ const SummaryData = props => {
         </div>
       </div>
       <div className="columns summary-columns">
-        <div className="column is-half"><PaymmentButton /></div>
-        <div className="column is-half"><DeployButton /></div>
+        <div className="column is-half">
+          <PaymmentButton />
+        </div>
+        <div className="column is-half">
+          <DeployButton />
+        </div>
       </div>
     </>
   )
@@ -505,18 +600,22 @@ const NetworkIcon = ({ network }) => {
   )
 }
 
-const PaymmentButton = (props) => {
+const PaymmentButton = props => {
   return (
     <>
-      <div className="custom-card-button has-text-centered" type="button">Pay Now</div>
+      <div className="custom-card-button has-text-centered" type="button">
+        Pay Now
+      </div>
     </>
   )
 }
 
-const DeployButton = (props) => {
+const DeployButton = props => {
   return (
     <>
-      <div className="custom-card-button has-text-centered" type="button">Deploy & Create Contract</div>
+      <div className="custom-card-button has-text-centered" type="button">
+        Deploy & Create Contract
+      </div>
     </>
   )
 }

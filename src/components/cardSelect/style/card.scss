@@ -3,7 +3,7 @@
 @import "../../Factory/style/factory.scss";
 
 .card-container {
-    margin: 2rem;
+  margin: 2rem;
 }
 
 .custom-card {
@@ -33,10 +33,7 @@
 }
 
 .error-container {
-  width: max-content;
-  padding: 0 2rem 0 2rem;
   color: white;
-  border: 2px solid $unsucessful-color;
   background-color: $unsucessful-color;
 }
 
@@ -64,6 +61,7 @@
 .checkbox-container {
   display: block;
   position: relative;
+  // border: 1px solid black;
   // padding-left: 35px;
   // margin-bottom: 12px;
   // cursor: pointer;
@@ -92,7 +90,8 @@
   height: 2rem;
   width: 2rem;
   transform: translate(-50%, -50%);
-  background-color: #eee;
+  background-color: $primary-color;
+  color: white;
 }
 
 /* On mouse-over, add a grey background color */
@@ -122,16 +121,61 @@
   left: 38%;
   top: 22%;
   width: 0.5rem;
-  height: 1.0rem;
+  height: 1rem;
   border: solid white;
   border-width: 0 3px 3px 0;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
-//   transform: translate(-50%, -50%);
+  //   transform: translate(-50%, -50%);
+}
+
+.checkbox-container .checkmark:before {
+  left: 38%;
+  top: 22%;
+  border: solid blue;
+  color: white;
+  //   transform: translate(-50%, -50%);
 }
 
 .summary-columns {
   margin: 1rem 0 1rem 0 !important;
   white-space: nowrap;
+}
+
+// ADD TO CART BUTTONS
+.add-to-cart-button {
+  // background-color:rgba(255, 255, 255, 0.911) !important;
+  background-image: linear-gradient(to right, #1976d2, #26c6da);
+  border-color: none !important;
+  color: white !important;
+  padding: 0.5rem 1rem 0.5rem 1rem !important;
+}
+
+.add-to-cart-button.success {
+  background-image: linear-gradient(to right, #388e3c, #aed581);
+  // color: white !important;
+}
+
+.spinner{
+  animation: spin infinite 3s linear;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Help Buttons
+.help-button {
+  border-radius: 50% !important;
+  color: $primary-color;
+}
+
+// Help Button Modal
+.modal-container {
+  color: white !important;
 }

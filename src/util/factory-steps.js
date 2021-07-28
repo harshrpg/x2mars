@@ -4,6 +4,8 @@ export const Steps = {
     cardData: [
       {
         title: "Governance",
+        description:
+          "Governance is a simple ERC-20 token governing purposes of your project",
         type: "select",
         price: {
           eth: 1.0,
@@ -14,6 +16,8 @@ export const Steps = {
       },
       {
         title: "Fee On Transfer",
+        description:
+          "Fee on Transfer are a simple type of ERC-20 tokens allowing you to charge fees while tokens are being transacted across the chain",
         type: "select",
         price: {
           eth: 5.0,
@@ -29,16 +33,19 @@ export const Steps = {
     cardData: [
       {
         title: "Token Details",
+        description: "Token Name and Token Symbol are mandatory to create any contract based tokens",
         type: "custom",
         id: "step2-1",
       },
       {
         title: "Token Supply",
+        description: "Token Supply is mandatory to create any contract based tokens",
         type: "custom",
         id: "step2-2",
       },
       {
         title: "Create DEX Pool",
+        description: "DEX Pool allows you to create a pair of your token and the native coin for availing transactions of your coin",
         type: "select",
         price: {
           eth: 0.2,
@@ -56,6 +63,7 @@ export const Steps = {
     cardData: [
       {
         title: "Automatic Liquidation",
+        description: "A certain fee of every transaction is added back to the pool on the DEX pair created in the previous step",
         type: "feature-select",
         inputData: [
           {
@@ -72,6 +80,7 @@ export const Steps = {
       },
       {
         title: "RFI Static Rewards",
+        description: "A certain fee of every transaction is shared with all the current holders of your token",
         type: "feature-select",
         price: {
           eth: 0.2,
@@ -89,6 +98,7 @@ export const Steps = {
       },
       {
         title: "Anti Whale Protection",
+        description: "A limit is imposed on the number of tokens that can be included per transaction",
         type: "feature-select",
         price: {
           eth: 0.2,
@@ -106,6 +116,7 @@ export const Steps = {
       },
       {
         title: "Automatic Burn per Transaction",
+        description: "A certain fee of every transaction is burned",
         type: "feature-select",
         price: {
           eth: 0.2,
@@ -123,6 +134,7 @@ export const Steps = {
       },
       {
         title: "Automatic Charity Donation",
+        description: "A certain fee of every transaction is given to charity",
         type: "feature-select",
         price: {
           eth: 0.2,
@@ -145,6 +157,7 @@ export const Steps = {
     cardData: [
       {
         title: "Launchpad",
+        description: "Every member of our community will be notified about your project and will become a member of your community",
         type: "feature-select",
         price: {
           eth: 5.0,
@@ -179,6 +192,7 @@ export const Steps = {
     cardData: [
       {
         title: "Summary of your selection",
+        description: "Summary of your purchase",
         type: "summary",
         displayData: [
           "Type of Token",
@@ -187,8 +201,8 @@ export const Steps = {
           "Supply",
           "Create Pair on DEX",
           "Features",
-          "Launchpad Access"
-        ]
+          "Launchpad Access",
+        ],
       },
     ],
   },

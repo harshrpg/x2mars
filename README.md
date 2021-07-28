@@ -115,6 +115,10 @@ Gatsby Cloud is an end-to-end cloud platform specifically built for the Gatsby f
 3. Previous step loosing state
 4. Deactivate all inputs when card is deactivated - Done
 5. Regex check for launchpad inputs
+6. Step 3 - Input value on type should show appropriate color if error
+7. Card - highlight checkbox more
+8. Card - Change card border color if error
+9. Step 3 - Next step, input on change not on blur
 
 ## Features
 

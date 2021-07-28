@@ -196,6 +196,7 @@ const Step1 = props => {
   // }
 
   const setSelection = selectedOption => {
+    console.debug("STEP 1: Callback:: ", selectedOption)
     setSelectedOption(selectedOption)
     props.onSuccess(selectedOption)
   }
@@ -486,7 +487,7 @@ const Step3 = props => {
               <Card
                 id="step3-card1"
                 type={card1.type}
-                error={null}
+                error="Error"
                 cardData={card1}
                 network={props.network}
                 selected={featuresSelected.features[0]}
@@ -579,6 +580,10 @@ const Step4 = props => {
     console.debug("Launchpad: ", website, email, whitepaperUrl)
   }
 
+  const testCb = () =>  {
+    console.log("test");
+  }
+
   return (
     <>
       <div className="columns step-columns step-ind">
@@ -602,6 +607,7 @@ const Step4 = props => {
                 cardImage={getImageDataForCard(card1.img)}
                 cardIndex={0}
                 onPress={() => setIsLaunchpad(!isLaunchpad)}
+                callback={testCb}
               />
             </div>
           </div>
