@@ -157,6 +157,11 @@
   // color: white !important;
 }
 
+.add-to-cart-button.inactive {
+  background-image: linear-gradient(to right, #616161, #9e9e9e);
+  // color: white !important;
+}
+
 .spinner{
   animation: spin infinite 3s linear;
 }

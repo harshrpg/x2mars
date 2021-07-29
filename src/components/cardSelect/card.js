@@ -100,7 +100,7 @@ const AddToCartButton = props => {
   React.useEffect(() => {
     const timer = setTimeout(() => {
       setWaitForSelection(!waitForSelection)
-    }, 3000);
+    }, 2000);
     return () => clearTimeout(timer)
   }, [selected])
 
@@ -112,11 +112,11 @@ const AddToCartButton = props => {
   return (
     <button
       className={`button add-to-cart-button ${
-        props.isError ? "inactive" : ""
+        props.isError || props.disabled ? "inactive" : ""
       } ${selected && !waitForSelection ? "success" : ""} `}
       type="button"
       onClick={() => setSelected(!selected)}
-      disabled={props.isError}
+      disabled={props.isError || props.disabled}
     >
       <span>{props.selectionText}</span>
       <span class="icon">
