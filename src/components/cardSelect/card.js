@@ -96,28 +96,26 @@ const CustomCheckBox = props => {
 const AddToCartButton = props => {
   const [selected, setSelected] = React.useState(props.selected)
   const [waitForSelection, setWaitForSelection] = React.useState(true)
-  const handleSelection = () => {
-    if (!props.isError && !selected) {
-      setSelected(!selected)
-    }
-  }
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
       setWaitForSelection(!waitForSelection)
     }, 3000);
-    if (selected) {
-      props.onPress(selected)
-    }
     return () => clearTimeout(timer)
   }, [selected])
+
+  React.useEffect(() => {
+    if (selected && !waitForSelection) {
+      props.onPress(selected)
+    }
+  }, [selected, waitForSelection])
   return (
     <button
       className={`button add-to-cart-button ${
         props.isError ? "inactive" : ""
       } ${selected && !waitForSelection ? "success" : ""} `}
       type="button"
-      onClick={handleSelection}
+      onClick={() => setSelected(!selected)}
       disabled={props.isError}
     >
       <span>{props.selectionText}</span>

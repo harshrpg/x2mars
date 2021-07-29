@@ -264,9 +264,10 @@ const Step2 = props => {
   const [dexSelected, setDexSelected] = React.useState(
     props.type === 0 ? false : true
   )
-  const setSelection = () => {
+  const setSelection = (selection) => {
+    console.debug("CARD2:: dex selected", dexSelected, " props.type:: ", props.type)
     if (props.type === 0) {
-      setDexSelected(!dexSelected)
+      setDexSelected(selection)
     }
   }
 
@@ -381,9 +382,9 @@ const Step2 = props => {
               network={props.network}
               cardIndex={2}
               selected={dexSelected}
-              onPress={setSelection}
+              onPress={(selection) => setSelection(selection)}
               selectionText={
-                props.type === 0 ? "Add to Contract" : "In Contract"
+                props.type === 0 ? "Add to Contract" : "Added to Contract"
               }
             />
           </div>
