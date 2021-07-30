@@ -15,7 +15,6 @@ import { RiErrorWarningFill } from "@react-icons/all-files/ri/RiErrorWarningFill
 import { RiCheckboxCircleFill } from "@react-icons/all-files/ri/RiCheckboxCircleFill"
 
 const Card = props => {
-  console.debug("Making Card of type: ", props.type)
   let style = { opacity: 1 }
   if (props.error !== null) {
     style = { opacity: 1 }
@@ -23,8 +22,6 @@ const Card = props => {
   if (!props.selected) {
     style = { opacity: 1 }
   }
-
-  console.log("ERROR:: ", props.error)
   return (
     <div class="conatiner card-container">
       <div class="columns custom-card">
@@ -252,7 +249,6 @@ const Data = ({
   let fees = cardData.price !== undefined ? cardData.price[network] : "Free"
   const [featureInput, setFeatureInput] = React.useState({ features: [] })
 
-  console.log("Feature Input: ", featureInput)
   const handleFeatureInputChange = (i, event, input) => {
     console.debug("TOTAL FEE: Feature Input recorded: ", event.target.value)
     const newArray = Array.from(featureInput.features)
@@ -527,7 +523,7 @@ const Step2Card2 = ({ cardData, network, callback }) => {
         "Effect in supply details: ",
         tokenSupply + " " + tokenSupplyUnits
       )
-      callback(tokenSupply + " " + tokenSupplyUnits)
+      callback(tokenSupply, tokenSupplyUnits)
     }
   }, [tokenSupply, tokenSupplyUnits])
   return (

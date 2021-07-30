@@ -51,6 +51,13 @@ const FactorySteps = props => {
   const [currentStep, setCurrentStep] = React.useState(1)
   const [index, setIndex] = React.useState(0)
   const [tokenType, setTokenType] = React.useState(null)
+  const [tokenDetails, setTokenDetails] = React.useState({
+    Name: null,
+    Symbol: null,
+    Supply: null,
+    SupplyUnit: null,
+    Decimals: 18,
+  })
   const incrementStep = () => {
     console.debug("Current Step: ", currentStep, " Success Step", successStep)
 
@@ -72,6 +79,12 @@ const FactorySteps = props => {
 
   const setTypeAndSuccess = (typeSelected, newSuccessStep) => {
     setTokenType(typeSelected)
+    setSuccessStep(new Set(successStep).add(newSuccessStep))
+  }
+
+  const setTokenDetailsAndSuccess = (tokenDetailsProvided, newSuccessStep) => {
+    console.debug("TOKEN DETAILS: ", tokenDetailsProvided)
+    setTokenDetails(tokenDetailsProvided)
     setSuccessStep(new Set(successStep).add(newSuccessStep))
   }
 
@@ -117,7 +130,7 @@ const FactorySteps = props => {
             <Step2
               className="ind-step"
               network={props.network}
-              onSuccess={() => setSuccessStep(new Set(successStep).add(2))}
+              onSuccess={(tokenDetailsProvided) => setTokenDetailsAndSuccess(tokenDetailsProvided, 2)}
               key={1}
               type={tokenType}
             />
@@ -129,6 +142,7 @@ const FactorySteps = props => {
               onFailure={() => handleFailure(3)}
               key={2}
               type={tokenType}
+              tokenDetails={tokenDetails}
             />
           ) : currentStep === 4 ? (
             <Step4
@@ -258,6 +272,7 @@ const Step2 = props => {
     Name: null,
     Symbol: null,
     Supply: null,
+    SupplyUnit: null,
     Decimals: 18,
   })
 
@@ -298,9 +313,10 @@ const Step2 = props => {
     console.debug("TOKEN STEPS:: STATE is at", tokenDetails)
   }
 
-  const tokenSupplyCb = tokenSupplyDetails => {
-    console.debug("TOKEN STEPS:: TOKEN SUPPLY SUPPLIED", tokenSupplyDetails)
-    tokenDetails.Supply = tokenSupplyDetails
+  const tokenSupplyCb = (tokenSupply, tokenSupplyUnit) => {
+    console.debug("TOKEN STEPS:: TOKEN SUPPLY SUPPLIED", tokenSupply + " " + tokenSupplyUnit)
+    tokenDetails.Supply = tokenSupply
+    tokenDetails.SupplyUnit = tokenSupplyUnit
     setTokenDetails({
       ...tokenDetails,
     })
@@ -312,9 +328,10 @@ const Step2 = props => {
       tokenDetails.Name !== null &&
       tokenDetails.Symbol !== null &&
       tokenDetails.Supply !== null &&
+      tokenDetails.SupplyUnit !== null &&
       tokenDetails.Decimals !== 0
     ) {
-      props.onSuccess(2)
+      props.onSuccess(tokenDetails, 2)
     }
   }, [tokenDetails])
 
@@ -401,29 +418,17 @@ const Step3 = props => {
   const card3 = step.cardData[2]
   const card4 = step.cardData[3]
   const card5 = step.cardData[4]
-  const featureSelection = {
-    liquidation: {
-      selected: props.type === 1 ? true : false,
-      value: 0,
-    },
-    rfi: {
-      selected: false,
-      value: 0,
-    },
-    whaleProtection: {
-      selected: false,
-      value: 0,
-    },
-    burn: {
-      selected: false,
-      value: 0,
-    },
-    charity: {
-      selected: false,
-      value: 0,
-    },
+  var tokenDetails = props.tokenDetails
+  const numberMap= {
+    "Thousand": 10^3,
+    "Million": 10^6,
+    "Billion": 10^9,
+    "Trillion": 10^12,
+    "Quadrillion": 10^15
   }
-
+  var tokenSupply = parseFloat(tokenDetails.Supply)
+  const multiplier = numberMap[tokenDetails.SupplyUnit]
+  console.debug("TOKEN SUPPLY: ", tokenSupply, multiplier)
   let tokenType =
     props.type === 0 ? "Governance Token" : "Fee on Transfer Token"
 
