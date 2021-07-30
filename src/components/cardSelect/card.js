@@ -156,8 +156,10 @@ const AddToCartButton = props => {
         props.isError || props.disabled ? "inactive" : ""
       } ${
         selected && !waitForSelection
-          ? props.isMandatory !== undefined && !props.isMandatory
-            ? "remove"
+          ? props.isMandatory !== undefined
+            ? !props.isMandatory
+              ? " remove"
+              : "mandatory"
             : "success"
           : props.isMandatory !== undefined && !props.isMandatory
           ? "success"
@@ -251,13 +253,17 @@ const Data = ({
   const [featureInput, setFeatureInput] = React.useState({ features: [] })
 
   console.log("Feature Input: ", featureInput)
-  const handleFeatureInputChange = (i, event) => {
-    console.debug("Feature Input changed: ", event.target.value)
+  const handleFeatureInputChange = (i, event, input) => {
     const newArray = Array.from(featureInput.features)
-    newArray[i] = event.target.value
-    setFeatureInput({ features: newArray })
-    console.log("Feature Input on change", featureInput)
-    callback(event)
+    let value = event.target.value
+    if (value >= input.min && value <= input.max) {
+      newArray[i] = event.target.value
+      setFeatureInput({ features: newArray })
+      console.log("Feature Input on change", featureInput)
+      callback(event)
+    } else {
+      event.target.value = "";
+    }
   }
   return (
     <div className="conatiner has-text-centered">
@@ -284,7 +290,7 @@ const Data = ({
                     <>
                       <div
                         className={`input-block ${
-                          !selected
+                          !selected || disabled
                             ? "disabled"
                             : featureInput.features[i] !== undefined &&
                               featureInput.features[i] !== ""
@@ -295,14 +301,16 @@ const Data = ({
                         <input
                           key={featureInput}
                           type={input.type}
-                          onBlur={event => handleFeatureInputChange(i, event)}
+                          onBlur={event =>
+                            handleFeatureInputChange(i, event, input)
+                          }
                           id="featureInput"
                           required="required"
                           spellcheck="false"
                           min={input.min}
                           max={input.max}
-                          disabled={!selected}
-                          value={!selected ? `` : featureInput.features[i]}
+                          disabled={disabled || !selected}
+                          step="0.01"
                         />
 
                         <span class="placeholder">

@@ -264,8 +264,13 @@ const Step2 = props => {
   const [dexSelected, setDexSelected] = React.useState(
     props.type === 0 ? false : true
   )
-  const setSelection = (selection) => {
-    console.debug("CARD2:: dex selected", dexSelected, " props.type:: ", props.type)
+  const setSelection = selection => {
+    console.debug(
+      "CARD2:: dex selected",
+      dexSelected,
+      " props.type:: ",
+      props.type
+    )
     if (props.type === 0) {
       setDexSelected(selection)
     }
@@ -372,9 +377,13 @@ const Step2 = props => {
               network={props.network}
               cardIndex={2}
               selected={dexSelected}
-              onPress={(selection) => setSelection(selection)}
+              onPress={selection => setSelection(selection)}
               selectionText={
-                props.type === 0 ? dexSelected ? "Remove from Contract" : "Add to Contract" : "Added to Contract"
+                props.type === 0
+                  ? dexSelected
+                    ? "Remove from Contract"
+                    : "Add to Contract"
+                  : "In Your Contract"
               }
               mandatory={props.type === 0 ? false : true}
             />
@@ -524,8 +533,9 @@ const Step3 = props => {
                 onPress={() => setSelection(0, true)}
                 callback={event => setFees(0, event.target.value)}
                 selectionText={
-                  props.type === 0 ? "Cannot add to token" : "In Contract"
+                  props.type === 0 ? "Cannot add to token" : "In Your Contract"
                 }
+                mandatory={props.type === 1 ? true : undefined}
               />
             </div>
           </div>
@@ -545,8 +555,13 @@ const Step3 = props => {
                 onPress={select => setSelection(1, select)}
                 callback={event => setFees(1, event.target.value)}
                 selectionText={
-                  props.type === 0 ? "Cannot add to token" : "Add to contract"
+                  props.type === 0
+                    ? "Cannot add to token"
+                    : featuresSelected.features[1]
+                    ? "Remove from Contract"
+                    : "Add to Contract"
                 }
+                mandatory={props.type === 1 ? false : undefined}
               />
             </div>
             <div class="column">
@@ -563,8 +578,13 @@ const Step3 = props => {
                 onPress={select => setSelection(2, select)}
                 callback={event => setFees(2, event.target.value)}
                 selectionText={
-                  props.type === 0 ? "Cannot add to token" : "Add to contract"
+                  props.type === 0
+                    ? "Cannot add to token"
+                    : featuresSelected.features[2]
+                    ? "Remove from Contract"
+                    : "Add to Contract"
                 }
+                mandatory={props.type === 1 ? false : undefined}
               />
             </div>
           </div>
@@ -584,8 +604,13 @@ const Step3 = props => {
                 onPress={select => setSelection(3, select)}
                 callback={event => setFees(3, event.target.value)}
                 selectionText={
-                  props.type === 0 ? "Cannot add to token" : "Add to contract"
+                  props.type === 0
+                    ? "Cannot add to token"
+                    : featuresSelected.features[3]
+                    ? "Remove from Contract"
+                    : "Add to Contract"
                 }
+                mandatory={props.type === 1 ? false : undefined}
               />
             </div>
             <div className="column">
@@ -602,8 +627,13 @@ const Step3 = props => {
                 onPress={select => setSelection(4, select)}
                 callback={event => setFees(4, event.target.value)}
                 selectionText={
-                  props.type === 0 ? "Cannot add to token" : "Add to contract"
+                  props.type === 0
+                    ? "Cannot add to token"
+                    : featuresSelected.features[4]
+                    ? "Remove from Contract"
+                    : "Add to Contract"
                 }
+                mandatory={props.type === 1 ? false : undefined}
               />
             </div>
           </div>
