@@ -10,6 +10,7 @@ import { BsArrowRight } from "@react-icons/all-files/bs/BsArrowRight"
 import { BsQuestion } from "@react-icons/all-files/bs/BsQuestion"
 import { AiOutlineCodeSandbox } from "@react-icons/all-files/ai/AiOutlineCodeSandbox"
 import { GoCheck } from "@react-icons/all-files/go/GoCheck"
+import { GoX } from "@react-icons/all-files/go/GoX"
 import { RiErrorWarningFill } from "@react-icons/all-files/ri/RiErrorWarningFill"
 import { RiCheckboxCircleFill } from "@react-icons/all-files/ri/RiCheckboxCircleFill"
 
@@ -131,8 +132,10 @@ const AddToCartButton = props => {
   const [selected, setSelected] = React.useState(props.selected)
   const [waitForSelection, setWaitForSelection] = React.useState(true)
 
-  const handleButtonClick = () =>  {
-    if (!props.isMandatory) {
+  const handleButtonClick = () => {
+    if (!selected) {
+      setSelected(!selected)
+    } else if (props.isMandatory !== undefined && !props.isMandatory) {
       setSelected(!selected)
     }
   }
@@ -151,7 +154,15 @@ const AddToCartButton = props => {
     <button
       className={`button add-to-cart-button ${
         props.isError || props.disabled ? "inactive" : ""
-      } ${selected && !waitForSelection ? "success" : ""} `}
+      } ${
+        selected && !waitForSelection
+          ? props.isMandatory !== undefined && !props.isMandatory
+            ? "remove"
+            : "success"
+          : props.isMandatory !== undefined && !props.isMandatory
+          ? "success"
+          : ""
+      } `}
       type="button"
       onClick={handleButtonClick}
       disabled={props.isError || props.disabled}
@@ -161,11 +172,15 @@ const AddToCartButton = props => {
         {selected ? (
           waitForSelection ? (
             <AiOutlineCodeSandbox className="spinner" />
+          ) : props.selectionText === "Remove from Contract" ? (
+            <GoX />
           ) : (
             <GoCheck />
           )
         ) : waitForSelection ? (
           <AiOutlineCodeSandbox className="spinner" />
+        ) : props.selectionText === "Add to Contract" ? (
+          <GoCheck />
         ) : (
           <BsArrowRight />
         )}

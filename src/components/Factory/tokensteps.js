@@ -374,9 +374,9 @@ const Step2 = props => {
               selected={dexSelected}
               onPress={(selection) => setSelection(selection)}
               selectionText={
-                props.type === 0 ? "Add to Contract" : "Added to Contract"
+                props.type === 0 ? dexSelected ? "Remove from Contract" : "Add to Contract" : "Added to Contract"
               }
-              mandatory={false}
+              mandatory={props.type === 0 ? false : true}
             />
           </div>
         </div>
