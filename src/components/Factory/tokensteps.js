@@ -435,8 +435,10 @@ const Step3 = props => {
     features: featureSelectionArr,
   })
   const [featureFees, setFeatureFees] = React.useState({
-    featureFees: [0, 0, 0, 0, 0],
+    featureFees: [5, 5, 50000, 5, 5],
   })
+
+  const [totalFees, setTotalFees] = React.useState(0)
   const setSelection = (index, isSelected) => {
     console.debug("Selection: ", featuresSelected)
     const newArray = Array.from(featuresSelected.features)
@@ -451,6 +453,7 @@ const Step3 = props => {
       const newArray = Array.from(featureFees.featureFees)
       newArray[index] = fee
       setFeatureFees({ featureFees: newArray })
+      getTotalFees()
     } else if (featuresSelected.features[index]) {
       console.error(
         "Feature not selected and fee being tried to set",
@@ -483,6 +486,12 @@ const Step3 = props => {
         }
       })
       if (reqFullfilled > 0) {
+        console.debug(
+          "Features Selected: ",
+          featuresSelected,
+          " Fees provided: ",
+          featureFees
+        )
         props.onSuccess()
       }
       if (failedReq > 0) {
@@ -498,6 +507,18 @@ const Step3 = props => {
     }
   }, [featuresSelected, featureFees])
 
+  const getTotalFees = () => {
+    let fees = 0
+    featuresSelected.features.map((isFeatureSelected, i) => {
+      if (i !== 2) {
+        if (isFeatureSelected) {
+          fees += featureFees.featureFees[i]
+        }
+      }
+    })
+    setTotalFees(fees)
+  }
+
   return (
     <>
       <div className="columns step-columns step-ind">
@@ -510,7 +531,7 @@ const Step3 = props => {
             subtitleSub={`${
               props.type === 0
                 ? `These options can only be selected for Fee On Transfer type tokens`
-                : `Total Fee Charged Placeholder`
+                : `You are charging ${totalFees}% fee per transaction`
             }`}
           />
           <span className="floating-warn">
@@ -531,7 +552,7 @@ const Step3 = props => {
                 cardImage={getImageDataForCard(card1.img[props.network])}
                 cardIndex={0}
                 onPress={() => setSelection(0, true)}
-                callback={event => setFees(0, event.target.value)}
+                callback={value => setFees(0, value)}
                 selectionText={
                   props.type === 0 ? "Cannot add to token" : "In Your Contract"
                 }
@@ -553,7 +574,7 @@ const Step3 = props => {
                 cardImage={getImageDataForCard(card2.img)}
                 cardIndex={1}
                 onPress={select => setSelection(1, select)}
-                callback={event => setFees(1, event.target.value)}
+                callback={value => setFees(1, value)}
                 selectionText={
                   props.type === 0
                     ? "Cannot add to token"
@@ -576,7 +597,7 @@ const Step3 = props => {
                 cardImage={getImageDataForCard(card3.img)}
                 cardIndex={2}
                 onPress={select => setSelection(2, select)}
-                callback={event => setFees(2, event.target.value)}
+                callback={value => setFees(2, value)}
                 selectionText={
                   props.type === 0
                     ? "Cannot add to token"
@@ -602,7 +623,7 @@ const Step3 = props => {
                 cardImage={getImageDataForCard(card4.img)}
                 cardIndex={3}
                 onPress={select => setSelection(3, select)}
-                callback={event => setFees(3, event.target.value)}
+                callback={value => setFees(3, value)}
                 selectionText={
                   props.type === 0
                     ? "Cannot add to token"
@@ -625,7 +646,7 @@ const Step3 = props => {
                 cardImage={getImageDataForCard(card5.img)}
                 cardIndex={4}
                 onPress={select => setSelection(4, select)}
-                callback={event => setFees(4, event.target.value)}
+                callback={value => setFees(4, value)}
                 selectionText={
                   props.type === 0
                     ? "Cannot add to token"

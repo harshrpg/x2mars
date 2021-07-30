@@ -71,6 +71,7 @@ export const Steps = {
         type: "feature-select",
         inputData: [
           {
+            idx: 0,
             name: "Liquidation Fee",
             type: "number",
             min: 5,
@@ -93,6 +94,7 @@ export const Steps = {
         },
         inputData: [
           {
+            idx: 1,
             name: "Reward Fee",
             type: "number",
             min: 5,
@@ -112,10 +114,11 @@ export const Steps = {
         },
         inputData: [
           {
-            name: "Max Transaction Amount",
+            idx: 2,
+            name: "Max Transaction Amount (0.5% of supply)",
             type: "number",
-            min: 5,
-            max: 15,
+            min: "",
+            max: "",
           },
         ],
         img: "awp.png",
@@ -130,6 +133,7 @@ export const Steps = {
         },
         inputData: [
           {
+            idx: 3,
             name: "Burn Fee",
             type: "number",
             min: 5,
@@ -148,6 +152,7 @@ export const Steps = {
         },
         inputData: [
           {
+            idx: 4,
             name: "Charity Fee",
             type: "number",
             min: 5,

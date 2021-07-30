@@ -28,13 +28,6 @@ const Card = props => {
   return (
     <div class="conatiner card-container">
       <div class="columns custom-card">
-        {props.mandatory !== undefined ? (
-          <div className="column is-full has-text-centered">
-            <ShowCardSelectability isMandatory={props.mandatory} />
-          </div>
-        ) : (
-          ``
-        )}
         <div className="column is-full">
           <div className="columns">
             <div class="column is-8">
@@ -45,6 +38,13 @@ const Card = props => {
             </div>
           </div>
         </div>
+        {props.mandatory !== undefined ? (
+          <div className="column is-full has-text-centered">
+            <ShowCardSelectability isMandatory={props.mandatory} />
+          </div>
+        ) : (
+          ``
+        )}
 
         <div class="column is-full">
           {props.type === "custom" ? (
@@ -260,11 +260,18 @@ const Data = ({
       newArray[i] = event.target.value
       setFeatureInput({ features: newArray })
       console.log("Feature Input on change", featureInput)
-      callback(event)
+      callback(event.target.value)
     } else {
-      event.target.value = "";
+      event.target.value = ""
     }
   }
+
+  const handleBeforeInput = (event) => {
+    console.log("Before Input: ", event.target.value)
+    event.target.value=""
+  }
+
+  let maxTxnAmount = 500000;
   return (
     <div className="conatiner has-text-centered">
       <div class="columns">
@@ -286,47 +293,50 @@ const Data = ({
           <div className="column">
             <div class="centerinput">
               {cardData.inputData !== null && cardData.inputData !== undefined
-                ? cardData.inputData.map((input, i) => (
-                    <>
-                      <div
-                        className={`input-block ${
-                          !selected || disabled
-                            ? "disabled"
-                            : featureInput.features[i] !== undefined &&
-                              featureInput.features[i] !== ""
-                            ? "success"
-                            : ""
-                        }`}
-                      >
-                        <input
-                          key={featureInput}
-                          type={input.type}
-                          onBlur={event =>
-                            handleFeatureInputChange(i, event, input)
-                          }
-                          id="featureInput"
-                          required="required"
-                          spellcheck="false"
-                          min={input.min}
-                          max={input.max}
-                          disabled={disabled || !selected}
-                          step="0.01"
-                        />
+                ? cardData.inputData.map((input, i) => {
+                    return (
+                      <>
+                        <div
+                          className={`input-block ${
+                            !selected || disabled
+                              ? "disabled"
+                              : featureInput.features[i] !== undefined &&
+                                featureInput.features[i] !== ""
+                              ? "success"
+                              : "pre-selected"
+                          }`}
+                        >
+                          <input
+                            key={featureInput}
+                            type={input.type}
+                            onChange={event =>
+                              handleFeatureInputChange(i, event, input)
+                            }
+                            id="featureInput"
+                            required="required"
+                            spellcheck="false"
+                            min={input.min}
+                            max={input.max}
+                            disabled={disabled || !selected || input.idx === 2}
+                            step={input.type === "number" ? "0.01" : undefined}
+                            value={ selected ? input.idx === 2 ? maxTxnAmount : undefined : undefined }
+                            onFocus={event => handleBeforeInput(event)}
+                          />
 
-                        <span class="placeholder">
-                          {input.type === "number"
-                            ? input.name +
-                              ` (` +
-                              input.min +
-                              `% - ` +
-                              input.max +
-                              `%)`
-                            : input.name}
-                          {}
-                        </span>
-                      </div>
-                    </>
-                  ))
+                          <span class="placeholder">
+                            {input.min !== "" && input.max !== ""
+                              ? input.name +
+                                ` (` +
+                                input.min +
+                                `% - ` +
+                                input.max +
+                                `%)`
+                              : input.name}
+                          </span>
+                        </div>
+                      </>
+                    )
+                  })
                 : ``}
             </div>
           </div>
@@ -446,14 +456,14 @@ const Step2Card1 = ({ cardData, network, callback }) => {
           <CardTitle title={cardData.title} size="small" />
         </div>
       </div>
-      <div className="columns">
+      {/* <div className="columns">
         <div className="column">
           <NetworkIcon network={network} />
         </div>
         <div className="column">
           <span className="is-size-4">{tokenSymbol}</span>
         </div>
-      </div>
+      </div> */}
       <div className="columns">
         <div className="column">
           <div class="centerinput">
@@ -529,7 +539,7 @@ const Step2Card2 = ({ cardData, network, callback }) => {
           <CardTitle title={cardData.title} size="small" />
         </div>
       </div>
-      <div className="columns">
+      {/* <div className="columns">
         <div className="column">
           <NetworkIcon network={network} />
         </div>
@@ -541,7 +551,7 @@ const Step2Card2 = ({ cardData, network, callback }) => {
             {` tokens`}
           </span>
         </div>
-      </div>
+      </div> */}
       <div className="columns">
         <div className="column is-half">
           <div class="centerinput">
