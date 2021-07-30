@@ -254,22 +254,22 @@ const Data = ({
 
   console.log("Feature Input: ", featureInput)
   const handleFeatureInputChange = (i, event, input) => {
+    console.debug("TOTAL FEE: Feature Input recorded: ", event.target.value)
     const newArray = Array.from(featureInput.features)
     let value = event.target.value
     if (value >= input.min && value <= input.max) {
-      newArray[i] = event.target.value
+      newArray[i] = value
       setFeatureInput({ features: newArray })
       console.log("Feature Input on change", featureInput)
-      callback(event.target.value)
+      callback(value)
     } else {
       event.target.value = ""
     }
   }
 
-  const handleBeforeInput = (event) => {
-    console.log("Before Input: ", event.target.value)
-    event.target.value=""
-  }
+  React.useEffect(() => {
+    console.debug("TOTAL FEE: Feature Input State: ", featureInput)
+  }, [featureInput])
 
   let maxTxnAmount = 500000;
   return (
@@ -318,9 +318,7 @@ const Data = ({
                             min={input.min}
                             max={input.max}
                             disabled={disabled || !selected || input.idx === 2}
-                            step={input.type === "number" ? "0.01" : undefined}
                             value={ selected ? input.idx === 2 ? maxTxnAmount : undefined : undefined }
-                            onFocus={event => handleBeforeInput(event)}
                           />
 
                           <span class="placeholder">

@@ -435,7 +435,7 @@ const Step3 = props => {
     features: featureSelectionArr,
   })
   const [featureFees, setFeatureFees] = React.useState({
-    featureFees: [5, 5, 50000, 5, 5],
+    featureFees: [0, 0, 500000, 0, 0],
   })
 
   const [totalFees, setTotalFees] = React.useState(0)
@@ -448,12 +448,11 @@ const Step3 = props => {
   }
 
   const setFees = (index, fee) => {
-    console.debug("FOT Fee: Liquidation Fee selected: ", fee)
+    console.debug("TOTAL FEE: Fee selected: ", fee)
     if (featuresSelected.features[index] && fee > 0 && fee < 16) {
       const newArray = Array.from(featureFees.featureFees)
       newArray[index] = fee
       setFeatureFees({ featureFees: newArray })
-      getTotalFees()
     } else if (featuresSelected.features[index]) {
       console.error(
         "Feature not selected and fee being tried to set",
@@ -507,15 +506,20 @@ const Step3 = props => {
     }
   }, [featuresSelected, featureFees])
 
-  const getTotalFees = () => {
+  React.useEffect(() => {
+    calculateTotalFees()
+  }, [featureFees])
+
+  const calculateTotalFees = () => {
     let fees = 0
     featuresSelected.features.map((isFeatureSelected, i) => {
       if (i !== 2) {
         if (isFeatureSelected) {
-          fees += featureFees.featureFees[i]
+          fees += parseFloat(featureFees.featureFees[i])
         }
       }
     })
+    console.debug("TOTAL FEE: ", fees)
     setTotalFees(fees)
   }
 
