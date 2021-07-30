@@ -275,8 +275,6 @@ const Step2 = props => {
     card3.price = undefined
   }
 
-  console.debug("Price changes in card3: ", card3)
-
   const tokenNameCb = tokenName => {
     console.debug("TOKEN STEPS:: TOKEN Name SUPPLIED", tokenName.target.value)
     tokenDetails.Name = tokenName.target.value
@@ -338,16 +336,6 @@ const Step2 = props => {
           <RiErrorWarningLine />
         </span>
       </div>
-      {/* <div className="column">
-        {tokenDetails.Supply !== null && tokenDetails.Symbol !== null
-          ? `Creating ` +
-            tokenDetails.Supply +
-            ` ` +
-            tokenDetails.Symbol +
-            ` ` +
-            tokenType
-          : ` Your tokenomics should display here`}
-      </div> */}
       <div class="column">
         <div class="columns step-rows">
           <div class="column">
@@ -359,6 +347,7 @@ const Step2 = props => {
               callback={[tokenNameCb, tokenSymbolCb]}
               network={props.network}
               cardIndex={0}
+              mandatory={true}
             />
           </div>
           <div class="column">
@@ -370,6 +359,7 @@ const Step2 = props => {
               callback={tokenSupplyCb}
               network={props.network}
               cardIndex={1}
+              mandatory={true}
             />
           </div>
           <div class="column">
@@ -386,6 +376,7 @@ const Step2 = props => {
               selectionText={
                 props.type === 0 ? "Add to Contract" : "Added to Contract"
               }
+              mandatory={false}
             />
           </div>
         </div>

@@ -10,6 +10,8 @@ import { BsArrowRight } from "@react-icons/all-files/bs/BsArrowRight"
 import { BsQuestion } from "@react-icons/all-files/bs/BsQuestion"
 import { AiOutlineCodeSandbox } from "@react-icons/all-files/ai/AiOutlineCodeSandbox"
 import { GoCheck } from "@react-icons/all-files/go/GoCheck"
+import { RiErrorWarningFill } from "@react-icons/all-files/ri/RiErrorWarningFill"
+import { RiCheckboxCircleFill } from "@react-icons/all-files/ri/RiCheckboxCircleFill"
 
 const Card = props => {
   console.debug("Making Card of type: ", props.type)
@@ -25,6 +27,13 @@ const Card = props => {
   return (
     <div class="conatiner card-container">
       <div class="columns custom-card">
+        {props.mandatory !== undefined ? (
+          <div className="column is-full has-text-centered">
+            <ShowCardSelectability isMandatory={props.mandatory} />
+          </div>
+        ) : (
+          ``
+        )}
         <div className="column is-full">
           <div className="columns">
             <div class="column is-8">
@@ -67,6 +76,7 @@ const Card = props => {
               onPress={props.onPress}
               isError={props.error !== null}
               disabled={props.disabled}
+              isMandatory={props.mandatory}
             />
           </div>
         ) : (
@@ -93,21 +103,49 @@ const CustomCheckBox = props => {
   )
 }
 
+const ShowCardSelectability = ({ isMandatory }) => {
+  return (
+    <>
+      <div
+        className={`columns selectability-container ${
+          isMandatory ? "mandatory" : "optional"
+        } `}
+      >
+        <div className="column">
+          {isMandatory ? (
+            <>
+              <RiErrorWarningFill /> {` `}Mandatory
+            </>
+          ) : (
+            <>
+              <RiCheckboxCircleFill /> {` `}Optional
+            </>
+          )}
+        </div>
+      </div>
+    </>
+  )
+}
+
 const AddToCartButton = props => {
   const [selected, setSelected] = React.useState(props.selected)
   const [waitForSelection, setWaitForSelection] = React.useState(true)
 
+  const handleButtonClick = () =>  {
+    if (!props.isMandatory) {
+      setSelected(!selected)
+    }
+  }
+
   React.useEffect(() => {
     const timer = setTimeout(() => {
       setWaitForSelection(!waitForSelection)
-    }, 2000);
+    }, 500)
     return () => clearTimeout(timer)
   }, [selected])
 
   React.useEffect(() => {
-    if (selected && !waitForSelection) {
-      props.onPress(selected)
-    }
+    props.onPress(selected)
   }, [selected, waitForSelection])
   return (
     <button
@@ -115,7 +153,7 @@ const AddToCartButton = props => {
         props.isError || props.disabled ? "inactive" : ""
       } ${selected && !waitForSelection ? "success" : ""} `}
       type="button"
-      onClick={() => setSelected(!selected)}
+      onClick={handleButtonClick}
       disabled={props.isError || props.disabled}
     >
       <span>{props.selectionText}</span>

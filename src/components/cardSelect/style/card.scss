@@ -184,3 +184,13 @@
 .modal-container {
   color: white !important;
 }
+
+.selectability-container.mandatory {
+  // background-color: $unsucessful-color;
+  color: $unsucessful-color;
+}
+
+.selectability-container.optional {
+  // background-color: #ffc421;
+  color: #ffc421;
+}
