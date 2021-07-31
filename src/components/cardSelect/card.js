@@ -61,6 +61,7 @@ const Card = props => {
               disabled={props.disabled}
               selected={props.selected}
               callback={props.callback}
+              maxTxnAmount={props.maxTxnAmount}
             />
           )}
         </div>
@@ -245,6 +246,7 @@ const Data = ({
   disabled,
   selected,
   callback,
+  maxTxnAmount
 }) => {
   let fees = cardData.price !== undefined ? cardData.price[network] : "Free"
   const [featureInput, setFeatureInput] = React.useState({ features: [] })
@@ -252,22 +254,28 @@ const Data = ({
   const handleFeatureInputChange = (i, event, input) => {
     console.debug("TOTAL FEE: Feature Input recorded: ", event.target.value)
     const newArray = Array.from(featureInput.features)
-    let value = event.target.value
-    if (value >= input.min && value <= input.max) {
+    let value = parseFloat(event.target.value)
+    if (value >= parseFloat(input.min) && value <= parseFloat(input.max)) {
       newArray[i] = value
       setFeatureInput({ features: newArray })
-      console.log("Feature Input on change", featureInput)
       callback(value)
     } else {
       event.target.value = ""
     }
   }
 
-  React.useEffect(() => {
-    console.debug("TOTAL FEE: Feature Input State: ", featureInput)
-  }, [featureInput])
-
-  let maxTxnAmount = 500000;
+  const resetStateInput = i => {
+    console.debug("TOTAL FEE: Resseting input")
+    if (
+      featureInput.features[i] !== undefined &&
+      featureInput.features[i] !== ""
+    ) {
+      const newArray = Array.from(featureInput.features)
+      newArray[i] = ""
+      setFeatureInput({ features: newArray })
+      callback(0)
+    }
+  }
   return (
     <div className="conatiner has-text-centered">
       <div class="columns">
@@ -290,22 +298,26 @@ const Data = ({
             <div class="centerinput">
               {cardData.inputData !== null && cardData.inputData !== undefined
                 ? cardData.inputData.map((input, i) => {
+                    if ((!selected || disabled) && input.idx !== 2) {
+                      resetStateInput(i)
+                    }
                     return (
                       <>
                         <div
                           className={`input-block ${
                             !selected || disabled
                               ? "disabled"
+                              : input.idx === 2
+                              ? "pre-selected"
                               : featureInput.features[i] !== undefined &&
                                 featureInput.features[i] !== ""
                               ? "success"
-                              : "pre-selected"
+                              : ""
                           }`}
                         >
                           <input
-                            key={featureInput}
                             type={input.type}
-                            onChange={event =>
+                            onBlur={event =>
                               handleFeatureInputChange(i, event, input)
                             }
                             id="featureInput"
@@ -313,8 +325,15 @@ const Data = ({
                             spellcheck="false"
                             min={input.min}
                             max={input.max}
+                            step="0.01"
                             disabled={disabled || !selected || input.idx === 2}
-                            value={ selected ? input.idx === 2 ? maxTxnAmount : undefined : undefined }
+                            value={
+                              selected
+                                ? input.idx === 2
+                                  ? maxTxnAmount
+                                  : null
+                                : ""
+                            }
                           />
 
                           <span class="placeholder">

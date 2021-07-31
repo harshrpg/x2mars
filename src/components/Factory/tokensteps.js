@@ -130,7 +130,9 @@ const FactorySteps = props => {
             <Step2
               className="ind-step"
               network={props.network}
-              onSuccess={(tokenDetailsProvided) => setTokenDetailsAndSuccess(tokenDetailsProvided, 2)}
+              onSuccess={tokenDetailsProvided =>
+                setTokenDetailsAndSuccess(tokenDetailsProvided, 2)
+              }
               key={1}
               type={tokenType}
             />
@@ -314,7 +316,10 @@ const Step2 = props => {
   }
 
   const tokenSupplyCb = (tokenSupply, tokenSupplyUnit) => {
-    console.debug("TOKEN STEPS:: TOKEN SUPPLY SUPPLIED", tokenSupply + " " + tokenSupplyUnit)
+    console.debug(
+      "TOKEN STEPS:: TOKEN SUPPLY SUPPLIED",
+      tokenSupply + " " + tokenSupplyUnit
+    )
     tokenDetails.Supply = tokenSupply
     tokenDetails.SupplyUnit = tokenSupplyUnit
     setTokenDetails({
@@ -419,16 +424,16 @@ const Step3 = props => {
   const card4 = step.cardData[3]
   const card5 = step.cardData[4]
   var tokenDetails = props.tokenDetails
-  const numberMap= {
-    "Thousand": 10^3,
-    "Million": 10^6,
-    "Billion": 10^9,
-    "Trillion": 10^12,
-    "Quadrillion": 10^15
+  const numberMap = {
+    Thousand: 10 ** 3,
+    Million: 10 ** 6,
+    Billion: 10 ** 9,
+    Trillion: 10 ** 12,
+    Quadrillion: 10 ** 15,
   }
   var tokenSupply = parseFloat(tokenDetails.Supply)
   const multiplier = numberMap[tokenDetails.SupplyUnit]
-  console.debug("TOKEN SUPPLY: ", tokenSupply, multiplier)
+  console.debug("TOKEN SUPPLY: ", tokenSupply*multiplier)
   let tokenType =
     props.type === 0 ? "Governance Token" : "Fee on Transfer Token"
 
@@ -440,7 +445,7 @@ const Step3 = props => {
     features: featureSelectionArr,
   })
   const [featureFees, setFeatureFees] = React.useState({
-    featureFees: [0, 0, 500000, 0, 0],
+    featureFees: [0, 0, 50000, 0, 0],
   })
 
   const [totalFees, setTotalFees] = React.useState(0)
@@ -454,18 +459,9 @@ const Step3 = props => {
 
   const setFees = (index, fee) => {
     console.debug("TOTAL FEE: Fee selected: ", fee)
-    if (featuresSelected.features[index] && fee > 0 && fee < 16) {
-      const newArray = Array.from(featureFees.featureFees)
-      newArray[index] = fee
-      setFeatureFees({ featureFees: newArray })
-    } else if (featuresSelected.features[index]) {
-      console.error(
-        "Feature not selected and fee being tried to set",
-        featuresSelected.features[index]
-      )
-    } else if (fee <= 0) {
-      console.error("Incorrect fee value", fee)
-    }
+    const newArray = Array.from(featureFees.featureFees)
+    newArray[index] = fee
+    setFeatureFees({ featureFees: newArray })
   }
 
   React.useEffect(() => {
@@ -475,16 +471,19 @@ const Step3 = props => {
       let failedReq = 0
       step.cardData.map((_, index) => {
         if (
-          featuresSelected.features[index] &&
-          featureFees.featureFees[index] > 0
+          (index !== 2 &&
+            featuresSelected.features[index] &&
+            featureFees.featureFees[index] > 0) ||
+          index === 2
         ) {
           reqFullfilled++
         }
         if (
-          (featuresSelected.features[index] &&
+          index !== 2 &&
+          ((featuresSelected.features[index] &&
             featureFees.featureFees[index] === 0) ||
-          (!featuresSelected.features[index] &&
-            featureFees.featureFees[index] > 0)
+            (!featuresSelected.features[index] &&
+              featureFees.featureFees[index] > 0))
         ) {
           failedReq++
         }
@@ -615,6 +614,7 @@ const Step3 = props => {
                     : "Add to Contract"
                 }
                 mandatory={props.type === 1 ? false : undefined}
+                maxTxnAmount={0.005 * (tokenSupply * multiplier)}
               />
             </div>
           </div>
