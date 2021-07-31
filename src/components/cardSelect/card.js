@@ -139,6 +139,7 @@ const AddToCartButton = props => {
   }
 
   React.useEffect(() => {
+    console.debug("EFFECT 1");
     const timer = setTimeout(() => {
       setWaitForSelection(!waitForSelection)
     }, 500)
@@ -146,6 +147,7 @@ const AddToCartButton = props => {
   }, [selected])
 
   React.useEffect(() => {
+    console.debug("EFFECT 2");
     props.onPress(selected)
   }, [selected, waitForSelection])
   return (
@@ -298,7 +300,7 @@ const Data = ({
             <div class="centerinput">
               {cardData.inputData !== null && cardData.inputData !== undefined
                 ? cardData.inputData.map((input, i) => {
-                    if ((!selected || disabled) && input.idx !== 2) {
+                    if ((!selected || disabled) && input.idx !== undefined && input.idx !== 2) {
                       resetStateInput(i)
                     }
                     return (
@@ -537,6 +539,7 @@ const Step2Card2 = ({ cardData, network, callback }) => {
   }
 
   React.useEffect(() => {
+    console.debug("EFFECT 3");
     if (tokenSupply !== 0 && tokenSupplyUnits !== "Units") {
       console.debug(
         "Effect in supply details: ",

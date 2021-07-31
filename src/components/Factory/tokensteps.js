@@ -94,6 +94,7 @@ const FactorySteps = props => {
   }
 
   React.useEffect(() => {
+    console.debug("EFFECT 5");
     if ((currentStep === 3 && tokenType === 0) || currentStep == 4) {
       console.debug(
         "Effect: Current Step: ",
@@ -329,6 +330,7 @@ const Step2 = props => {
   }
 
   React.useEffect(() => {
+    console.debug("EFFECT 6");
     if (
       tokenDetails.Name !== null &&
       tokenDetails.Symbol !== null &&
@@ -465,6 +467,7 @@ const Step3 = props => {
   }
 
   React.useEffect(() => {
+    console.debug("EFFECT 7");
     if (props.type === 1) {
       console.debug("Feature Effect: ", featuresSelected, featureFees)
       let reqFullfilled = 0
@@ -511,6 +514,7 @@ const Step3 = props => {
   }, [featuresSelected, featureFees])
 
   React.useEffect(() => {
+    console.debug("EFFECT 8");
     calculateTotalFees()
   }, [featureFees])
 
@@ -692,10 +696,15 @@ const Step4 = props => {
         <div className="column">
           <StepTitle title={step.title} />
         </div>
-        <div className="column">
-          Decription goes here
-          {/* TODO */}
-        </div>
+        <div className="column has-text-centered sub-title-container">
+        <StepSubTitle
+          subtitleMain={`Launchpad is Coming Soon.`}
+          subtitleSub={`Stay Connected`}
+        />
+        <span className="floating-warn">
+          <RiErrorWarningLine />
+        </span>
+      </div>
         <div className="column">
           <div className="columns step-rows">
             <div className="column">
@@ -705,11 +714,14 @@ const Step4 = props => {
                 error={null}
                 cardData={card1}
                 network={props.network}
-                selected={isLaunchpad} // TODO: Remove False and make it selectable using callback
+                selected={false} // TODO: Remove False and make it selectable using callback
                 cardImage={getImageDataForCard(card1.img)}
                 cardIndex={0}
                 onPress={() => setIsLaunchpad(!isLaunchpad)}
-                callback={testCb}
+                mandatory={false}
+                selectionText={
+                  "Coming Soon"
+                }
               />
             </div>
           </div>

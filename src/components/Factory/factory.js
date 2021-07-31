@@ -27,6 +27,7 @@ const Factory = () => {
     fetcher: fetcher(library),
   })
   React.useEffect(() => {
+    console.debug("EFFECT 4");
     if (library) {
       library.on("block", () => {
         console.log("update balance...")
