@@ -11,11 +11,19 @@ $inactive-color: #C4C4C4;
 $unsucessful-color: #E53935;
 $successfull-color: #00C853;
 $hero-image-float-text: #f7ecca;
+$theme-white: rgba(255, 255, 255, 0.911);
 $family-sans-serif: roboto-slab, serif;
 $family-primary: $family-sans-serif;
 $title-family: $family-primary;
 $title-color: $charcoal;
 $font-color: $charcoal;
+
+
+%theme-button-metrics {
+  border-radius: 0% !important;
+  border-width: 2px !important;
+  padding: 0.5rem 1rem 0.5rem 1rem !important;
+}
 
 @mixin primaryFontFamily($fontWeight: 400, $textTransform: none) {
   font-family: $family-sans-serif;
@@ -26,6 +34,19 @@ $font-color: $charcoal;
 
 @mixin bordercolor($color: black, $style: solid) {
   border: 1px $style $color;
+}
+
+@mixin theme-button($border-color: $primary-color) {
+  @extend %theme-button-metrics;
+  background-color: $theme-white !important;
+  border-color: $border-color !important;
+}
+
+@mixin theme-button-filled($border-color: $primary-color) {
+  @extend %theme-button-metrics;
+  background-color: $primary-color !important;
+  border-color: transparent !important;
+  color: $theme-white !important;
 }
 
 

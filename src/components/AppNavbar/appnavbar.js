@@ -1,7 +1,7 @@
 import * as React from "react"
 import AppLogo from "../Logo/applogo"
 import { Link } from "gatsby"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { FaFileContract } from "@react-icons/all-files/fa/FaFileContract";
 
 import "./style/appnavbar.scss"
 
@@ -11,10 +11,6 @@ import { formatEther } from "@ethersproject/units"
 import BigNumber from "bignumber.js"
 import useSWR from "swr"
 import { NetworkConstants, FactoryConstants } from "../../util/Constants"
-import { library } from "@fortawesome/fontawesome-svg-core"
-import { fab } from "@fortawesome/free-brands-svg-icons"
-import { Web3ReactProvider } from "@web3-react/core"
-import { Web3Provider } from "@ethersproject/providers"
 
 export const injectedConnector = new InjectedConnector({
   supportedChainIds: [
@@ -39,7 +35,6 @@ const formatBalance = balance => {
 }
 
 const AppNavbar = () => {
-  //connect wallet code
   const { account, activate, active, library } = useWeb3React()
   const connectWallet = () => {
     activate(injectedConnector)
@@ -63,12 +58,6 @@ const AppNavbar = () => {
     balance = formatBalance(balance)
   }
 
-  //library.add(fab)
-
-  console.log("active?", active)
-
-  //create token code
-  const [isActive, setIsActive] = React.useState(false)
   return (
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <Link to="/" class="navbar-start">
@@ -85,7 +74,6 @@ const AppNavbar = () => {
           <div>
             {balance > FactoryConstants.MINIMUM_COIN_TO_PROCEED ? (
               <div>
-                {/* <button class="button is-light custom-button app-button" type="button">{account}</button> */}
                 <button
                   class="button is-light custom-button app-button-withdata"
                   type="button"
@@ -112,6 +100,14 @@ const AppNavbar = () => {
             </button>
           </div>
         )}
+        <div>
+          <button class="button is-light cart-button" type="button">
+            <span>Your Contract</span>
+            <span class="icon is-small">
+              <FaFileContract />
+            </span>
+          </button>
+        </div>
       </div>
     </nav>
   )
