@@ -113,11 +113,7 @@ const AppNavbar = () => {
           </div>
         </div>
       </nav>
-      {walletSelect ? (
-        <WalletSelect setWalletSelect={setWalletSelect} active={true} />
-      ) : (
-        <WalletSelect setWalletSelect={setWalletSelect} active={false} />
-      )}
+      <WalletSelect setWalletSelect={setWalletSelect} active={walletSelect} />
     </>
   )
 }

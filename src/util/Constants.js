@@ -12,4 +12,8 @@ export const FactoryConstants = {
     MINIMUM_COIN_TO_PROCEED: -1,
 }
 
-// export default Constants;
+export const WalletTypes = {
+    METAMASK: "metamask",
+    WALLETLINK: "coinbase",
+    FORTMATIC: "fortmatic",
+}
