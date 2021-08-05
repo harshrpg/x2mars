@@ -21,9 +21,10 @@ const IndexPage = (props) => {
   `)
   library.add(fab)
   return (
-    <Layout>
+    <Layout data-testid="layoutInIndex">
+      
       <Seo title={data.site.siteMetadata.title} />
-      <App />
+      <App data-testid="appInIndex" />
     </Layout>
   )
 }
