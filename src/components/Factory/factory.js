@@ -18,33 +18,6 @@ const formatBalance = balance => {
 const Factory = () => {
   let connectedNetwork = "eth"
   const [stepCount, setStepCount] = React.useState(0)
-  const [accountBalanceChanged, setAccountBalanceChanged] = React.useState(
-    false
-  )
-  const [accountBalance, setAccountBalance] = React.useState(0.0)
-  const { account, active, library } = useWeb3React()
-  const { data, error, mutate } = useSWR(["getBalance", account, "latest"], {
-    fetcher: fetcher(library),
-  })
-  React.useEffect(() => {
-    console.debug("EFFECT 4");
-    if (library) {
-      library.on("block", () => {
-        console.log("update balance...")
-        mutate(undefined, true)
-      })
-      return () => {
-        library.removeAllListeners("block")
-      }
-    }
-  }, [])
-  if (data) {
-    var balance = new BigNumber(data._hex).toString()
-    balance = formatBalance(balance)
-    console.log(balance)
-    setAccountBalance(balance)
-  }
-
   const setCart = () => {
     console.log("Setting Cart")
   }
@@ -52,10 +25,10 @@ const Factory = () => {
     <>
       <FactorySteps
         stepNumber={stepCount}
-        isConnectionActive={active}
-        hasBalanceChanged={accountBalanceChanged}
+        // isConnectionActive={active}
+        // hasBalanceChanged={accountBalanceChanged}
         callback={setCart}
-        accountBalance={accountBalance}
+        // accountBalance={accountBalance}
         network={connectedNetwork}
       />
     </>

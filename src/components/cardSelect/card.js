@@ -23,11 +23,11 @@ const Card = props => {
     style = { opacity: 1 }
   }
   return (
-    <div class="conatiner card-container">
-      <div class="columns custom-card">
+    <div className="conatiner card-container">
+      <div className="columns custom-card">
         <div className="column is-full">
           <div className="columns">
-            <div class="column is-8">
+            <div className="column is-8">
               {props.error !== null ? <ErrorBox error={props.error} /> : ``}
             </div>
             <div className="column is-4">
@@ -43,7 +43,7 @@ const Card = props => {
           ``
         )}
 
-        <div class="column is-full">
+        <div className="column is-full">
           {props.type === "custom" ? (
             <CustomData
               cardData={props.cardData}
@@ -89,7 +89,7 @@ const Card = props => {
 const CustomCheckBox = props => {
   const [checked, setChecked] = React.useState(props.selected)
   return (
-    <label class="checkbox-container">
+    <label className="checkbox-container">
       <input
         type="checkbox"
         key={checked}
@@ -97,7 +97,7 @@ const CustomCheckBox = props => {
         onClick={event => props.onPress(event)}
         disabled={props.disabled ? true : props.isError !== null ? true : false}
       />
-      <span class="checkmark"></span>
+      <span className="checkmark"></span>
     </label>
   )
 }
@@ -170,7 +170,7 @@ const AddToCartButton = props => {
       disabled={props.isError || props.disabled}
     >
       <span>{props.selectionText}</span>
-      <span class="icon">
+      <span className="icon">
         {selected ? (
           waitForSelection ? (
             <AiOutlineCodeSandbox className="spinner" />
@@ -200,17 +200,17 @@ const HelpButton = props => {
         type="button"
         onClick={() => setIsActive(!isActive)}
       >
-        <span class="icon">
+        <span className="icon">
           <BsQuestion />
         </span>
       </button>
       <div className={`modal ${isActive ? "is-active" : ""}`}>
-        <div class="modal-background"></div>
-        <div class="modal-content">
+        <div className="modal-background"></div>
+        <div className="modal-content">
           <HelpDescription cardData={props.cardData} />
         </div>
         <button
-          class="modal-close is-large"
+          className="modal-close is-large"
           aria-label="close"
           onClick={() => setIsActive(!isActive)}
         ></button>
@@ -237,7 +237,7 @@ const HelpDescription = props => {
 }
 
 const ErrorBox = ({ error }) => {
-  return <div class="error-container">{error}</div>
+  return <div className="error-container">{error}</div>
 }
 
 const Data = ({
@@ -280,8 +280,8 @@ const Data = ({
   }
   return (
     <div className="conatiner has-text-centered">
-      <div class="columns">
-        <div class="column">
+      <div className="columns">
+        <div className="column">
           {cardImage !== undefined || cardImage !== null ? (
             <GatsbyImage image={cardImage} width={30} height={30} alt="" />
           ) : (
@@ -297,7 +297,7 @@ const Data = ({
       {type === "feature-select" ? (
         <div className="columns">
           <div className="column">
-            <div class="centerinput">
+            <div className="centerinput">
               {cardData.inputData !== null && cardData.inputData !== undefined
                 ? cardData.inputData.map((input, i) => {
                     if ((!selected || disabled) && input.idx !== undefined && input.idx !== 2) {
@@ -338,7 +338,7 @@ const Data = ({
                             }
                           />
 
-                          <span class="placeholder">
+                          <span className="placeholder">
                             {input.min !== "" && input.max !== ""
                               ? input.name +
                                 ` (` +
@@ -481,7 +481,7 @@ const Step2Card1 = ({ cardData, network, callback }) => {
       </div> */}
       <div className="columns">
         <div className="column">
-          <div class="centerinput">
+          <div className="centerinput">
             <div className={`input-block ${tokenName !== "" ? "success" : ""}`}>
               <input
                 type="text"
@@ -491,14 +491,14 @@ const Step2Card1 = ({ cardData, network, callback }) => {
                 spellcheck="false"
                 onBlur={callback[0]}
               />
-              <span class="placeholder">Token Name</span>
+              <span className="placeholder">Token Name</span>
             </div>
           </div>
         </div>
       </div>
       <div className="columns">
         <div className="column">
-          <div class="centerinput">
+          <div className="centerinput">
             <div
               className={`input-block ${tokenSymbol !== "" ? "success" : ""}`}
             >
@@ -510,7 +510,7 @@ const Step2Card1 = ({ cardData, network, callback }) => {
                 spellcheck="false"
                 onBlur={callback[1]}
               />
-              <span class="placeholder">Token Symbol</span>
+              <span className="placeholder">Token Symbol</span>
             </div>
           </div>
         </div>
@@ -570,7 +570,7 @@ const Step2Card2 = ({ cardData, network, callback }) => {
       </div> */}
       <div className="columns">
         <div className="column is-half">
-          <div class="centerinput">
+          <div className="centerinput">
             <div
               className={`input-block ${tokenSupply !== 0 ? "success" : ""}`}
             >
@@ -583,7 +583,7 @@ const Step2Card2 = ({ cardData, network, callback }) => {
                 min="1"
                 max="100"
               />
-              <span class="placeholder">1-100</span>
+              <span className="placeholder">1-100</span>
             </div>
           </div>
         </div>
@@ -609,7 +609,7 @@ const Step2Card2 = ({ cardData, network, callback }) => {
       </div>
       <div className="columns">
         <div className="column">
-          <div class="centerinput">
+          <div className="centerinput">
             <div className={`input-block inactive`}>
               <input
                 type="text"
@@ -619,7 +619,7 @@ const Step2Card2 = ({ cardData, network, callback }) => {
                 disabled={true}
                 value={decimals}
               />
-              <span class="placeholder">Decimals</span>
+              <span className="placeholder">Decimals</span>
             </div>
           </div>
         </div>
@@ -645,18 +645,18 @@ const CardTitle = ({ title, size }) => {
 const Fee = ({ fee, network }) => {
   return (
     <div className="container custom-container-fees">
-      <div class="columns">
-        <div class="column is-one-quarter is-half-mobile static-fee-column">
-          <span class="is-size-7 is-size-8-mobile has-text-centered">Fees</span>
+      <div className="columns">
+        <div className="column is-one-quarter is-half-mobile static-fee-column">
+          <span className="is-size-7 is-size-8-mobile has-text-centered">Fees</span>
         </div>
-        <div class="column">
-          <span class="is-size-6 is-size-7-mobile has-text-centered">
+        <div className="column">
+          <span className="is-size-6 is-size-7-mobile has-text-centered">
             {fee}
             {` `}
             {fee !== "Free" ? (network === "eth" ? `ETH` : `BNB`) : ``}
           </span>
         </div>
-        <div class="column is-one-quarter">
+        <div className="column is-one-quarter">
           <NetworkIcon network={network} />
         </div>
       </div>
@@ -666,7 +666,7 @@ const Fee = ({ fee, network }) => {
 
 const NetworkIcon = ({ network }) => {
   return (
-    <span class="is-size-5 is-size-7-mobile has-text-centered icon-style">
+    <span className="is-size-5 is-size-7-mobile has-text-centered icon-style">
       {network === "eth" ? (
         <FontAwesomeIcon icon={["fab", "ethereum"]} />
       ) : (

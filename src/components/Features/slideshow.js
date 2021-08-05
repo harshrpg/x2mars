@@ -55,27 +55,27 @@ const SlideShow = () => {
   }, [index])
 
   return (
-    <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-4-fullhd">
-      <div class="column">
-        <div class="slideshow">
+    <div className="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-4-fullhd">
+      <div className="column">
+        <div className="slideshow">
           <div
-            class="slideshowSlider"
+            className="slideshowSlider"
             style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}
           >
             {images.map((image, index) => (
               <GatsbyImage
-                class="slide slide-image"
+                className="slide slide-image"
                 key={index}
                 image={getImage(image)}
               />
             ))}
           </div>
 
-          <div class="slideshowDots">
+          <div className="slideshowDots">
             {images.map((_, idx) => (
               <div
                 key={idx}
-                class={`slideshowDot${index === idx ? " active" : ""}`}
+                className={`slideshowDot${index === idx ? " active" : ""}`}
                 onClick={() => {
                   setIndex(idx)
                 }}
@@ -84,14 +84,14 @@ const SlideShow = () => {
           </div>
         </div>
       </div>
-      <div class="column">
-        <p class="title is-size-3-desktop is-size-3-fullhd is-size-3-widescreen is-size-4-tablet is-size-4-mobile">Make your token in 3 simple steps</p>
+      <div className="column">
+        <p className="title is-size-3-desktop is-size-3-fullhd is-size-3-widescreen is-size-4-tablet is-size-4-mobile">Make your token in 3 simple steps</p>
 
-        <div class="content">
+        <div className="content">
           <ul>
             {imageContent.map((content, idx) => (
               <li
-                class={`explainer subtitle is-size-5-desktop is-size-5-fullhd is-size-5-widescreen is-size-6-tablet is-size-6-mobile${
+                className={`explainer subtitle is-size-5-desktop is-size-5-fullhd is-size-5-widescreen is-size-6-tablet is-size-6-mobile${
                   index === idx ? " is-explainer-active" : ""
                 }`}
               >

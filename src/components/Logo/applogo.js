@@ -3,7 +3,7 @@ import * as React from "react"
 import "./style/logo.scss"
 
 const AppLogo = () => (
-    <div class="logo is-size-1">
+    <div className="logo is-size-1">
         <span>X</span>
     </div>
 );

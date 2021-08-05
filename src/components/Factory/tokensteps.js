@@ -222,13 +222,13 @@ const Step1 = props => {
   }
 
   return (
-    <div class="columns step-columns has-text-centered step-ind">
-      <div class="column">
+    <div className="columns step-columns has-text-centered step-ind">
+      <div className="column">
         <StepTitle title={step1.title} />
       </div>
-      <div class="column">
-        <div class="columns step-rows">
-          <div class="column">
+      <div className="column">
+        <div className="columns step-rows">
+          <div className="column">
             <Card
               id="step1-card1"
               type={step1Card1.type}
@@ -242,7 +242,7 @@ const Step1 = props => {
               selectionText="Select"
             />
           </div>
-          <div class="column">
+          <div className="column">
             <Card
               id="step1-card2"
               type={step1Card2.type}
@@ -343,8 +343,8 @@ const Step2 = props => {
   }, [tokenDetails])
 
   return (
-    <div class="columns step-columns step-ind">
-      <div class="column">
+    <div className="columns step-columns step-ind">
+      <div className="column">
         <StepTitle title={step.title} />
       </div>
       <div className="column has-text-centered sub-title-container">
@@ -365,9 +365,9 @@ const Step2 = props => {
           <RiErrorWarningLine />
         </span>
       </div>
-      <div class="column">
-        <div class="columns step-rows">
-          <div class="column">
+      <div className="column">
+        <div className="columns step-rows">
+          <div className="column">
             <Card
               id="step2-card1"
               type={card1.type}
@@ -379,7 +379,7 @@ const Step2 = props => {
               mandatory={true}
             />
           </div>
-          <div class="column">
+          <div className="column">
             <Card
               id="step2-card2"
               type={card2.type}
@@ -391,7 +391,7 @@ const Step2 = props => {
               mandatory={true}
             />
           </div>
-          <div class="column">
+          <div className="column">
             <Card
               id="step2-card3"
               type={card3.type}
@@ -573,7 +573,7 @@ const Step3 = props => {
             </div>
           </div>
           <div className="columns step-rows">
-            <div class="column">
+            <div className="column">
               <Card
                 id="step3-card2"
                 type={card2.type}
@@ -597,7 +597,7 @@ const Step3 = props => {
                 mandatory={props.type === 1 ? false : undefined}
               />
             </div>
-            <div class="column">
+            <div className="column">
               <Card
                 id="step3-card3"
                 type={card3.type}

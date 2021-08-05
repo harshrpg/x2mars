@@ -12,7 +12,7 @@ import { injectedConnector } from "../../context/helpers"
 
 const WalletSelect = ({ setWalletSelect, active }) => {
   const {userDetails, loading, errorMessage} = useAuthState()
-  console.debug(`Authenticate: Inside Wallet Select ${loading}`)
+  console.debug("Authenticate: Inside Wallet Select", userDetails)
   return (
     <div className={`modal ${active ? "is-active" : ""}`}>
       <div className="modal-background"></div>
@@ -20,11 +20,11 @@ const WalletSelect = ({ setWalletSelect, active }) => {
         <ModalContent />
         <div className="modal-close-custom">
           <button
-            class="button close-modal-button"
+            className="button close-modal-button"
             aria-label="close"
             onClick={() => setWalletSelect(false)}
           >
-            <span class="icon is-large">
+            <span className="icon is-large">
               <GoX />
             </span>
           </button>
@@ -62,11 +62,9 @@ const ModalContent = () => {
 const MetaMaskWalletConnect = () => {
   // const [metamaskInstalled, _] = React.useState(window.ethereum)
   const [metamaskInstalled, _] = React.useState(true) // TODO: Remove, only for debugging purposes
-  const dispatch = useAuthDispatch();
   const activate = useWalletConnect();
   const handleClick = () => {
-    dispatch({ type: "CONNECTING", payload: WalletTypes.METAMASK })
-    activate(injectedConnector)
+    activate(WalletTypes.METAMASK)
   }
   return (
     <div>

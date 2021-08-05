@@ -36,49 +36,46 @@ const formatBalance = balance => {
 }
 
 const AppNavbar = () => {
-  const { account, activate, active, library } = useWeb3React()
+  // const { account, activate, active, library } = useWeb3React()
   const [walletSelect, setWalletSelect] = React.useState(false)
-  const connectWallet = () => {
-    activate(injectedConnector)
-  }
-  const { data, error, mutate } = useSWR(["getBalance", account, "latest"], {
-    fetcher: fetcher(library),
-  })
-  React.useEffect(() => {
-    if (library) {
-      library.on("block", () => {
-        console.log("update balance...")
-        mutate(undefined, true)
-      })
-      return () => {
-        library.removeAllListeners("block")
-      }
-    }
-  }, [])
-  if (data) {
-    var balance = new BigNumber(data._hex).toString()
-    balance = formatBalance(balance)
-  }
+  // const { data, error, mutate } = useSWR(["getBalance", account, "latest"], {
+  //   fetcher: fetcher(library),
+  // })
+  // React.useEffect(() => {
+  //   if (library) {
+  //     library.on("block", () => {
+  //       console.log("update balance...")
+  //       mutate(undefined, true)
+  //     })
+  //     return () => {
+  //       library.removeAllListeners("block")
+  //     }
+  //   }
+  // }, [])
+  // if (data) {
+  //   var balance = new BigNumber(data._hex).toString()
+  //   balance = formatBalance(balance)
+  // }
 
   return (
     <>
-      <nav class="navbar" role="navigation" aria-label="main navigation">
-        <Link to="/" class="navbar-start">
+      <nav className="navbar" role="navigation" aria-label="main navigation">
+        <Link to="/" className="navbar-start">
           <AppLogo />
         </Link>
 
-        <div class="navbar-brand">
-          <div class="navbar-item" activeClassName="navbar-item">
-            <div class="factory-title">The Token Factory</div>
+        <div className="navbar-brand">
+          <div className="navbar-item">
+            <div className="factory-title">The Token Factory</div>
           </div>
         </div>
-        <div class="navbar-end">
-          {active ? (
+        <div className="navbar-end">
+          {/* {active ? (
             <div>
               {balance > FactoryConstants.MINIMUM_COIN_TO_PROCEED ? (
                 <div>
                   <button
-                    class="button is-light custom-button app-button-withdata"
+                    className="button is-light custom-button app-button-withdata"
                     type="button"
                   >
                     {balance}
@@ -95,18 +92,27 @@ const AppNavbar = () => {
           ) : (
             <div>
               <button
-                class="button is-light custom-button app-button"
+                className="button is-light custom-button app-button"
                 type="button"
                 onClick={() => setWalletSelect(true)}
               >
                 Connect Wallet
               </button>
             </div>
-          )}
+          )} */}
           <div>
-            <button class="button is-light cart-button" type="button">
+              <button
+                className="button is-light custom-button app-button"
+                type="button"
+                onClick={() => setWalletSelect(true)}
+              >
+                Connect Wallet
+              </button>
+            </div>
+          <div>
+            <button className="button is-light cart-button" type="button">
               <span>Your Contract</span>
-              <span class="icon is-small">
+              <span className="icon is-small">
                 <FaFileContract />
               </span>
             </button>
