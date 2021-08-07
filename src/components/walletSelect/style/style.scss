@@ -31,3 +31,14 @@
     width: 1px;
     background-color: '#909090';
 }
+
+.wallet-connect-container.is-hidden {
+    visibility: hidden;
+}
+
+.wallet-connect-container.is-selected {
+    position: inherit;
+    top: 50%;
+    left: 50%;
+    transform: scale(0.8) translate(-50%, -50%);
+}

@@ -36,6 +36,7 @@ export const AuthReducer = (initialState, action) => {
         ...initialState,
         userDetails: action.payload.userDetails,
         chainId: action.payload.chainId,
+        loading: false
       }
 
     default:

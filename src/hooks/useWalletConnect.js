@@ -19,11 +19,15 @@ const formatBalance = balance => {
 export const useWalletConnect = () => {
   //   const [balance, setBalance] = useState(null)
   const { account, active, activate, chainId, error, library, connector } = useWeb3React()
+  const { data, errorSwr, mutate } = useSWR(["getBalance", account, "latest"], {
+    fetcher: fetcher(library),
+  })
   const dispatch = useAuthDispatch()
   console.debug("Authenticate from custom hook: ", active)
 
   function activateWallet(walletType) {
     dispatch({ type: "CONNECTING", payload: walletType })
+    console.log("Activating Injector");
     activate(injectedConnector)
   }
 
@@ -34,45 +38,45 @@ export const useWalletConnect = () => {
         userDetails: { account: account, balance: null },
         chainId: chainId,
       },
-    })
+    });
   }, [active])
 
-  const { data, errorSwr, mutate } = useSWR(["getBalance", account, "latest"], {
-    fetcher: fetcher(library),
-  })
+//   const { data, errorSwr, mutate } = useSWR(["getBalance", account, "latest"], {
+//     fetcher: fetcher(library),
+//   })
 
-  useEffect(() => {
-    if (data) {
-      dispatch({
-        type: "CONNECTED",
-        payload: {
-          userDetails: {
-            account: account,
-            balance: formatBalance(BigNumber.from(data._hex).toString()),
-          },
-          chainId: chainId,
-        },
-      })
-      localStorage.setItem(
-        "currentUser",
-        JSON.stringify({
-          account: account,
-          balance: formatBalance(BigNumber.from(data._hex).toString()),
-        })
-      )
-    }
-  }, [data])
+//   useEffect(() => {
+//     if (data) {
+//       dispatch({
+//         type: "CONNECTED",
+//         payload: {
+//           userDetails: {
+//             account: account,
+//             balance: formatBalance(BigNumber.from(data._hex).toString()),
+//           },
+//           chainId: chainId,
+//         },
+//       })
+//       localStorage.setItem(
+//         "currentUser",
+//         JSON.stringify({
+//           account: account,
+//           balance: formatBalance(BigNumber.from(data._hex).toString()),
+//         })
+//       )
+//     }
+//   }, [])
 
-  useEffect(() => {
-    if (library) {
-      library.on("block", () => {
-        console.log("update balance...")
-        mutate(undefined, true)
-      })
-      return () => {
-        library.removeAllListeners("block")
-      }
-    }
-  }, [])
+//   useEffect(() => {
+//     if (library) {
+//       library.on("block", () => {
+//         console.log("update balance...")
+//         mutate(undefined, true)
+//       })
+//       return () => {
+//         library.removeAllListeners("block")
+//       }
+//     }
+//   }, [])
   return activateWallet
 }
