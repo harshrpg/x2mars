@@ -6,7 +6,7 @@ import {
   animated,
   config,
   useTransition,
-} from "react-spring"
+} from "@react-spring/web"
 
 import { Coinbase, FortmaticIcon, Metamask } from "../Icons/icons"
 import "./style/style.scss"
