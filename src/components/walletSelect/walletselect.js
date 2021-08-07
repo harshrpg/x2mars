@@ -4,18 +4,15 @@ import { useWeb3React } from "@web3-react/core"
 import {
   useSpring,
   animated,
-  useSprings,
   config,
   useTransition,
 } from "react-spring"
 
 import { Coinbase, FortmaticIcon, Metamask } from "../Icons/icons"
 import "./style/style.scss"
-import useEthBalance from "../../hooks/useEthBalance"
-import { useAuthDispatch, useAuthState, walletConnect } from "../../context"
+import { useAuthState } from "../../context"
 import { WalletTypes } from "../../util/Constants"
 import { useWalletConnect } from "../../hooks/useWalletConnect"
-import { injectedConnector } from "../../context/helpers"
 
 const WalletSelect = ({ setWalletSelect, isActive }) => {
   const { userDetails, loading, errorMessage } = useAuthState()
@@ -60,8 +57,6 @@ const ModalContent = () => {
           <MetaMaskWalletConnect />
         </div>
         <div className="column">
-          {/* <TestAnimation><CoinbaseWalletConnect animate={true} /></TestAnimation> */}
-          {/* <AnimatedWalletConnect component={CoinbaseWalletConnect} /> */}
           <CoinbaseWalletConnect />
         </div>
         <div className="column">
@@ -247,47 +242,6 @@ const FortmaticWalletConnect = () => {
       </div>
     </animated.div>
   )
-}
-
-const AnimatedWalletConnect = ({ component }) => {
-  const transition = useTransition(component, item => item, {
-    from: {
-      opacity: 0,
-      position: "absolute",
-    },
-    enter: {
-      opacity: 1,
-    },
-    leave: {
-      opacity: 0,
-    },
-    config: { duration: 1000 },
-  })
-
-  return (
-    <>
-      {transition.map(({ item, props, key }) => (
-        <animated.div style={props} key={key}>
-          {item}
-        </animated.div>
-      ))}
-    </>
-  )
-}
-
-const TestAnimation = ({ children, animate }) => {
-  const { loading } = useAuthState()
-  const props = useSpring({
-    to: { opacity: 1 },
-    from: { opacity: 0 },
-    // reset: true,
-    reverse: loading,
-    delay: 200,
-    config: config.molasses,
-    // onRest: () => set(true),
-  })
-
-  return <animated.div style={props}>{children}</animated.div>
 }
 
 export default WalletSelect
