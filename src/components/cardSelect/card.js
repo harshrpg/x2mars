@@ -13,7 +13,7 @@ import { GoCheck } from "@react-icons/all-files/go/GoCheck"
 import { GoX } from "@react-icons/all-files/go/GoX"
 import { RiErrorWarningFill } from "@react-icons/all-files/ri/RiErrorWarningFill"
 import { RiCheckboxCircleFill } from "@react-icons/all-files/ri/RiCheckboxCircleFill"
-import NetworkIcon from "../Network/NetworkIcon"
+import { NetworkIcon } from "../Icons/icons"
 
 const Card = props => {
   let style = { opacity: 1 }

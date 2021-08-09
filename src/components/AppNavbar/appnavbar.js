@@ -5,6 +5,7 @@ import { InjectedConnector } from "@web3-react/injected-connector"
 import { formatEther } from "@ethersproject/units"
 import useSWR from "swr"
 import { FaFileContract } from "@react-icons/all-files/fa/FaFileContract"
+import { MdAccountCircle } from "@react-icons/all-files/md/MdAccountCircle";
 
 import { NetworkConstants, FactoryConstants } from "../../util/Constants"
 import AppLogo from "../Logo/applogo"
@@ -12,7 +13,7 @@ import WalletSelect from "../walletSelect/walletselect"
 
 import "./style/appnavbar.scss"
 import { BigNumber } from "ethers"
-import NetworkIcon from "../Network/NetworkIcon"
+import { NetworkIcon } from "../Icons/icons"
 
 export const injectedConnector = new InjectedConnector({
   supportedChainIds: [
@@ -158,13 +159,13 @@ const ProfileButton = ({ network, balance, account }) => {
       <div className="columns">
         <div className="column" style={{paddingRight: 0}}>
           <button
-            className="button is-light custom-button app-button-withdata"
+            className="button is-light custom-button"
             type="button"
           >
             <div>
               <div className="columns">
                 <div className="column">
-                  <NetworkIcon network={network} color="#FFFFFF" />
+                  <NetworkIcon network={network} color="#807FC6" />
                 </div>
                 <div className="column">{balance}</div>
               </div>
@@ -176,15 +177,12 @@ const ProfileButton = ({ network, balance, account }) => {
             className="button is-light custom-button account-address-button"
             type="button"
           >
-            <div>
-              <div className="columns">
-                <div className="column navbar-address-column">
-                  {account.slice(0, 6) +
+            <span>{account.slice(0, 6) +
                     "...." +
-                    account.substring(account.length - 3)}
-                </div>
-              </div>
-            </div>
+                    account.substring(account.length - 3)}</span>
+              <span className="icon is-small icon-profile">
+                <MdAccountCircle />
+              </span>
           </button>
         </div>
       </div>

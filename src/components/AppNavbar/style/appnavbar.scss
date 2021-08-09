@@ -70,7 +70,13 @@
   font-size: 0.8rem;
 }
 
+.icon-profile {
+  font-size: 1rem;
+  color: white;
+}
+
 .account-address-button {
+  @include theme-button-filled($background-color: $secondary-color);
   width: 100%;
   width: -moz-available; /* WebKit-based browsers will ignore this. */
   width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
