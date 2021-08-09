@@ -13,13 +13,41 @@ import "./style/style.scss"
 import { useAuthState } from "../../context"
 import { WalletTypes } from "../../util/Constants"
 import { useWalletConnect } from "../../hooks/useWalletConnect"
+import { injectedConnector } from "../../context/helpers"
+import { Connector } from "../../util/connectors"
 
 const WalletSelect = ({ setWalletSelect, isActive }) => {
+  const [balance, setBalance] = React.useState()
   const { userDetails, loading, errorMessage } = useAuthState()
   console.debug("Authenticate: Inside Wallet Select", loading)
   console.debug("Authenticate: Inside Wallet Select", userDetails)
-  const { active } = useWeb3React()
-  console.debug("Authenticate, is account now active? ", active)
+  const { active, account, chainId, library } = useWeb3React()
+  React.useEffect(() => {
+    if (!!account && !!library) {
+      let stale = false;
+      library.getBalance(account).then((balance) => {
+        if (!stale) {
+          setBalance(balance)
+        }
+      }).catch(() => {
+        if (!stale) {
+          setBalance(undefined)
+        }
+      })
+    }
+  }, [account, library, chainId])
+
+  React.useEffect(() => {
+    if (active) {
+      setWalletSelect(false)
+    }
+  }, [active])
+  console.debug("Authenticate::: is account now active? ", active)
+  if (active) {
+    console.debug("\tAuthenticate::: What is the account address? ", account)
+    console.debug("\tAuthenticate::: What is the chainId? ", chainId)
+    console.debug("\tAuthenticate::: What is the balance? ", balance)
+  }
   return (
     <div className={`modal ${isActive ? "is-active" : ""}`}>
       <div className="modal-background"></div>
@@ -82,7 +110,7 @@ const MetaMaskWalletConnect = () => {
   const [metamaskInstalled, _] = React.useState(true) // TODO: Remove, only for debugging purposes
   const activate = useWalletConnect()
   const handleClick = () => {
-    activate(WalletTypes.METAMASK)
+    activate(WalletTypes.METAMASK, Connector.INJECTED)
   }
   return (
     <animated.div style={hide}>
@@ -150,7 +178,7 @@ const CoinbaseWalletConnect = () => {
   })
   const activate = useWalletConnect()
   const handleClick = () => {
-    activate(WalletTypes.WALLETLINK)
+    activate(WalletTypes.WALLETLINK, Connector.WALLETLINK)
   }
   return (
     <animated.div style={hide}>
@@ -204,7 +232,7 @@ const FortmaticWalletConnect = () => {
   })
   const activate = useWalletConnect()
   const handleClick = () => {
-    activate(WalletTypes.FORTMATIC)
+    activate(WalletTypes.FORTMATIC, Connector.FORTMATIC)
   }
   return (
     <animated.div style={hide}>

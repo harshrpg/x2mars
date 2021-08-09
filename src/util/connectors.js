@@ -22,17 +22,18 @@ const injected = new InjectedConnector({
 
 
 const walletlink = new WalletLinkConnector({
-  url: env_RPC_URL_1,
+  url: "https://mainnet.infura.io/v3/c3fb6644d68a4d3db5c61fe11905c7dc",
   appName: "Momentum", // TODO: Update App name here
-  supportedChainIds: [
-    NetworkConstants.MAINNET_ETHEREUM,
-    NetworkConstants.ROPSTEN,
-    NetworkConstants.RINKEBY,
-    NetworkConstants.GOERLI,
-    NetworkConstants.KOVAN,
-    NetworkConstants.SMART_CHAIN_TESTNET,
-    NetworkConstants.SMART_CHAIN_MAINNET,
-  ],
+  // supportedChainIds: [
+  //   NetworkConstants.MAINNET_ETHEREUM,
+  //   NetworkConstants.ROPSTEN,
+  //   NetworkConstants.RINKEBY,
+  //   NetworkConstants.GOERLI,
+  //   NetworkConstants.KOVAN,
+  //   NetworkConstants.SMART_CHAIN_TESTNET,
+  //   NetworkConstants.SMART_CHAIN_MAINNET,
+  // ],
+  supportedChainIds: [1, 3, 4, 5, 42, 10, 137, 69, 420, 80001]
 })
 
 // TODO: Replace chain id to mainnet. Dynamic Chain Id fetch
