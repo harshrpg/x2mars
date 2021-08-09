@@ -35,16 +35,16 @@
 }
 
 @media screen and (max-width: 768px) {
-  .navbar{
+  .navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap:nowrap;
+    flex-wrap: nowrap;
   }
 }
 
 @media screen and (max-width: 571px) {
-  .navbar{
+  .navbar {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -59,8 +59,20 @@
 }
 
 .app-button-withdata {
-  padding: 1.5rem 2.2rem 1.5rem 2.2rem !important;
-  border-width: 3px !important;
-  border-color: $secondary-color !important;
-  font-weight: bold;
+  @include theme-button-filled($background-color: $secondary-color);
+  // padding: 1.5rem 2.2rem 1.5rem 2.2rem !important;
+  // border-width: 3px !important;
+  // border-color: $secondary-color !important;
+  // font-weight: bold;
+}
+
+.navbar-address-column {
+  font-size: 0.8rem;
+}
+
+.account-address-button {
+  width: 100%;
+  width: -moz-available; /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+  width: fill-available;
 }

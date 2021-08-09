@@ -42,9 +42,9 @@ $font-color: $charcoal;
   border-color: $border-color !important;
 }
 
-@mixin theme-button-filled($border-color: $primary-color) {
+@mixin theme-button-filled($background-color: $primary-color) {
   @extend %theme-button-metrics;
-  background-color: $primary-color !important;
+  background-color: $background-color !important;
   border-color: transparent !important;
   color: $theme-white !important;
 }

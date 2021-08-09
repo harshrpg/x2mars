@@ -13,6 +13,7 @@ import { GoCheck } from "@react-icons/all-files/go/GoCheck"
 import { GoX } from "@react-icons/all-files/go/GoX"
 import { RiErrorWarningFill } from "@react-icons/all-files/ri/RiErrorWarningFill"
 import { RiCheckboxCircleFill } from "@react-icons/all-files/ri/RiCheckboxCircleFill"
+import NetworkIcon from "../Network/NetworkIcon"
 
 const Card = props => {
   let style = { opacity: 1 }
@@ -661,18 +662,6 @@ const Fee = ({ fee, network }) => {
         </div>
       </div>
     </div>
-  )
-}
-
-const NetworkIcon = ({ network }) => {
-  return (
-    <span className="is-size-5 is-size-7-mobile has-text-centered icon-style">
-      {network === "eth" ? (
-        <FontAwesomeIcon icon={["fab", "ethereum"]} />
-      ) : (
-        <StaticImage src="../../images/assets/bnb.svg" width={30} height={30} />
-      )}
-    </span>
   )
 }
 
