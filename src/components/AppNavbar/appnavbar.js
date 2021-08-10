@@ -5,15 +5,20 @@ import { InjectedConnector } from "@web3-react/injected-connector"
 import { formatEther } from "@ethersproject/units"
 import useSWR from "swr"
 import { FaFileContract } from "@react-icons/all-files/fa/FaFileContract"
-import { MdAccountCircle } from "@react-icons/all-files/md/MdAccountCircle";
+import { MdAccountCircle } from "@react-icons/all-files/md/MdAccountCircle"
 
-import { NetworkConstants, FactoryConstants } from "../../util/Constants"
+import {
+  NetworkConstants,
+  FactoryConstants,
+  NetworkNames,
+} from "../../util/Constants"
 import AppLogo from "../Logo/applogo"
 import WalletSelect from "../walletSelect/walletselect"
 
 import "./style/appnavbar.scss"
 import { BigNumber } from "ethers"
 import { NetworkIcon } from "../Icons/icons"
+import { useBalance, useNetwork } from "../../hooks/useNetwork"
 
 export const injectedConnector = new InjectedConnector({
   supportedChainIds: [
@@ -33,46 +38,27 @@ const fetcher = library => (...args) => {
   return library[method](...params)
 }
 
-const formatBalance = balance => {
-  return parseFloat(formatEther(balance)).toPrecision(4)
-}
+
 
 const AppNavbar = () => {
   const { account, library, chainId, active } = useWeb3React()
+  const networkHook = useNetwork()
+  const balanceHook = useBalance()
   const [walletSelect, setWalletSelect] = React.useState(false)
   const [balance, setBalance] = React.useState()
   const [network, setNetwork] = React.useState()
 
   React.useEffect(() => {
-    if (!!account && !!library) {
-      let stale = false
-      library
-        .getBalance(account)
-        .then(balance => {
-          if (!stale) {
-            setBalance(formatBalance(balance.toString()))
-          }
-        })
-        .catch(() => {
-          if (!stale) {
-            setBalance(undefined)
-          }
-        })
+    if (networkHook !== undefined) {
+      setNetwork(networkHook)
     }
-  }, [account, library, chainId])
+  }, [networkHook])
 
   React.useEffect(() => {
-    if (!!chainId) {
-      if (
-        chainId === NetworkConstants.SMART_CHAIN_MAINNET ||
-        chainId === NetworkConstants.SMART_CHAIN_TESTNET
-      ) {
-        setNetwork("bnb")
-      } else {
-        setNetwork("eth")
-      }
+    if (!!balanceHook) {
+      setBalance(balanceHook)
     }
-  }, [chainId])
+  }, [balanceHook])
 
   // const { data, error, mutate } = useSWR(["getBalance", account, "latest"], {
   //   fetcher: fetcher(library),
@@ -95,7 +81,11 @@ const AppNavbar = () => {
 
   return (
     <>
-      <nav className="navbar" role="navigation" aria-label="main navigation">
+      <nav
+        className="navbar"
+        role="navigation"
+        aria-label="main navigation"
+      >
         <Link to="/" className="navbar-start">
           <AppLogo />
         </Link>
@@ -113,6 +103,7 @@ const AppNavbar = () => {
                   network={network}
                   balance={balance}
                   account={account}
+                  chainId={chainId}
                 />
               ) : (
                 `Not enough balance`
@@ -153,38 +144,53 @@ const AppNavbar = () => {
   )
 }
 
-const ProfileButton = ({ network, balance, account }) => {
+const ProfileButton = ({ network, balance, account, chainId }) => {
+  const style =
+    chainId === 1 || chainId === 56
+      ? { color: "#00C853" }
+      : { color: "#E53935" }
+
   return (
-    <div className="conatiner">
-      <div className="columns">
-        <div className="column" style={{paddingRight: 0}}>
-          <button
-            className="button is-light custom-button"
-            type="button"
-          >
-            <div>
-              <div className="columns">
-                <div className="column">
-                  <NetworkIcon network={network} color="#807FC6" />
+    <div style={{position: "relative"}}>
+      <div className="conatiner">
+        <div className="columns">
+          <div className="column" style={{ paddingRight: 0 }}>
+            <button className="button is-light custom-button" type="button">
+              <div>
+                <div className="columns">
+                  <div className="column">
+                    <NetworkIcon network={network} color={style.color} />
+                  </div>
+                  <div className="column" style={style}>{balance}</div>
                 </div>
-                <div className="column">{balance}</div>
               </div>
-            </div>
-          </button>
-        </div>
-        <div className="column" style={{paddingLeft: 0}}>
-          <button
-            className="button is-light custom-button account-address-button"
-            type="button"
-          >
-            <span>{account.slice(0, 6) +
-                    "...." +
-                    account.substring(account.length - 3)}</span>
+            </button>
+          </div>
+          <div className="column" style={{ paddingLeft: 0 }}>
+            <button
+              className="button is-light custom-button account-address-button"
+              type="button"
+            >
+              <span>
+                {account.slice(0, 6) +
+                  "...." +
+                  account.substring(account.length - 3)}
+              </span>
               <span className="icon is-small icon-profile">
                 <MdAccountCircle />
               </span>
-          </button>
+            </button>
+          </div>
         </div>
+      </div>
+
+      <div className="network-pill has-text-centered is-size-7">
+        <span
+          className="networkName"
+          style={style}
+        >
+          {NetworkNames[chainId]}
+        </span>
       </div>
     </div>
   )

@@ -82,3 +82,16 @@
   width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
   width: fill-available;
 }
+
+.network-pill {
+  position: absolute;
+  top: 20%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+
+.networkName {
+  background-color: white;
+  padding: 0 0.2rem 0 0.2rem;
+}

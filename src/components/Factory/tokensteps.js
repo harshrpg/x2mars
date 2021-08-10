@@ -13,6 +13,8 @@ import {
 import { RiErrorWarningLine } from "@react-icons/all-files/ri/RiErrorWarningLine"
 
 import "./style/factory.scss"
+import { useBalance, useNetwork } from "../../hooks/useNetwork"
+import { Error } from "../../util/Constants"
 
 // TODO: Make this into a reusable hook and use it in the rest of the application
 const GetAllImages = () => {
@@ -191,27 +193,48 @@ const FactorySteps = props => {
 
 const Step1 = props => {
   const [step1, _] = React.useState(Steps.Step1)
-  // there are two parts in step1
   const step1Card1 = step1.cardData[0]
   const step1Card2 = step1.cardData[1]
 
   const [selectedOption, setSelectedOption] = React.useState(-1)
+  const [card1Error, setCard1Error] = React.useState();
+  const [card2Error, setCard2Error] = React.useState();
+  
+  const [ableToPurchase, setAbleToPurchase] = React.useState({card1: false, card2: false});
+  const network = useNetwork();
+  const balance = useBalance();
+  React.useEffect(() => {
+    if (network === undefined) {
+      setCard1Error(Error.CONNECT_WALLET)
+      setCard2Error(Error.CONNECT_WALLET)
+    } else {
+      setCard1Error(null)
+      setCard2Error(null)
+    }
+  }, [network])
 
-  // TODO: call metamask hook here
-  // TODO: Get metamask balance
-  // TODO: Set errors based on balances
-  // const [card1Error, setCard1Error] = React.useState("Connect Wallet");
-  // const [card2Error, setCard2Error] = React.useState("Not Enough Balance");
-
-  // TODO: Set check status based on balances
-
-  // const [ableToPurchase, setAbleToPurchase] = React.useState({card1: true, card2: true});
-  // if (ableToPurchase.card1) {
-  //   setCard1Error(null);
-  // }
-  // if (ableToPurchase.card2) {
-  //   setCard2Error(null);
-  // }
+  React.useEffect(() => {
+    if (!!balance) {
+      if (balance > step1Card1.price[network]) {
+        setAbleToPurchase({
+          ...ableToPurchase,
+          card1: true,
+        })
+        setCard1Error(null)
+      } else {
+        setCard1Error(Error.NOT_ENOUGH_BALANCE)
+      }
+      if (balance > step1Card2.price[network]) {
+        setAbleToPurchase({
+          ...ableToPurchase,
+          card2: true,
+        })
+        setCard2Error(null)
+      } else {
+        setCard2Error(Error.NOT_ENOUGH_BALANCE)
+      }
+    }
+  }, [balance])
 
   const setSelection = (selectedOption, selection) => {
     console.debug("STEP 1: Callback:: ", selectedOption)
@@ -232,10 +255,10 @@ const Step1 = props => {
             <Card
               id="step1-card1"
               type={step1Card1.type}
-              error={null}
+              error={card1Error}
               cardData={step1Card1}
               cardImage={getImageDataForCard(step1Card1.img)}
-              network={props.network}
+              network={network}
               cardIndex={0}
               selected={selectedOption === 0 ? true : false}
               onPress={selection => setSelection(0, selection)}
@@ -246,10 +269,10 @@ const Step1 = props => {
             <Card
               id="step1-card2"
               type={step1Card2.type}
-              error={null}
+              error={card2Error}
               cardData={step1Card2}
               cardImage={getImageDataForCard(step1Card2.img)}
-              network={props.network}
+              network={network}
               cardIndex={1}
               selected={selectedOption === 1 ? true : false}
               onPress={selection => setSelection(1, selection)}
