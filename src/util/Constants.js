@@ -42,3 +42,13 @@ export const Error = {
     CONNECT_WALLET: "Connect Wallet",
     NOT_ENOUGH_BALANCE: "Not Enough Balance"
 }
+
+export const TokenTypes = {
+    0: "Governance Tokens",
+    1: "Fee on Transfer Tokens"
+}
+
+export const TokenTypeIds = {
+    GOVERNANCE: 0,
+    FEE_ON_TRANSFER: 1
+}

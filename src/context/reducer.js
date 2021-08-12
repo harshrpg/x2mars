@@ -51,6 +51,14 @@ export const initialCartState = {
   step1: {
     selectedToken: -1
   },
+  step2: {
+    tokenName: null,
+    tokenSymbol: null,
+    tokenSupplyNumber: null,
+    tokenSupplyUnits: "Units",
+    tokenDecimals: 18,
+    dexSelected: false,
+  }
 }
 
 export const CartReducer = (initialCartState, action) => {
@@ -60,6 +68,11 @@ export const CartReducer = (initialCartState, action) => {
       return {
         ...initialCartState,
         step1: action.payload.step1
+      }
+    case 2:
+      return {
+        ...initialCartState,
+        step2: action.payload.step2
       }
   }
 }

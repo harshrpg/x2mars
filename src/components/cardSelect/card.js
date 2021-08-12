@@ -15,8 +15,12 @@ import { RiErrorWarningFill } from "@react-icons/all-files/ri/RiErrorWarningFill
 import { RiCheckboxCircleFill } from "@react-icons/all-files/ri/RiCheckboxCircleFill"
 import { NetworkIcon } from "../Icons/icons"
 import { useNetwork } from "../../hooks/useNetwork"
-import { useAuthState } from "../../context"
-import { NetworkFromChainId } from "../../util/Constants"
+import { useAuthState, useCartDispatch, useCartState } from "../../context"
+import {
+  NetworkConstants,
+  NetworkFromChainId,
+  TokenTypeIds,
+} from "../../util/Constants"
 
 const Card = props => {
   let style = { opacity: 1 }
@@ -58,6 +62,7 @@ const Card = props => {
             <SummaryData displayData={props.cardData} network={props.network} />
           ) : (
             <Data
+              id={props.id}
               cardData={props.cardData}
               network={props.network}
               cardImage={props.cardImage}
@@ -135,6 +140,7 @@ const AddToCartButton = props => {
   const [waitForSelection, setWaitForSelection] = React.useState(true)
 
   const handleButtonClick = () => {
+    console.debug("Selection: In Card: ", selected)
     if (!selected) {
       setSelected(!selected)
     } else if (props.isMandatory !== undefined && !props.isMandatory) {
@@ -250,14 +256,19 @@ const Data = ({
   disabled,
   selected,
   callback,
-  maxTxnAmount
+  maxTxnAmount,
+  id
 }) => {
   // STATES
   const [featureInput, setFeatureInput] = React.useState({ features: [] })
-  const [network, setNetwork] = React.useState("eth")
+  const [network, setNetwork] = React.useState(
+    NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
+  )
+  const [fees, setFees] = React.useState(cardData.price[network])
 
   // REUSABLE HOOKS
   const user = useAuthState()
+  const cartState = useCartState()
 
   // EFFECTS
   React.useEffect(() => {
@@ -265,9 +276,18 @@ const Data = ({
       setNetwork(NetworkFromChainId[parseInt(user.chainId)])
     }
   }, [user])
-  
-  let fees = cardData.price !== undefined ? cardData.price[network] : "Free"
-  
+  React.useEffect(() => {
+    if (id === "step2-card3") {
+      if (
+        cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER
+      ) {
+        setFees("Free")
+      }
+    } else {
+      setFees(cardData.price[network])
+    }
+  }, [cartState])
+
   const handleFeatureInputChange = (i, event, input) => {
     const newArray = Array.from(featureInput.features)
     let value = parseFloat(event.target.value)
@@ -314,7 +334,11 @@ const Data = ({
             <div className="centerinput">
               {cardData.inputData !== null && cardData.inputData !== undefined
                 ? cardData.inputData.map((input, i) => {
-                    if ((!selected || disabled) && input.idx !== undefined && input.idx !== 2) {
+                    if (
+                      (!selected || disabled) &&
+                      input.idx !== undefined &&
+                      input.idx !== 2
+                    ) {
                       resetStateInput(i)
                     }
                     return (
@@ -466,8 +490,11 @@ const SummaryData = props => {
 }
 
 const Step2Card1 = ({ cardData, network, callback }) => {
-  const [tokenSymbol, setTokenSymbol] = React.useState("")
-  const [tokenName, setTokenName] = React.useState("")
+  const cartState = useCartState()
+  const [tokenSymbol, setTokenSymbol] = React.useState(
+    cartState.step2.tokenSymbol
+  )
+  const [tokenName, setTokenName] = React.useState(cartState.step2.tokenName)
 
   const handleTokenNameChange = event => {
     console.debug("Token Name changed to: ", event.target.value)
@@ -485,18 +512,10 @@ const Step2Card1 = ({ cardData, network, callback }) => {
           <CardTitle title={cardData.title} size="small" />
         </div>
       </div>
-      {/* <div className="columns">
-        <div className="column">
-          <NetworkIcon network={network} />
-        </div>
-        <div className="column">
-          <span className="is-size-4">{tokenSymbol}</span>
-        </div>
-      </div> */}
       <div className="columns">
         <div className="column">
           <div className="centerinput">
-            <div className={`input-block ${tokenName !== "" ? "success" : ""}`}>
+            <div className={`input-block ${!!tokenName ? "success" : ""}`}>
               <input
                 type="text"
                 onChange={handleTokenNameChange}
@@ -504,6 +523,7 @@ const Step2Card1 = ({ cardData, network, callback }) => {
                 required="required"
                 spellcheck="false"
                 onBlur={callback[0]}
+                value={tokenName}
               />
               <span className="placeholder">Token Name</span>
             </div>
@@ -513,9 +533,7 @@ const Step2Card1 = ({ cardData, network, callback }) => {
       <div className="columns">
         <div className="column">
           <div className="centerinput">
-            <div
-              className={`input-block ${tokenSymbol !== "" ? "success" : ""}`}
-            >
+            <div className={`input-block ${!!tokenSymbol ? "success" : ""}`}>
               <input
                 type="text"
                 onChange={handleTokenSymbolChange}
@@ -523,6 +541,7 @@ const Step2Card1 = ({ cardData, network, callback }) => {
                 required="required"
                 spellcheck="false"
                 onBlur={callback[1]}
+                value={tokenSymbol}
               />
               <span className="placeholder">Token Symbol</span>
             </div>
@@ -534,9 +553,14 @@ const Step2Card1 = ({ cardData, network, callback }) => {
 }
 
 const Step2Card2 = ({ cardData, network, callback }) => {
-  const [tokenSupply, setTokenSupply] = React.useState(0)
-  const [tokenSupplyUnits, setTokenSupplyUnits] = React.useState("Units")
-  const [decimals, setDecimals] = React.useState(18)
+  const cartState = useCartState()
+  const [tokenSupply, setTokenSupply] = React.useState(
+    cartState.step2.tokenSupplyNumber
+  )
+  const [tokenSupplyUnits, setTokenSupplyUnits] = React.useState(
+    cartState.step2.tokenSupplyUnits
+  )
+  const [decimals, _] = React.useState(cartState.step2.tokenDecimals)
 
   const handleTokenSupplyChange = event => {
     let supply = event.target.value
@@ -548,17 +572,11 @@ const Step2Card2 = ({ cardData, network, callback }) => {
   }
 
   const handleTokenSupplyUnitsChange = event => {
-    console.debug("Token Supply Units changed", event.target.value)
     setTokenSupplyUnits(event.target.value)
   }
 
   React.useEffect(() => {
-    console.debug("EFFECT 3");
     if (tokenSupply !== 0 && tokenSupplyUnits !== "Units") {
-      console.debug(
-        "Effect in supply details: ",
-        tokenSupply + " " + tokenSupplyUnits
-      )
       callback(tokenSupply, tokenSupplyUnits)
     }
   }, [tokenSupply, tokenSupplyUnits])
@@ -569,25 +587,10 @@ const Step2Card2 = ({ cardData, network, callback }) => {
           <CardTitle title={cardData.title} size="small" />
         </div>
       </div>
-      {/* <div className="columns">
-        <div className="column">
-          <NetworkIcon network={network} />
-        </div>
-        <div className="column">
-          <span className="is-size-6">
-            {tokenSupply}
-            {` `}
-            {tokenSupplyUnits}
-            {` tokens`}
-          </span>
-        </div>
-      </div> */}
       <div className="columns">
         <div className="column is-half">
           <div className="centerinput">
-            <div
-              className={`input-block ${tokenSupply !== 0 ? "success" : ""}`}
-            >
+            <div className={`input-block ${!!tokenSupply ? "success" : ""}`}>
               <input
                 type="number"
                 onChange={handleTokenSupplyChange}
@@ -596,6 +599,7 @@ const Step2Card2 = ({ cardData, network, callback }) => {
                 spellcheck="false"
                 min="1"
                 max="100"
+                value={tokenSupply}
               />
               <span className="placeholder">1-100</span>
             </div>
@@ -610,6 +614,7 @@ const Step2Card2 = ({ cardData, network, callback }) => {
             <select
               className="is-hovered"
               onChange={handleTokenSupplyUnitsChange}
+              value={tokenSupplyUnits}
             >
               <option>Units</option>
               <option>Thousand</option>
@@ -661,7 +666,9 @@ const Fee = ({ fee, network }) => {
     <div className="container custom-container-fees">
       <div className="columns">
         <div className="column is-one-quarter is-half-mobile static-fee-column">
-          <span className="is-size-7 is-size-8-mobile has-text-centered">Fees</span>
+          <span className="is-size-7 is-size-8-mobile has-text-centered">
+            Fees
+          </span>
         </div>
         <div className="column">
           <span className="is-size-6 is-size-7-mobile has-text-centered">
