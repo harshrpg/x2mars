@@ -1,14 +1,10 @@
 import * as React from "react"
 import { Link } from "gatsby"
 import { useWeb3React } from "@web3-react/core"
-import { InjectedConnector } from "@web3-react/injected-connector"
-import { formatEther } from "@ethersproject/units"
-import useSWR from "swr"
 import { FaFileContract } from "@react-icons/all-files/fa/FaFileContract"
 import { MdAccountCircle } from "@react-icons/all-files/md/MdAccountCircle"
 
 import {
-  NetworkConstants,
   FactoryConstants,
   NetworkNames,
 } from "../../util/Constants"
@@ -16,29 +12,8 @@ import AppLogo from "../Logo/applogo"
 import WalletSelect from "../walletSelect/walletselect"
 
 import "./style/appnavbar.scss"
-import { BigNumber } from "ethers"
 import { NetworkIcon } from "../Icons/icons"
 import { useBalance, useNetwork } from "../../hooks/useNetwork"
-
-export const injectedConnector = new InjectedConnector({
-  supportedChainIds: [
-    NetworkConstants.MAINNET_ETHEREUM,
-    NetworkConstants.ROPSTEN,
-    NetworkConstants.RINKEBY,
-    NetworkConstants.GOERLI,
-    NetworkConstants.KOVAN,
-    NetworkConstants.SMART_CHAIN_TESTNET,
-    NetworkConstants.SMART_CHAIN_MAINNET,
-  ],
-})
-
-const fetcher = library => (...args) => {
-  const [method, ...params] = args
-  console.log(method, params)
-  return library[method](...params)
-}
-
-
 
 const AppNavbar = () => {
   const { account, library, chainId, active } = useWeb3React()
@@ -120,15 +95,6 @@ const AppNavbar = () => {
               </button>
             </div>
           )}
-          {/* <div>
-              <button
-                className="button is-light custom-button app-button"
-                type="button"
-                onClick={() => setWalletSelect(true)}
-              >
-                Connect Wallet
-              </button>
-            </div> */}
           <div>
             <button className="button is-light cart-button" type="button">
               <span>Your Contract</span>

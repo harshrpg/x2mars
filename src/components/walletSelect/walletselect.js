@@ -41,7 +41,7 @@ const WalletSelect = ({ setWalletSelect, isActive }) => {
     if (active) {
       setWalletSelect(false)
     }
-  }, [active])
+  }, [active, setWalletSelect])
   console.debug("Authenticate::: is account now active? ", active)
   if (active) {
     console.debug("\tAuthenticate::: What is the account address? ", account)

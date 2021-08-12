@@ -18,6 +18,16 @@ export const NetworkNames = {
     56: "BSC Mainnet",
 }
 
+export const NetworkFromChainId = {
+    1: "eth",
+    3: "eth",
+    4: "eth",
+    5: "eth",
+    42: "eth",
+    97: "bsc",
+    56: "bsc",
+}
+
 export const FactoryConstants = {
     MINIMUM_COIN_TO_PROCEED: -1,
 }

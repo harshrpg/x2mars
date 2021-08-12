@@ -1,6 +1,9 @@
 import { formatEther } from "@ethersproject/units"
 import { useWeb3React } from "@web3-react/core"
+import { BigNumber } from "ethers"
 import { useState, useEffect } from "react"
+import useSWR from "swr"
+import { useAuthDispatch } from "../context"
 
 const etherNetworks = [1, 3, 4, 5, 42]
 const bscNetworks = [97, 56]
@@ -18,39 +21,71 @@ export const useNetwork = () => {
       }
     }
     }, [chainId])
-//   if (!!chainId) {
-//     if (etherNetworks.includes(chainId)) {
-//       return "eth"
-//     } else if (bscNetworks.includes(chainId)) {
-//       return "bnb"
-//     }
-//   }
 
     return network
 }
 
 export const useBalance = () => {
   const { library, account, chainId } = useWeb3React()
+  const dispatch = useAuthDispatch()
   const [balance, setBalance] = useState()
+
+  const { data, errorSwr, mutate } = useSWR(["getBalance", account, "latest"], {
+    fetcher: fetcher(library),
+  })
+
   useEffect(() => {
-    if (!!account && !!library) {
-      let stale = false
-      library
-        .getBalance(account)
-        .then(balance => {
-          if (!stale) {
-            setBalance(formatBalance(balance.toString()))
-          }
-        })
-        .catch(() => {
-          if (!stale) {
-            setBalance(undefined)
-          }
-        })
+    	if (!!data) {
+        setBalance(formatBalance(BigNumber.from(data._hex).toString()))
+      }
+  }, [data])
+
+  useEffect(() => {
+    if (!!balance) {
+      dispatch({
+        type: "CONNECTED",
+        payload: {
+          userDetails: { account: account, balance: balance },
+          chainId: chainId,
+        },
+      })
     }
-  }, [account, library, chainId])
+    
+  }, [balance])
+
+  useEffect(() => {
+    if (!!errorSwr) {
+      dispatch({
+        type: "ERROR",
+        payload: {
+          errorMessage: errorSwr
+        }
+      })
+    }
+  }, [errorSwr])
+
+  useEffect(() => {
+    if (library) {
+      library.on("block", () => {
+        mutate(undefined, true)
+      })
+    }
+    
+    return () => {
+      if (library) {
+        library.removeAllListeners("block")
+      }
+      
+    }
+  }, [])
 
   return balance
+}
+
+const fetcher = library => (...args) => {
+  const [method, ...params] = args
+  console.log(method, params)
+  return library[method](...params)
 }
 
 const formatBalance = balance => {

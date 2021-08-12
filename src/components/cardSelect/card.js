@@ -14,6 +14,9 @@ import { GoX } from "@react-icons/all-files/go/GoX"
 import { RiErrorWarningFill } from "@react-icons/all-files/ri/RiErrorWarningFill"
 import { RiCheckboxCircleFill } from "@react-icons/all-files/ri/RiCheckboxCircleFill"
 import { NetworkIcon } from "../Icons/icons"
+import { useNetwork } from "../../hooks/useNetwork"
+import { useAuthState } from "../../context"
+import { NetworkFromChainId } from "../../util/Constants"
 
 const Card = props => {
   let style = { opacity: 1 }
@@ -140,7 +143,6 @@ const AddToCartButton = props => {
   }
 
   React.useEffect(() => {
-    console.debug("EFFECT 1");
     const timer = setTimeout(() => {
       setWaitForSelection(!waitForSelection)
     }, 500)
@@ -148,7 +150,6 @@ const AddToCartButton = props => {
   }, [selected])
 
   React.useEffect(() => {
-    console.debug("EFFECT 2");
     props.onPress(selected)
   }, [selected, waitForSelection])
   return (
@@ -243,7 +244,7 @@ const ErrorBox = ({ error }) => {
 
 const Data = ({
   cardData,
-  network,
+  // network,
   cardImage,
   type,
   disabled,
@@ -251,11 +252,23 @@ const Data = ({
   callback,
   maxTxnAmount
 }) => {
-  let fees = cardData.price !== undefined ? cardData.price[network] : "Free"
+  // STATES
   const [featureInput, setFeatureInput] = React.useState({ features: [] })
+  const [network, setNetwork] = React.useState("eth")
 
+  // REUSABLE HOOKS
+  const user = useAuthState()
+
+  // EFFECTS
+  React.useEffect(() => {
+    if (!!user.chainId) {
+      setNetwork(NetworkFromChainId[parseInt(user.chainId)])
+    }
+  }, [user])
+  
+  let fees = cardData.price !== undefined ? cardData.price[network] : "Free"
+  
   const handleFeatureInputChange = (i, event, input) => {
-    console.debug("TOTAL FEE: Feature Input recorded: ", event.target.value)
     const newArray = Array.from(featureInput.features)
     let value = parseFloat(event.target.value)
     if (value >= parseFloat(input.min) && value <= parseFloat(input.max)) {
@@ -268,7 +281,6 @@ const Data = ({
   }
 
   const resetStateInput = i => {
-    console.debug("TOTAL FEE: Resseting input")
     if (
       featureInput.features[i] !== undefined &&
       featureInput.features[i] !== ""
@@ -279,6 +291,7 @@ const Data = ({
       callback(0)
     }
   }
+
   return (
     <div className="conatiner has-text-centered">
       <div className="columns">

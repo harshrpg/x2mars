@@ -14,7 +14,9 @@ import { RiErrorWarningLine } from "@react-icons/all-files/ri/RiErrorWarningLine
 
 import "./style/factory.scss"
 import { useBalance, useNetwork } from "../../hooks/useNetwork"
-import { Error } from "../../util/Constants"
+import { Error, NetworkFromChainId } from "../../util/Constants"
+import { useAuthState } from "../../context"
+import { useCartDispatch, useCartState } from "../../context/context"
 
 // TODO: Make this into a reusable hook and use it in the rest of the application
 const GetAllImages = () => {
@@ -29,7 +31,6 @@ const GetAllImages = () => {
               gatsbyImageData(
                 width: 200
                 height: 200
-                webpOptions: { quality: 100 }
               )
             }
           }
@@ -193,10 +194,13 @@ const FactorySteps = props => {
 
 const Step1 = props => {
   const [step1, _] = React.useState(Steps.Step1)
+  const cartState = useCartState()
+  console.debug("Cart Selection: Step: 1, re rendered context", cartState)
+  const cartDispatch = useCartDispatch()
   const step1Card1 = step1.cardData[0]
   const step1Card2 = step1.cardData[1]
 
-  const [selectedOption, setSelectedOption] = React.useState(-1)
+  const [selectedOption, setSelectedOption] = React.useState(cartState.step1.selectedToken)
   const [card1Error, setCard1Error] = React.useState();
   const [card2Error, setCard2Error] = React.useState();
   
@@ -215,7 +219,7 @@ const Step1 = props => {
 
   React.useEffect(() => {
     if (!!balance) {
-      if (balance > step1Card1.price[network]) {
+      if (balance >= step1Card1.price[network]) {
         setAbleToPurchase({
           ...ableToPurchase,
           card1: true,
@@ -224,7 +228,7 @@ const Step1 = props => {
       } else {
         setCard1Error(Error.NOT_ENOUGH_BALANCE)
       }
-      if (balance > step1Card2.price[network]) {
+      if (balance >= step1Card2.price[network]) {
         setAbleToPurchase({
           ...ableToPurchase,
           card2: true,
@@ -243,6 +247,17 @@ const Step1 = props => {
       props.onSuccess(selectedOption)
     }
   }
+
+  React.useEffect(() => {
+    cartDispatch({
+      step: 1,
+      payload: {
+        step1: {
+          selectedToken: selectedOption
+        }
+      }
+    })
+  }, [selectedOption])
 
   return (
     <div className="columns step-columns has-text-centered step-ind">
@@ -287,9 +302,17 @@ const Step1 = props => {
 
 const Step2 = props => {
   const [step, _] = React.useState(Steps.Step2)
+  const [network, setNetwork] = React.useState("eth")
+  const user = useAuthState()
   const card1 = step.cardData[0]
   const card2 = step.cardData[1]
   const card3 = step.cardData[2]
+
+  React.useEffect(() => {
+    if (!!user.chainId) {
+      setNetwork(NetworkFromChainId[parseInt(user.chainId)])
+    }
+  }, [user])
 
   let tokenType =
     props.type === 0 ? "Governance Token" : "Fee on Transfer Token"
@@ -420,7 +443,7 @@ const Step2 = props => {
               type={card3.type}
               error={null}
               cardData={card3}
-              cardImage={getImageDataForCard(card3.img[props.network])}
+              cardImage={getImageDataForCard(card3.img[network])}
               network={props.network}
               cardIndex={2}
               selected={dexSelected}

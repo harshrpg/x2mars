@@ -1,4 +1,3 @@
-import { walletConnect } from "./action";
-import { AuthProvider, useAuthDispatch, useAuthState } from "./context";
+import { AuthProvider, useAuthDispatch, useAuthState, useCartDispatch, useCartState } from "./context";
 
-export { AuthProvider, useAuthDispatch, useAuthState, walletConnect };
+export { AuthProvider, useAuthDispatch, useAuthState, useCartDispatch, useCartState };
