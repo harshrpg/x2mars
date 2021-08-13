@@ -128,3 +128,9 @@ Gatsby Cloud is an end-to-end cloud platform specifically built for the Gatsby f
 4. Connect Wallet and Set Errors based on wallet balance
 5. Create sub-graph
 6. Create user profile
+
+
+### Connect wallet issues
+1. getBalance is not working
+2. chain Id is not working
+3. if wallet connected and refresh, connection is lost from the application

@@ -35,23 +35,23 @@ const Hero = () => {
 
   const pluginImage = getImage(backgroundImage123)
   return (
-    <section class="section">
-      <div class="hero">
+    <section className="section">
+      <div className="hero">
         <BgImage image={pluginImage} className="hero-image">
-          <div class="centered has-text-left">
-            <div class="columns">
-              <div class="column">
+          <div className="centered has-text-left">
+            <div className="columns">
+              <div className="column">
                 <div id="hero-banner-text-title">
-                  <span class="is-size-1 is-size-3-mobile">
+                  <span className="is-size-1 is-size-3-mobile">
                     World's 1st Decentralized
                     <br /> Token Factory
                   </span>
                 </div>
               </div>
             </div>
-            <div class="columns">
-              <div class="column">
-                <span class="is-size-6-mobile">
+            <div className="columns">
+              <div className="column">
+                <span className="is-size-6-mobile">
                   The only protocol designed to build more protocols. <br />
                   X2Mars is a token factory protocol allowing anyone without
                   technical knowledge to build and deploy their crypto currency
@@ -59,9 +59,9 @@ const Hero = () => {
                 </span>
               </div>
             </div>
-            <div class="columns">
-              <div class="column">
-                <button class="button custom-button">WHITEPAPER</button>
+            <div className="columns">
+              <div className="column">
+                <button className="button custom-button">WHITEPAPER</button>
               </div>
             </div>
           </div>

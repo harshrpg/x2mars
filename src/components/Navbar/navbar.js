@@ -7,78 +7,78 @@ import "./style/navbar.scss"
 const Navbar = () => {
   const [isActive, setIsActive] = React.useState(false)
   return (
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand">
+    <nav className="navbar" role="navigation" aria-label="main navigation">
+      <div className="navbar-brand">
         <Logo />
         <button
           onClick={() => setIsActive(!isActive)}
-          class={`hamburger hamburger--emphatic ${isActive ? "is-active" : ""}`}
+          className={`hamburger hamburger--emphatic ${isActive ? "is-active" : ""}`}
           type="button"
           aria-label="menu"
           aria-expanded="false"
           data-target="navbar-x2m"
         >
-          <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
+          <span className="hamburger-box">
+            <span className="hamburger-inner"></span>
           </span>
         </button>
       </div>
-      <div id="navbar-x2m" class={`navbar-menu ${isActive ? "is-active" : ""}`}>
-        <div class="navbar-start">
+      <div id="navbar-x2m" className={`navbar-menu ${isActive ? "is-active" : ""}`}>
+        <div className="navbar-start">
           <Link
             to="/"
-            class="navbar-item"
+            className="navbar-item"
             activeClassName="navbar-item"
           >
             about
           </Link>
           <Link
             to="/"
-            class="navbar-item"
+            className="navbar-item"
             activeClassName="navbar-item"
           >
             blog
           </Link>
           <Link
             to="/"
-            class="navbar-item"
+            className="navbar-item"
             activeClassName="navbar-item"
           >
             whitepaper
           </Link>
           <Link
             to="/"
-            class="navbar-item"
+            className="navbar-item"
             activeClassName="navbar-item"
           >
             buy x2m
           </Link>
           <Link
             to="/interface"
-            class="navbar-item"
+            className="navbar-item"
             activeClassName="navbar-item"
             type="openapp"
           >
             open app
           </Link>
         </div>
-        <div class="navbar-end">
-          <Link to="/" class="navbar-item" activeClassName="navbar-item">
+        <div className="navbar-end">
+          <Link to="/" className="navbar-item" activeClassName="navbar-item">
             <FontAwesomeIcon icon={["fab", "telegram-plane"]} />
           </Link>
-          <Link to="/" class="navbar-item" activeClassName="navbar-item">
+          <Link to="/" className="navbar-item" activeClassName="navbar-item">
             <FontAwesomeIcon icon={["fab", "medium-m"]} />
           </Link>
-          <Link to="/" class="navbar-item" activeClassName="navbar-item">
+          <Link to="/" className="navbar-item" activeClassName="navbar-item">
             <FontAwesomeIcon icon={["fab", "twitter"]} />
           </Link>
-          <Link to="/" class="navbar-item" activeClassName="navbar-item">
+          <Link to="/" className="navbar-item" activeClassName="navbar-item">
             <FontAwesomeIcon icon={["fab", "discord"]} />
           </Link>
-          <Link to="/" class="navbar-item" activeClassName="navbar-item">
+          <Link to="/" className="navbar-item" activeClassName="navbar-item">
             <FontAwesomeIcon icon={["fab", "youtube"]} />
           </Link>
-          <Link to="/" class="navbar-item" activeClassName="navbar-item">
+          <Link to="/" className="navbar-item" activeClassName="navbar-item">
             <FontAwesomeIcon icon={["fab", "facebook"]} />
           </Link>
         </div>

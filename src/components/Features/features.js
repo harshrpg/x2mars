@@ -13,25 +13,25 @@ const benefitsContent = [
 ]
 const Features = () => {
   return (
-    <section class="hero">
-      <div class="hero-body">
-        <div class="container has-text-centered">
-          <p class="title is-size-3 is-size-5-mobile">THE FACTORY</p>
-          <p class="subtitle">
+    <section className="hero">
+      <div className="hero-body">
+        <div className="container has-text-centered">
+          <p className="title is-size-3 is-size-5-mobile">THE FACTORY</p>
+          <p className="subtitle">
             The easiest way to initiate your next successful dapp protocol
           </p>
         </div>
       </div>
-      <div class="container">
-        <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-4-fullhd factoryimgparent">
-          <div class="column">
-            <p class="title is-size-3-desktop is-size-3-fullhd is-size-3-widescreen is-size-4-tablet is-size-7-mobile">
+      <div className="container">
+        <div className="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-4-fullhd factoryimgparent">
+          <div className="column">
+            <p className="title is-size-3-desktop is-size-3-fullhd is-size-3-widescreen is-size-4-tablet is-size-7-mobile">
               Benefits of Factory
             </p>
-            <div class="content">
+            <div className="content">
               <ul>
                 {benefitsContent.map((content, _) => (
-                  <li class="subtitle is-size-5-desktop is-size-5-fullhd is-size-5-widescreen is-size-6-tablet is-size-7-mobile">
+                  <li className="subtitle is-size-5-desktop is-size-5-fullhd is-size-5-widescreen is-size-6-tablet is-size-7-mobile">
                     {content}
                   </li>
                 ))}
@@ -39,7 +39,7 @@ const Features = () => {
               </ul>
             </div>
           </div>
-          <div class="column factoryimg">
+          <div className="column factoryimg">
             <StaticImage src="../../images/factory_alone.png" />
           </div>
         </div>

@@ -1,22 +1,66 @@
 import * as React from "react"
 import { GoX } from "@react-icons/all-files/go/GoX"
+import { useWeb3React } from "@web3-react/core"
+import {
+  useSpring,
+  animated,
+  config,
+  useTransition,
+} from "@react-spring/web"
 
-import { Coinbase, Fortmatic, Metamask } from "../Icons/icons"
+import { Coinbase, FortmaticIcon, Metamask } from "../Icons/icons"
 import "./style/style.scss"
+import { useAuthState } from "../../context"
+import { WalletTypes } from "../../util/Constants"
+import { useWalletConnect } from "../../hooks/useWalletConnect"
+import { injectedConnector } from "../../context/helpers"
+import { Connector } from "../../util/connectors"
 
-const WalletSelect = ({ setWalletSelect, active }) => {
+const WalletSelect = ({ setWalletSelect, isActive }) => {
+  const [balance, setBalance] = React.useState()
+  const { userDetails, loading, errorMessage } = useAuthState()
+  console.debug("Authenticate: Inside Wallet Select", loading)
+  console.debug("Authenticate: Inside Wallet Select", userDetails)
+  const { active, account, chainId, library } = useWeb3React()
+  React.useEffect(() => {
+    if (!!account && !!library) {
+      let stale = false;
+      library.getBalance(account).then((balance) => {
+        if (!stale) {
+          setBalance(balance)
+        }
+      }).catch(() => {
+        if (!stale) {
+          setBalance(undefined)
+        }
+      })
+    }
+  }, [account, library, chainId])
+
+  React.useEffect(() => {
+    if (active) {
+      setWalletSelect(false)
+    }
+  }, [active, setWalletSelect])
+  console.debug("Authenticate::: is account now active? ", active)
+  if (active) {
+    console.debug("\tAuthenticate::: What is the account address? ", account)
+    console.debug("\tAuthenticate::: What is the chainId? ", chainId)
+    console.debug("\tAuthenticate::: What is the balance? ", balance)
+  }
   return (
-    <div className={`modal ${active ? "is-active" : ""}`}>
+    <div className={`modal ${isActive ? "is-active" : ""}`}>
       <div className="modal-background"></div>
       <div className="modal-content wallet-choice-board">
         <ModalContent />
+
         <div className="modal-close-custom">
           <button
-            class="button close-modal-button"
+            className="button close-modal-button"
             aria-label="close"
             onClick={() => setWalletSelect(false)}
           >
-            <span class="icon is-large">
+            <span className="icon is-large">
               <GoX />
             </span>
           </button>
@@ -32,7 +76,7 @@ const ModalContent = () => {
       <div className="columns">
         <div className="column is-full">
           <span className="is-size-2-desktop is-size-4-mobile">
-            Choose Your Wallet
+            Select Your Wallet
           </span>
         </div>
       </div>
@@ -52,95 +96,179 @@ const ModalContent = () => {
 }
 
 const MetaMaskWalletConnect = () => {
+  const { loading, walletType } = useAuthState()
+  const hide = useSpring({
+    to: { opacity: 1 },
+    from: { opacity: 0.3 },
+    // reset: true,
+    reverse: loading && walletType !== WalletTypes.METAMASK,
+    delay: 200,
+    config: config.molasses,
+    // onRest: () => set(true),
+  })
+  // const [metamaskInstalled, _] = React.useState(window.ethereum)
+  const [metamaskInstalled, _] = React.useState(true) // TODO: Remove, only for debugging purposes
+  const activate = useWalletConnect()
+  const handleClick = () => {
+    activate(WalletTypes.METAMASK, Connector.INJECTED)
+  }
   return (
-    <div>
-      <div className="columns">
-        <div className="column">
-          <Metamask color="#F6851B" />
+    <animated.div style={hide}>
+      <div className="wallet-connect-container">
+        <div className="columns">
+          <div className="column">
+            <Metamask color="#F6851B" />
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-5">Metamask</span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-7">
+              Metamask Wallet is a gateway to blockchain apps. It allows you to
+              buy, store, send and swap tokens all within a browser extension
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            {metamaskInstalled !== undefined ? (
+              loading && walletType === WalletTypes.METAMASK ? (
+                "Loading"
+              ) : (
+                <button
+                  className="button is-light custom-button"
+                  type="button"
+                  onClick={handleClick}
+                  disabled={loading && walletType !== WalletTypes.METAMASK}
+                >
+                  Connect
+                </button>
+              )
+            ) : (
+              <button
+                className="button is-light custom-button"
+                type="button"
+                onClick={handleClick}
+                disabled={true}
+              >
+                Unavailable
+              </button>
+            )}
+          </div>
         </div>
       </div>
-      <div className="columns">
-        <div className="column">
-          <span className="is-size-5">Metamask</span>
-        </div>
-      </div>
-      <div className="columns">
-        <div className="column">
-          <span className="is-size-7">
-            Metamask Wallet is a gateway to blockchain apps. It allows you to buy, store, send and swap tokens all within a browser extension
-          </span>
-        </div>
-      </div>
-      <div className="columns">
-        <div className="column">
-          <button className="button is-light custom-button" type="button">
-            Connect
-          </button>
-        </div>
-      </div>
-    </div>
+    </animated.div>
   )
 }
 
 const CoinbaseWalletConnect = () => {
+  const { loading, walletType } = useAuthState()
+  const hide = useSpring({
+    to: { opacity: 1 },
+    from: { opacity: 0.3 },
+    // reset: true,
+    reverse: loading && walletType !== WalletTypes.WALLETLINK,
+    delay: 200,
+    config: config.molasses,
+    // onRest: () => set(true),
+  })
+  const activate = useWalletConnect()
+  const handleClick = () => {
+    activate(WalletTypes.WALLETLINK, Connector.WALLETLINK)
+  }
   return (
-    <div>
-      <div className="columns">
-        <div className="column">
-          <Coinbase color="#164edf" />
+    <animated.div style={hide}>
+      <div className="wallet-connect-container ">
+        <div className="columns">
+          <div className="column">
+            <Coinbase color="#164edf" />
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-5">Coinbase Wallet</span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-7">
+              WalletLink by Coinbase establishes a secure bridge between your
+              Coinbase wallet and the browser. Simply scan the QR code to
+              connect.
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <button
+              className="button is-light custom-button"
+              type="button"
+              onClick={handleClick}
+              disabled={loading && walletType !== WalletTypes.WALLETLINK}
+            >
+              Connect
+            </button>
+          </div>
         </div>
       </div>
-      <div className="columns">
-        <div className="column">
-          <span className="is-size-5">Coinbase Wallet</span>
-        </div>
-      </div>
-      <div className="columns">
-        <div className="column">
-          <span className="is-size-7">
-            WalletLink by Coinbase establishes a secure bridge between your Coinbase wallet and the browser. Simply scan the QR code to connect.
-          </span>
-        </div>
-      </div>
-      <div className="columns">
-        <div className="column">
-          <button className="button is-light custom-button" type="button">
-            Connect
-          </button>
-        </div>
-      </div>
-    </div>
+    </animated.div>
   )
 }
 
 const FortmaticWalletConnect = () => {
+  const { loading, walletType } = useAuthState()
+  const hide = useSpring({
+    to: { opacity: 1 },
+    from: { opacity: 0.3 },
+    // reset: true,
+    reverse: loading && walletType !== WalletTypes.FORTMATIC,
+    delay: 200,
+    config: config.molasses,
+    // onRest: () => set(true),
+  })
+  const activate = useWalletConnect()
+  const handleClick = () => {
+    activate(WalletTypes.FORTMATIC, Connector.FORTMATIC)
+  }
   return (
-    <div>
-      <div className="columns">
-        <div className="column">
-          <Fortmatic color="#6851ff" />
+    <animated.div style={hide}>
+      <div className="wallet-connect-container">
+        <div className="columns">
+          <div className="column">
+            <FortmaticIcon color="#6851ff" />
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-5">Fortmatic</span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-7">
+              Use Fortmatic to sign in using a security compliant wallet in
+              seconds. All you need is your phone number and 2FA.
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <button
+              className="button is-light custom-button"
+              type="button"
+              onClick={handleClick}
+              disabled={loading && walletType !== WalletTypes.FORTMATIC}
+            >
+              Connect
+            </button>
+          </div>
         </div>
       </div>
-      <div className="columns">
-        <div className="column">
-          <span className="is-size-5">Fortmatic</span>
-        </div>
-      </div>
-      <div className="columns">
-        <div className="column">
-          <span className="is-size-7">
-            Use Fortmatic to sign in using a security compliant wallet in seconds. All you need is your phone number and 2FA.
-          </span>
-        </div>
-      </div>
-      <div className="columns">
-        <div className="column">
-          <button className="button is-light custom-button" type="button">
-            Connect
-          </button>
-        </div>
-      </div>
-    </div>
+    </animated.div>
   )
 }
 

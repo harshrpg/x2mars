@@ -13,6 +13,16 @@ import {
 import { RiErrorWarningLine } from "@react-icons/all-files/ri/RiErrorWarningLine"
 
 import "./style/factory.scss"
+import { useBalance, useNetwork } from "../../hooks/useNetwork"
+import {
+  Error,
+  NetworkConstants,
+  NetworkFromChainId,
+  TokenTypeIds,
+  TokenTypes,
+} from "../../util/Constants"
+import { useAuthState } from "../../context"
+import { useCartDispatch, useCartState } from "../../context/context"
 
 // TODO: Make this into a reusable hook and use it in the rest of the application
 const GetAllImages = () => {
@@ -24,11 +34,7 @@ const GetAllImages = () => {
             relativePath
             name
             childrenImageSharp {
-              gatsbyImageData(
-                width: 200
-                height: 200
-                webpOptions: { quality: 100 }
-              )
+              gatsbyImageData(width: 200, height: 200)
             }
           }
         }
@@ -94,7 +100,7 @@ const FactorySteps = props => {
   }
 
   React.useEffect(() => {
-    console.debug("EFFECT 5");
+    console.debug("EFFECT 5")
     if ((currentStep === 3 && tokenType === 0) || currentStep == 4) {
       console.debug(
         "Effect: Current Step: ",
@@ -191,27 +197,55 @@ const FactorySteps = props => {
 
 const Step1 = props => {
   const [step1, _] = React.useState(Steps.Step1)
-  // there are two parts in step1
+  const cartState = useCartState()
+  const cartDispatch = useCartDispatch()
   const step1Card1 = step1.cardData[0]
   const step1Card2 = step1.cardData[1]
 
-  const [selectedOption, setSelectedOption] = React.useState(-1)
+  const [selectedOption, setSelectedOption] = React.useState(
+    cartState.step1.selectedToken
+  )
+  const [card1Error, setCard1Error] = React.useState()
+  const [card2Error, setCard2Error] = React.useState()
 
-  // TODO: call metamask hook here
-  // TODO: Get metamask balance
-  // TODO: Set errors based on balances
-  // const [card1Error, setCard1Error] = React.useState("Connect Wallet");
-  // const [card2Error, setCard2Error] = React.useState("Not Enough Balance");
+  const [ableToPurchase, setAbleToPurchase] = React.useState({
+    card1: false,
+    card2: false,
+  })
+  const network = useNetwork()
+  const balance = useBalance()
+  React.useEffect(() => {
+    if (network === undefined) {
+      setCard1Error(Error.CONNECT_WALLET)
+      setCard2Error(Error.CONNECT_WALLET)
+    } else {
+      setCard1Error(null)
+      setCard2Error(null)
+    }
+  }, [network])
 
-  // TODO: Set check status based on balances
-
-  // const [ableToPurchase, setAbleToPurchase] = React.useState({card1: true, card2: true});
-  // if (ableToPurchase.card1) {
-  //   setCard1Error(null);
-  // }
-  // if (ableToPurchase.card2) {
-  //   setCard2Error(null);
-  // }
+  React.useEffect(() => {
+    if (!!balance) {
+      if (balance >= step1Card1.price[network]) {
+        setAbleToPurchase({
+          ...ableToPurchase,
+          card1: true,
+        })
+        setCard1Error(null)
+      } else {
+        setCard1Error(Error.NOT_ENOUGH_BALANCE)
+      }
+      if (balance >= step1Card2.price[network]) {
+        setAbleToPurchase({
+          ...ableToPurchase,
+          card2: true,
+        })
+        setCard2Error(null)
+      } else {
+        setCard2Error(Error.NOT_ENOUGH_BALANCE)
+      }
+    }
+  }, [balance])
 
   const setSelection = (selectedOption, selection) => {
     console.debug("STEP 1: Callback:: ", selectedOption)
@@ -221,35 +255,46 @@ const Step1 = props => {
     }
   }
 
+  React.useEffect(() => {
+    cartDispatch({
+      step: 1,
+      payload: {
+        step1: {
+          selectedToken: selectedOption,
+        },
+      },
+    })
+  }, [selectedOption])
+
   return (
-    <div class="columns step-columns has-text-centered step-ind">
-      <div class="column">
+    <div className="columns step-columns has-text-centered step-ind">
+      <div className="column">
         <StepTitle title={step1.title} />
       </div>
-      <div class="column">
-        <div class="columns step-rows">
-          <div class="column">
+      <div className="column">
+        <div className="columns step-rows">
+          <div className="column">
             <Card
               id="step1-card1"
               type={step1Card1.type}
-              error={null}
+              error={card1Error}
               cardData={step1Card1}
               cardImage={getImageDataForCard(step1Card1.img)}
-              network={props.network}
+              network={network}
               cardIndex={0}
               selected={selectedOption === 0 ? true : false}
               onPress={selection => setSelection(0, selection)}
               selectionText="Select"
             />
           </div>
-          <div class="column">
+          <div className="column">
             <Card
               id="step1-card2"
               type={step1Card2.type}
-              error={null}
+              error={card2Error}
               cardData={step1Card2}
               cardImage={getImageDataForCard(step1Card2.img)}
-              network={props.network}
+              network={network}
               cardIndex={1}
               selected={selectedOption === 1 ? true : false}
               onPress={selection => setSelection(1, selection)}
@@ -263,74 +308,40 @@ const Step1 = props => {
 }
 
 const Step2 = props => {
+  // CONTEXT
+  const user = useAuthState()
+  const cartState = useCartState()
+  const cartDispatch = useCartDispatch()
+
+  // STATE
   const [step, _] = React.useState(Steps.Step2)
+  const [network, setNetwork] = React.useState(
+    NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
+  )
+  const [dexSelected, setDexSelected] = React.useState(
+    cartState.step2.dexSelected
+  )
+  const [tokenType, __] = React.useState(cartState.step1.selectedToken)
+  const [tokenDetails, setTokenDetails] = React.useState({
+    Name: cartState.step2.tokenName,
+    Symbol: cartState.step2.tokenSymbol,
+    Supply: cartState.step2.tokenSupplyNumber,
+    SupplyUnit: cartState.step2.tokenSupplyUnits,
+    Decimals: cartState.step2.tokenDecimals,
+  })
+
+  // CONSTANT DATA
   const card1 = step.cardData[0]
   const card2 = step.cardData[1]
   const card3 = step.cardData[2]
 
-  let tokenType =
-    props.type === 0 ? "Governance Token" : "Fee on Transfer Token"
-
-  const [tokenDetails, setTokenDetails] = React.useState({
-    Name: null,
-    Symbol: null,
-    Supply: null,
-    SupplyUnit: null,
-    Decimals: 18,
-  })
-
-  const [dexSelected, setDexSelected] = React.useState(
-    props.type === 0 ? false : true
-  )
-  const setSelection = selection => {
-    console.debug(
-      "CARD2:: dex selected",
-      dexSelected,
-      " props.type:: ",
-      props.type
-    )
-    if (props.type === 0) {
-      setDexSelected(selection)
-    }
-  }
-
-  if (props.type === 1) {
-    card3.price = undefined
-  }
-
-  const tokenNameCb = tokenName => {
-    console.debug("TOKEN STEPS:: TOKEN Name SUPPLIED", tokenName.target.value)
-    tokenDetails.Name = tokenName.target.value
-    setTokenDetails({
-      ...tokenDetails,
-    })
-    console.debug("TOKEN STEPS:: STATE is at", tokenDetails)
-  }
-
-  const tokenSymbolCb = tokenSymbol => {
-    console.debug("TOKEN STEPS:: TOKEN Name SUPPLIED", tokenSymbol.target.value)
-    tokenDetails.Symbol = tokenSymbol.target.value
-    setTokenDetails({
-      ...tokenDetails,
-    })
-    console.debug("TOKEN STEPS:: STATE is at", tokenDetails)
-  }
-
-  const tokenSupplyCb = (tokenSupply, tokenSupplyUnit) => {
-    console.debug(
-      "TOKEN STEPS:: TOKEN SUPPLY SUPPLIED",
-      tokenSupply + " " + tokenSupplyUnit
-    )
-    tokenDetails.Supply = tokenSupply
-    tokenDetails.SupplyUnit = tokenSupplyUnit
-    setTokenDetails({
-      ...tokenDetails,
-    })
-    console.debug("TOKEN STEPS:: STATE is at", tokenDetails)
-  }
-
+  // EFFECTS
   React.useEffect(() => {
-    console.debug("EFFECT 6");
+    if (!!user.chainId) {
+      setNetwork(NetworkFromChainId[parseInt(user.chainId)])
+    }
+  }, [user])
+  React.useEffect(() => {
     if (
       tokenDetails.Name !== null &&
       tokenDetails.Symbol !== null &&
@@ -339,25 +350,73 @@ const Step2 = props => {
       tokenDetails.Decimals !== 0
     ) {
       props.onSuccess(tokenDetails, 2)
+      cartDispatch({
+        step: 2,
+        payload: {
+          step2: {
+            tokenName: tokenDetails.Name,
+            tokenSymbol: tokenDetails.Symbol,
+            tokenSupplyNumber: tokenDetails.Supply,
+            tokenSupplyUnits: tokenDetails.SupplyUnit,
+            tokenDecimals: tokenDetails.Decimals,
+            dexSelected: dexSelected,
+          },
+        },
+      })
     }
-  }, [tokenDetails])
+  }, [tokenDetails, dexSelected])
+  React.useEffect(() => {
+    if (tokenType === TokenTypeIds.FEE_ON_TRANSFER) {
+      setDexSelected(true)
+    } else if (tokenType === TokenTypeIds.GOVERNANCE) {
+      setDexSelected(false)
+    }
+  }, [tokenType])
+
+  // CALLBACKS
+  const setSelection = selection => {
+    if (tokenType === TokenTypeIds.GOVERNANCE) {
+      setDexSelected(selection)
+    }
+  }
+  const tokenNameCb = tokenName => {
+    setTokenDetails({
+      ...tokenDetails,
+      Name: tokenName.target.value,
+    })
+  }
+  const tokenSymbolCb = tokenSymbol => {
+    setTokenDetails({
+      ...tokenDetails,
+      Symbol: tokenSymbol.target.value,
+    })
+  }
+  const tokenSupplyCb = (tokenSupply, tokenSupplyUnit) => {
+    setTokenDetails({
+      ...tokenDetails,
+      Supply: tokenSupply,
+      SupplyUnit: tokenSupplyUnit,
+    })
+  }
 
   return (
-    <div class="columns step-columns step-ind">
-      <div class="column">
+    <div className="columns step-columns step-ind">
+      <div className="column">
         <StepTitle title={step.title} />
       </div>
       <div className="column has-text-centered sub-title-container">
         <StepSubTitle
-          subtitleMain={`Creating a ${tokenType}`}
+          subtitleMain={`Creating a ${TokenTypes[tokenType]}`}
           subtitleSub={`${
             tokenDetails.Supply !== null && tokenDetails.Symbol !== null
               ? `Creating ` +
                 tokenDetails.Supply +
                 ` ` +
+                tokenDetails.SupplyUnit +
+                ` ` +
                 tokenDetails.Symbol +
                 ` ` +
-                tokenType
+                TokenTypes[tokenType]
               : ` Your tokenomics should display here`
           }`}
         />
@@ -365,51 +424,51 @@ const Step2 = props => {
           <RiErrorWarningLine />
         </span>
       </div>
-      <div class="column">
-        <div class="columns step-rows">
-          <div class="column">
+      <div className="column">
+        <div className="columns step-rows">
+          <div className="column">
             <Card
               id="step2-card1"
               type={card1.type}
               error={null}
               cardData={card1}
               callback={[tokenNameCb, tokenSymbolCb]}
-              network={props.network}
+              network={network}
               cardIndex={0}
               mandatory={true}
             />
           </div>
-          <div class="column">
+          <div className="column">
             <Card
               id="step2-card2"
               type={card2.type}
               error={null}
               cardData={card2}
               callback={tokenSupplyCb}
-              network={props.network}
+              network={network}
               cardIndex={1}
               mandatory={true}
             />
           </div>
-          <div class="column">
+          <div className="column">
             <Card
               id="step2-card3"
               type={card3.type}
               error={null}
               cardData={card3}
-              cardImage={getImageDataForCard(card3.img[props.network])}
-              network={props.network}
+              cardImage={getImageDataForCard(card3.img[network])}
+              network={network}
               cardIndex={2}
               selected={dexSelected}
               onPress={selection => setSelection(selection)}
               selectionText={
-                props.type === 0
+                tokenType === TokenTypeIds.GOVERNANCE
                   ? dexSelected
                     ? "Remove from Contract"
                     : "Add to Contract"
                   : "In Your Contract"
               }
-              mandatory={props.type === 0 ? false : true}
+              mandatory={tokenType === TokenTypeIds.GOVERNANCE ? false : true}
             />
           </div>
         </div>
@@ -435,7 +494,7 @@ const Step3 = props => {
   }
   var tokenSupply = parseFloat(tokenDetails.Supply)
   const multiplier = numberMap[tokenDetails.SupplyUnit]
-  console.debug("TOKEN SUPPLY: ", tokenSupply*multiplier)
+  console.debug("TOKEN SUPPLY: ", tokenSupply * multiplier)
   let tokenType =
     props.type === 0 ? "Governance Token" : "Fee on Transfer Token"
 
@@ -467,7 +526,7 @@ const Step3 = props => {
   }
 
   React.useEffect(() => {
-    console.debug("EFFECT 7");
+    console.debug("EFFECT 7")
     if (props.type === 1) {
       console.debug("Feature Effect: ", featuresSelected, featureFees)
       let reqFullfilled = 0
@@ -514,7 +573,7 @@ const Step3 = props => {
   }, [featuresSelected, featureFees])
 
   React.useEffect(() => {
-    console.debug("EFFECT 8");
+    console.debug("EFFECT 8")
     calculateTotalFees()
   }, [featureFees])
 
@@ -573,7 +632,7 @@ const Step3 = props => {
             </div>
           </div>
           <div className="columns step-rows">
-            <div class="column">
+            <div className="column">
               <Card
                 id="step3-card2"
                 type={card2.type}
@@ -597,7 +656,7 @@ const Step3 = props => {
                 mandatory={props.type === 1 ? false : undefined}
               />
             </div>
-            <div class="column">
+            <div className="column">
               <Card
                 id="step3-card3"
                 type={card3.type}
@@ -697,14 +756,14 @@ const Step4 = props => {
           <StepTitle title={step.title} />
         </div>
         <div className="column has-text-centered sub-title-container">
-        <StepSubTitle
-          subtitleMain={`Launchpad is Coming Soon.`}
-          subtitleSub={`Stay Connected`}
-        />
-        <span className="floating-warn">
-          <RiErrorWarningLine />
-        </span>
-      </div>
+          <StepSubTitle
+            subtitleMain={`Launchpad is Coming Soon.`}
+            subtitleSub={`Stay Connected`}
+          />
+          <span className="floating-warn">
+            <RiErrorWarningLine />
+          </span>
+        </div>
         <div className="column">
           <div className="columns step-rows">
             <div className="column">
@@ -719,9 +778,7 @@ const Step4 = props => {
                 cardIndex={0}
                 onPress={() => setIsLaunchpad(!isLaunchpad)}
                 mandatory={false}
-                selectionText={
-                  "Coming Soon"
-                }
+                selectionText={"Coming Soon"}
               />
             </div>
           </div>
