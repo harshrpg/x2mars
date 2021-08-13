@@ -4,7 +4,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const Footer = () => {
     return(
-        <footer class="footer">
+        <footer data-testid="footer" class="footer">
             <div class="container">
               <div class="columns is-mobile is-multiline">
               <div class="column is-half-mobile is-one-quarter-desktop">
@@ -15,31 +15,31 @@ const Footer = () => {
                   <div class="column is-half-mobile is-one-quarter-desktop">
                       <h6 class="title is-5">Community</h6>
                       <ul>
-                          <li><a href="/">Discord</a></li>
-                          <li><a href="/">Forums</a></li>
-                          <li><a href="/">Reddit</a></li>
-                          <li><a href="/">Telegram</a></li>
+                          <li><a data-testid="footerDiscord" href="/">Discord</a></li>
+                          <li><a data-testid="footerForums" href="/">Forums</a></li>
+                          <li><a data-testid="footerReddit" href="/">Reddit</a></li>
+                          <li><a data-testid="footerTelegram" href="/">Telegram</a></li>
                       </ul>
                   </div>
 
                   <div class="column is-half-mobile is-one-quarter-desktop">
                       <h6 class="title is-5">Resources</h6>
                       <ul>
-                          <li><a href="/">Branding</a></li>
-                          <li><a href="/">Wallet Tracker</a></li>
-                          <li><a href="/">Contact</a></li>
-                          <li><a href="/">White paper</a></li>
+                          <li><a data-testid="footerBranding" href="/">Branding</a></li>
+                          <li><a data-testid="footerWallet" href="/">Wallet Tracker</a></li>
+                          <li><a data-testid="footerContact" href="/">Contact</a></li>
+                          <li><a data-testid="footerPaper" href="/">White paper</a></li>
                       </ul>
                   </div>
 
                   <div class="column is-half-mobile is-one-quarter-desktop">
                       <h6 class="title is-5">Social</h6>
                       <ul>
-                          <li><a href="#0"><i class="fab fa-fw fa-facebook"></i>Facebook</a></li>
-                          <li><a href="#0"><i class="fab fa-fw fa-instagram"></i>Instagram</a></li>
-                          <li><a href="#0"><i class="fab fa-fw fa-twitter"></i>Twitter</a></li>
-                          <li><a href="#0"><i class="fab fa-fw fa-youtube"></i>YouTube</a></li>
-                          <li><a href="#0"><i class="fab fa-fw fa-linkedin"></i>LinkedIn</a></li>
+                          <li><a data-testid="footerFacebook" href="#0"><i class="fab fa-fw fa-facebook"></i>Facebook</a></li>
+                          <li><a data-testid="footerInstagram" href="#0"><i class="fab fa-fw fa-instagram"></i>Instagram</a></li>
+                          <li><a data-testid="footerTwitter" href="#0"><i class="fab fa-fw fa-twitter"></i>Twitter</a></li>
+                          <li><a data-testid="footerYouTube" href="#0"><i class="fab fa-fw fa-youtube"></i>YouTube</a></li>
+                          <li><a data-testid="footerLinkedIn" href="#0"><i class="fab fa-fw fa-linkedin"></i>LinkedIn</a></li>
                       </ul>
                   </div>
               </div>

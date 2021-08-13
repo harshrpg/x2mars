@@ -7,9 +7,9 @@ import "./style/navbar.scss"
 const Navbar = () => {
   const [isActive, setIsActive] = React.useState(false)
   return (
-    <nav class="navbar" role="navigation" aria-label="main navigation">
+    <nav data-testid="navbar" className="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <Logo />
+        <Logo data-testid="navbarLogo"/>
         <button
           onClick={() => setIsActive(!isActive)}
           class={`hamburger hamburger--emphatic ${isActive ? "is-active" : ""}`}
@@ -29,6 +29,7 @@ const Navbar = () => {
             to="/"
             class="navbar-item"
             activeClassName="navbar-item"
+            data-testid="navbarAbout"
           >
             about
           </Link>
@@ -36,6 +37,7 @@ const Navbar = () => {
             to="/"
             class="navbar-item"
             activeClassName="navbar-item"
+            data-testid="navbarBlog"
           >
             blog
           </Link>
@@ -43,6 +45,7 @@ const Navbar = () => {
             to="/"
             class="navbar-item"
             activeClassName="navbar-item"
+            data-testid="navbarPaper"
           >
             whitepaper
           </Link>
@@ -50,6 +53,7 @@ const Navbar = () => {
             to="/"
             class="navbar-item"
             activeClassName="navbar-item"
+            data-testid="navbarBuy"
           >
             buy x2m
           </Link>
@@ -58,28 +62,29 @@ const Navbar = () => {
             class="navbar-item"
             activeClassName="navbar-item"
             type="openapp"
+            data-testid="navbarApp"
           >
             open app
           </Link>
         </div>
         <div class="navbar-end">
-          <Link to="/" class="navbar-item" activeClassName="navbar-item">
-            <FontAwesomeIcon icon={["fab", "telegram-plane"]} />
+          <Link to="/" data-testid="navbarTelegram" class="navbar-item" activeClassName="navbar-item">
+          <FontAwesomeIcon icon={["fab", "telegram-plane"]} />
           </Link>
-          <Link to="/" class="navbar-item" activeClassName="navbar-item">
-            <FontAwesomeIcon icon={["fab", "medium-m"]} />
+          <Link to="/" data-testid="navbarMedium" class="navbar-item" activeClassName="navbar-item">
+          <FontAwesomeIcon icon={["fab", "medium-m"]} />
           </Link>
-          <Link to="/" class="navbar-item" activeClassName="navbar-item">
-            <FontAwesomeIcon icon={["fab", "twitter"]} />
+          <Link to="/" data-testid="navbarTwitter" class="navbar-item" activeClassName="navbar-item">
+          <FontAwesomeIcon icon={["fab", "twitter"]} />
           </Link>
-          <Link to="/" class="navbar-item" activeClassName="navbar-item">
-            <FontAwesomeIcon icon={["fab", "discord"]} />
+          <Link to="/" data-testid="navbarDiscord" class="navbar-item" activeClassName="navbar-item">
+          <FontAwesomeIcon icon={["fab", "discord"]} />
           </Link>
-          <Link to="/" class="navbar-item" activeClassName="navbar-item">
-            <FontAwesomeIcon icon={["fab", "youtube"]} />
+          <Link to="/" data-testid="navbarYoutube" class="navbar-item" activeClassName="navbar-item">
+          <FontAwesomeIcon icon={["fab", "youtube"]} />
           </Link>
-          <Link to="/" class="navbar-item" activeClassName="navbar-item">
-            <FontAwesomeIcon icon={["fab", "facebook"]} />
+          <Link to="/" data-testid="navbarFacebook" class="navbar-item" activeClassName="navbar-item">
+          <FontAwesomeIcon icon={["fab", "facebook"]} />
           </Link>
         </div>
       </div>

@@ -13,7 +13,7 @@ const benefitsContent = [
 ]
 const Features = () => {
   return (
-    <section class="hero">
+    <section data-testid="featureContent" class="hero">
       <div class="hero-body">
         <div class="container has-text-centered">
           <p class="title is-size-3 is-size-5-mobile">THE FACTORY</p>
@@ -43,7 +43,7 @@ const Features = () => {
             <StaticImage src="../../images/factory_alone.png" />
           </div>
         </div>
-        <SlideShow />
+         <SlideShow />
       </div>
     </section>
   )

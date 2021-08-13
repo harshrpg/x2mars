@@ -5,7 +5,7 @@ import "./style/telegram.css"
 const Telegram = () => {
   return (
     <>
-      <section class="section is-comm">
+      <section data-testid="telegramButton" class="section is-comm">
         <div class="container is-max-desktop has-text-centered">
           <div id="hero-banner-text-subtitle" class=" has-text-centered">
             <div class="columns is-gapless">
