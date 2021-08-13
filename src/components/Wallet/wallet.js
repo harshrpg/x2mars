@@ -66,7 +66,7 @@ const Wallet = () => {
         </div>
       ) : (
         <div>
-        <button class="button is-link walletbutton" type="button" onClick={connectWallet}>
+        <button className="button is-link walletbutton" type="button" onClick={connectWallet}>
           Connect Wallet
         </button>
         </div>

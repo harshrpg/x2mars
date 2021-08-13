@@ -5,20 +5,20 @@ import "./style/telegram.css"
 const Telegram = () => {
   return (
     <>
-      <section data-testid="telegramButton" class="section is-comm">
-        <div class="container is-max-desktop has-text-centered">
-          <div id="hero-banner-text-subtitle" class=" has-text-centered">
-            <div class="columns is-gapless">
-              <div class="column ">
-                <span class="is-size-6">
+      <section className="section is-comm">
+        <div className="container is-max-desktop has-text-centered">
+          <div id="hero-banner-text-subtitle" className=" has-text-centered">
+            <div className="columns is-gapless">
+              <div className="column ">
+                <span className="is-size-6">
                   Meet others in the discussion.
                 </span>
               </div>
-              <div class="column">
-                <button class="button is-light custom-button community-mobile">Join Telegram</button>
+              <div className="column">
+                <button className="button is-light custom-button community-mobile">Join Telegram</button>
               </div>
-              {/* <div class="column">
-                <button class="button is-light">Join Telegram</button>
+              {/* <div className="column">
+                <button className="button is-light">Join Telegram</button>
               </div> */}
             </div>
           </div>

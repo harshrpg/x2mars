@@ -4,7 +4,7 @@ import { StaticImage } from "gatsby-plugin-image"
 
 const Timeline = () => {
   return (
-    <div class="container is-timeline">
+    <div className="container is-timeline">
       <StaticImage src="../../images/Timeline.png" />
     </div>
   )

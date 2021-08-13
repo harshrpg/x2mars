@@ -4,20 +4,20 @@ import "./style/newsletter.css"
 const Newsletter = () => {
   return (
     <>
-      <section class="section is-comm">
-        <div class="container is-max-desktop has-text-centered">
-          <div id="hero-banner-text-subtitle" class=" has-text-centered">
-            <div class="columns is-gapless">
-              <div class="column ">
-                <span class="is-size-6">
+      <section className="section is-comm">
+        <div className="container is-max-desktop has-text-centered">
+          <div id="hero-banner-text-subtitle" className=" has-text-centered">
+            <div className="columns is-gapless">
+              <div className="column ">
+                <span className="is-size-6">
                   Signup to our newsletter and get the latest updates.
                 </span>
               </div>
-              <div class="column">
-                <button class="button is-light custom-button community-mobile">Subscribe</button>
+              <div className="column">
+                <button className="button is-light custom-button community-mobile">Subscribe</button>
               </div>
-              {/* <div class="column">
-                <button class="button is-light">Join Telegram</button>
+              {/* <div className="column">
+                <button className="button is-light">Join Telegram</button>
               </div> */}
             </div>
           </div>

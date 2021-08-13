@@ -1,0 +1,44 @@
+@import "../../../style/index.scss";
+
+.wallet-choice-board {
+    border: 2px solid $primary-color !important;
+    background-color: white;
+    color: $charcoal;
+    padding: 0 2rem 2rem 2rem;
+    width: auto !important;
+    position: relative !important;
+}
+
+.modal-background {
+    background-color: $inactive-color !important;
+    opacity: 0.5;
+}
+
+.modal-close-custom {
+    position: absolute;
+    top: 10%;
+    right: 0;
+    transform: translate(-50%, -50%);
+}
+
+.close-modal-button {
+    border: none !important;
+    color: $charcoal;
+}
+
+.border-line {
+    height: 100%;
+    width: 1px;
+    background-color: '#909090';
+}
+
+.wallet-connect-container.is-hidden {
+    visibility: hidden;
+}
+
+.wallet-connect-container.is-selected {
+    position: inherit;
+    top: 50%;
+    left: 50%;
+    transform: scale(0.8) translate(-50%, -50%);
+}

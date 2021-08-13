@@ -13,6 +13,14 @@ import { GoCheck } from "@react-icons/all-files/go/GoCheck"
 import { GoX } from "@react-icons/all-files/go/GoX"
 import { RiErrorWarningFill } from "@react-icons/all-files/ri/RiErrorWarningFill"
 import { RiCheckboxCircleFill } from "@react-icons/all-files/ri/RiCheckboxCircleFill"
+import { NetworkIcon } from "../Icons/icons"
+import { useNetwork } from "../../hooks/useNetwork"
+import { useAuthState, useCartDispatch, useCartState } from "../../context"
+import {
+  NetworkConstants,
+  NetworkFromChainId,
+  TokenTypeIds,
+} from "../../util/Constants"
 
 const Card = props => {
   let style = { opacity: 1 }
@@ -23,11 +31,11 @@ const Card = props => {
     style = { opacity: 1 }
   }
   return (
-    <div class="conatiner card-container">
-      <div class="columns custom-card">
+    <div className="conatiner card-container">
+      <div className="columns custom-card">
         <div className="column is-full">
           <div className="columns">
-            <div class="column is-8">
+            <div className="column is-8">
               {props.error !== null ? <ErrorBox error={props.error} /> : ``}
             </div>
             <div className="column is-4">
@@ -43,7 +51,7 @@ const Card = props => {
           ``
         )}
 
-        <div class="column is-full">
+        <div className="column is-full">
           {props.type === "custom" ? (
             <CustomData
               cardData={props.cardData}
@@ -54,6 +62,7 @@ const Card = props => {
             <SummaryData displayData={props.cardData} network={props.network} />
           ) : (
             <Data
+              id={props.id}
               cardData={props.cardData}
               network={props.network}
               cardImage={props.cardImage}
@@ -89,7 +98,7 @@ const Card = props => {
 const CustomCheckBox = props => {
   const [checked, setChecked] = React.useState(props.selected)
   return (
-    <label class="checkbox-container">
+    <label className="checkbox-container">
       <input
         type="checkbox"
         key={checked}
@@ -97,7 +106,7 @@ const CustomCheckBox = props => {
         onClick={event => props.onPress(event)}
         disabled={props.disabled ? true : props.isError !== null ? true : false}
       />
-      <span class="checkmark"></span>
+      <span className="checkmark"></span>
     </label>
   )
 }
@@ -131,6 +140,7 @@ const AddToCartButton = props => {
   const [waitForSelection, setWaitForSelection] = React.useState(true)
 
   const handleButtonClick = () => {
+    console.debug("Selection: In Card: ", selected)
     if (!selected) {
       setSelected(!selected)
     } else if (props.isMandatory !== undefined && !props.isMandatory) {
@@ -139,7 +149,6 @@ const AddToCartButton = props => {
   }
 
   React.useEffect(() => {
-    console.debug("EFFECT 1");
     const timer = setTimeout(() => {
       setWaitForSelection(!waitForSelection)
     }, 500)
@@ -147,7 +156,6 @@ const AddToCartButton = props => {
   }, [selected])
 
   React.useEffect(() => {
-    console.debug("EFFECT 2");
     props.onPress(selected)
   }, [selected, waitForSelection])
   return (
@@ -170,7 +178,7 @@ const AddToCartButton = props => {
       disabled={props.isError || props.disabled}
     >
       <span>{props.selectionText}</span>
-      <span class="icon">
+      <span className="icon">
         {selected ? (
           waitForSelection ? (
             <AiOutlineCodeSandbox className="spinner" />
@@ -200,17 +208,17 @@ const HelpButton = props => {
         type="button"
         onClick={() => setIsActive(!isActive)}
       >
-        <span class="icon">
+        <span className="icon">
           <BsQuestion />
         </span>
       </button>
       <div className={`modal ${isActive ? "is-active" : ""}`}>
-        <div class="modal-background"></div>
-        <div class="modal-content">
+        <div className="modal-background"></div>
+        <div className="modal-content">
           <HelpDescription cardData={props.cardData} />
         </div>
         <button
-          class="modal-close is-large"
+          className="modal-close is-large"
           aria-label="close"
           onClick={() => setIsActive(!isActive)}
         ></button>
@@ -237,24 +245,50 @@ const HelpDescription = props => {
 }
 
 const ErrorBox = ({ error }) => {
-  return <div class="error-container">{error}</div>
+  return <div className="error-container">{error}</div>
 }
 
 const Data = ({
   cardData,
-  network,
+  // network,
   cardImage,
   type,
   disabled,
   selected,
   callback,
-  maxTxnAmount
+  maxTxnAmount,
+  id
 }) => {
-  let fees = cardData.price !== undefined ? cardData.price[network] : "Free"
+  // STATES
   const [featureInput, setFeatureInput] = React.useState({ features: [] })
+  const [network, setNetwork] = React.useState(
+    NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
+  )
+  const [fees, setFees] = React.useState(cardData.price[network])
+
+  // REUSABLE HOOKS
+  const user = useAuthState()
+  const cartState = useCartState()
+
+  // EFFECTS
+  React.useEffect(() => {
+    if (!!user.chainId) {
+      setNetwork(NetworkFromChainId[parseInt(user.chainId)])
+    }
+  }, [user])
+  React.useEffect(() => {
+    if (id === "step2-card3") {
+      if (
+        cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER
+      ) {
+        setFees("Free")
+      }
+    } else {
+      setFees(cardData.price[network])
+    }
+  }, [cartState])
 
   const handleFeatureInputChange = (i, event, input) => {
-    console.debug("TOTAL FEE: Feature Input recorded: ", event.target.value)
     const newArray = Array.from(featureInput.features)
     let value = parseFloat(event.target.value)
     if (value >= parseFloat(input.min) && value <= parseFloat(input.max)) {
@@ -267,7 +301,6 @@ const Data = ({
   }
 
   const resetStateInput = i => {
-    console.debug("TOTAL FEE: Resseting input")
     if (
       featureInput.features[i] !== undefined &&
       featureInput.features[i] !== ""
@@ -278,10 +311,11 @@ const Data = ({
       callback(0)
     }
   }
+
   return (
     <div className="conatiner has-text-centered">
-      <div class="columns">
-        <div class="column">
+      <div className="columns">
+        <div className="column">
           {cardImage !== undefined || cardImage !== null ? (
             <GatsbyImage image={cardImage} width={30} height={30} alt="" />
           ) : (
@@ -297,10 +331,14 @@ const Data = ({
       {type === "feature-select" ? (
         <div className="columns">
           <div className="column">
-            <div class="centerinput">
+            <div className="centerinput">
               {cardData.inputData !== null && cardData.inputData !== undefined
                 ? cardData.inputData.map((input, i) => {
-                    if ((!selected || disabled) && input.idx !== undefined && input.idx !== 2) {
+                    if (
+                      (!selected || disabled) &&
+                      input.idx !== undefined &&
+                      input.idx !== 2
+                    ) {
                       resetStateInput(i)
                     }
                     return (
@@ -338,7 +376,7 @@ const Data = ({
                             }
                           />
 
-                          <span class="placeholder">
+                          <span className="placeholder">
                             {input.min !== "" && input.max !== ""
                               ? input.name +
                                 ` (` +
@@ -452,8 +490,11 @@ const SummaryData = props => {
 }
 
 const Step2Card1 = ({ cardData, network, callback }) => {
-  const [tokenSymbol, setTokenSymbol] = React.useState("")
-  const [tokenName, setTokenName] = React.useState("")
+  const cartState = useCartState()
+  const [tokenSymbol, setTokenSymbol] = React.useState(
+    cartState.step2.tokenSymbol
+  )
+  const [tokenName, setTokenName] = React.useState(cartState.step2.tokenName)
 
   const handleTokenNameChange = event => {
     console.debug("Token Name changed to: ", event.target.value)
@@ -471,18 +512,10 @@ const Step2Card1 = ({ cardData, network, callback }) => {
           <CardTitle title={cardData.title} size="small" />
         </div>
       </div>
-      {/* <div className="columns">
-        <div className="column">
-          <NetworkIcon network={network} />
-        </div>
-        <div className="column">
-          <span className="is-size-4">{tokenSymbol}</span>
-        </div>
-      </div> */}
       <div className="columns">
         <div className="column">
-          <div class="centerinput">
-            <div className={`input-block ${tokenName !== "" ? "success" : ""}`}>
+          <div className="centerinput">
+            <div className={`input-block ${!!tokenName ? "success" : ""}`}>
               <input
                 type="text"
                 onChange={handleTokenNameChange}
@@ -490,18 +523,17 @@ const Step2Card1 = ({ cardData, network, callback }) => {
                 required="required"
                 spellcheck="false"
                 onBlur={callback[0]}
+                value={tokenName}
               />
-              <span class="placeholder">Token Name</span>
+              <span className="placeholder">Token Name</span>
             </div>
           </div>
         </div>
       </div>
       <div className="columns">
         <div className="column">
-          <div class="centerinput">
-            <div
-              className={`input-block ${tokenSymbol !== "" ? "success" : ""}`}
-            >
+          <div className="centerinput">
+            <div className={`input-block ${!!tokenSymbol ? "success" : ""}`}>
               <input
                 type="text"
                 onChange={handleTokenSymbolChange}
@@ -509,8 +541,9 @@ const Step2Card1 = ({ cardData, network, callback }) => {
                 required="required"
                 spellcheck="false"
                 onBlur={callback[1]}
+                value={tokenSymbol}
               />
-              <span class="placeholder">Token Symbol</span>
+              <span className="placeholder">Token Symbol</span>
             </div>
           </div>
         </div>
@@ -520,9 +553,14 @@ const Step2Card1 = ({ cardData, network, callback }) => {
 }
 
 const Step2Card2 = ({ cardData, network, callback }) => {
-  const [tokenSupply, setTokenSupply] = React.useState(0)
-  const [tokenSupplyUnits, setTokenSupplyUnits] = React.useState("Units")
-  const [decimals, setDecimals] = React.useState(18)
+  const cartState = useCartState()
+  const [tokenSupply, setTokenSupply] = React.useState(
+    cartState.step2.tokenSupplyNumber
+  )
+  const [tokenSupplyUnits, setTokenSupplyUnits] = React.useState(
+    cartState.step2.tokenSupplyUnits
+  )
+  const [decimals, _] = React.useState(cartState.step2.tokenDecimals)
 
   const handleTokenSupplyChange = event => {
     let supply = event.target.value
@@ -534,17 +572,11 @@ const Step2Card2 = ({ cardData, network, callback }) => {
   }
 
   const handleTokenSupplyUnitsChange = event => {
-    console.debug("Token Supply Units changed", event.target.value)
     setTokenSupplyUnits(event.target.value)
   }
 
   React.useEffect(() => {
-    console.debug("EFFECT 3");
     if (tokenSupply !== 0 && tokenSupplyUnits !== "Units") {
-      console.debug(
-        "Effect in supply details: ",
-        tokenSupply + " " + tokenSupplyUnits
-      )
       callback(tokenSupply, tokenSupplyUnits)
     }
   }, [tokenSupply, tokenSupplyUnits])
@@ -555,25 +587,10 @@ const Step2Card2 = ({ cardData, network, callback }) => {
           <CardTitle title={cardData.title} size="small" />
         </div>
       </div>
-      {/* <div className="columns">
-        <div className="column">
-          <NetworkIcon network={network} />
-        </div>
-        <div className="column">
-          <span className="is-size-6">
-            {tokenSupply}
-            {` `}
-            {tokenSupplyUnits}
-            {` tokens`}
-          </span>
-        </div>
-      </div> */}
       <div className="columns">
         <div className="column is-half">
-          <div class="centerinput">
-            <div
-              className={`input-block ${tokenSupply !== 0 ? "success" : ""}`}
-            >
+          <div className="centerinput">
+            <div className={`input-block ${!!tokenSupply ? "success" : ""}`}>
               <input
                 type="number"
                 onChange={handleTokenSupplyChange}
@@ -582,8 +599,9 @@ const Step2Card2 = ({ cardData, network, callback }) => {
                 spellcheck="false"
                 min="1"
                 max="100"
+                value={tokenSupply}
               />
-              <span class="placeholder">1-100</span>
+              <span className="placeholder">1-100</span>
             </div>
           </div>
         </div>
@@ -596,6 +614,7 @@ const Step2Card2 = ({ cardData, network, callback }) => {
             <select
               className="is-hovered"
               onChange={handleTokenSupplyUnitsChange}
+              value={tokenSupplyUnits}
             >
               <option>Units</option>
               <option>Thousand</option>
@@ -609,7 +628,7 @@ const Step2Card2 = ({ cardData, network, callback }) => {
       </div>
       <div className="columns">
         <div className="column">
-          <div class="centerinput">
+          <div className="centerinput">
             <div className={`input-block inactive`}>
               <input
                 type="text"
@@ -619,7 +638,7 @@ const Step2Card2 = ({ cardData, network, callback }) => {
                 disabled={true}
                 value={decimals}
               />
-              <span class="placeholder">Decimals</span>
+              <span className="placeholder">Decimals</span>
             </div>
           </div>
         </div>
@@ -645,34 +664,24 @@ const CardTitle = ({ title, size }) => {
 const Fee = ({ fee, network }) => {
   return (
     <div className="container custom-container-fees">
-      <div class="columns">
-        <div class="column is-one-quarter is-half-mobile static-fee-column">
-          <span class="is-size-7 is-size-8-mobile has-text-centered">Fees</span>
+      <div className="columns">
+        <div className="column is-one-quarter is-half-mobile static-fee-column">
+          <span className="is-size-7 is-size-8-mobile has-text-centered">
+            Fees
+          </span>
         </div>
-        <div class="column">
-          <span class="is-size-6 is-size-7-mobile has-text-centered">
+        <div className="column">
+          <span className="is-size-6 is-size-7-mobile has-text-centered">
             {fee}
             {` `}
             {fee !== "Free" ? (network === "eth" ? `ETH` : `BNB`) : ``}
           </span>
         </div>
-        <div class="column is-one-quarter">
+        <div className="column is-one-quarter">
           <NetworkIcon network={network} />
         </div>
       </div>
     </div>
-  )
-}
-
-const NetworkIcon = ({ network }) => {
-  return (
-    <span class="is-size-5 is-size-7-mobile has-text-centered icon-style">
-      {network === "eth" ? (
-        <FontAwesomeIcon icon={["fab", "ethereum"]} />
-      ) : (
-        <StaticImage src="../../images/assets/bnb.svg" width={30} height={30} />
-      )}
-    </span>
   )
 }
 

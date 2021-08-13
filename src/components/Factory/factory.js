@@ -1,63 +1,15 @@
-import { useWeb3React } from "@web3-react/core"
 import * as React from "react"
+import { useNetwork } from "../../hooks/useNetwork"
 import "./style/factory.scss"
 import FactorySteps from "./tokensteps"
-import useSWR from "swr"
-import BigNumber from "bignumber.js"
-import { formatEther } from "@ethersproject/units"
 
-const fetcher = library => (...args) => {
-  const [method, ...params] = args
-  return library[method](...params)
-}
-
-const formatBalance = balance => {
-  return parseFloat(formatEther(balance)).toPrecision(4)
-}
 
 const Factory = () => {
-  let connectedNetwork = "eth"
-  const [stepCount, setStepCount] = React.useState(0)
-  const [accountBalanceChanged, setAccountBalanceChanged] = React.useState(
-    false
-  )
-  const [accountBalance, setAccountBalance] = React.useState(0.0)
-  const { account, active, library } = useWeb3React()
-  const { data, error, mutate } = useSWR(["getBalance", account, "latest"], {
-    fetcher: fetcher(library),
-  })
-  React.useEffect(() => {
-    console.debug("EFFECT 4");
-    if (library) {
-      library.on("block", () => {
-        console.log("update balance...")
-        mutate(undefined, true)
-      })
-      return () => {
-        library.removeAllListeners("block")
-      }
-    }
-  }, [])
-  if (data) {
-    var balance = new BigNumber(data._hex).toString()
-    balance = formatBalance(balance)
-    console.log(balance)
-    setAccountBalance(balance)
-  }
-
-  const setCart = () => {
-    console.log("Setting Cart")
-  }
+  // const network = useNetwork();
+  // console.debug("Network: ", network)
   return (
     <>
-      <FactorySteps
-        stepNumber={stepCount}
-        isConnectionActive={active}
-        hasBalanceChanged={accountBalanceChanged}
-        callback={setCart}
-        accountBalance={accountBalance}
-        network={connectedNetwork}
-      />
+      <FactorySteps />
     </>
   )
 }
