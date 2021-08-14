@@ -16,8 +16,10 @@ import "./style/factory.scss"
 import { useBalance, useNetwork } from "../../hooks/useNetwork"
 import {
   Error,
+  FeatureIds,
   NetworkConstants,
   NetworkFromChainId,
+  NumberMap,
   TokenTypeIds,
   TokenTypes,
 } from "../../util/Constants"
@@ -330,7 +332,7 @@ const Step2 = props => {
     Decimals: cartState.step2.tokenDecimals,
   })
 
-  // CONSTANT DATA
+  // DATA
   const card1 = step.cardData[0]
   const card2 = step.cardData[1]
   const card3 = step.cardData[2]
@@ -478,115 +480,129 @@ const Step2 = props => {
 }
 
 const Step3 = props => {
+  // CONTEXT
+  const user = useAuthState()
+  const cartState = useCartState()
+  const cartDispatch = useCartDispatch()
+
+  // STATE
   const [step, _] = React.useState(Steps.Step3)
+  const [network, setNetwork] = React.useState(
+    NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
+  )
+  const [tokenType, __] = React.useState(cartState.step1.selectedToken)
+  const [featuresSelected, setFeaturesSelected] = React.useState({
+    features: [false, false, false, false, false],
+  })
+  const [featureFees, setFeatureFees] = React.useState({
+    featureFees: [
+      cartState.step3.auto_liquidation,
+      cartState.step3.rfi_rewards,
+      cartState.step3.anti_whale_protection,
+      cartState.step3.auto_burn,
+      cartState.step3.auto_charity,
+    ],
+  })
+  const [totalFees, setTotalFees] = React.useState(parseFloat(cartState.step3.totalFees))
+
+  // DATA
   const card1 = step.cardData[0]
   const card2 = step.cardData[1]
   const card3 = step.cardData[2]
   const card4 = step.cardData[3]
   const card5 = step.cardData[4]
-  var tokenDetails = props.tokenDetails
-  const numberMap = {
-    Thousand: 10 ** 3,
-    Million: 10 ** 6,
-    Billion: 10 ** 9,
-    Trillion: 10 ** 12,
-    Quadrillion: 10 ** 15,
-  }
-  var tokenSupply = parseFloat(tokenDetails.Supply)
-  const multiplier = numberMap[tokenDetails.SupplyUnit]
-  console.debug("TOKEN SUPPLY: ", tokenSupply * multiplier)
-  let tokenType =
-    props.type === 0 ? "Governance Token" : "Fee on Transfer Token"
 
-  const featureSelectionArr =
-    props.type === 1
-      ? [true, false, false, false, false]
-      : [false, false, false, false, false]
-  const [featuresSelected, setFeaturesSelected] = React.useState({
-    features: featureSelectionArr,
-  })
-  const [featureFees, setFeatureFees] = React.useState({
-    featureFees: [0, 0, 50000, 0, 0],
-  })
-
-  const [totalFees, setTotalFees] = React.useState(0)
-  const setSelection = (index, isSelected) => {
-    console.debug("Selection: ", featuresSelected)
-    const newArray = Array.from(featuresSelected.features)
-    newArray[index] = isSelected
-    setFeaturesSelected({ features: newArray })
-    console.debug("Selection: ", featuresSelected)
-  }
-
-  const setFees = (index, fee) => {
-    console.debug("TOTAL FEE: Fee selected: ", fee)
-    const newArray = Array.from(featureFees.featureFees)
-    newArray[index] = fee
-    setFeatureFees({ featureFees: newArray })
-  }
-
+  // EFFECTS
   React.useEffect(() => {
-    console.debug("EFFECT 7")
-    if (props.type === 1) {
-      console.debug("Feature Effect: ", featuresSelected, featureFees)
+    if (!!user.chainId) {
+      setNetwork(NetworkFromChainId[parseInt(user.chainId)])
+    }
+  }, [user])
+  React.useEffect(() => {
+    if (tokenType === TokenTypeIds.FEE_ON_TRANSFER) {
+      setFeaturesSelected({
+        features: [
+          true,
+          !!cartState.step3.rfi_rewards,
+          !!cartState.step3.anti_whale_protection,
+          !!cartState.step3.auto_burn,
+          !!cartState.step3.auto_charity,
+        ],
+      })
+    } else if (tokenType === TokenTypeIds.GOVERNANCE) {
+      setFeaturesSelected({ features: [false, false, false, false, false] })
+    }
+  }, [tokenType])
+  React.useEffect(() => {
+    if (tokenType === TokenTypeIds.FEE_ON_TRANSFER) {
       let reqFullfilled = 0
       let failedReq = 0
       step.cardData.map((_, index) => {
-        if (
-          (index !== 2 &&
-            featuresSelected.features[index] &&
-            featureFees.featureFees[index] > 0) ||
-          index === 2
-        ) {
-          reqFullfilled++
-        }
-        if (
-          index !== 2 &&
-          ((featuresSelected.features[index] &&
-            featureFees.featureFees[index] === 0) ||
-            (!featuresSelected.features[index] &&
-              featureFees.featureFees[index] > 0))
-        ) {
-          failedReq++
+        if (index !== 2) {
+          if (
+            (featuresSelected.features[index] &&
+              featureFees.featureFees[index] > 0) ||
+            !featuresSelected.features[index]
+          ) {
+            reqFullfilled++
+          } else if (
+            featuresSelected.features[index] ||
+            featureFees.featureFees[index] <= 0
+          ) {
+            failedReq++
+          }
         }
       })
       if (reqFullfilled > 0) {
-        console.debug(
-          "Features Selected: ",
-          featuresSelected,
-          " Fees provided: ",
-          featureFees
-        )
+        calculateTotalFees()
         props.onSuccess()
       }
       if (failedReq > 0) {
-        console.debug(
-          "Feature Effect failed: ",
-          featuresSelected.features,
-          featureFees.featureFees
-        )
         props.onFailure()
       }
-    } else if (props.type === 0) {
+    } else if (tokenType === TokenTypeIds.GOVERNANCE) {
       props.onSuccess()
     }
   }, [featuresSelected, featureFees])
-
   React.useEffect(() => {
-    console.debug("EFFECT 8")
-    calculateTotalFees()
-  }, [featureFees])
+    cartDispatch({
+      step: 3.6,
+      payload: {
+        step3: {
+          auto_liquidation: cartState.step3.auto_liquidation,
+          rfi_rewards: cartState.step3.rfi_rewards,
+          anti_whale_protection: cartState.step3.anti_whale_protection,
+          auto_burn: cartState.step3.auto_burn,
+          auto_charity: cartState.step3.auto_charity,
+          totalFees: totalFees
+        },
+      },
+    })
+  }, [totalFees])
+
+  // CALLBACKS
+  const setSelection = (index, isSelected) => {
+    const newArray = Array.from(featuresSelected.features)
+    newArray[index] = isSelected
+    setFeaturesSelected({ features: newArray })
+  }
+
+  const setFees = (index, fee) => {
+    const newArray = Array.from(featureFees.featureFees)
+    newArray[index] = parseFloat(fee)
+    setFeatureFees({ featureFees: newArray })
+  }
 
   const calculateTotalFees = () => {
-    let fees = 0
+    let fees = null
     featuresSelected.features.map((isFeatureSelected, i) => {
       if (i !== 2) {
-        if (isFeatureSelected) {
+        if (isFeatureSelected && featureFees.featureFees[i] !== null) {
           fees += parseFloat(featureFees.featureFees[i])
         }
       }
     })
-    console.debug("TOTAL FEE: ", fees)
+    console.debug("Cart Selection: Step: Total fees calculated", fees)
     setTotalFees(fees)
   }
 
@@ -598,11 +614,13 @@ const Step3 = props => {
         </div>
         <div className="column has-text-centered sub-title-container">
           <StepSubTitle
-            subtitleMain={`Creating a ${tokenType}`}
+            subtitleMain={`Creating a ${TokenTypes[tokenType]}`}
             subtitleSub={`${
-              props.type === 0
+              tokenType === TokenTypeIds.GOVERNANCE
                 ? `These options can only be selected for Fee On Transfer type tokens`
-                : `You are charging ${totalFees}% fee per transaction`
+                : `You are charging ${
+                    totalFees === null ? "0" : totalFees
+                  }% fee per transaction`
             }`}
           />
           <span className="floating-warn">
@@ -617,17 +635,27 @@ const Step3 = props => {
                 type={card1.type}
                 error={null}
                 cardData={card1}
-                network={props.network}
+                network={network}
                 selected={featuresSelected.features[0]}
-                disabled={props.type === 1 ? false : true}
-                cardImage={getImageDataForCard(card1.img[props.network])}
-                cardIndex={0}
-                onPress={() => setSelection(0, true)}
-                callback={value => setFees(0, value)}
-                selectionText={
-                  props.type === 0 ? "Cannot add to token" : "In Your Contract"
+                disabled={
+                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : true
                 }
-                mandatory={props.type === 1 ? true : undefined}
+                cardImage={getImageDataForCard(card1.img[network])}
+                cardIndex={0}
+                onPress={() =>
+                  setSelection(FeatureIds.AUTOMATIC_LIQUIDATION, true)
+                }
+                callback={value =>
+                  setFees(FeatureIds.AUTOMATIC_LIQUIDATION, value)
+                }
+                selectionText={
+                  tokenType === TokenTypeIds.GOVERNANCE
+                    ? "Cannot add to token"
+                    : "In Your Contract"
+                }
+                mandatory={
+                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? true : undefined
+                }
               />
             </div>
           </div>
@@ -638,22 +666,29 @@ const Step3 = props => {
                 type={card2.type}
                 error={null}
                 cardData={card2}
-                network={props.network}
-                // selected={props.type === 1 ? true : false}
+                network={network}
                 selected={featuresSelected.features[1]}
-                disabled={props.type === 1 ? false : true}
+                disabled={
+                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : true
+                }
                 cardImage={getImageDataForCard(card2.img)}
                 cardIndex={1}
-                onPress={select => setSelection(1, select)}
-                callback={value => setFees(1, value)}
+                onPress={select =>
+                  setSelection(FeatureIds.RFI_STATIC_REWARDS, select)
+                }
+                callback={value =>
+                  setFees(FeatureIds.RFI_STATIC_REWARDS, value)
+                }
                 selectionText={
-                  props.type === 0
+                  tokenType === TokenTypeIds.GOVERNANCE
                     ? "Cannot add to token"
                     : featuresSelected.features[1]
                     ? "Remove from Contract"
                     : "Add to Contract"
                 }
-                mandatory={props.type === 1 ? false : undefined}
+                mandatory={
+                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : undefined
+                }
               />
             </div>
             <div className="column">
@@ -662,22 +697,29 @@ const Step3 = props => {
                 type={card3.type}
                 error={null}
                 cardData={card3}
-                network={props.network}
+                network={network}
                 selected={featuresSelected.features[2]}
-                disabled={props.type === 1 ? false : true}
+                disabled={
+                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : true
+                }
                 cardImage={getImageDataForCard(card3.img)}
                 cardIndex={2}
-                onPress={select => setSelection(2, select)}
-                callback={value => setFees(2, value)}
+                onPress={select =>
+                  setSelection(FeatureIds.ANTI_WHALE_PROTECTION, select)
+                }
+                callback={value =>
+                  setFees(FeatureIds.ANTI_WHALE_PROTECTION, value)
+                }
                 selectionText={
-                  props.type === 0
+                  tokenType === TokenTypeIds.GOVERNANCE
                     ? "Cannot add to token"
                     : featuresSelected.features[2]
                     ? "Remove from Contract"
                     : "Add to Contract"
                 }
-                mandatory={props.type === 1 ? false : undefined}
-                maxTxnAmount={0.005 * (tokenSupply * multiplier)}
+                mandatory={
+                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : undefined
+                }
               />
             </div>
           </div>
@@ -689,21 +731,25 @@ const Step3 = props => {
                 type={card4.type}
                 error={null}
                 cardData={card4}
-                network={props.network}
+                network={network}
                 selected={featuresSelected.features[3]}
-                disabled={props.type === 1 ? false : true}
+                disabled={
+                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : true
+                }
                 cardImage={getImageDataForCard(card4.img)}
                 cardIndex={3}
-                onPress={select => setSelection(3, select)}
-                callback={value => setFees(3, value)}
+                onPress={select => setSelection(FeatureIds.AUTO_BURN, select)}
+                callback={value => setFees(FeatureIds.AUTO_BURN, value)}
                 selectionText={
-                  props.type === 0
+                  tokenType === TokenTypeIds.GOVERNANCE
                     ? "Cannot add to token"
                     : featuresSelected.features[3]
                     ? "Remove from Contract"
                     : "Add to Contract"
                 }
-                mandatory={props.type === 1 ? false : undefined}
+                mandatory={
+                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : undefined
+                }
               />
             </div>
             <div className="column">
@@ -712,21 +758,27 @@ const Step3 = props => {
                 type={card5.type}
                 error={null}
                 cardData={card5}
-                network={props.network}
+                network={network}
                 selected={featuresSelected.features[4]}
-                disabled={props.type === 1 ? false : true}
+                disabled={
+                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : true
+                }
                 cardImage={getImageDataForCard(card5.img)}
                 cardIndex={4}
-                onPress={select => setSelection(4, select)}
-                callback={value => setFees(4, value)}
+                onPress={select =>
+                  setSelection(FeatureIds.AUTO_CHARITY, select)
+                }
+                callback={value => setFees(FeatureIds.AUTO_CHARITY, value)}
                 selectionText={
-                  props.type === 0
+                  tokenType === TokenTypeIds.GOVERNANCE
                     ? "Cannot add to token"
                     : featuresSelected.features[4]
                     ? "Remove from Contract"
                     : "Add to Contract"
                 }
-                mandatory={props.type === 1 ? false : undefined}
+                mandatory={
+                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : undefined
+                }
               />
             </div>
           </div>
