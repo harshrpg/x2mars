@@ -4,22 +4,26 @@ import { useWeb3React } from "@web3-react/core"
 import { FaFileContract } from "@react-icons/all-files/fa/FaFileContract"
 import { MdAccountCircle } from "@react-icons/all-files/md/MdAccountCircle"
 
-import {
-  FactoryConstants,
-  NetworkNames,
-} from "../../util/Constants"
+import { Error, FactoryConstants, NetworkNames } from "../../util/Constants"
 import AppLogo from "../Logo/applogo"
 import WalletSelect from "../walletSelect/walletselect"
 
 import "./style/appnavbar.scss"
 import { NetworkIcon } from "../Icons/icons"
 import { useBalance, useNetwork } from "../../hooks/useNetwork"
+import CartWindow from "../Cart/cart"
+import { useCartState } from "../../context"
+
+const errorText = "Connect Your "
 
 const AppNavbar = () => {
   const { account, library, chainId, active } = useWeb3React()
   const networkHook = useNetwork()
   const balanceHook = useBalance()
+  const cartState = useCartState()
   const [walletSelect, setWalletSelect] = React.useState(false)
+  const [cartDisplay, setCartDisplay] = React.useState(false)
+  const [cartError, setCartError] = React.useState(false)
   const [balance, setBalance] = React.useState()
   const [network, setNetwork] = React.useState()
 
@@ -34,6 +38,15 @@ const AppNavbar = () => {
       setBalance(balanceHook)
     }
   }, [balanceHook])
+
+  function showCart() {
+    if (active) {
+      setCartError(false)
+    } else {
+      setCartError(true)
+    }
+    setCartDisplay(true)
+  }
 
   // const { data, error, mutate } = useSWR(["getBalance", account, "latest"], {
   //   fetcher: fetcher(library),
@@ -56,11 +69,7 @@ const AppNavbar = () => {
 
   return (
     <>
-      <nav
-        className="navbar"
-        role="navigation"
-        aria-label="main navigation"
-      >
+      <nav className="navbar" role="navigation" aria-label="main navigation">
         <Link to="/" className="navbar-start">
           <AppLogo />
         </Link>
@@ -81,7 +90,7 @@ const AppNavbar = () => {
                   chainId={chainId}
                 />
               ) : (
-                `Not enough balance`
+                Error.NOT_ENOUGH_BALANCE
               )}
             </div>
           ) : (
@@ -96,7 +105,11 @@ const AppNavbar = () => {
             </div>
           )}
           <div>
-            <button className="button is-light cart-button" type="button">
+            <button
+              className="button is-light cart-button"
+              type="button"
+              onClick={showCart}
+            >
               <span>Your Contract</span>
               <span className="icon is-small">
                 <FaFileContract />
@@ -105,19 +118,36 @@ const AppNavbar = () => {
           </div>
         </div>
       </nav>
-      <WalletSelect setWalletSelect={setWalletSelect} isActive={walletSelect} />
+      <WalletSelect
+        setWalletSelect={setWalletSelect}
+        isActive={walletSelect || cartError}
+        cartError={cartError}
+        setCartError={setCartError}
+        setCartDisplay={setCartDisplay}
+      />
+      {active ? (
+        <CartWindow setCartDisplay={setCartDisplay} isActive={cartDisplay} />
+      ) : (
+        ``
+      )}
     </>
   )
 }
 
-const ProfileButton = ({ network, balance, account, chainId }) => {
+const ProfileButton = ({
+  network,
+  balance,
+  account,
+  chainId,
+  setCartDisplay,
+}) => {
   const style =
     chainId === 1 || chainId === 56
       ? { color: "#00C853" }
       : { color: "#E53935" }
 
   return (
-    <div style={{position: "relative"}}>
+    <div style={{ position: "relative" }}>
       <div className="conatiner">
         <div className="columns">
           <div className="column" style={{ paddingRight: 0 }}>
@@ -127,7 +157,9 @@ const ProfileButton = ({ network, balance, account, chainId }) => {
                   <div className="column">
                     <NetworkIcon network={network} color={style.color} />
                   </div>
-                  <div className="column" style={style}>{balance}</div>
+                  <div className="column" style={style}>
+                    {balance}
+                  </div>
                 </div>
               </div>
             </button>
@@ -151,10 +183,7 @@ const ProfileButton = ({ network, balance, account, chainId }) => {
       </div>
 
       <div className="network-pill has-text-centered is-size-7">
-        <span
-          className="networkName"
-          style={style}
-        >
+        <span className="networkName" style={style}>
           {NetworkNames[chainId]}
         </span>
       </div>

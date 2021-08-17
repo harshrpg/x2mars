@@ -23,6 +23,7 @@ import {
   NumberMap,
   TokenTypeIds,
 } from "../../util/Constants"
+import ErrorBox from "../Error/errorbox"
 
 const Card = props => {
   let style = { opacity: 1 }
@@ -228,10 +229,6 @@ const HelpDescription = props => {
       </div>
     </>
   )
-}
-
-const ErrorBox = ({ error }) => {
-  return <div className="error-container">{error}</div>
 }
 
 const Data = ({

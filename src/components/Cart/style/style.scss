@@ -1,0 +1,14 @@
+@import "../../../style/index.scss";
+
+.cart-window {
+    display: none;
+}
+
+.cart-window.is-active {
+    display: block;
+    position: absolute;
+    background-color: white;
+    border: 1px solid $primary-color;
+    left: 90%;
+    transform: translate(-50%, -50%);
+}

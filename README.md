@@ -141,6 +141,10 @@ Gatsby Cloud is an end-to-end cloud platform specifically built for the Gatsby f
 2. Step 3 context information - Harsh
 3. Step 4 context information - Harsh
 
+## BUGS
+1. Total Fee Calculation round up float
+2. Remove callback from FeatureInputData
+
 ## Cart Management
 1. Add Cart state to cart UI - Likhith
 2. Show cart summary on Step 5
