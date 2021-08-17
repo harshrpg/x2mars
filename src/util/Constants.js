@@ -40,7 +40,8 @@ export const WalletTypes = {
 
 export const Error = {
     CONNECT_WALLET: "Connect Your Wallet",
-    NOT_ENOUGH_BALANCE: "Not Enough Balance"
+    NOT_ENOUGH_BALANCE: "Not Enough Balance",
+    SELECT_TOKEN: "Select A Token First"
 }
 
 export const TokenTypes = {

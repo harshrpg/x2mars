@@ -1,14 +1,42 @@
 @import "../../../style/index.scss";
 
-.cart-window {
-    display: none;
+.cart-summary-board {
+    border: 2px solid $primary-color !important;
+    background-color: white;
+    color: $charcoal;
+    padding: 0 2rem 2rem 2rem;
+    width: auto !important;
+    position: relative;
+    white-space: nowrap;
 }
 
-.cart-window.is-active {
-    display: block;
+.modal-close-custom {
     position: absolute;
-    background-color: white;
-    border: 1px solid $primary-color;
-    left: 90%;
+    top: 8%;
+    right: 0;
+    transform: translate(-50%, -50%);
+}
+
+.close-modal-button {
+    border: none !important;
+    color: $charcoal;
+}
+
+.cart-summary-container {
+    position: relative;
+    padding: 2rem;
+    border-radius: 0% !important;
+    border-width: 2px !important;
+    border-color: $primary-color !important;
+    border-style: solid;
+}
+
+.summary-pill {
+    background-color: $theme-white;
+    padding: 0 0.5rem 0 0.5rem;
+    position: absolute;
+    left: 50%;
+    top: 0%;
+    font-size: 0.75rem;
     transform: translate(-50%, -50%);
 }
