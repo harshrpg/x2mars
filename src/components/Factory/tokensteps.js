@@ -209,6 +209,7 @@ const Step1 = props => {
   )
   const [card1Error, setCard1Error] = React.useState()
   const [card2Error, setCard2Error] = React.useState()
+  const [step1Fee, setStep1Fee] = React.useState(cartState.step1.totalFees)
 
   const [ableToPurchase, setAbleToPurchase] = React.useState({
     card1: false,
@@ -249,6 +250,17 @@ const Step1 = props => {
     }
   }, [balance])
 
+  React.useEffect(() => {
+    var fee = 0.0
+    if (selectedOption === TokenTypeIds.GOVERNANCE) {
+      fee = step1Card1.price[network]
+    } else if (selectedOption === TokenTypeIds.FEE_ON_TRANSFER) {
+      fee = step1Card2.price[network]
+    }
+    setStep1Fee(parseFloat(fee))
+    
+  }, [selectedOption])
+
   const setSelection = (selectedOption, selection) => {
     console.debug("STEP 1: Callback:: ", selectedOption)
     if (selection) {
@@ -263,10 +275,25 @@ const Step1 = props => {
       payload: {
         step1: {
           selectedToken: selectedOption,
+          totalFees: cartState.step1.totalFees
         },
       },
     })
   }, [selectedOption])
+
+  React.useEffect(() => {
+    if (step1Fee !== cartState.step1.totalFees) {
+      cartDispatch({
+        step: 1,
+        payload: {
+          step1: {
+            selectedToken: cartState.step1.selectedToken,
+            totalFees: step1Fee
+          }
+        }
+      })
+    }
+  }, [step1Fee])
 
   return (
     <div className="columns step-columns has-text-centered step-ind">
@@ -371,7 +398,7 @@ const Step2 = props => {
     if (tokenType === TokenTypeIds.FEE_ON_TRANSFER) {
       setDexSelected(true)
     } else if (tokenType === TokenTypeIds.GOVERNANCE) {
-      setDexSelected(false)
+      setDexSelected(cartState.step2.dexSelected)
     }
   }, [tokenType])
 

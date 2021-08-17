@@ -21,6 +21,14 @@
     transform: translate(-50%, -50%);
 }
 
+.modal-error-custom {
+    padding: 0 1rem 0 1rem;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .close-modal-button {
     border: none !important;
     color: $charcoal;

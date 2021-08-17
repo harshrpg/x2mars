@@ -1,36 +1,16 @@
-import { formatEther } from "@ethersproject/units"
 import { useWeb3React } from "@web3-react/core"
-import useSWR from "swr"
 import { useAuthDispatch } from "../context"
-import { injectedConnector } from "../context/helpers"
-import { useEffect, useState } from "react"
-import { BigNumber } from "ethers"
+import { useEffect } from "react"
 import { UnsupportedChainIdError } from "@web3-react/core/dist/core.esm"
 
-const fetcher = library => (...args) => {
-  const [method, ...params] = args
-  console.log(method, params)
-  return library[method](...params)
-}
-
-const formatBalance = balance => {
-  return parseFloat(formatEther(balance)).toPrecision(4)
-}
 
 export const useWalletConnect = () => {
-  //   const [balance, setBalance] = useState(null)
   const {
     account,
     active,
     activate,
     chainId,
-    error,
-    library,
-    connector,
   } = useWeb3React()
-  const { data, errorSwr, mutate } = useSWR(["getBalance", account, "latest"], {
-    fetcher: fetcher(library),
-  })
   const dispatch = useAuthDispatch()
   console.debug("Authenticate from custom hook: ", active)
 
@@ -57,7 +37,7 @@ export const useWalletConnect = () => {
         },
       })
     }
-  }, [active])
+  }, [active, account, chainId, dispatch])
 
   //   const { data, errorSwr, mutate } = useSWR(["getBalance", account, "latest"], {
   //     fetcher: fetcher(library),

@@ -5,6 +5,7 @@ import { FaFileContract } from "@react-icons/all-files/fa/FaFileContract"
 import { MdAccountCircle } from "@react-icons/all-files/md/MdAccountCircle"
 
 import {
+  Error,
   FactoryConstants,
   NetworkNames,
 } from "../../util/Constants"
@@ -14,14 +15,22 @@ import WalletSelect from "../walletSelect/walletselect"
 import "./style/appnavbar.scss"
 import { NetworkIcon } from "../Icons/icons"
 import { useBalance, useNetwork } from "../../hooks/useNetwork"
+import CartWindow from "../Cart/cart"
+import { useCartState } from "../../context"
+
+const errorText = "Connect Your "
 
 const AppNavbar = () => {
   const { account, library, chainId, active } = useWeb3React()
   const networkHook = useNetwork()
   const balanceHook = useBalance()
+  const cartState = useCartState()
   const [walletSelect, setWalletSelect] = React.useState(false)
+  const [cartDisplay, setCartDisplay] = React.useState(false)
+  const [cartError, setCartError] = React.useState(false)
   const [balance, setBalance] = React.useState()
   const [network, setNetwork] = React.useState()
+
 
   React.useEffect(() => {
     if (networkHook !== undefined) {
@@ -34,6 +43,15 @@ const AppNavbar = () => {
       setBalance(balanceHook)
     }
   }, [balanceHook])
+
+  function showCart() {
+    if (cartState.step1.selectedToken !== -1) {      
+      setCartError(false)
+    } else if (cartState.step1.selectedToken === -1) {
+      setCartError(true)
+    }
+    setCartDisplay(true)
+  }
 
   // const { data, error, mutate } = useSWR(["getBalance", account, "latest"], {
   //   fetcher: fetcher(library),
@@ -81,7 +99,7 @@ const AppNavbar = () => {
                   chainId={chainId}
                 />
               ) : (
-                `Not enough balance`
+                Error.NOT_ENOUGH_BALANCE
               )}
             </div>
           ) : (
@@ -96,7 +114,7 @@ const AppNavbar = () => {
             </div>
           )}
           <div>
-            <button className="button is-light cart-button" type="button">
+            <button className="button is-light cart-button" type="button" onClick={showCart}>
               <span>Your Contract</span>
               <span className="icon is-small">
                 <FaFileContract />
@@ -105,12 +123,13 @@ const AppNavbar = () => {
           </div>
         </div>
       </nav>
-      <WalletSelect setWalletSelect={setWalletSelect} isActive={walletSelect} />
+      <WalletSelect setWalletSelect={setWalletSelect} isActive={walletSelect || cartError} cartError={cartError} setCartError={setCartError} />
+      {/* <CartWindow setCartDisplay={setCartDisplay} isActive={cartDisplay}/> */}
     </>
   )
 }
 
-const ProfileButton = ({ network, balance, account, chainId }) => {
+const ProfileButton = ({ network, balance, account, chainId, setCartDisplay }) => {
   const style =
     chainId === 1 || chainId === 56
       ? { color: "#00C853" }
