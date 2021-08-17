@@ -27,6 +27,7 @@ const AppNavbar = () => {
   const [balance, setBalance] = React.useState()
   const [network, setNetwork] = React.useState()
 
+
   React.useEffect(() => {
     if (networkHook !== undefined) {
       setNetwork(networkHook)
@@ -40,9 +41,15 @@ const AppNavbar = () => {
   }, [balanceHook])
 
   function showCart() {
+<<<<<<< HEAD
     if (active) {
       setCartError(false)
     } else {
+=======
+    if (cartState.step1.selectedToken !== -1) {      
+      setCartError(false)
+    } else if (cartState.step1.selectedToken === -1) {
+>>>>>>> ec09f79da01845d44a6da0f27a88b028ee2ad6de
       setCartError(true)
     }
     setCartDisplay(true)
@@ -105,11 +112,15 @@ const AppNavbar = () => {
             </div>
           )}
           <div>
+<<<<<<< HEAD
             <button
               className="button is-light cart-button"
               type="button"
               onClick={showCart}
             >
+=======
+            <button className="button is-light cart-button" type="button" onClick={showCart}>
+>>>>>>> ec09f79da01845d44a6da0f27a88b028ee2ad6de
               <span>Your Contract</span>
               <span className="icon is-small">
                 <FaFileContract />
@@ -118,6 +129,7 @@ const AppNavbar = () => {
           </div>
         </div>
       </nav>
+<<<<<<< HEAD
       <WalletSelect
         setWalletSelect={setWalletSelect}
         isActive={walletSelect || cartError}
@@ -130,10 +142,15 @@ const AppNavbar = () => {
       ) : (
         ``
       )}
+=======
+      <WalletSelect setWalletSelect={setWalletSelect} isActive={walletSelect || cartError} cartError={cartError} setCartError={setCartError} />
+      {/* <CartWindow setCartDisplay={setCartDisplay} isActive={cartDisplay}/> */}
+>>>>>>> ec09f79da01845d44a6da0f27a88b028ee2ad6de
     </>
   )
 }
 
+<<<<<<< HEAD
 const ProfileButton = ({
   network,
   balance,
@@ -141,6 +158,9 @@ const ProfileButton = ({
   chainId,
   setCartDisplay,
 }) => {
+=======
+const ProfileButton = ({ network, balance, account, chainId, setCartDisplay }) => {
+>>>>>>> ec09f79da01845d44a6da0f27a88b028ee2ad6de
   const style =
     chainId === 1 || chainId === 56
       ? { color: "#00C853" }
