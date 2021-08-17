@@ -14,13 +14,10 @@ import { useBalance, useNetwork } from "../../hooks/useNetwork"
 import CartWindow from "../Cart/cart"
 import { useCartState } from "../../context"
 
-const errorText = "Connect Your "
-
 const AppNavbar = () => {
   const { account, library, chainId, active } = useWeb3React()
   const networkHook = useNetwork()
   const balanceHook = useBalance()
-  const cartState = useCartState()
   const [walletSelect, setWalletSelect] = React.useState(false)
   const [cartDisplay, setCartDisplay] = React.useState(false)
   const [cartError, setCartError] = React.useState(false)
@@ -41,15 +38,9 @@ const AppNavbar = () => {
   }, [balanceHook])
 
   function showCart() {
-<<<<<<< HEAD
     if (active) {
       setCartError(false)
     } else {
-=======
-    if (cartState.step1.selectedToken !== -1) {      
-      setCartError(false)
-    } else if (cartState.step1.selectedToken === -1) {
->>>>>>> ec09f79da01845d44a6da0f27a88b028ee2ad6de
       setCartError(true)
     }
     setCartDisplay(true)
@@ -112,15 +103,11 @@ const AppNavbar = () => {
             </div>
           )}
           <div>
-<<<<<<< HEAD
             <button
               className="button is-light cart-button"
               type="button"
               onClick={showCart}
             >
-=======
-            <button className="button is-light cart-button" type="button" onClick={showCart}>
->>>>>>> ec09f79da01845d44a6da0f27a88b028ee2ad6de
               <span>Your Contract</span>
               <span className="icon is-small">
                 <FaFileContract />
@@ -129,7 +116,6 @@ const AppNavbar = () => {
           </div>
         </div>
       </nav>
-<<<<<<< HEAD
       <WalletSelect
         setWalletSelect={setWalletSelect}
         isActive={walletSelect || cartError}
@@ -142,15 +128,10 @@ const AppNavbar = () => {
       ) : (
         ``
       )}
-=======
-      <WalletSelect setWalletSelect={setWalletSelect} isActive={walletSelect || cartError} cartError={cartError} setCartError={setCartError} />
-      {/* <CartWindow setCartDisplay={setCartDisplay} isActive={cartDisplay}/> */}
->>>>>>> ec09f79da01845d44a6da0f27a88b028ee2ad6de
     </>
   )
 }
 
-<<<<<<< HEAD
 const ProfileButton = ({
   network,
   balance,
@@ -158,9 +139,6 @@ const ProfileButton = ({
   chainId,
   setCartDisplay,
 }) => {
-=======
-const ProfileButton = ({ network, balance, account, chainId, setCartDisplay }) => {
->>>>>>> ec09f79da01845d44a6da0f27a88b028ee2ad6de
   const style =
     chainId === 1 || chainId === 56
       ? { color: "#00C853" }

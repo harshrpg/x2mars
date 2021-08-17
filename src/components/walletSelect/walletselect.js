@@ -44,20 +44,14 @@ const WalletSelect = ({
     if (active) {
       setWalletSelect(false)
       setCartError(false)
-<<<<<<< HEAD
       setCartDisplay(false)
-=======
->>>>>>> ec09f79da01845d44a6da0f27a88b028ee2ad6de
     }
   }, [active, setWalletSelect, setCartError])
 
   function closeModal() {
     setCartError(false)
     setWalletSelect(false)
-<<<<<<< HEAD
     setCartDisplay(false)
-=======
->>>>>>> ec09f79da01845d44a6da0f27a88b028ee2ad6de
   }
 
   return (

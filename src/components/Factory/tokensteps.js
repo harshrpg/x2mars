@@ -1,6 +1,4 @@
 import * as React from "react"
-import { graphql, useStaticQuery } from "gatsby"
-import { getImage } from "gatsby-plugin-image"
 
 import { Steps } from "../../util/factory-steps"
 import Card from "../cardSelect/card"
@@ -25,34 +23,7 @@ import {
 } from "../../util/Constants"
 import { useAuthState } from "../../context"
 import { useCartDispatch, useCartState } from "../../context/context"
-
-// TODO: Make this into a reusable hook and use it in the rest of the application
-const GetAllImages = () => {
-  const { images } = useStaticQuery(graphql`
-    query {
-      images: allFile {
-        edges {
-          node {
-            relativePath
-            name
-            childrenImageSharp {
-              gatsbyImageData(width: 200, height: 200)
-            }
-          }
-        }
-      }
-    }
-  `)
-  return images
-}
-
-const getImageDataForCard = data => {
-  const images = GetAllImages()
-  const myImage = images.edges.find(n => {
-    return n.node.relativePath.includes(data)
-  })
-  return getImage(myImage.node.childrenImageSharp[0])
-}
+import { useImageForData } from "../../hooks/useAllImages"
 
 const FactorySteps = props => {
   const [successStep, setSuccessStep] = React.useState(new Set([0]))
@@ -279,6 +250,37 @@ const Step1 = props => {
         },
       },
     })
+    if (selectedOption === TokenTypeIds.FEE_ON_TRANSFER) {
+      cartDispatch({
+        step: 2,
+        payload: {
+          step2: {
+            tokenName: cartState.step2.tokenName,
+            tokenSymbol: cartState.step2.tokenSymbol,
+            tokenSupplyNumber: cartState.step2.tokenSupplyNumber,
+            tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
+            tokenDecimals: cartState.step2.tokenDecimals,
+            dexSelected: cartState.step2.dexSelected,
+            totalFees: 0
+          }
+        }
+      })
+    } else if (selectedOption === TokenTypeIds.GOVERNANCE)  {
+      cartDispatch({
+        step: 2,
+        payload: {
+          step2: {
+            tokenName: cartState.step2.tokenName,
+            tokenSymbol: cartState.step2.tokenSymbol,
+            tokenSupplyNumber: cartState.step2.tokenSupplyNumber,
+            tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
+            tokenDecimals: cartState.step2.tokenDecimals,
+            dexSelected: false,
+            totalFees: 0
+          }
+        }
+      })
+    }
   }, [selectedOption])
 
   React.useEffect(() => {
@@ -295,6 +297,10 @@ const Step1 = props => {
     }
   }, [step1Fee])
 
+  const step1Card1Img = useImageForData(step1Card1.img)
+  const step1Card2Img = useImageForData(step1Card2.img)
+
+
   return (
     <div className="columns step-columns has-text-centered step-ind">
       <div className="column">
@@ -308,7 +314,7 @@ const Step1 = props => {
               type={step1Card1.type}
               error={card1Error}
               cardData={step1Card1}
-              cardImage={getImageDataForCard(step1Card1.img)}
+              cardImage={step1Card1Img}
               network={network}
               cardIndex={0}
               selected={selectedOption === 0 ? true : false}
@@ -322,7 +328,7 @@ const Step1 = props => {
               type={step1Card2.type}
               error={card2Error}
               cardData={step1Card2}
-              cardImage={getImageDataForCard(step1Card2.img)}
+              cardImage={step1Card2Img}
               network={network}
               cardIndex={1}
               selected={selectedOption === 1 ? true : false}
@@ -358,6 +364,7 @@ const Step2 = props => {
     SupplyUnit: cartState.step2.tokenSupplyUnits,
     Decimals: cartState.step2.tokenDecimals,
   })
+  const [step2Fee, setStep2Fee] = React.useState(cartState.step2.totalFees)
 
   // DATA
   const card1 = step.cardData[0]
@@ -389,11 +396,37 @@ const Step2 = props => {
             tokenSupplyUnits: tokenDetails.SupplyUnit,
             tokenDecimals: tokenDetails.Decimals,
             dexSelected: dexSelected,
+            totalFees: step2Fee
           },
         },
       })
     }
   }, [tokenDetails, dexSelected])
+  React.useEffect(() => {
+    if (step2Fee !== cartState.step2.totalFees) {
+      cartDispatch({
+        step: 2,
+        payload: {
+          step2: {
+            tokenName: cartState.step2.tokenName,
+            tokenSymbol: cartState.step2.tokenSymbol,
+            tokenSupplyNumber: cartState.step2.tokenSupplyNumber,
+            tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
+            tokenDecimals: cartState.step2.tokenDecimals,
+            dexSelected: cartState.step2.dexSelected,
+            totalFees: step2Fee
+          },
+        },
+      })
+    }
+  }, [cartDispatch, step2Fee, cartState])
+  React.useEffect(() => {
+    if (tokenType === TokenTypeIds.GOVERNANCE && dexSelected) {
+      setStep2Fee(card3.price[network])
+    } else if (tokenType === TokenTypeIds.FEE_ON_TRANSFER || !dexSelected) {
+      setStep2Fee(0)
+    }
+  }, [dexSelected, network])
   React.useEffect(() => {
     if (tokenType === TokenTypeIds.FEE_ON_TRANSFER) {
       setDexSelected(true)
@@ -406,6 +439,7 @@ const Step2 = props => {
   const setSelection = selection => {
     if (tokenType === TokenTypeIds.GOVERNANCE) {
       setDexSelected(selection)
+      
     }
   }
   const tokenNameCb = tokenName => {
@@ -427,6 +461,8 @@ const Step2 = props => {
       SupplyUnit: tokenSupplyUnit,
     })
   }
+
+  const step2Card3Img = useImageForData(card3.img[network])
 
   return (
     <div className="columns step-columns step-ind">
@@ -485,7 +521,7 @@ const Step2 = props => {
               type={card3.type}
               error={null}
               cardData={card3}
-              cardImage={getImageDataForCard(card3.img[network])}
+              cardImage={step2Card3Img}
               network={network}
               cardIndex={2}
               selected={dexSelected}
@@ -633,6 +669,12 @@ const Step3 = props => {
     setTotalFees(fees)
   }
 
+  const card1Img = useImageForData(card1.img[network])
+  const card2Img = useImageForData(card2.img)
+  const card3Img = useImageForData(card3.img)
+  const card4Img = useImageForData(card4.img)
+  const card5Img = useImageForData(card5.img)
+
   return (
     <>
       <div className="columns step-columns step-ind">
@@ -667,7 +709,7 @@ const Step3 = props => {
                 disabled={
                   tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : true
                 }
-                cardImage={getImageDataForCard(card1.img[network])}
+                cardImage={card1Img}
                 cardIndex={0}
                 onPress={() =>
                   setSelection(FeatureIds.AUTOMATIC_LIQUIDATION, true)
@@ -698,7 +740,7 @@ const Step3 = props => {
                 disabled={
                   tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : true
                 }
-                cardImage={getImageDataForCard(card2.img)}
+                cardImage={card2Img}
                 cardIndex={1}
                 onPress={select =>
                   setSelection(FeatureIds.RFI_STATIC_REWARDS, select)
@@ -729,7 +771,7 @@ const Step3 = props => {
                 disabled={
                   tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : true
                 }
-                cardImage={getImageDataForCard(card3.img)}
+                cardImage={card3Img}
                 cardIndex={2}
                 onPress={select =>
                   setSelection(FeatureIds.ANTI_WHALE_PROTECTION, select)
@@ -763,7 +805,7 @@ const Step3 = props => {
                 disabled={
                   tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : true
                 }
-                cardImage={getImageDataForCard(card4.img)}
+                cardImage={card4Img}
                 cardIndex={3}
                 onPress={select => setSelection(FeatureIds.AUTO_BURN, select)}
                 callback={value => setFees(FeatureIds.AUTO_BURN, value)}
@@ -790,7 +832,7 @@ const Step3 = props => {
                 disabled={
                   tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : true
                 }
-                cardImage={getImageDataForCard(card5.img)}
+                cardImage={card5Img}
                 cardIndex={4}
                 onPress={select =>
                   setSelection(FeatureIds.AUTO_CHARITY, select)
@@ -828,6 +870,8 @@ const Step4 = props => {
     console.log("test")
   }
 
+  const cardImg = useImageForData(card1.img)
+
   return (
     <>
       <div className="columns step-columns step-ind">
@@ -853,7 +897,7 @@ const Step4 = props => {
                 cardData={card1}
                 network={props.network}
                 selected={false} // TODO: Remove False and make it selectable using callback
-                cardImage={getImageDataForCard(card1.img)}
+                cardImage={cardImg}
                 cardIndex={0}
                 onPress={() => setIsLaunchpad(!isLaunchpad)}
                 mandatory={false}
