@@ -1,6 +1,12 @@
 import * as React from "react"
 import { useCartState } from "../../context"
-import { Error, TokenTypeIds, TokenTypes } from "../../util/Constants"
+import {
+  Error,
+  NetworkConstants,
+  NetworkFromChainId,
+  TokenTypeIds,
+  TokenTypes,
+} from "../../util/Constants"
 import { GoX } from "@react-icons/all-files/go/GoX"
 import "./style/style.scss"
 import { GatsbyImage } from "gatsby-plugin-image"
@@ -117,7 +123,11 @@ const DexSelected = () => {
   const cartState = useCartState()
   const network = useNetwork()
 
-  const [dexImage, setDexImage] = React.useState(Steps.Step2.cardData[2].img["eth"])
+  const [dexImage, setDexImage] = React.useState(
+    Steps.Step2.cardData[2].img[
+      NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
+    ]
+  )
 
   React.useEffect(() => {
     setDexImage(Steps.Step2.cardData[2].img[network])
@@ -140,7 +150,9 @@ const DexSelected = () => {
               />
             </div>
             <div className="column">Creating Dex Pool</div>
-            <div className="column">{cartState.step2.totalFees + ` ` + network.toUpperCase()}</div>
+            <div className="column">
+              {cartState.step2.totalFees + ` ` + network.toUpperCase()}
+            </div>
           </div>
         </div>
       ) : (
@@ -152,21 +164,118 @@ const DexSelected = () => {
 
 const FeaturesSelected = () => {
   const cartState = useCartState()
+  const network = useNetwork()
+
+  const [alImage, setAlImage] = React.useState()
+  const [rfiImage, setRfiImage] = React.useState(Steps.Step3.cardData[1].img)
+  const [awpImage, setAwpImage] = React.useState(Steps.Step3.cardData[2].img)
+  const [abImage, setAbImage] = React.useState(Steps.Step3.cardData[3].img)
+  const [acImage, setAcImage] = React.useState(Steps.Step3.cardData[4].img)
+  // const autoLiquidationImage = useImageForData()
+
+  React.useEffect(() => {
+    setAlImage(Steps.Step3.cardData[0].img[network])
+  }, [network])
+
+  const image1 = useImageForData(alImage)
+  const image2 = useImageForData(rfiImage)
+  const image3 = useImageForData(awpImage)
+  const image4 = useImageForData(abImage)
+  const image5 = useImageForData(acImage)
   return (
     <>
-      {cartState.step1.selectedToken === 1 &&
+      {cartState.step1.selectedToken === 1 && !!network &&
       (!!cartState.step3.auto_liquidation ||
         !!cartState.step3.rfi_rewards ||
         !!cartState.step3.anti_whale_protection ||
         !!cartState.step3.auto_burn ||
         !!cartState.step3.auto_charity) ? (
-        <div className="cart-summary-container">
+        <div className="cart-summary-container has-text-centered">
           <span className="summary-pill">Features Selection</span>
-          <div className="columns">
-            <div className="column">icon</div>
-            <div className="column">Features Selected</div>
-            <div className="column">0 ETH</div>
-          </div>
+          {!!cartState.step3.auto_liquidation ? (
+            <div className="columns">
+              <div className="column">
+                <GatsbyImage
+                  image={image1}
+                  width={2}
+                  height={2}
+                  className="cart-image"
+                />
+              </div>
+              <div className="column">Automatic Liquidation</div>
+              <div className="column">
+                0 {network.toUpperCase()}
+              </div>
+            </div>
+          ) : (
+            ``
+          )}
+          {!!cartState.step3.rfi_rewards ? (
+            <div className="columns">
+              <div className="column">
+                <GatsbyImage
+                  image={image2}
+                  width={2}
+                  height={2}
+                  className="cart-image"
+                />
+              </div>
+              <div className="column">RFI Static Rewards</div>
+              <div className="column">{Steps.Step3.cardData[1].price[network] + ` ` + network.toUpperCase()}</div>
+            </div>
+          ) : (
+            ``
+          )}
+          {!!cartState.step3.anti_whale_protection ? (
+            <div className="columns">
+              <div className="column">
+                <GatsbyImage
+                  image={image3}
+                  width={2}
+                  height={2}
+                  className="cart-image"
+                />
+              </div>
+              <div className="column">Anti Whale Protection</div>
+              <div className="column">
+              {Steps.Step3.cardData[2].price[network] + ` ` + network.toUpperCase()}
+              </div>
+            </div>
+          ) : (
+            ``
+          )}
+          {!!cartState.step3.auto_burn ? (
+            <div className="columns">
+              <div className="column">
+                <GatsbyImage
+                  image={image4}
+                  width={2}
+                  height={2}
+                  className="cart-image"
+                />
+              </div>
+              <div className="column">Automatic Burning</div>
+              <div className="column">{Steps.Step3.cardData[3].price[network] + ` ` + network.toUpperCase()}</div>
+            </div>
+          ) : (
+            ``
+          )}
+          {!!cartState.step3.auto_charity ? (
+            <div className="columns">
+              <div className="column">
+                <GatsbyImage
+                  image={image5}
+                  width={2}
+                  height={2}
+                  className="cart-image"
+                />
+              </div>
+              <div className="column">Automatic Charity</div>
+              <div className="column">{Steps.Step3.cardData[4].price[network] + ` ` + network.toUpperCase()}</div>
+            </div>
+          ) : (
+            ``
+          )}
         </div>
       ) : (
         ``
