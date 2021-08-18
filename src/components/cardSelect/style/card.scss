@@ -33,8 +33,10 @@
 }
 
 .error-container {
+  padding: inherit !important;
   color: white;
   background-color: $unsucessful-color;
+  white-space: nowrap;
 }
 
 .custom-container-fees {

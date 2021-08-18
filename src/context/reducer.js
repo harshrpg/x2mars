@@ -50,6 +50,7 @@ export const AuthReducer = (initialAuthState, action) => {
 export const initialCartState = {
   step1: {
     selectedToken: -1,
+    totalFees: 0.0
   },
   step2: {
     tokenName: null,
@@ -58,6 +59,7 @@ export const initialCartState = {
     tokenSupplyUnits: "Units",
     tokenDecimals: 18,
     dexSelected: false,
+    totalFees: 0.0
   },
   step3: {
     auto_liquidation: null,

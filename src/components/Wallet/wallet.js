@@ -4,7 +4,7 @@ import { formatEther } from "@ethersproject/units"
 import BigNumber from "bignumber.js"
 import useSWR from "swr"
 import * as React from "react"
-import { NetworkConstants, FactoryConstants } from "../../util/Constants"
+import { NetworkConstants, FactoryConstants, Error } from "../../util/Constants"
 import Factory from "../Factory/factory"
 import "./wallet.css"
 
@@ -61,7 +61,7 @@ const Wallet = () => {
           {balance > FactoryConstants.MINIMUM_COIN_TO_PROCEED ? (
             <Factory account={account} balance={balance} />
           ) : (
-            `Not enough balance`
+            Error.NOT_ENOUGH_BALANCE
           )}
         </div>
       ) : (

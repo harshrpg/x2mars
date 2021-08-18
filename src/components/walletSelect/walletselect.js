@@ -1,53 +1,59 @@
 import * as React from "react"
 import { GoX } from "@react-icons/all-files/go/GoX"
 import { useWeb3React } from "@web3-react/core"
-import {
-  useSpring,
-  animated,
-  config,
-  useTransition,
-} from "@react-spring/web"
+import { useSpring, animated, config, useTransition } from "@react-spring/web"
 
 import { Coinbase, FortmaticIcon, Metamask } from "../Icons/icons"
 import "./style/style.scss"
 import { useAuthState } from "../../context"
-import { WalletTypes } from "../../util/Constants"
+import { Error, WalletTypes } from "../../util/Constants"
 import { useWalletConnect } from "../../hooks/useWalletConnect"
 import { injectedConnector } from "../../context/helpers"
 import { Connector } from "../../util/connectors"
+import ErrorBox from "../Error/errorbox"
 
-const WalletSelect = ({ setWalletSelect, isActive }) => {
+const WalletSelect = ({
+  setWalletSelect,
+  isActive,
+  cartError,
+  setCartError,
+  setCartDisplay
+}) => {
   const [balance, setBalance] = React.useState()
   const { userDetails, loading, errorMessage } = useAuthState()
-  console.debug("Authenticate: Inside Wallet Select", loading)
-  console.debug("Authenticate: Inside Wallet Select", userDetails)
   const { active, account, chainId, library } = useWeb3React()
   React.useEffect(() => {
     if (!!account && !!library) {
-      let stale = false;
-      library.getBalance(account).then((balance) => {
-        if (!stale) {
-          setBalance(balance)
-        }
-      }).catch(() => {
-        if (!stale) {
-          setBalance(undefined)
-        }
-      })
+      let stale = false
+      library
+        .getBalance(account)
+        .then(balance => {
+          if (!stale) {
+            setBalance(balance)
+          }
+        })
+        .catch(() => {
+          if (!stale) {
+            setBalance(undefined)
+          }
+        })
     }
   }, [account, library, chainId])
 
   React.useEffect(() => {
     if (active) {
       setWalletSelect(false)
+      setCartError(false)
+      setCartDisplay(false)
     }
-  }, [active, setWalletSelect])
-  console.debug("Authenticate::: is account now active? ", active)
-  if (active) {
-    console.debug("\tAuthenticate::: What is the account address? ", account)
-    console.debug("\tAuthenticate::: What is the chainId? ", chainId)
-    console.debug("\tAuthenticate::: What is the balance? ", balance)
+  }, [active, setWalletSelect, setCartError])
+
+  function closeModal() {
+    setCartError(false)
+    setWalletSelect(false)
+    setCartDisplay(false)
   }
+
   return (
     <div className={`modal ${isActive ? "is-active" : ""}`}>
       <div className="modal-background"></div>
@@ -58,7 +64,7 @@ const WalletSelect = ({ setWalletSelect, isActive }) => {
           <button
             className="button close-modal-button"
             aria-label="close"
-            onClick={() => setWalletSelect(false)}
+            onClick={closeModal}
           >
             <span className="icon is-large">
               <GoX />
@@ -66,6 +72,13 @@ const WalletSelect = ({ setWalletSelect, isActive }) => {
           </button>
         </div>
       </div>
+      {cartError ? (
+        <div className="modal-error-custom is-size-4 is-size-5-mobile">
+          <ErrorBox error={Error.CONNECT_WALLET} />
+        </div>
+      ) : (
+        ``
+      )}
     </div>
   )
 }
