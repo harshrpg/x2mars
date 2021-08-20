@@ -24,7 +24,6 @@ const AppNavbar = () => {
   const [balance, setBalance] = React.useState()
   const [network, setNetwork] = React.useState()
 
-
   React.useEffect(() => {
     if (networkHook !== undefined) {
       setNetwork(networkHook)
@@ -45,25 +44,6 @@ const AppNavbar = () => {
     }
     setCartDisplay(true)
   }
-
-  // const { data, error, mutate } = useSWR(["getBalance", account, "latest"], {
-  //   fetcher: fetcher(library),
-  // })
-  // React.useEffect(() => {
-  //   if (library) {
-  //     library.on("block", () => {
-  //       console.log("update balance...")
-  //       mutate(undefined, true)
-  //     })
-  //     return () => {
-  //       library.removeAllListeners("block")
-  //     }
-  //   }
-  // }, [])
-  // if (data) {
-  //   var balance = new BigNumber(data._hex).toString()
-  //   balance = formatBalance(balance)
-  // }
 
   return (
     <>
@@ -162,20 +142,23 @@ const ProfileButton = ({
               </div>
             </button>
           </div>
+
           <div className="column" style={{ paddingLeft: 0 }}>
-            <button
-              className="button is-light custom-button account-address-button"
-              type="button"
-            >
-              <span>
-                {account.slice(0, 6) +
-                  "...." +
-                  account.substring(account.length - 3)}
-              </span>
-              <span className="icon is-small icon-profile">
-                <MdAccountCircle />
-              </span>
-            </button>
+            <Link to="/profile" type="profile">
+              <button
+                className="button is-light custom-button account-address-button"
+                type="button"
+              >
+                <span>
+                  {account.slice(0, 6) +
+                    "...." +
+                    account.substring(account.length - 3)}
+                </span>
+                <span className="icon is-small icon-profile">
+                  <MdAccountCircle />
+                </span>
+              </button>
+            </Link>
           </div>
         </div>
       </div>
