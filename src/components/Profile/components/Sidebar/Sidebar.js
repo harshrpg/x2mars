@@ -1,6 +1,6 @@
 import { BsArrowLeft } from "@react-icons/all-files/bs/BsArrowLeft"
 import { BsArrowRight } from "@react-icons/all-files/bs/BsArrowRight"
-import { GrLaunch } from "@react-icons/all-files/gr/GrLaunch"
+import { FaRocket } from "@react-icons/all-files/fa/FaRocket"
 import { GiCardExchange } from "@react-icons/all-files/gi/GiCardExchange"
 import { FaFileContract } from "@react-icons/all-files/fa/FaFileContract"
 import { FaHistory } from "@react-icons/all-files/fa/FaHistory"
@@ -48,7 +48,7 @@ const SideBar = () => {
               Dashboard
             </MenuItem>
             <MenuItem icon={<FaFileContract />}>Contracts</MenuItem>
-            <MenuItem icon={<GrLaunch />}>Launchpad</MenuItem>
+            <MenuItem icon={<FaRocket />}>Launchpad</MenuItem>
             <MenuItem icon={<GiCardExchange />}>Exchange</MenuItem>
             <MenuItem icon={<GiReceiveMoney />}>Earn</MenuItem>
             <MenuItem icon={<BiCog />}>Settings</MenuItem>
