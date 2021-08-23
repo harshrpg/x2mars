@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Layout from '../layout'
 import { render, screen } from "@testing-library/react"
 
-describe("Index page test", () =>{
+describe("Layout test", () =>{
 // You have to write data-testid
 const Title = () => <h1 data-testid="hero-title">Gatsby is awesome!</h1>
 test("Index test 1", () => {
@@ -13,14 +13,10 @@ test("Index test 1", () => {
   // --> Test will pass
 })
 
-})
-
-
-//Error-> Children is undefigned
 //it('Layout renders without crashing',() =>{
-   
+   //Error-> Children is undefigned
    // const div = document.createElement('div');
    // ReactDOM.render(<Layout />,div);
    // ReactDOM.unmountComponentAtNode(div);
 
-//})
+})

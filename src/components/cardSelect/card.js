@@ -35,7 +35,7 @@ const Card = props => {
       <div className="columns custom-card">
         <div className="column is-full">
           <div className="columns">
-            <div className="column is-8">
+            <div data-testid="step-1" className="column is-8">
               {props.error !== null ? <ErrorBox error={props.error} /> : ``}
             </div>
             <div className="column is-4">

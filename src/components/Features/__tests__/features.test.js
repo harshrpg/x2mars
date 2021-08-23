@@ -7,11 +7,14 @@ import Features from '../features'
   
 describe("Features test", () =>{
 
-    it('Features renders without crashing',() =>{
-        const div = document.createElement('div');
-        ReactDOM.render(<Features />,div);
-        ReactDOM.unmountComponentAtNode(div);
-     })
+    // You have to write data-testid
+const Title = () => <h1 data-testid="hero-title">Gatsby is awesome!</h1>
+test("Index test 1", () => {
+  const { getByTestId } = render(<Title />)
+  // Assertion
+  expect(getByTestId("hero-title")).toHaveTextContent("Gatsby is awesome!")
+  // --> Test will pass
+})
 
     //  test("Features Content", () => {
     //     const {getByTestId} = render(<Features/>);

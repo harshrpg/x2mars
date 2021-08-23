@@ -7,9 +7,9 @@ import "./style/navbar.scss"
 const Navbar = () => {
   const [isActive, setIsActive] = React.useState(false)
   return (
-    <nav className="navbar" role="navigation" aria-label="main navigation">
+    <nav data-testid="navbar" className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
-        <Logo />
+        <Logo data-testid="navbarLogo" />
         <button
           onClick={() => setIsActive(!isActive)}
           className={`hamburger hamburger--emphatic ${isActive ? "is-active" : ""}`}
@@ -68,22 +68,28 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="navbar-end">
-          <Link to="/" className="navbar-item" activeClassName="navbar-item">
+          <Link to="/" data-testid="navbarTelegram" className="navbar-item" activeClassName="navbar-item">
+          
             <FontAwesomeIcon icon={["fab", "telegram-plane"]} />
           </Link>
-          <Link to="/" className="navbar-item" activeClassName="navbar-item">
+          <Link to="/" data-testid="navbarMedium" className="navbar-item" activeClassName="navbar-item">
+          
             <FontAwesomeIcon icon={["fab", "medium-m"]} />
           </Link>
-          <Link to="/" className="navbar-item" activeClassName="navbar-item">
+          <Link to="/" data-testid="navbarTwitter" className="navbar-item" activeClassName="navbar-item">
+          
             <FontAwesomeIcon icon={["fab", "twitter"]} />
           </Link>
-          <Link to="/" className="navbar-item" activeClassName="navbar-item">
+          <Link to="/" data-testid="navbarDiscord" className="navbar-item" activeClassName="navbar-item">
+          
             <FontAwesomeIcon icon={["fab", "discord"]} />
           </Link>
-          <Link to="/" className="navbar-item" activeClassName="navbar-item">
+          <Link to="/" data-testid="navbarYoutube" className="navbar-item" activeClassName="navbar-item">
+          
             <FontAwesomeIcon icon={["fab", "youtube"]} />
           </Link>
-          <Link to="/" className="navbar-item" activeClassName="navbar-item">
+          <Link to="/" data-testid="navbarFacebook" className="navbar-item" activeClassName="navbar-item">
+          
             <FontAwesomeIcon icon={["fab", "facebook"]} />
           </Link>
         </div>

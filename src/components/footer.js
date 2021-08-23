@@ -4,7 +4,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const Footer = () => {
     return(
-        <footer className="footer">
+        <footer data-testid="footer" className="footer">
             <div className="container">
               <div className="columns is-mobile is-multiline">
               <div className="column is-half-mobile is-one-quarter-desktop">
@@ -35,11 +35,11 @@ const Footer = () => {
                   <div className="column is-half-mobile is-one-quarter-desktop">
                       <h6 className="title is-5">Social</h6>
                       <ul>
-                          <li><a href="#0"><i className="fab fa-fw fa-facebook"></i>Facebook</a></li>
-                          <li><a href="#0"><i className="fab fa-fw fa-instagram"></i>Instagram</a></li>
-                          <li><a href="#0"><i className="fab fa-fw fa-twitter"></i>Twitter</a></li>
-                          <li><a href="#0"><i className="fab fa-fw fa-youtube"></i>YouTube</a></li>
-                          <li><a href="#0"><i className="fab fa-fw fa-linkedin"></i>LinkedIn</a></li>
+                          <li><a data-testid="footerFacebook" href="#0"><i  className="fab fa-fw fa-facebook"></i>Facebook</a></li>
+                          <li><a data-testid="footerInstagram" href="#0"><i className="fab fa-fw fa-instagram"></i>Instagram</a></li>
+                          <li><a data-testid="footerTwitter" href="#0"><i className="fab fa-fw fa-twitter"></i>Twitter</a></li>
+                          <li><a data-testid="footerYouTube" href="#0"><i className="fab fa-fw fa-youtube"></i>YouTube</a></li>
+                          <li><a data-testid="footerLinkedIn" href="#0"><i className="fab fa-fw fa-linkedin"></i>LinkedIn</a></li>
                       </ul>
                   </div>
               </div>
