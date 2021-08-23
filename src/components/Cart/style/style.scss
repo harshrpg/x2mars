@@ -1,0 +1,65 @@
+@import "../../../style/index.scss";
+
+.cart-summary-board {
+  border: 2px solid $primary-color !important;
+  background-color: white;
+  color: $charcoal;
+  padding: 0 2rem 2rem 2rem;
+  width: auto !important;
+  position: relative;
+  white-space: nowrap;
+}
+
+.modal-close-custom {
+  position: absolute;
+  top: 8%;
+  right: 0;
+  transform: translate(-50%, -50%);
+}
+
+.close-modal-button {
+  border: none !important;
+  color: $charcoal;
+}
+
+.cart-summary-container {
+  position: relative;
+  padding: 2rem;
+  border-radius: 0% !important;
+  border-width: 2px !important;
+  border-color: $primary-color !important;
+  border-style: solid;
+}
+
+.summary-pill {
+  background-color: white;
+  padding: 0 0.5rem 0 0.5rem;
+  position: absolute;
+  left: 50%;
+  top: 0%;
+  font-size: 0.75rem;
+  transform: translate(-50%, -50%);
+}
+
+.cart-image {
+  width: 2rem !important;
+}
+
+.deploy-contract-button {
+  background-image: linear-gradient(to right, #4568dc, #b06ab3);
+  border-color: none !important;
+  color: white !important;
+  padding: 2rem;
+  width: 100%;
+  width: -moz-available; /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+  width: fill-available;
+}
+
+.deploy-contract-button.inactive {
+  background-image: linear-gradient(to right, #616161, #9e9e9e);
+  width: 100%;
+  width: -moz-available; /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+  width: fill-available;
+}

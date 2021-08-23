@@ -69,6 +69,10 @@ export const Steps = {
         description:
           "A certain fee of every transaction is added back to the pool on the DEX pair created in the previous step",
         type: "feature-select",
+        price: {
+          eth: null,
+          bnb: null,
+        },
         inputData: [
           {
             idx: 0,

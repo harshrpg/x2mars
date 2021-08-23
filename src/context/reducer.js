@@ -34,12 +34,12 @@ export const AuthReducer = (initialAuthState, action) => {
         ...initialAuthState,
         userDetails: action.payload.userDetails,
         chainId: action.payload.chainId,
-        loading: false
+        loading: false,
       }
     case "ERROR":
       return {
         ...initialAuthState,
-        errorMessage: action.payload.errorMessage
+        errorMessage: action.payload.errorMessage,
       }
 
     default:
@@ -49,7 +49,8 @@ export const AuthReducer = (initialAuthState, action) => {
 
 export const initialCartState = {
   step1: {
-    selectedToken: -1
+    selectedToken: -1,
+    totalFees: 0.0
   },
   step2: {
     tokenName: null,
@@ -58,21 +59,65 @@ export const initialCartState = {
     tokenSupplyUnits: "Units",
     tokenDecimals: 18,
     dexSelected: false,
-  }
+    totalFees: 0.0
+  },
+  step3: {
+    auto_liquidation: null,
+    rfi_rewards: null,
+    anti_whale_protection: null,
+    auto_burn: null,
+    auto_charity: null,
+    totalFees: 0.0
+  },
 }
 
 export const CartReducer = (initialCartState, action) => {
-  console.debug("Cart Selection: Step: ", action.step, " Payload: ", action.payload)
-  switch(action.step) {
+  console.debug(
+    "Cart Selection: Step: ",
+    action.step,
+    " Payload: ",
+    action.payload
+  )
+  switch (action.step) {
     case 1:
       return {
         ...initialCartState,
-        step1: action.payload.step1
+        step1: action.payload.step1,
       }
     case 2:
       return {
         ...initialCartState,
-        step2: action.payload.step2
+        step2: action.payload.step2,
+      }
+    case 3.1:
+      return {
+        ...initialCartState,
+        step3: action.payload.step3
+      }
+    case 3.2:
+      return {
+        ...initialCartState,
+        step3: action.payload.step3
+      }
+    case 3.3:
+      return {
+        ...initialCartState,
+        step3: action.payload.step3
+      }
+    case 3.4:
+      return {
+        ...initialCartState,
+        step3: action.payload.step3
+      }
+    case 3.5:
+      return {
+        ...initialCartState,
+        step3: action.payload.step3
+      }
+    case 3.6:
+      return {
+        ...initialCartState,
+        step3: action.payload.step3
       }
   }
 }

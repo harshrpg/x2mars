@@ -134,3 +134,24 @@ Gatsby Cloud is an end-to-end cloud platform specifically built for the Gatsby f
 1. getBalance is not working
 2. chain Id is not working
 3. if wallet connected and refresh, connection is lost from the application
+
+12th August 2021 - OPEN Issues
+## State Management
+1. Wallet listener, if account or chain id changes move the user back to step 1 - Likhith
+2. Step 3 context information - Harsh
+3. Step 4 context information - Harsh
+
+## BUGS
+1. Total Fee Calculation round up float
+2. Remove callback from FeatureInputData
+
+## Cart Management
+1. Add Cart state to cart UI - Likhith
+2. Show cart summary on Step 5
+
+## Profile Management
+1. Create GRT Sub-graph
+2. Create Profile page
+3. Create contract interaction page
+
+--> LAUNCH

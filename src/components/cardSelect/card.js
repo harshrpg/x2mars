@@ -17,10 +17,13 @@ import { NetworkIcon } from "../Icons/icons"
 import { useNetwork } from "../../hooks/useNetwork"
 import { useAuthState, useCartDispatch, useCartState } from "../../context"
 import {
+  FeatureIds,
   NetworkConstants,
   NetworkFromChainId,
+  NumberMap,
   TokenTypeIds,
 } from "../../util/Constants"
+import ErrorBox from "../Error/errorbox"
 
 const Card = props => {
   let style = { opacity: 1 }
@@ -92,22 +95,6 @@ const Card = props => {
         )}
       </div>
     </div>
-  )
-}
-
-const CustomCheckBox = props => {
-  const [checked, setChecked] = React.useState(props.selected)
-  return (
-    <label className="checkbox-container">
-      <input
-        type="checkbox"
-        key={checked}
-        checked={checked ? `checked` : ``}
-        onClick={event => props.onPress(event)}
-        disabled={props.disabled ? true : props.isError !== null ? true : false}
-      />
-      <span className="checkmark"></span>
-    </label>
   )
 }
 
@@ -244,10 +231,6 @@ const HelpDescription = props => {
   )
 }
 
-const ErrorBox = ({ error }) => {
-  return <div className="error-container">{error}</div>
-}
-
 const Data = ({
   cardData,
   // network,
@@ -257,10 +240,9 @@ const Data = ({
   selected,
   callback,
   maxTxnAmount,
-  id
+  id,
 }) => {
   // STATES
-  const [featureInput, setFeatureInput] = React.useState({ features: [] })
   const [network, setNetwork] = React.useState(
     NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
   )
@@ -278,39 +260,13 @@ const Data = ({
   }, [user])
   React.useEffect(() => {
     if (id === "step2-card3") {
-      if (
-        cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER
-      ) {
+      if (cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER) {
         setFees("Free")
       }
     } else {
       setFees(cardData.price[network])
     }
   }, [cartState])
-
-  const handleFeatureInputChange = (i, event, input) => {
-    const newArray = Array.from(featureInput.features)
-    let value = parseFloat(event.target.value)
-    if (value >= parseFloat(input.min) && value <= parseFloat(input.max)) {
-      newArray[i] = value
-      setFeatureInput({ features: newArray })
-      callback(value)
-    } else {
-      event.target.value = ""
-    }
-  }
-
-  const resetStateInput = i => {
-    if (
-      featureInput.features[i] !== undefined &&
-      featureInput.features[i] !== ""
-    ) {
-      const newArray = Array.from(featureInput.features)
-      newArray[i] = ""
-      setFeatureInput({ features: newArray })
-      callback(0)
-    }
-  }
 
   return (
     <div className="conatiner has-text-centered">
@@ -329,72 +285,14 @@ const Data = ({
         </div>
       </div>
       {type === "feature-select" ? (
-        <div className="columns">
-          <div className="column">
-            <div className="centerinput">
-              {cardData.inputData !== null && cardData.inputData !== undefined
-                ? cardData.inputData.map((input, i) => {
-                    if (
-                      (!selected || disabled) &&
-                      input.idx !== undefined &&
-                      input.idx !== 2
-                    ) {
-                      resetStateInput(i)
-                    }
-                    return (
-                      <>
-                        <div
-                          className={`input-block ${
-                            !selected || disabled
-                              ? "disabled"
-                              : input.idx === 2
-                              ? "pre-selected"
-                              : featureInput.features[i] !== undefined &&
-                                featureInput.features[i] !== ""
-                              ? "success"
-                              : ""
-                          }`}
-                        >
-                          <input
-                            type={input.type}
-                            onBlur={event =>
-                              handleFeatureInputChange(i, event, input)
-                            }
-                            id="featureInput"
-                            required="required"
-                            spellcheck="false"
-                            min={input.min}
-                            max={input.max}
-                            step="0.01"
-                            disabled={disabled || !selected || input.idx === 2}
-                            value={
-                              selected
-                                ? input.idx === 2
-                                  ? maxTxnAmount
-                                  : null
-                                : ""
-                            }
-                          />
-
-                          <span className="placeholder">
-                            {input.min !== "" && input.max !== ""
-                              ? input.name +
-                                ` (` +
-                                input.min +
-                                `% - ` +
-                                input.max +
-                                `%)`
-                              : input.name}
-                          </span>
-                        </div>
-                      </>
-                    )
-                  })
-                : ``}
-            </div>
-          </div>
-        </div>
+        <FeatureInputData
+          cardData={cardData}
+          selected={selected}
+          disabled={disabled}
+          callback={callback}
+        />
       ) : (
+        // `TEST`
         ``
       )}
       <div className="columns">
@@ -403,6 +301,191 @@ const Data = ({
         </div>
       </div>
     </div>
+  )
+}
+
+const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
+  // CONTEXT
+  const cartState = useCartState()
+  const cartDispatch = useCartDispatch()
+
+  // STATE
+  const [input, _] = React.useState(cardData.inputData[0])
+  const [featureValue, setFeatureValue] = React.useState(null)
+
+  // EFFECTS
+  React.useEffect(() => {
+    switch (input.idx) {
+      case FeatureIds.AUTOMATIC_LIQUIDATION:
+        setFeatureValue(cartState.step3.auto_liquidation)
+        break
+      case FeatureIds.RFI_STATIC_REWARDS:
+        setFeatureValue(cartState.step3.rfi_rewards)
+        break
+      case FeatureIds.ANTI_WHALE_PROTECTION:
+        if (!selected && input.idx !== undefined && input.idx === 2) {
+          setFeatureValue("")
+        } else if (selected && input.idx !== undefined && input.idx === 2) {
+          setFeatureValue(cartState.step3.anti_whale_protection)
+        }
+        break
+      case FeatureIds.AUTO_BURN:
+        setFeatureValue(cartState.step3.auto_burn)
+        break
+      case FeatureIds.AUTO_CHARITY:
+        setFeatureValue(cartState.step3.auto_charity)
+        break
+      default:
+        break
+    }
+  }, [cartState])
+  React.useEffect(() => {
+    if (!selected) {
+      resetStateInput()
+    } else {
+      if (input.idx === FeatureIds.ANTI_WHALE_PROTECTION) {
+        var value =
+          0.005 *
+          (parseFloat(cartState.step2.tokenSupplyNumber) *
+            NumberMap[cartState.step2.tokenSupplyUnits])
+        dispatchValues(value)
+      }
+    }
+  }, [selected])
+
+  function dispatchValues(value) {
+    console.debug("Changing Cart State")
+    switch (input.idx) {
+      case FeatureIds.AUTOMATIC_LIQUIDATION:
+        cartDispatch({
+          step: 3.1,
+          payload: {
+            step3: {
+              auto_liquidation: value,
+              rfi_rewards: cartState.step3.rfi_rewards,
+              anti_whale_protection: cartState.step3.anti_whale_protection,
+              auto_burn: cartState.step3.auto_burn,
+              auto_charity: cartState.step3.auto_charity,
+              totalFees: cartState.step3.totalFees
+            },
+          },
+        })
+        break
+      case FeatureIds.RFI_STATIC_REWARDS:
+        cartDispatch({
+          step: 3.2,
+          payload: {
+            step3: {
+              auto_liquidation: cartState.step3.auto_liquidation,
+              rfi_rewards: value,
+              anti_whale_protection: cartState.step3.anti_whale_protection,
+              auto_burn: cartState.step3.auto_burn,
+              auto_charity: cartState.step3.auto_charity,
+              totalFees: cartState.step3.totalFees
+            },
+          },
+        })
+        break
+      case FeatureIds.ANTI_WHALE_PROTECTION:
+        cartDispatch({
+          step: 3.3,
+          payload: {
+            step3: {
+              auto_liquidation: cartState.step3.auto_liquidation,
+              rfi_rewards: cartState.step3.rfi_rewards,
+              anti_whale_protection: value,
+              auto_burn: cartState.step3.auto_burn,
+              auto_charity: cartState.step3.auto_charity,
+              totalFees: cartState.step3.totalFees
+            },
+          },
+        })
+        break
+      case FeatureIds.AUTO_BURN:
+        cartDispatch({
+          step: 3.4,
+          payload: {
+            step3: {
+              auto_liquidation: cartState.step3.auto_liquidation,
+              rfi_rewards: cartState.step3.rfi_rewards,
+              anti_whale_protection: cartState.step3.anti_whale_protection,
+              auto_burn: value,
+              auto_charity: cartState.step3.auto_charity,
+              totalFees: cartState.step3.totalFees
+            },
+          },
+        })
+        break
+      case FeatureIds.AUTO_CHARITY:
+        cartDispatch({
+          step: 3.5,
+          payload: {
+            step3: {
+              auto_liquidation: cartState.step3.auto_liquidation,
+              rfi_rewards: cartState.step3.rfi_rewards,
+              anti_whale_protection: cartState.step3.anti_whale_protection,
+              auto_burn: cartState.step3.auto_burn,
+              auto_charity: value,
+              totalFees: cartState.step3.totalFees
+            },
+          },
+        })
+        break
+      default:
+        break
+    }
+  }
+
+  // CALLBACKS
+  const handleFeatureInputChange = event => {
+    dispatchValues(event.target.value)
+    callback(event.target.value)
+  }
+  const resetStateInput = () => {
+    if (featureValue !== null) {
+      dispatchValues(null)
+      callback(null)
+    }
+  }
+
+  return (
+    <>
+      <div className="columns">
+        <div className="column">
+          <div className="centerinput">
+            <div
+              className={`input-block ${
+                !selected || disabled
+                  ? "disabled"
+                  : input.idx === 2
+                  ? "pre-selected"
+                  : featureValue !== null
+                  ? "success"
+                  : ""
+              }`}
+            >
+              <input
+                type={input.type}
+                onChange={handleFeatureInputChange}
+                id="featureInput"
+                required="required"
+                spellcheck="false"
+                min={input.min}
+                max={input.max}
+                step="0.1"
+                disabled={disabled || !selected || input.idx === 2}
+                value={featureValue}
+              />
+              <span className="placeholder">
+                {input.min !== "" && input.max !== ""
+                  ? input.name + ` (` + input.min + `% - ` + input.max + `%)`
+                  : input.name}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
 

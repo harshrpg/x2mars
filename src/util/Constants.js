@@ -39,8 +39,9 @@ export const WalletTypes = {
 }
 
 export const Error = {
-    CONNECT_WALLET: "Connect Wallet",
-    NOT_ENOUGH_BALANCE: "Not Enough Balance"
+    CONNECT_WALLET: "Connect Your Wallet",
+    NOT_ENOUGH_BALANCE: "Not Enough Balance",
+    SELECT_TOKEN: "Select A Token First"
 }
 
 export const TokenTypes = {
@@ -51,4 +52,20 @@ export const TokenTypes = {
 export const TokenTypeIds = {
     GOVERNANCE: 0,
     FEE_ON_TRANSFER: 1
+}
+
+export const NumberMap= {
+    Thousand: 10 ** 3,
+    Million: 10 ** 6,
+    Billion: 10 ** 9,
+    Trillion: 10 ** 12,
+    Quadrillion: 10 ** 15,
+}
+
+export const FeatureIds = {
+    AUTOMATIC_LIQUIDATION: 0,
+    RFI_STATIC_REWARDS: 1,
+    ANTI_WHALE_PROTECTION: 2,
+    AUTO_BURN: 3,
+    AUTO_CHARITY: 4
 }
