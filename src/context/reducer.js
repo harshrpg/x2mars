@@ -121,3 +121,17 @@ export const CartReducer = (initialCartState, action) => {
       }
   }
 }
+
+export const initialProfileState = {
+  profileSideBarSelection: [
+    true, false, false, false, false, false
+  ]
+}
+
+export const ProfileReducer = (initialProfileState, action) => {
+  return {
+    ...initialProfileState,
+    profileSideBarSelection: action.sidebar
+  }
+
+}

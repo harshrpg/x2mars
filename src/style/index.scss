@@ -58,4 +58,8 @@ $font-color: $charcoal;
   font-size: 0.5rem !important;
 }
 
+html {
+  overflow: hidden !important;
+}
+
 @import "~bulma/bulma.sass";

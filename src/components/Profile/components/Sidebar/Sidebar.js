@@ -20,12 +20,33 @@ import {
 } from "react-pro-sidebar"
 import { NetworkIcon } from "../../../Icons/icons"
 import "./style/sidebar.scss"
+import { useProfileDispatch, useProfileState } from "../../../../context/context"
 
 const SideBar = () => {
+  const profile = useProfileState()
+  const profileDispatch = useProfileDispatch()
+
   const [collapsed, setCollapsed] = React.useState(false)
+  const [sideBarActiveArray, setSideBarActiveArray] = React.useState(profile.profileSideBarSelection)
   const collapseMenu = () => {
     setCollapsed(!collapsed)
   }
+
+  function setSideBarActiveState(sideBarSelectedIndex) {
+    const newArray = Array.from(sideBarActiveArray)
+    newArray.forEach((item, index) => {
+      newArray[index] =
+        index === sideBarSelectedIndex ? true : item === true ? false : item
+    })
+    setSideBarActiveArray(newArray)
+  }
+
+  React.useEffect(() => {
+    profileDispatch({
+      sidebar: sideBarActiveArray
+    })
+  }, [sideBarActiveArray])
+
   return (
     <div id="sidebar">
       <ProSidebar collapsed={collapsed}>
@@ -44,14 +65,51 @@ const SideBar = () => {
         </SidebarHeader>
         <SidebarContent>
           <Menu iconShape="square">
-            <MenuItem active={true} icon={<FaChartPie />}>
+            <MenuItem
+              active={sideBarActiveArray[0]}
+              icon={<FaChartPie />}
+              onClick={() => setSideBarActiveState(0)}
+            >
               Dashboard
             </MenuItem>
-            <MenuItem icon={<FaFileContract />}>Contracts</MenuItem>
-            <MenuItem icon={<FaRocket />}>Launchpad</MenuItem>
-            <MenuItem icon={<GiCardExchange />}>Exchange</MenuItem>
-            <MenuItem icon={<GiReceiveMoney />}>Earn</MenuItem>
-            <MenuItem icon={<BiCog />}>Settings</MenuItem>
+            <MenuItem
+              active={sideBarActiveArray[1]}
+              icon={<FaFileContract />}
+              onClick={() => setSideBarActiveState(1)}
+            >
+              My Coins
+            </MenuItem>
+            <MenuItem
+              active={sideBarActiveArray[2]}
+              icon={<FaRocket />}
+              onClick={() => setSideBarActiveState(2)}
+              suffix={<span className="badge">Coming Soon</span>}
+            >
+              Community Launchpad
+            </MenuItem>
+            {/* <MenuItem
+              active={sideBarActiveArray[3]}
+              icon={<GiCardExchange />}
+              onClick={() => setSideBarActiveState(3)}
+              suffix={<span className="badge">Coming Soon</span>}
+            >
+              Exchange
+            </MenuItem>
+            <MenuItem
+              active={sideBarActiveArray[4]}
+              icon={<GiReceiveMoney />}
+              onClick={() => setSideBarActiveState(4)}
+              suffix={<span className="badge">Coming Soon</span>}
+            >
+              Earn
+            </MenuItem> */}
+            <MenuItem
+              active={sideBarActiveArray[5]}
+              icon={<BiCog />}
+              onClick={() => setSideBarActiveState(5)}
+            >
+              Settings
+            </MenuItem>
           </Menu>
         </SidebarContent>
         <SidebarFooter>
