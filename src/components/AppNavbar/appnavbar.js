@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Link } from "gatsby"
+import { Link, navigate } from "gatsby"
 import { useWeb3React } from "@web3-react/core"
 import { FaFileContract } from "@react-icons/all-files/fa/FaFileContract"
 import { MdAccountCircle } from "@react-icons/all-files/md/MdAccountCircle"
@@ -13,6 +13,7 @@ import { NetworkIcon } from "../Icons/icons"
 import { useBalance, useNetwork } from "../../hooks/useNetwork"
 import CartWindow from "../Cart/cart"
 import { useCartState } from "../../context"
+import { FaChartPie } from "@react-icons/all-files/fa/FaChartPie"
 
 const AppNavbar = () => {
   const { account, library, chainId, active } = useWeb3React()
@@ -54,10 +55,22 @@ const AppNavbar = () => {
 
         <div className="navbar-brand">
           <div className="navbar-item">
-            <div className="factory-title">The Token Factory</div>
+            {/* <div className="factory-title">Make your Coins</div> */}
           </div>
         </div>
         <div className="navbar-end">
+          <div>
+            <button
+              className="button is-light dashboard-button"
+              type="button"
+              onClick={() => navigate("/dashboard/")}
+            >
+              <span>Dashboard</span>
+              <span className="icon is-small">
+                <FaChartPie />
+              </span>
+            </button>
+          </div>
           {active ? (
             <div>
               {balance > FactoryConstants.MINIMUM_COIN_TO_PROCEED ? (

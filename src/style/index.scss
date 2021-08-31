@@ -58,8 +58,22 @@ $font-color: $charcoal;
   font-size: 0.5rem !important;
 }
 
-html {
-  overflow: hidden !important;
+// html {
+//   overflow: hidden !important;
+// }
+
+.interface-view-box {
+  border: 2px solid $primary-color;
+  max-width: 25rem !important;
+  border-radius: 10px;
+  padding-top: 0 !important;
+  // background-image: linear-gradient(to right, #FFF, #0083B0);
+}
+
+.interface-view-box:hover {
+  cursor: pointer;
+  color: $theme-white;
+  background-color: $primary-color;
 }
 
 @import "~bulma/bulma.sass";

@@ -38,3 +38,8 @@
   margin-left: 1rem;
 }
 
+.dashboard-button {
+  @include theme-button($border-color: $primary-color);
+  margin-right: 1rem;
+}
+

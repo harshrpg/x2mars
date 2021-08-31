@@ -8,7 +8,7 @@ import "./style/appfooter.scss"
 const AppFooter = () => {
   return (
     <footer className="footer">
-      <div className="container">
+      <div className="container content has-text-centered">
         <div className="columns is-mobile is-multiline">
           <div className="column is-full-mobile is-one-quarter-desktop mobile-column">
             <h6 style={{ fontWeight: "bolder" }}>X2MARS LLC Corporation</h6>
