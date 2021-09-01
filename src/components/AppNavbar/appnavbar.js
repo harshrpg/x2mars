@@ -14,6 +14,8 @@ import { useBalance, useNetwork } from "../../hooks/useNetwork"
 import CartWindow from "../Cart/cart"
 import { useCartState } from "../../context"
 import { FaChartPie } from "@react-icons/all-files/fa/FaChartPie"
+import Logo from "../Logo/logo"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const AppNavbar = () => {
   const { account, library, chainId, active } = useWeb3React()
@@ -24,6 +26,7 @@ const AppNavbar = () => {
   const [cartError, setCartError] = React.useState(false)
   const [balance, setBalance] = React.useState()
   const [network, setNetwork] = React.useState()
+  const [isActive, setIsActive] = React.useState(false)
 
   React.useEffect(() => {
     if (networkHook !== undefined) {
@@ -49,63 +52,85 @@ const AppNavbar = () => {
   return (
     <>
       <nav className="navbar" role="navigation" aria-label="main navigation">
-        <Link to="/" className="navbar-start">
-          <AppLogo />
-        </Link>
-
         <div className="navbar-brand">
-          <div className="navbar-item">
-            {/* <div className="factory-title">Make your Coins</div> */}
-          </div>
+          <Logo />
+          <button
+            onClick={() => setIsActive(!isActive)}
+            className={`hamburger hamburger--emphatic ${
+              isActive ? "is-active" : ""
+            }`}
+            type="button"
+            aria-label="menu"
+            aria-expanded="false"
+            data-target="navbar-x2m"
+          >
+            <span className="hamburger-box">
+              <span className="hamburger-inner"></span>
+            </span>
+          </button>
         </div>
-        <div className="navbar-end">
-          <div>
-            <button
-              className="button is-light dashboard-button"
-              type="button"
-              onClick={() => navigate("/dashboard/")}
-            >
-              <span>Dashboard</span>
-              <span className="icon is-small">
-                <FaChartPie />
-              </span>
-            </button>
+        <div
+          id="navbar-x2m"
+          className={`navbar-menu ${isActive ? "is-active" : ""}`}
+        >
+          <div className="navbar-start">
+            <Link to="/" className="navbar-start">
+              <button className="button is-normal custom-button app-button-footer">
+                About Coin Maker
+              </button>
+            </Link>
           </div>
-          {active ? (
-            <div>
-              {balance > FactoryConstants.MINIMUM_COIN_TO_PROCEED ? (
-                <ProfileButton
-                  network={network}
-                  balance={balance}
-                  account={account}
-                  chainId={chainId}
-                />
-              ) : (
-                Error.NOT_ENOUGH_BALANCE
-              )}
-            </div>
-          ) : (
+          <div className="navbar-end">
+            {active ? (
+              <div>
+                <div>
+                  <button
+                    className="button is-light dashboard-button"
+                    type="button"
+                    onClick={() => navigate("/dashboard/")}
+                  >
+                    <span>Dashboard</span>
+                    <span className="icon is-small">
+                      <FaChartPie />
+                    </span>
+                  </button>
+                </div>
+                <div>
+                  {balance > FactoryConstants.MINIMUM_COIN_TO_PROCEED ? (
+                    <ProfileButton
+                      network={network}
+                      balance={balance}
+                      account={account}
+                      chainId={chainId}
+                    />
+                  ) : (
+                    Error.NOT_ENOUGH_BALANCE
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div>
+                <button
+                  className="button is-light custom-button app-button"
+                  type="button"
+                  onClick={() => setWalletSelect(true)}
+                >
+                  Connect Wallet
+                </button>
+              </div>
+            )}
             <div>
               <button
-                className="button is-light custom-button app-button"
+                className="button is-light cart-button"
                 type="button"
-                onClick={() => setWalletSelect(true)}
+                onClick={showCart}
               >
-                Connect Wallet
+                <span>Your Contract</span>
+                <span className="icon is-small">
+                  <FaFileContract />
+                </span>
               </button>
             </div>
-          )}
-          <div>
-            <button
-              className="button is-light cart-button"
-              type="button"
-              onClick={showCart}
-            >
-              <span>Your Contract</span>
-              <span className="icon is-small">
-                <FaFileContract />
-              </span>
-            </button>
           </div>
         </div>
       </nav>
