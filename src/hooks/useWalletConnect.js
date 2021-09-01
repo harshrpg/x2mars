@@ -38,6 +38,10 @@ export const useWalletConnect = () => {
           chainId: chainId,
         },
       })
+    } else {
+      dispatch({
+        type: "DISCONNECTED"
+      })
     }
   }, [active, account, chainId, dispatch])
 
