@@ -60,27 +60,36 @@ const InterfaceSelector = () => {
           </div>
           <div className="columns has-text-centered">
             <div className="column">
-              <MakeYourCoinSelector
-                customClickEvent={() => setShowSelector(false)}
-              />
+              <MakeYourCoinSelector />
             </div>
           </div>
         </div>
       ) : (
         <Factory />
       )} */}
-      {active ? (
-        `Show Selection`
-      ) : (
+      {active ? <ActiveSelectors /> : <NonActiveSelectors />}
+    </>
+  )
+}
+
+const ActiveSelectors = () => {
+  const { active } = useWeb3React()
+  const [showSelector, setShowSelector] = React.useState(active)
+
+  return (
+    <>
+      {showSelector ? (
         <div>
           <div className="columns has-text-centered">
             <div className="column">
-              <span className="is-size-1">To Begin</span>
+              <span className="is-size-1">You can now</span>
             </div>
           </div>
           <div className="columns has-text-centered">
             <div className="column">
-              <ConnectWalletSelector />
+              <MakeYourCoinSelector
+                customClickEvent={() => setShowSelector(false)}
+              />
             </div>
           </div>
           <div className="columns has-text-centered">
@@ -90,12 +99,43 @@ const InterfaceSelector = () => {
           </div>
           <div className="columns has-text-centered">
             <div className="column">
-              <ReadAboutCoinMakerSelector />
+              <DashboardSelector
+                customClickEvent={() => navigate("/dashboard/")}
+              />
             </div>
           </div>
         </div>
+      ) : (
+        <Factory />
       )}
     </>
+  )
+}
+
+const NonActiveSelectors = () => {
+  return (
+    <div>
+      <div className="columns has-text-centered">
+        <div className="column">
+          <span className="is-size-1">To Begin</span>
+        </div>
+      </div>
+      <div className="columns has-text-centered">
+        <div className="column">
+          <ConnectWalletSelector />
+        </div>
+      </div>
+      <div className="columns has-text-centered">
+        <div className="column">
+          <span className="is-size-1">Or</span>
+        </div>
+      </div>
+      <div className="columns has-text-centered">
+        <div className="column">
+          <ReadAboutCoinMakerSelector />
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -149,19 +189,19 @@ const DashboardSelector = ({ customClickEvent }) => {
         <div className="column">
           <GatsbyImage image={dbIconImage} width={2} height={2} />
         </div>
-        <div className="column">Go To Dashboard</div>
+        <div className="column">View your Dashboard</div>
       </div>
     </div>
   )
 }
 
 const MakeYourCoinSelector = ({ customClickEvent }) => {
-  const ccIconImage = useImageForData("cc_icon.png")
+  const macImage = useImageForData("mac.png")
   return (
     <div className="container interface-view-box" onClick={customClickEvent}>
       <div className="columns">
         <div className="column">
-          <GatsbyImage image={ccIconImage} width={2} height={2} />
+          <GatsbyImage image={macImage} width={2} height={2} />
         </div>
         <div className="column">Make A Coin</div>
       </div>

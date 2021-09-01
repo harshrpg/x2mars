@@ -74,27 +74,33 @@ const AppNavbar = () => {
           className={`navbar-menu ${isActive ? "is-active" : ""}`}
         >
           <div className="navbar-start">
-            <Link to="/" className="navbar-start">
-              <button className="button is-normal custom-button app-button-footer">
-                About Coin Maker
-              </button>
-            </Link>
+            <div>
+              <Link to="/" className="navbar-start">
+                <button className="button is-normal custom-button app-button-footer">
+                  About Coin Maker
+                </button>
+              </Link>
+            </div>
+            {active ? (
+              <div>
+                <button
+                  className="button is-light dashboard-button"
+                  type="button"
+                  onClick={() => navigate("/dashboard/")}
+                >
+                  <span>Dashboard</span>
+                  <span className="icon is-small dashboard-icon">
+                    <FaChartPie />
+                  </span>
+                </button>
+              </div>
+            ) : (
+              ``
+            )}
           </div>
           <div className="navbar-end">
             {active ? (
               <div>
-                <div>
-                  <button
-                    className="button is-light dashboard-button"
-                    type="button"
-                    onClick={() => navigate("/dashboard/")}
-                  >
-                    <span>Dashboard</span>
-                    <span className="icon is-small">
-                      <FaChartPie />
-                    </span>
-                  </button>
-                </div>
                 <div>
                   {balance > FactoryConstants.MINIMUM_COIN_TO_PROCEED ? (
                     <ProfileButton

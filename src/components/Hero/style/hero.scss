@@ -39,7 +39,10 @@
 }
 
 .dashboard-button {
-  @include theme-button($border-color: $primary-color);
-  margin-right: 1rem;
+  @include theme-button-filled($background-color: $primary-color);
+  margin-left: 1rem;
+}
+.dashboard-icon {
+  color: $theme-yellow;
 }
 
