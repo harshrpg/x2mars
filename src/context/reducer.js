@@ -2,6 +2,11 @@ let user = localStorage.getItem("currentUser")
   ? JSON.parse(localStorage.getItem("currentUser")).user
   : ""
 
+let emptyUser = {
+  account: "",
+  balance: ""
+}
+
 export const initialAuthState = {
   userDetails:
     {
@@ -40,6 +45,16 @@ export const AuthReducer = (initialAuthState, action) => {
       return {
         ...initialAuthState,
         errorMessage: action.payload.errorMessage,
+        walletType: null
+      }
+    case "DISCONNECTED":
+      return {
+        ...initialAuthState,
+        walletType: null,
+        errorMessage: null,
+        loading: false,
+        chainId: "",
+        userDetails: emptyUser
       }
 
     default:

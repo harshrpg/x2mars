@@ -188,21 +188,19 @@ const ProfileButton = ({
           </div>
 
           <div className="column" style={{ paddingLeft: 0 }}>
-            <Link to="/profile" type="profile">
-              <button
-                className="button is-light custom-button account-address-button"
-                type="button"
-              >
-                <span>
-                  {account.slice(0, 6) +
-                    "...." +
-                    account.substring(account.length - 3)}
-                </span>
-                <span className="icon is-small icon-profile">
-                  <MdAccountCircle />
-                </span>
-              </button>
-            </Link>
+            <button
+              className="button is-light custom-button account-address-button"
+              type="button"
+            >
+              <span>
+                {account.slice(0, 6) +
+                  "...." +
+                  account.substring(account.length - 3)}
+              </span>
+              <span className="icon is-small icon-profile">
+                <MdAccountCircle />
+              </span>
+            </button>
           </div>
         </div>
       </div>
