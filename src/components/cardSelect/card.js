@@ -366,7 +366,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
               anti_whale_protection: cartState.step3.anti_whale_protection,
               auto_burn: cartState.step3.auto_burn,
               auto_charity: cartState.step3.auto_charity,
-              totalFees: cartState.step3.totalFees
+              totalFees: cartState.step3.totalFees,
             },
           },
         })
@@ -381,7 +381,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
               anti_whale_protection: cartState.step3.anti_whale_protection,
               auto_burn: cartState.step3.auto_burn,
               auto_charity: cartState.step3.auto_charity,
-              totalFees: cartState.step3.totalFees
+              totalFees: cartState.step3.totalFees,
             },
           },
         })
@@ -396,7 +396,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
               anti_whale_protection: value,
               auto_burn: cartState.step3.auto_burn,
               auto_charity: cartState.step3.auto_charity,
-              totalFees: cartState.step3.totalFees
+              totalFees: cartState.step3.totalFees,
             },
           },
         })
@@ -411,7 +411,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
               anti_whale_protection: cartState.step3.anti_whale_protection,
               auto_burn: value,
               auto_charity: cartState.step3.auto_charity,
-              totalFees: cartState.step3.totalFees
+              totalFees: cartState.step3.totalFees,
             },
           },
         })
@@ -426,7 +426,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
               anti_whale_protection: cartState.step3.anti_whale_protection,
               auto_burn: cartState.step3.auto_burn,
               auto_charity: value,
-              totalFees: cartState.step3.totalFees
+              totalFees: cartState.step3.totalFees,
             },
           },
         })
@@ -636,6 +636,8 @@ const Step2Card1 = ({ cardData, network, callback }) => {
 }
 
 const Step2Card2 = ({ cardData, network, callback }) => {
+  const cartDispatch = useCartDispatch()
+  const [antiWhaleProtection, setAntiWhaleProtection] = React.useState(null)
   const cartState = useCartState()
   const [tokenSupply, setTokenSupply] = React.useState(
     cartState.step2.tokenSupplyNumber
@@ -660,9 +662,30 @@ const Step2Card2 = ({ cardData, network, callback }) => {
 
   React.useEffect(() => {
     if (tokenSupply !== 0 && tokenSupplyUnits !== "Units") {
+      setAntiWhaleProtection(
+        0.005 * (parseFloat(tokenSupply) * NumberMap[tokenSupplyUnits])
+      )
       callback(tokenSupply, tokenSupplyUnits)
     }
   }, [tokenSupply, tokenSupplyUnits])
+
+  React.useEffect(() => {
+    if (antiWhaleProtection !== null) {
+      cartDispatch({
+        step: 3.3,
+        payload: {
+          step3: {
+            auto_liquidation: cartState.step3.auto_liquidation,
+            rfi_rewards: cartState.step3.rfi_rewards,
+            anti_whale_protection: antiWhaleProtection,
+            auto_burn: cartState.step3.auto_burn,
+            auto_charity: cartState.step3.auto_charity,
+            totalFees: cartState.step3.totalFees,
+          },
+        },
+      })
+    }
+  }, [antiWhaleProtection])
   return (
     <>
       <div className="columns">

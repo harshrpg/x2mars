@@ -56,6 +56,13 @@ const FactorySteps = props => {
     }
   }
 
+  const moveToStep = step => {
+    console.debug("Current Step: ", currentStep, " Moving to Step", step)
+    if (successStep.has(step)) {
+      setCurrentStep(step)
+    }
+  }
+
   const setTypeAndSuccess = (typeSelected, newSuccessStep) => {
     setTokenType(typeSelected)
     setSuccessStep(new Set(successStep).add(newSuccessStep))
@@ -142,6 +149,7 @@ const FactorySteps = props => {
             key={[successStep, currentStep]}
             activeStep={currentStep}
             successStep={successStep}
+            moveToStep={moveToStep}
           />
         </div>
       </div>
@@ -229,7 +237,6 @@ const Step1 = props => {
       fee = step1Card2.price[network]
     }
     setStep1Fee(parseFloat(fee))
-    
   }, [selectedOption])
 
   const setSelection = (selectedOption, selection) => {
@@ -246,7 +253,7 @@ const Step1 = props => {
       payload: {
         step1: {
           selectedToken: selectedOption,
-          totalFees: cartState.step1.totalFees
+          totalFees: cartState.step1.totalFees,
         },
       },
     })
@@ -261,11 +268,11 @@ const Step1 = props => {
             tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
             tokenDecimals: cartState.step2.tokenDecimals,
             dexSelected: cartState.step2.dexSelected,
-            totalFees: 0
-          }
-        }
+            totalFees: 0,
+          },
+        },
       })
-    } else if (selectedOption === TokenTypeIds.GOVERNANCE)  {
+    } else if (selectedOption === TokenTypeIds.GOVERNANCE) {
       cartDispatch({
         step: 2,
         payload: {
@@ -276,9 +283,9 @@ const Step1 = props => {
             tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
             tokenDecimals: cartState.step2.tokenDecimals,
             dexSelected: false,
-            totalFees: 0
-          }
-        }
+            totalFees: 0,
+          },
+        },
       })
     }
   }, [selectedOption])
@@ -290,16 +297,15 @@ const Step1 = props => {
         payload: {
           step1: {
             selectedToken: cartState.step1.selectedToken,
-            totalFees: step1Fee
-          }
-        }
+            totalFees: step1Fee,
+          },
+        },
       })
     }
   }, [step1Fee])
 
   const step1Card1Img = useImageForData(step1Card1.img)
   const step1Card2Img = useImageForData(step1Card2.img)
-
 
   return (
     <div className="columns step-columns has-text-centered step-ind">
@@ -396,7 +402,7 @@ const Step2 = props => {
             tokenSupplyUnits: tokenDetails.SupplyUnit,
             tokenDecimals: tokenDetails.Decimals,
             dexSelected: dexSelected,
-            totalFees: step2Fee
+            totalFees: step2Fee,
           },
         },
       })
@@ -414,7 +420,7 @@ const Step2 = props => {
             tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
             tokenDecimals: cartState.step2.tokenDecimals,
             dexSelected: cartState.step2.dexSelected,
-            totalFees: step2Fee
+            totalFees: step2Fee,
           },
         },
       })
@@ -439,7 +445,6 @@ const Step2 = props => {
   const setSelection = selection => {
     if (tokenType === TokenTypeIds.GOVERNANCE) {
       setDexSelected(selection)
-      
     }
   }
   const tokenNameCb = tokenName => {
@@ -566,7 +571,9 @@ const Step3 = props => {
       cartState.step3.auto_charity,
     ],
   })
-  const [totalFees, setTotalFees] = React.useState(parseFloat(cartState.step3.totalFees))
+  const [totalFees, setTotalFees] = React.useState(
+    parseFloat(cartState.step3.totalFees)
+  )
 
   // DATA
   const card1 = step.cardData[0]
@@ -637,7 +644,7 @@ const Step3 = props => {
           anti_whale_protection: cartState.step3.anti_whale_protection,
           auto_burn: cartState.step3.auto_burn,
           auto_charity: cartState.step3.auto_charity,
-          totalFees: totalFees
+          totalFees: totalFees,
         },
       },
     })
@@ -1009,6 +1016,7 @@ const StepBreadCrumb = props => {
           isSuccess={
             activeStep === 1 ? false : successStep.has(1) ? true : false
           }
+          moveToStep={() => props.moveToStep(1)}
         />
       </div>
       <div className="column">
@@ -1018,6 +1026,7 @@ const StepBreadCrumb = props => {
           isSuccess={
             activeStep === 2 ? false : successStep.has(2) ? true : false
           }
+          moveToStep={() => props.moveToStep(2)}
         />
       </div>
       <div className="column">
@@ -1027,6 +1036,7 @@ const StepBreadCrumb = props => {
           isSuccess={
             activeStep === 3 ? false : successStep.has(3) ? true : false
           }
+          moveToStep={() => props.moveToStep(3)}
         />
       </div>
       <div className="column">
@@ -1036,6 +1046,7 @@ const StepBreadCrumb = props => {
           isSuccess={
             activeStep === 4 ? false : successStep.has(4) ? true : false
           }
+          moveToStep={() => props.moveToStep(4)}
         />
       </div>
       <div className="column">
@@ -1045,6 +1056,7 @@ const StepBreadCrumb = props => {
           isSuccess={
             activeStep === 5 ? false : successStep.has(5) ? true : false
           }
+          moveToStep={() => props.moveToStep(5)}
         />
       </div>
     </div>
@@ -1058,6 +1070,7 @@ const BreadCrumbButton = props => {
         props.disabled ? " disabled" : ""
       }${props.isSuccess ? " success" : ""}`}
       type="button"
+      onClick={props.moveToStep}
     >
       {props.value}
     </div>

@@ -163,10 +163,6 @@ const ProfileButton = ({
   chainId,
   setCartDisplay,
 }) => {
-  const style =
-    chainId === 1 || chainId === 56
-      ? { color: "#00C853" }
-      : { color: "#E53935" }
 
   return (
     <div style={{ position: "relative" }}>
@@ -177,9 +173,9 @@ const ProfileButton = ({
               <div>
                 <div className="columns">
                   <div className="column">
-                    <NetworkIcon network={network} color={style.color} />
+                    <NetworkIcon network={network} />
                   </div>
-                  <div className="column" style={style}>
+                  <div className="column" >
                     {balance}
                   </div>
                 </div>
@@ -206,7 +202,7 @@ const ProfileButton = ({
       </div>
 
       <div className="network-pill has-text-centered is-size-7">
-        <span className="networkName" style={style}>
+        <span className="networkName">
           {NetworkNames[chainId]}
         </span>
       </div>
