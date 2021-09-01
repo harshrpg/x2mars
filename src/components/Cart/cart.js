@@ -1,5 +1,5 @@
 import * as React from "react"
-import { useCartState } from "../../context"
+import { useAuthState, useCartState } from "../../context"
 import {
   Error,
   NetworkConstants,
@@ -16,13 +16,13 @@ import { useNetwork } from "../../hooks/useNetwork"
 import { NetworkIcon } from "../Icons/icons"
 import ErrorBox from "../Error/errorbox"
 
-const CartWindow = ({ setCartDisplay, isActive }) => {
+export const CartWindow = ({ setCartDisplay, isActive }) => {
   return (
     <>
       <div className={`modal ${isActive ? "is-active" : ""}`}>
         <div class="modal-background"></div>
         <div class="modal-content cart-summary-board">
-          <ModalContent />
+          <CartContent />
           <div className="modal-close-custom">
             <button
               className="button close-modal-button"
@@ -40,7 +40,7 @@ const CartWindow = ({ setCartDisplay, isActive }) => {
   )
 }
 
-const ModalContent = () => {
+export const CartContent = () => {
   return (
     <div className="container has-text-centered">
       <div className="columns">
@@ -67,6 +67,11 @@ const ModalContent = () => {
       </div>
       <div className="columns">
         <div className="column">
+          <TotalFees />
+        </div>
+      </div>
+      <div className="columns">
+        <div className="column">
           <DeployButton />
         </div>
       </div>
@@ -75,13 +80,24 @@ const ModalContent = () => {
 }
 
 const TokenType = () => {
+  const user = useAuthState()
   const cartState = useCartState()
-  const network = useNetwork()
+  // const network = useNetwork()
 
   const gTokenImage = useImageForData(Steps.Step1.cardData[0].img)
   const fotTokenImage = useImageForData(Steps.Step1.cardData[1].img)
 
   const [tokenImage, setTokenImage] = React.useState(gTokenImage)
+  const [network, setNetwork] = React.useState(
+    NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
+  )
+
+  // EFFECTS
+  React.useEffect(() => {
+    if (!!user.chainId) {
+      setNetwork(NetworkFromChainId[parseInt(user.chainId)])
+    }
+  }, [user])
 
   React.useEffect(() => {
     if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
@@ -120,14 +136,24 @@ const TokenType = () => {
 }
 
 const DexSelected = () => {
+  const user = useAuthState()
   const cartState = useCartState()
-  const network = useNetwork()
+  // const network = useNetwork()
+  const [network, setNetwork] = React.useState(
+    NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
+  )
 
   const [dexImage, setDexImage] = React.useState(
     Steps.Step2.cardData[2].img[
       NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
     ]
   )
+
+  React.useEffect(() => {
+    if (!!user.chainId) {
+      setNetwork(NetworkFromChainId[parseInt(user.chainId)])
+    }
+  }, [user])
 
   React.useEffect(() => {
     setDexImage(Steps.Step2.cardData[2].img[network])
@@ -163,8 +189,12 @@ const DexSelected = () => {
 }
 
 const FeaturesSelected = () => {
+  const user = useAuthState()
   const cartState = useCartState()
-  const network = useNetwork()
+  // const network = useNetwork()
+  const [network, setNetwork] = React.useState(
+    NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
+  )
 
   const [alImage, setAlImage] = React.useState()
   const [rfiImage, setRfiImage] = React.useState(Steps.Step3.cardData[1].img)
@@ -173,6 +203,11 @@ const FeaturesSelected = () => {
   const [acImage, setAcImage] = React.useState(Steps.Step3.cardData[4].img)
   // const autoLiquidationImage = useImageForData()
 
+  React.useEffect(() => {
+    if (!!user.chainId) {
+      setNetwork(NetworkFromChainId[parseInt(user.chainId)])
+    }
+  }, [user])
   React.useEffect(() => {
     setAlImage(Steps.Step3.cardData[0].img[network])
   }, [network])
@@ -184,7 +219,8 @@ const FeaturesSelected = () => {
   const image5 = useImageForData(acImage)
   return (
     <>
-      {cartState.step1.selectedToken === 1 && !!network &&
+      {cartState.step1.selectedToken === 1 &&
+      !!network &&
       (!!cartState.step3.auto_liquidation ||
         !!cartState.step3.rfi_rewards ||
         !!cartState.step3.anti_whale_protection ||
@@ -203,9 +239,7 @@ const FeaturesSelected = () => {
                 />
               </div>
               <div className="column">Automatic Liquidation</div>
-              <div className="column">
-                0 {network.toUpperCase()}
-              </div>
+              <div className="column">0 {network.toUpperCase()}</div>
             </div>
           ) : (
             ``
@@ -221,7 +255,11 @@ const FeaturesSelected = () => {
                 />
               </div>
               <div className="column">RFI Static Rewards</div>
-              <div className="column">{Steps.Step3.cardData[1].price[network] + ` ` + network.toUpperCase()}</div>
+              <div className="column">
+                {Steps.Step3.cardData[1].price[network] +
+                  ` ` +
+                  network.toUpperCase()}
+              </div>
             </div>
           ) : (
             ``
@@ -238,7 +276,9 @@ const FeaturesSelected = () => {
               </div>
               <div className="column">Anti Whale Protection</div>
               <div className="column">
-              {Steps.Step3.cardData[2].price[network] + ` ` + network.toUpperCase()}
+                {Steps.Step3.cardData[2].price[network] +
+                  ` ` +
+                  network.toUpperCase()}
               </div>
             </div>
           ) : (
@@ -255,7 +295,11 @@ const FeaturesSelected = () => {
                 />
               </div>
               <div className="column">Automatic Burning</div>
-              <div className="column">{Steps.Step3.cardData[3].price[network] + ` ` + network.toUpperCase()}</div>
+              <div className="column">
+                {Steps.Step3.cardData[3].price[network] +
+                  ` ` +
+                  network.toUpperCase()}
+              </div>
             </div>
           ) : (
             ``
@@ -271,7 +315,11 @@ const FeaturesSelected = () => {
                 />
               </div>
               <div className="column">Automatic Charity</div>
-              <div className="column">{Steps.Step3.cardData[4].price[network] + ` ` + network.toUpperCase()}</div>
+              <div className="column">
+                {Steps.Step3.cardData[4].price[network] +
+                  ` ` +
+                  network.toUpperCase()}
+              </div>
             </div>
           ) : (
             ``
@@ -281,6 +329,74 @@ const FeaturesSelected = () => {
         ``
       )}
     </>
+  )
+}
+
+const TotalFees = () => {
+  const user = useAuthState()
+  const cartState = useCartState()
+  const [totalChargeableFees, setTotalChargeableFees] = React.useState(0.0)
+  const [network, setNetwork] = React.useState(
+    NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
+  )
+
+  // EFFECTS
+  React.useEffect(() => {
+    if (!!user.chainId) {
+      setNetwork(NetworkFromChainId[parseInt(user.chainId)])
+    }
+  }, [user])
+  React.useEffect(() => {
+    let totalFees = 0.0
+    if (!!cartState.step1.totalFees) {
+      totalFees += parseFloat(cartState.step1.totalFees)
+    }
+    if (!!cartState.step2.totalFees) {
+      totalFees += parseFloat(cartState.step2.totalFees)
+    }
+    if (
+      !!cartState.step1.selectedToken &&
+      cartState.step1.selectedToken !== 0
+    ) {
+      if (!!cartState.step3.auto_liquidation) {
+        totalFees += 0.0
+      }
+      if (!!cartState.step3.rfi_rewards) {
+        totalFees += parseFloat(Steps.Step3.cardData[1].price[network])
+      }
+      if (!!cartState.step3.anti_whale_protection) {
+        totalFees += parseFloat(Steps.Step3.cardData[2].price[network])
+      }
+      if (!!cartState.step3.auto_burn) {
+        totalFees += parseFloat(Steps.Step3.cardData[3].price[network])
+      }
+      if (!!cartState.step3.auto_charity) {
+        totalFees += parseFloat(Steps.Step3.cardData[4].price[network])
+      }
+    }
+
+    setTotalChargeableFees(totalFees)
+  }, [cartState])
+  var image = useImageForData("sum.png")
+
+  return (
+    <div className="cart-summary-container">
+      <span className="summary-pill">Order Total</span>
+      <div className="columns">
+        <div className="column">
+          <GatsbyImage
+            image={image}
+            width={2}
+            height={2}
+            className="cart-image"
+          />
+        </div>
+        <div className="column">Your Total</div>
+        <div className="column">
+          {totalChargeableFees + ` ` + network.toUpperCase()}
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -329,5 +445,3 @@ const DeployButton = () => {
     </>
   )
 }
-
-export default CartWindow

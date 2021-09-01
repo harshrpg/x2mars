@@ -11,7 +11,7 @@ import WalletSelect from "../walletSelect/walletselect"
 import "./style/appnavbar.scss"
 import { NetworkIcon } from "../Icons/icons"
 import { useBalance, useNetwork } from "../../hooks/useNetwork"
-import CartWindow from "../Cart/cart"
+import {CartWindow} from "../Cart/cart"
 import { useCartState } from "../../context"
 import { FaChartPie } from "@react-icons/all-files/fa/FaChartPie"
 import Logo from "../Logo/logo"
@@ -173,7 +173,7 @@ const ProfileButton = ({
               <div>
                 <div className="columns">
                   <div className="column">
-                    <NetworkIcon network={network} />
+                    <NetworkIcon network={network} color="#807fc6"/>
                   </div>
                   <div className="column" >
                     {balance}

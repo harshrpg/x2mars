@@ -24,6 +24,7 @@ import {
 import { useAuthState } from "../../context"
 import { useCartDispatch, useCartState } from "../../context/context"
 import { useImageForData } from "../../hooks/useAllImages"
+import { CartContent } from "../Cart/cart"
 
 const FactorySteps = props => {
   const [successStep, setSuccessStep] = React.useState(new Set([0]))
@@ -81,7 +82,8 @@ const FactorySteps = props => {
 
   React.useEffect(() => {
     console.debug("EFFECT 5")
-    if ((currentStep === 3 && tokenType === 0) || currentStep == 4) {
+    // if ((currentStep === 3 && tokenType === 0) || currentStep == 4) {
+    if (currentStep === 3 && tokenType === 0) {
       console.debug(
         "Effect: Current Step: ",
         currentStep,
@@ -134,14 +136,16 @@ const FactorySteps = props => {
               tokenDetails={tokenDetails}
             />
           ) : currentStep === 4 ? (
-            <Step4
-              className="ind-step"
-              network={props.network}
-              onSuccess={() => setSuccessStep(new Set(successStep).add(4))}
-              key={3}
-            />
+            // <Step4
+            //   className="ind-step"
+            //   network={props.network}
+            //   onSuccess={() => setSuccessStep(new Set(successStep).add(4))}
+            //   key={3}
+            // />
+            <FinalStep />
           ) : (
-            <Step5 network={props.network} key={4} />
+            // <Step5 network={props.network} key={4} />
+            ``
           )}
         </div>
         <div className="column" id="breadcrumb">
@@ -734,6 +738,37 @@ const Step3 = props => {
                 }
               />
             </div>
+            <div className="column">
+              <Card
+                id="step3-card3"
+                type={card3.type}
+                error={null}
+                cardData={card3}
+                network={network}
+                selected={featuresSelected.features[2]}
+                disabled={
+                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : true
+                }
+                cardImage={card3Img}
+                cardIndex={2}
+                onPress={select =>
+                  setSelection(FeatureIds.ANTI_WHALE_PROTECTION, select)
+                }
+                callback={value =>
+                  setFees(FeatureIds.ANTI_WHALE_PROTECTION, value)
+                }
+                selectionText={
+                  tokenType === TokenTypeIds.GOVERNANCE
+                    ? "Cannot add to token"
+                    : featuresSelected.features[2]
+                    ? "Remove from Contract"
+                    : "Add to Contract"
+                }
+                mandatory={
+                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : undefined
+                }
+              />
+            </div>
           </div>
           <div className="columns step-rows">
             <div className="column">
@@ -767,40 +802,6 @@ const Step3 = props => {
                 }
               />
             </div>
-            <div className="column">
-              <Card
-                id="step3-card3"
-                type={card3.type}
-                error={null}
-                cardData={card3}
-                network={network}
-                selected={featuresSelected.features[2]}
-                disabled={
-                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : true
-                }
-                cardImage={card3Img}
-                cardIndex={2}
-                onPress={select =>
-                  setSelection(FeatureIds.ANTI_WHALE_PROTECTION, select)
-                }
-                callback={value =>
-                  setFees(FeatureIds.ANTI_WHALE_PROTECTION, value)
-                }
-                selectionText={
-                  tokenType === TokenTypeIds.GOVERNANCE
-                    ? "Cannot add to token"
-                    : featuresSelected.features[2]
-                    ? "Remove from Contract"
-                    : "Add to Contract"
-                }
-                mandatory={
-                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : undefined
-                }
-              />
-            </div>
-          </div>
-
-          <div className="columns step-rows">
             <div className="column">
               <Card
                 id="step3-card4"
@@ -858,10 +859,18 @@ const Step3 = props => {
               />
             </div>
           </div>
+
+          {/* <div className="columns step-rows">
+            
+          </div> */}
         </div>
       </div>
     </>
   )
+}
+
+const FinalStep = props => {
+  return <CartContent />
 }
 
 const Step4 = props => {
@@ -1049,7 +1058,7 @@ const StepBreadCrumb = props => {
           moveToStep={() => props.moveToStep(4)}
         />
       </div>
-      <div className="column">
+      {/* <div className="column">
         <BreadCrumbButton
           value="Step 5"
           disabled={activeStep !== 5 ? true : false}
@@ -1058,7 +1067,7 @@ const StepBreadCrumb = props => {
           }
           moveToStep={() => props.moveToStep(5)}
         />
-      </div>
+      </div> */}
     </div>
   )
 }
