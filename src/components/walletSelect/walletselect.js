@@ -17,7 +17,7 @@ const WalletSelect = ({
   isActive,
   cartError,
   setCartError,
-  setCartDisplay
+  setCartDisplay,
 }) => {
   const [balance, setBalance] = React.useState()
   const { userDetails, loading, errorMessage } = useAuthState()
@@ -49,8 +49,8 @@ const WalletSelect = ({
   }, [active, setWalletSelect, setCartError])
 
   function closeModal() {
-    setCartError(false)
     setWalletSelect(false)
+    setCartError(false)
     setCartDisplay(false)
   }
 
@@ -221,9 +221,10 @@ const CoinbaseWalletConnect = () => {
               className="button is-light custom-button"
               type="button"
               onClick={handleClick}
-              disabled={loading && walletType !== WalletTypes.WALLETLINK}
+              // disabled={loading && walletType !== WalletTypes.WALLETLINK}
+              disabled={true}
             >
-              Connect
+              Coming Soon
             </button>
           </div>
         </div>

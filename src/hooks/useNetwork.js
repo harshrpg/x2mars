@@ -3,26 +3,34 @@ import { useWeb3React } from "@web3-react/core"
 import { BigNumber } from "ethers"
 import { useState, useEffect } from "react"
 import useSWR from "swr"
-import { useAuthDispatch } from "../context"
+import { useAuthDispatch, useAuthState } from "../context"
+import { NetworkFromChainId } from "../util/Constants"
 
 const etherNetworks = [1, 3, 4, 5, 42]
 const bscNetworks = [97, 56]
 
 export const useNetwork = () => {
   const { chainId } = useWeb3React()
+  const user = useAuthState()
   const [network, setNetwork] = useState()
 
-    useEffect(() => {
-  if (!!chainId) {
+  useEffect(() => {
+    if (!!chainId) {
       if (etherNetworks.includes(chainId)) {
         setNetwork("eth")
       } else if (bscNetworks.includes(chainId)) {
         setNetwork("bnb")
       }
     }
-    }, [chainId])
+  }, [chainId])
 
-    return network
+  useEffect(() => {
+    if (!!user.chainId) {
+      setNetwork(NetworkFromChainId[parseInt(user.chainId)])
+    }
+  }, [user])
+
+  return network
 }
 
 export const useBalance = () => {
@@ -35,9 +43,9 @@ export const useBalance = () => {
   })
 
   useEffect(() => {
-    	if (!!data) {
-        setBalance(formatBalance(BigNumber.from(data._hex).toString()))
-      }
+    if (!!data) {
+      setBalance(formatBalance(BigNumber.from(data._hex).toString()))
+    }
   }, [data])
 
   useEffect(() => {
@@ -50,7 +58,6 @@ export const useBalance = () => {
         },
       })
     }
-    
   }, [balance])
 
   useEffect(() => {
@@ -58,8 +65,8 @@ export const useBalance = () => {
       dispatch({
         type: "ERROR",
         payload: {
-          errorMessage: errorSwr
-        }
+          errorMessage: errorSwr,
+        },
       })
     }
   }, [errorSwr])
@@ -70,12 +77,11 @@ export const useBalance = () => {
         mutate(undefined, true)
       })
     }
-    
+
     return () => {
       if (library) {
         library.removeAllListeners("block")
       }
-      
     }
   }, [])
 

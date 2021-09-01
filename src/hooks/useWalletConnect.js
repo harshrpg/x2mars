@@ -10,9 +10,11 @@ export const useWalletConnect = () => {
     active,
     activate,
     chainId,
+    error
   } = useWeb3React()
   const dispatch = useAuthDispatch()
   console.debug("Authenticate from custom hook: ", active)
+  console.debug("Authenticate from custom hook, Error Occured?: ", error)
 
   function activateWallet(walletType, connector) {
     dispatch({ type: "CONNECTING", payload: walletType })
@@ -36,8 +38,20 @@ export const useWalletConnect = () => {
           chainId: chainId,
         },
       })
+    } else {
+      dispatch({
+        type: "DISCONNECTED"
+      })
     }
   }, [active, account, chainId, dispatch])
+
+  useEffect(() => {
+    if (!!error) {
+      dispatch({
+        type: "DISCONNECTED"
+      })
+    }
+  }, [error])
 
   //   const { data, errorSwr, mutate } = useSWR(["getBalance", account, "latest"], {
   //     fetcher: fetcher(library),

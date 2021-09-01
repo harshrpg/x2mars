@@ -1,0 +1,13 @@
+@import "../../style/profile.scss";
+
+.coin-view-box {
+    border: 2px solid $primary-color;
+    margin: 2rem;
+    padding: 2rem;
+}
+
+.mycoins-container {
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+}
