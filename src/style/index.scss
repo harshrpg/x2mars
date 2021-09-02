@@ -5,11 +5,13 @@
 
 $logo-family: "Rift", sans-serif;
 $charcoal: #2f4858;
-$primary-color: #2B75AC;
-$secondary-color: #807FC6;
-$inactive-color: #C4C4C4;
-$unsucessful-color: #E53935;
-$successfull-color: #00C853;
+$primary-color: #2b75ac;
+$secondary-color: #807fc6;
+$inactive-color: #c4c4c4;
+$unsucessful-color: #e53935;
+$successfull-color: #00c853;
+$theme-orange: #ff7d00;
+$theme-yellow: #ffc120;
 $hero-image-float-text: #f7ecca;
 $theme-white: rgba(255, 255, 255, 0.911);
 $family-sans-serif: roboto-slab, serif;
@@ -17,7 +19,6 @@ $family-primary: $family-sans-serif;
 $title-family: $family-primary;
 $title-color: $charcoal;
 $font-color: $charcoal;
-
 
 %theme-button-metrics {
   border-radius: 0% !important;
@@ -49,13 +50,25 @@ $font-color: $charcoal;
   color: $theme-white !important;
 }
 
-
 .border-class {
   @include bordercolor();
 }
 
 .is-size-8 {
   font-size: 0.5rem !important;
+}
+
+.interface-view-box {
+  border: 2px solid $primary-color;
+  max-width: 25rem !important;
+  border-radius: 10px;
+  padding: 0 1rem 0 0 !important;
+}
+
+.interface-view-box:hover {
+  cursor: pointer;
+  border-color: $theme-orange
+  // background-image: linear-gradient(to right, #fff, #99d9ee);
 }
 
 @import "~bulma/bulma.sass";

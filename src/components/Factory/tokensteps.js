@@ -24,6 +24,7 @@ import {
 import { useAuthState } from "../../context"
 import { useCartDispatch, useCartState } from "../../context/context"
 import { useImageForData } from "../../hooks/useAllImages"
+import { CartContent } from "../Cart/cart"
 
 const FactorySteps = props => {
   const [successStep, setSuccessStep] = React.useState(new Set([0]))
@@ -56,6 +57,13 @@ const FactorySteps = props => {
     }
   }
 
+  const moveToStep = step => {
+    console.debug("Current Step: ", currentStep, " Moving to Step", step)
+    if (successStep.has(step)) {
+      setCurrentStep(step)
+    }
+  }
+
   const setTypeAndSuccess = (typeSelected, newSuccessStep) => {
     setTokenType(typeSelected)
     setSuccessStep(new Set(successStep).add(newSuccessStep))
@@ -74,7 +82,8 @@ const FactorySteps = props => {
 
   React.useEffect(() => {
     console.debug("EFFECT 5")
-    if ((currentStep === 3 && tokenType === 0) || currentStep == 4) {
+    // if ((currentStep === 3 && tokenType === 0) || currentStep == 4) {
+    if (currentStep === 3 && tokenType === 0) {
       console.debug(
         "Effect: Current Step: ",
         currentStep,
@@ -127,14 +136,16 @@ const FactorySteps = props => {
               tokenDetails={tokenDetails}
             />
           ) : currentStep === 4 ? (
-            <Step4
-              className="ind-step"
-              network={props.network}
-              onSuccess={() => setSuccessStep(new Set(successStep).add(4))}
-              key={3}
-            />
+            // <Step4
+            //   className="ind-step"
+            //   network={props.network}
+            //   onSuccess={() => setSuccessStep(new Set(successStep).add(4))}
+            //   key={3}
+            // />
+            <FinalStep />
           ) : (
-            <Step5 network={props.network} key={4} />
+            // <Step5 network={props.network} key={4} />
+            ``
           )}
         </div>
         <div className="column" id="breadcrumb">
@@ -142,6 +153,7 @@ const FactorySteps = props => {
             key={[successStep, currentStep]}
             activeStep={currentStep}
             successStep={successStep}
+            moveToStep={moveToStep}
           />
         </div>
       </div>
@@ -229,7 +241,6 @@ const Step1 = props => {
       fee = step1Card2.price[network]
     }
     setStep1Fee(parseFloat(fee))
-    
   }, [selectedOption])
 
   const setSelection = (selectedOption, selection) => {
@@ -246,7 +257,7 @@ const Step1 = props => {
       payload: {
         step1: {
           selectedToken: selectedOption,
-          totalFees: cartState.step1.totalFees
+          totalFees: cartState.step1.totalFees,
         },
       },
     })
@@ -261,11 +272,11 @@ const Step1 = props => {
             tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
             tokenDecimals: cartState.step2.tokenDecimals,
             dexSelected: cartState.step2.dexSelected,
-            totalFees: 0
-          }
-        }
+            totalFees: 0,
+          },
+        },
       })
-    } else if (selectedOption === TokenTypeIds.GOVERNANCE)  {
+    } else if (selectedOption === TokenTypeIds.GOVERNANCE) {
       cartDispatch({
         step: 2,
         payload: {
@@ -276,9 +287,9 @@ const Step1 = props => {
             tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
             tokenDecimals: cartState.step2.tokenDecimals,
             dexSelected: false,
-            totalFees: 0
-          }
-        }
+            totalFees: 0,
+          },
+        },
       })
     }
   }, [selectedOption])
@@ -290,16 +301,15 @@ const Step1 = props => {
         payload: {
           step1: {
             selectedToken: cartState.step1.selectedToken,
-            totalFees: step1Fee
-          }
-        }
+            totalFees: step1Fee,
+          },
+        },
       })
     }
   }, [step1Fee])
 
   const step1Card1Img = useImageForData(step1Card1.img)
   const step1Card2Img = useImageForData(step1Card2.img)
-
 
   return (
     <div className="columns step-columns has-text-centered step-ind">
@@ -396,7 +406,7 @@ const Step2 = props => {
             tokenSupplyUnits: tokenDetails.SupplyUnit,
             tokenDecimals: tokenDetails.Decimals,
             dexSelected: dexSelected,
-            totalFees: step2Fee
+            totalFees: step2Fee,
           },
         },
       })
@@ -414,7 +424,7 @@ const Step2 = props => {
             tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
             tokenDecimals: cartState.step2.tokenDecimals,
             dexSelected: cartState.step2.dexSelected,
-            totalFees: step2Fee
+            totalFees: step2Fee,
           },
         },
       })
@@ -439,7 +449,6 @@ const Step2 = props => {
   const setSelection = selection => {
     if (tokenType === TokenTypeIds.GOVERNANCE) {
       setDexSelected(selection)
-      
     }
   }
   const tokenNameCb = tokenName => {
@@ -566,7 +575,9 @@ const Step3 = props => {
       cartState.step3.auto_charity,
     ],
   })
-  const [totalFees, setTotalFees] = React.useState(parseFloat(cartState.step3.totalFees))
+  const [totalFees, setTotalFees] = React.useState(
+    parseFloat(cartState.step3.totalFees)
+  )
 
   // DATA
   const card1 = step.cardData[0]
@@ -637,7 +648,7 @@ const Step3 = props => {
           anti_whale_protection: cartState.step3.anti_whale_protection,
           auto_burn: cartState.step3.auto_burn,
           auto_charity: cartState.step3.auto_charity,
-          totalFees: totalFees
+          totalFees: totalFees,
         },
       },
     })
@@ -727,6 +738,37 @@ const Step3 = props => {
                 }
               />
             </div>
+            <div className="column">
+              <Card
+                id="step3-card3"
+                type={card3.type}
+                error={null}
+                cardData={card3}
+                network={network}
+                selected={featuresSelected.features[2]}
+                disabled={
+                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : true
+                }
+                cardImage={card3Img}
+                cardIndex={2}
+                onPress={select =>
+                  setSelection(FeatureIds.ANTI_WHALE_PROTECTION, select)
+                }
+                callback={value =>
+                  setFees(FeatureIds.ANTI_WHALE_PROTECTION, value)
+                }
+                selectionText={
+                  tokenType === TokenTypeIds.GOVERNANCE
+                    ? "Cannot add to token"
+                    : featuresSelected.features[2]
+                    ? "Remove from Contract"
+                    : "Add to Contract"
+                }
+                mandatory={
+                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : undefined
+                }
+              />
+            </div>
           </div>
           <div className="columns step-rows">
             <div className="column">
@@ -760,40 +802,6 @@ const Step3 = props => {
                 }
               />
             </div>
-            <div className="column">
-              <Card
-                id="step3-card3"
-                type={card3.type}
-                error={null}
-                cardData={card3}
-                network={network}
-                selected={featuresSelected.features[2]}
-                disabled={
-                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : true
-                }
-                cardImage={card3Img}
-                cardIndex={2}
-                onPress={select =>
-                  setSelection(FeatureIds.ANTI_WHALE_PROTECTION, select)
-                }
-                callback={value =>
-                  setFees(FeatureIds.ANTI_WHALE_PROTECTION, value)
-                }
-                selectionText={
-                  tokenType === TokenTypeIds.GOVERNANCE
-                    ? "Cannot add to token"
-                    : featuresSelected.features[2]
-                    ? "Remove from Contract"
-                    : "Add to Contract"
-                }
-                mandatory={
-                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : undefined
-                }
-              />
-            </div>
-          </div>
-
-          <div className="columns step-rows">
             <div className="column">
               <Card
                 id="step3-card4"
@@ -851,10 +859,18 @@ const Step3 = props => {
               />
             </div>
           </div>
+
+          {/* <div className="columns step-rows">
+            
+          </div> */}
         </div>
       </div>
     </>
   )
+}
+
+const FinalStep = props => {
+  return <CartContent />
 }
 
 const Step4 = props => {
@@ -1009,6 +1025,7 @@ const StepBreadCrumb = props => {
           isSuccess={
             activeStep === 1 ? false : successStep.has(1) ? true : false
           }
+          moveToStep={() => props.moveToStep(1)}
         />
       </div>
       <div className="column">
@@ -1018,6 +1035,7 @@ const StepBreadCrumb = props => {
           isSuccess={
             activeStep === 2 ? false : successStep.has(2) ? true : false
           }
+          moveToStep={() => props.moveToStep(2)}
         />
       </div>
       <div className="column">
@@ -1027,6 +1045,7 @@ const StepBreadCrumb = props => {
           isSuccess={
             activeStep === 3 ? false : successStep.has(3) ? true : false
           }
+          moveToStep={() => props.moveToStep(3)}
         />
       </div>
       <div className="column">
@@ -1036,17 +1055,19 @@ const StepBreadCrumb = props => {
           isSuccess={
             activeStep === 4 ? false : successStep.has(4) ? true : false
           }
+          moveToStep={() => props.moveToStep(4)}
         />
       </div>
-      <div className="column">
+      {/* <div className="column">
         <BreadCrumbButton
           value="Step 5"
           disabled={activeStep !== 5 ? true : false}
           isSuccess={
             activeStep === 5 ? false : successStep.has(5) ? true : false
           }
+          moveToStep={() => props.moveToStep(5)}
         />
-      </div>
+      </div> */}
     </div>
   )
 }
@@ -1058,6 +1079,7 @@ const BreadCrumbButton = props => {
         props.disabled ? " disabled" : ""
       }${props.isSuccess ? " success" : ""}`}
       type="button"
+      onClick={props.moveToStep}
     >
       {props.value}
     </div>

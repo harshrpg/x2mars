@@ -38,3 +38,11 @@
   margin-left: 1rem;
 }
 
+.dashboard-button {
+  @include theme-button-filled($background-color: $primary-color);
+  margin-left: 1rem;
+}
+.dashboard-icon {
+  color: $theme-yellow;
+}
+

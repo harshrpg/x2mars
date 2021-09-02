@@ -1,0 +1,16 @@
+@import "../../style/profile.scss";
+.dashboard-view-box {
+  border: 2px solid $primary-color;
+  margin: 2rem;
+  padding: 2rem;
+}
+
+.dashboard-coin-selector {
+  border-color: $primary-color !important;
+}
+
+.dashboard-coin-selector.active {
+  border-color: $primary-color !important;
+  color: $theme-white !important;
+  background-color: $primary-color !important;
+}

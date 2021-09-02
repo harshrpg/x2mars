@@ -2,6 +2,11 @@ let user = localStorage.getItem("currentUser")
   ? JSON.parse(localStorage.getItem("currentUser")).user
   : ""
 
+let emptyUser = {
+  account: "",
+  balance: ""
+}
+
 export const initialAuthState = {
   userDetails:
     {
@@ -40,6 +45,16 @@ export const AuthReducer = (initialAuthState, action) => {
       return {
         ...initialAuthState,
         errorMessage: action.payload.errorMessage,
+        walletType: null
+      }
+    case "DISCONNECTED":
+      return {
+        ...initialAuthState,
+        walletType: null,
+        errorMessage: null,
+        loading: false,
+        chainId: "",
+        userDetails: emptyUser
       }
 
     default:
@@ -120,4 +135,18 @@ export const CartReducer = (initialCartState, action) => {
         step3: action.payload.step3
       }
   }
+}
+
+export const initialProfileState = {
+  profileSideBarSelection: [
+    true, false, false, false, false, false
+  ]
+}
+
+export const ProfileReducer = (initialProfileState, action) => {
+  return {
+    ...initialProfileState,
+    profileSideBarSelection: action.sidebar
+  }
+
 }
