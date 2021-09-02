@@ -320,7 +320,11 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
         setFeatureValue(cartState.step3.auto_liquidation)
         break
       case FeatureIds.RFI_STATIC_REWARDS:
-        setFeatureValue(cartState.step3.rfi_rewards)
+        if (!selected) {
+          setFeatureValue("")  
+        } else {
+          setFeatureValue(cartState.step3.rfi_rewards)
+        }
         break
       case FeatureIds.ANTI_WHALE_PROTECTION:
         if (!selected && input.idx !== undefined && input.idx === 2) {
@@ -330,10 +334,19 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
         }
         break
       case FeatureIds.AUTO_BURN:
-        setFeatureValue(cartState.step3.auto_burn)
+        if (!selected) {
+          setFeatureValue("")  
+        } else {
+          setFeatureValue(cartState.step3.auto_burn)
+        }
         break
       case FeatureIds.AUTO_CHARITY:
-        setFeatureValue(cartState.step3.auto_charity)
+        if (!selected) {
+          setFeatureValue("")
+        } else {
+          setFeatureValue(cartState.step3.auto_charity)
+        }
+        
         break
       default:
         break
@@ -669,23 +682,23 @@ const Step2Card2 = ({ cardData, network, callback }) => {
     }
   }, [tokenSupply, tokenSupplyUnits])
 
-  React.useEffect(() => {
-    if (antiWhaleProtection !== null) {
-      cartDispatch({
-        step: 3.3,
-        payload: {
-          step3: {
-            auto_liquidation: cartState.step3.auto_liquidation,
-            rfi_rewards: cartState.step3.rfi_rewards,
-            anti_whale_protection: antiWhaleProtection,
-            auto_burn: cartState.step3.auto_burn,
-            auto_charity: cartState.step3.auto_charity,
-            totalFees: cartState.step3.totalFees,
-          },
-        },
-      })
-    }
-  }, [antiWhaleProtection])
+  // React.useEffect(() => {
+  //   if (antiWhaleProtection !== null) {
+  //     cartDispatch({
+  //       step: 3.3,
+  //       payload: {
+  //         step3: {
+  //           auto_liquidation: cartState.step3.auto_liquidation,
+  //           rfi_rewards: cartState.step3.rfi_rewards,
+  //           anti_whale_protection: antiWhaleProtection,
+  //           auto_burn: cartState.step3.auto_burn,
+  //           auto_charity: cartState.step3.auto_charity,
+  //           totalFees: cartState.step3.totalFees,
+  //         },
+  //       },
+  //     })
+  //   }
+  // }, [antiWhaleProtection])
   return (
     <>
       <div className="columns">

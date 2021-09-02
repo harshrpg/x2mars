@@ -357,6 +357,7 @@ const Step2 = props => {
   const user = useAuthState()
   const cartState = useCartState()
   const cartDispatch = useCartDispatch()
+  const balance = useBalance()
 
   // STATE
   const [step, _] = React.useState(Steps.Step2)
@@ -375,6 +376,8 @@ const Step2 = props => {
     Decimals: cartState.step2.tokenDecimals,
   })
   const [step2Fee, setStep2Fee] = React.useState(cartState.step2.totalFees)
+
+  const [dexCardError, ___] = React.useState(null)
 
   // DATA
   const card1 = step.cardData[0]
@@ -528,7 +531,7 @@ const Step2 = props => {
             <Card
               id="step2-card3"
               type={card3.type}
-              error={null}
+              error={dexCardError}
               cardData={card3}
               cardImage={step2Card3Img}
               network={network}
@@ -556,6 +559,7 @@ const Step3 = props => {
   const user = useAuthState()
   const cartState = useCartState()
   const cartDispatch = useCartDispatch()
+  const balance = useBalance()
 
   // STATE
   const [step, _] = React.useState(Steps.Step3)
@@ -578,6 +582,7 @@ const Step3 = props => {
   const [totalFees, setTotalFees] = React.useState(
     parseFloat(cartState.step3.totalFees)
   )
+  const [errors, setErrors] = React.useState([null, null, null, null, null])
 
   // DATA
   const card1 = step.cardData[0]
@@ -653,6 +658,7 @@ const Step3 = props => {
       },
     })
   }, [totalFees])
+  
 
   // CALLBACKS
   const setSelection = (index, isSelected) => {
@@ -713,7 +719,7 @@ const Step3 = props => {
               <Card
                 id="step3-card1"
                 type={card1.type}
-                error={null}
+                error={errors[0]}
                 cardData={card1}
                 network={network}
                 selected={featuresSelected.features[0]}
@@ -742,7 +748,7 @@ const Step3 = props => {
               <Card
                 id="step3-card3"
                 type={card3.type}
-                error={null}
+                error={errors[2]}
                 cardData={card3}
                 network={network}
                 selected={featuresSelected.features[2]}
@@ -775,7 +781,7 @@ const Step3 = props => {
               <Card
                 id="step3-card2"
                 type={card2.type}
-                error={null}
+                error={errors[1]}
                 cardData={card2}
                 network={network}
                 selected={featuresSelected.features[1]}
@@ -806,7 +812,7 @@ const Step3 = props => {
               <Card
                 id="step3-card4"
                 type={card4.type}
-                error={null}
+                error={errors[3]}
                 cardData={card4}
                 network={network}
                 selected={featuresSelected.features[3]}
@@ -833,7 +839,7 @@ const Step3 = props => {
               <Card
                 id="step3-card5"
                 type={card5.type}
-                error={null}
+                error={errors[4]}
                 cardData={card5}
                 network={network}
                 selected={featuresSelected.features[4]}
