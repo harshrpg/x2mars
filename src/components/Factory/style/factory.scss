@@ -613,3 +613,18 @@
   color: #ffc421;
   font-size: 2rem;
 }
+
+@media screen and (max-width: 768px) {
+  .step-rows-bottom {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.custom-button-bottom{
+  padding: 9% !important;
+  margin: 0 !important;
+}
+}

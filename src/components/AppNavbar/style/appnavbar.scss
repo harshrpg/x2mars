@@ -41,6 +41,64 @@
     justify-content: space-between;
     flex-wrap: nowrap;
   }
+
+  .navbar-end {
+    display: flex;
+    margin-top: 7%;
+    margin-bottom: 7%;
+  }
+
+  .app-button {
+    font-size: 80% !important;
+  }
+
+  .cart-button{
+    width: 90%;
+    font-size: 80% !important;
+  }
+
+  .profile-buttons{
+    display: flex !important;
+    font-size: 20% !important;
+  }
+
+  .balance{
+    padding: 0%;
+    margin: 0%;
+  }
+
+  .balancediv{
+    align-items: center !important;
+    float: right !important;
+    margin-left: auto !important;
+    padding: 0% !important;
+  }
+
+  .balancedisplay{
+    display: flex !important;
+    width: 100% !important;
+    font-size: smaller !important;
+  }
+
+  .address{
+    font-size: 50% !important;
+    width: 40%;
+  }
+
+  .custom-button2{
+    width: 90% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .network-pill {
+    top: 10% !important;
+    left: 25%;
+  }
+
+  .account-address-button{
+    font-size: small !important;
+  }
 }
 
 @media screen and (max-width: 571px) {

@@ -963,7 +963,7 @@ const Step5 = props => {
 
 const StepTitle = props => {
   return (
-    <div className="constainer has-text-centered custom-step-title">
+    <div className="container has-text-centered custom-step-title">
       <div className="is-size-5 is-size-6-mobile">{props.title}</div>
     </div>
   )
@@ -1001,7 +1001,7 @@ const StepBreadCrumb = props => {
   )
 
   return (
-    <div className="columns step-rows">
+    <div className="columns step-rows-bottom">
       <div className="column">
         <BreadCrumbButton
           value="Step 1"
@@ -1054,7 +1054,7 @@ const StepBreadCrumb = props => {
 const BreadCrumbButton = props => {
   return (
     <div
-      className={`button is-light custom-button app-button${
+      className={`button is-light custom-button-bottom app-button${
         props.disabled ? " disabled" : ""
       }${props.isSuccess ? " success" : ""}`}
       type="button"
