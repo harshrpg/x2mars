@@ -604,7 +604,7 @@ const DeployButton = () => {
         dexAddress
       )
       await tx.wait()
-    } catch {
+    } catch(error) {
       console.log("Error occured in creating token", error)
       if (error.code === 4001) {
         setTxnError({ type: "Payment Rejected Error", errorBody: error })
@@ -693,6 +693,17 @@ const DeployButton = () => {
     setPairAddress(pairAddress)
   }
 
+  function openPaymentProcessWindow() {
+    setTxnError({type: null, errorBody: null})
+    setPaymentCompleted(false)
+    setCoinBuilt(false)
+    setPairAddress(null)
+    setTxnHash(null)
+    setTokenAddress(null)
+    setDashboardAvailable(false)
+    setChargeFeeAndDeployContract(true)
+  }
+
   return (
     <>
       <button
@@ -701,7 +712,7 @@ const DeployButton = () => {
         }`}
         type="button"
         disabled={!contractDeployable}
-        onClick={() => setChargeFeeAndDeployContract(true)}
+        onClick={openPaymentProcessWindow}
       >
         Pay and Make Coin
       </button>
@@ -787,13 +798,6 @@ const LoadingPaymentModal = ({
     </div>
   )
 }
-const PaymentProcessingTexts = [
-  "Processing Payments",
-  "Getting Workers together",
-  "You should see your summary soon",
-  "Follow instructions on wallet",
-]
-
 const ModalContent = ({
   paymentCompleted,
   coinBuilt,
