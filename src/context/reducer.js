@@ -4,7 +4,7 @@ let user = localStorage.getItem("currentUser")
 
 let emptyUser = {
   account: "",
-  balance: ""
+  balance: "",
 }
 
 export const initialAuthState = {
@@ -45,7 +45,7 @@ export const AuthReducer = (initialAuthState, action) => {
       return {
         ...initialAuthState,
         errorMessage: action.payload.errorMessage,
-        walletType: null
+        walletType: null,
       }
     case "DISCONNECTED":
       return {
@@ -54,7 +54,7 @@ export const AuthReducer = (initialAuthState, action) => {
         errorMessage: null,
         loading: false,
         chainId: "",
-        userDetails: emptyUser
+        userDetails: emptyUser,
       }
 
     default:
@@ -65,7 +65,7 @@ export const AuthReducer = (initialAuthState, action) => {
 export const initialCartState = {
   step1: {
     selectedToken: -1,
-    totalFees: 0.0
+    totalFees: 0.0,
   },
   step2: {
     tokenName: null,
@@ -74,15 +74,19 @@ export const initialCartState = {
     tokenSupplyUnits: "Units",
     tokenDecimals: 18,
     dexSelected: false,
-    totalFees: 0.0
+    totalFees: 0.0,
   },
   step3: {
     auto_liquidation: null,
     rfi_rewards: null,
-    anti_whale_protection: null,
+    WHALE_PROTECTION: null,
     auto_burn: null,
     auto_charity: null,
-    totalFees: 0.0
+    charity_address: "0x000000000000000000000000000000000000dEaD",
+    totalFees: 0.0,
+  },
+  totalCharge: {
+    fee: 0.0,
   },
 }
 
@@ -107,46 +111,53 @@ export const CartReducer = (initialCartState, action) => {
     case 3.1:
       return {
         ...initialCartState,
-        step3: action.payload.step3
+        step3: action.payload.step3,
       }
     case 3.2:
       return {
         ...initialCartState,
-        step3: action.payload.step3
+        step3: action.payload.step3,
       }
     case 3.3:
       return {
         ...initialCartState,
-        step3: action.payload.step3
+        step3: action.payload.step3,
       }
     case 3.4:
       return {
         ...initialCartState,
-        step3: action.payload.step3
+        step3: action.payload.step3,
       }
     case 3.5:
       return {
         ...initialCartState,
-        step3: action.payload.step3
+        step3: action.payload.step3,
       }
     case 3.6:
       return {
         ...initialCartState,
-        step3: action.payload.step3
+        step3: action.payload.step3,
+      }
+    case 3.7:
+      return {
+        ...initialCartState,
+        step3: action.payload.step3,
+      }
+    case 4:
+      return {
+        ...initialCartState,
+        totalCharge: action.payload.totalCharge,
       }
   }
 }
 
 export const initialProfileState = {
-  profileSideBarSelection: [
-    true, false, false, false, false, false
-  ]
+  profileSideBarSelection: [true, false, false, false, false, false],
 }
 
 export const ProfileReducer = (initialProfileState, action) => {
   return {
     ...initialProfileState,
-    profileSideBarSelection: action.sidebar
+    profileSideBarSelection: action.sidebar,
   }
-
 }

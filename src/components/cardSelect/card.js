@@ -312,6 +312,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
   // STATE
   const [input, _] = React.useState(cardData.inputData[0])
   const [featureValue, setFeatureValue] = React.useState(null)
+  const [charityAddress, setCharityAddress] = React.useState(cartState.step3.charity_address)
 
   // EFFECTS
   React.useEffect(() => {
@@ -320,20 +321,33 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
         setFeatureValue(cartState.step3.auto_liquidation)
         break
       case FeatureIds.RFI_STATIC_REWARDS:
-        setFeatureValue(cartState.step3.rfi_rewards)
+        if (!selected) {
+          setFeatureValue("")  
+        } else {
+          setFeatureValue(cartState.step3.rfi_rewards)
+        }
         break
-      case FeatureIds.ANTI_WHALE_PROTECTION:
+      case FeatureIds.WHALE_PROTECTION:
         if (!selected && input.idx !== undefined && input.idx === 2) {
           setFeatureValue("")
         } else if (selected && input.idx !== undefined && input.idx === 2) {
-          setFeatureValue(cartState.step3.anti_whale_protection)
+          setFeatureValue(cartState.step3.WHALE_PROTECTION)
         }
         break
       case FeatureIds.AUTO_BURN:
-        setFeatureValue(cartState.step3.auto_burn)
+        if (!selected) {
+          setFeatureValue("")  
+        } else {
+          setFeatureValue(cartState.step3.auto_burn)
+        }
         break
       case FeatureIds.AUTO_CHARITY:
-        setFeatureValue(cartState.step3.auto_charity)
+        if (!selected) {
+          setFeatureValue("")
+        } else {
+          setFeatureValue(cartState.step3.auto_charity)
+        }
+        
         break
       default:
         break
@@ -343,7 +357,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
     if (!selected) {
       resetStateInput()
     } else {
-      if (input.idx === FeatureIds.ANTI_WHALE_PROTECTION) {
+      if (input.idx === FeatureIds.WHALE_PROTECTION) {
         var value =
           0.005 *
           (parseFloat(cartState.step2.tokenSupplyNumber) *
@@ -363,9 +377,10 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
             step3: {
               auto_liquidation: value,
               rfi_rewards: cartState.step3.rfi_rewards,
-              anti_whale_protection: cartState.step3.anti_whale_protection,
+              WHALE_PROTECTION: cartState.step3.WHALE_PROTECTION,
               auto_burn: cartState.step3.auto_burn,
               auto_charity: cartState.step3.auto_charity,
+              charity_address: cartState.step3.charity_address,
               totalFees: cartState.step3.totalFees,
             },
           },
@@ -378,24 +393,26 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
             step3: {
               auto_liquidation: cartState.step3.auto_liquidation,
               rfi_rewards: value,
-              anti_whale_protection: cartState.step3.anti_whale_protection,
+              WHALE_PROTECTION: cartState.step3.WHALE_PROTECTION,
               auto_burn: cartState.step3.auto_burn,
               auto_charity: cartState.step3.auto_charity,
+              charity_address: cartState.step3.charity_address,
               totalFees: cartState.step3.totalFees,
             },
           },
         })
         break
-      case FeatureIds.ANTI_WHALE_PROTECTION:
+      case FeatureIds.WHALE_PROTECTION:
         cartDispatch({
           step: 3.3,
           payload: {
             step3: {
               auto_liquidation: cartState.step3.auto_liquidation,
               rfi_rewards: cartState.step3.rfi_rewards,
-              anti_whale_protection: value,
+              WHALE_PROTECTION: value,
               auto_burn: cartState.step3.auto_burn,
               auto_charity: cartState.step3.auto_charity,
+              charity_address: cartState.step3.charity_address,
               totalFees: cartState.step3.totalFees,
             },
           },
@@ -408,9 +425,10 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
             step3: {
               auto_liquidation: cartState.step3.auto_liquidation,
               rfi_rewards: cartState.step3.rfi_rewards,
-              anti_whale_protection: cartState.step3.anti_whale_protection,
+              WHALE_PROTECTION: cartState.step3.WHALE_PROTECTION,
               auto_burn: value,
               auto_charity: cartState.step3.auto_charity,
+              charity_address: cartState.step3.charity_address,
               totalFees: cartState.step3.totalFees,
             },
           },
@@ -423,9 +441,10 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
             step3: {
               auto_liquidation: cartState.step3.auto_liquidation,
               rfi_rewards: cartState.step3.rfi_rewards,
-              anti_whale_protection: cartState.step3.anti_whale_protection,
+              WHALE_PROTECTION: cartState.step3.WHALE_PROTECTION,
               auto_burn: cartState.step3.auto_burn,
               auto_charity: value,
+              charity_address: cartState.step3.charity_address,
               totalFees: cartState.step3.totalFees,
             },
           },
@@ -447,6 +466,29 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
       callback(null)
     }
   }
+
+  const handleCharityAddressChange = event => {
+    setCharityAddress(event.target.value)
+  }
+
+  React.useEffect(() => {
+    if (!!charityAddress) {
+      cartDispatch({
+        step: 3.7,
+        payload: {
+          step3: {
+            auto_liquidation: cartState.step3.auto_liquidation,
+            rfi_rewards: cartState.step3.rfi_rewards,
+            WHALE_PROTECTION: cartState.step3.WHALE_PROTECTION,
+            auto_burn: cartState.step3.auto_burn,
+            auto_charity: cartState.step3.auto_charity,
+            charity_address: charityAddress,
+            totalFees: cartState.step3.totalFees,
+          },
+        },
+      })
+    }
+  }, [charityAddress])
 
   return (
     <>
@@ -472,7 +514,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
                 spellcheck="false"
                 min={input.min}
                 max={input.max}
-                step="0.1"
+                step="1"
                 disabled={disabled || !selected || input.idx === 2}
                 value={featureValue}
               />
@@ -485,6 +527,40 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
           </div>
         </div>
       </div>
+      
+      {input.idx === 4 ?
+        <div className="columns">
+        <div className="column">
+          <div className="centerinput">
+            <div
+              className={`input-block ${
+                !selected || disabled
+                  ? "disabled"
+                  : input.idx === 2
+                  ? "pre-selected"
+                  : featureValue !== null
+                  ? "success"
+                  : ""
+              }`}
+            >
+              <input
+                type="text"
+                onChange={handleCharityAddressChange}
+                id="featureInput"
+                required="required"
+                spellcheck="false"
+                disabled={disabled || !selected || input.idx === 2}
+                value={charityAddress}
+                pattern="^0x[a-fA-F0-9]{40}$"
+              />
+              <span className="placeholder">
+                Charity Address
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+        : ``}
     </>
   )
 }
@@ -669,23 +745,23 @@ const Step2Card2 = ({ cardData, network, callback }) => {
     }
   }, [tokenSupply, tokenSupplyUnits])
 
-  React.useEffect(() => {
-    if (antiWhaleProtection !== null) {
-      cartDispatch({
-        step: 3.3,
-        payload: {
-          step3: {
-            auto_liquidation: cartState.step3.auto_liquidation,
-            rfi_rewards: cartState.step3.rfi_rewards,
-            anti_whale_protection: antiWhaleProtection,
-            auto_burn: cartState.step3.auto_burn,
-            auto_charity: cartState.step3.auto_charity,
-            totalFees: cartState.step3.totalFees,
-          },
-        },
-      })
-    }
-  }, [antiWhaleProtection])
+  // React.useEffect(() => {
+  //   if (antiWhaleProtection !== null) {
+  //     cartDispatch({
+  //       step: 3.3,
+  //       payload: {
+  //         step3: {
+  //           auto_liquidation: cartState.step3.auto_liquidation,
+  //           rfi_rewards: cartState.step3.rfi_rewards,
+  //           WHALE_PROTECTION: antiWhaleProtection,
+  //           auto_burn: cartState.step3.auto_burn,
+  //           auto_charity: cartState.step3.auto_charity,
+  //           totalFees: cartState.step3.totalFees,
+  //         },
+  //       },
+  //     })
+  //   }
+  // }, [antiWhaleProtection])
   return (
     <>
       <div className="columns">
