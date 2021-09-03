@@ -17,13 +17,17 @@ import { Steps } from "../../util/factory-steps"
 import { useNetwork } from "../../hooks/useNetwork"
 import { NetworkIcon } from "../Icons/icons"
 import ErrorBox from "../Error/errorbox"
-import { ethers } from "ethers"
+import { BigNumber, ethers } from "ethers"
 import { useWeb3React, Web3ReactProvider } from "@web3-react/core"
 import { injectedConnector } from "../../context/helpers"
 import { AiOutlineCodeSandbox } from "@react-icons/all-files/ai/AiOutlineCodeSandbox"
 import { FcCheckmark } from "@react-icons/all-files/fc/FcCheckmark"
 import { animated, useSpring } from "@react-spring/web"
-import FactoryContract from "../../abis/FactoryContract.json";
+import StandardTokenFactory from "../../abis/StandardTokenFactory.json"
+import StandardToken from "../../abis/StandardToken.json"
+import FotTokenFactory from "../../abis/FotTokenFactory.json"
+import FotToken from "../../abis/FotToken.json"
+import { navigate } from "gatsby-link"
 
 export const CartWindow = ({ setCartDisplay, isActive }) => {
   return (
@@ -428,12 +432,10 @@ const TotalFees = () => {
 const DeployButton = () => {
   const { account, library, chainId, error } = useWeb3React()
   var providers = ethers.providers
-  var network = ethers.providers.getNetwork(
-    TransactionNetworkNames[chainId]
-  )
+  var network = ethers.providers.getNetwork(TransactionNetworkNames[chainId])
   var web3Provider = new providers.Web3Provider(library.provider, network)
   const cartState = useCartState()
-  console.log("ERROR: ", error)
+  console.log("ERROR: ", account)
   const [contractDeployable, setContractDeployable] = React.useState(false)
   const [paymentCompleted, setPaymentCompleted] = React.useState(false)
   const [coinBuilt, setCoinBuilt] = React.useState(false)
@@ -443,11 +445,30 @@ const DeployButton = () => {
   ] = React.useState(false)
 
   const [txnHash, setTxnHash] = React.useState(null)
-
   const [tokenAddress, setTokenAddress] = React.useState(null)
-  const factoryAddress = "0x1456Fcd5289cc51bc00D7a9D66B55833c4B0F3F3";
-  const factoryContract = new ethers.Contract(factoryAddress, FactoryContract.abi, library)
-  const factoryWithSigner = factoryContract.connect(library.getSigner())
+  const [pairAddress, setPairAddress] = React.useState(null)
+  const [fotFees, setFotFees] = React.useState([0.0, 0.0, 0.0, 0.0])
+  const [initiateFee, setInitiateFee] = React.useState(false)
+  const [txnError, setTxnError] = React.useState(false)
+  const [dashboardAvailable, setDashboardAvailable] = React.useState(false)
+
+  const factoryAddress = "0xde6b7e39d74d7cc9432F2a2C5156e000611BB12D"
+  const fotFactoryAddress = "0x27C8977DB053D54Dc0768C2D94C6A8A0D48E5Df0"
+  // const stdTokenAddress = "0xF5267A3eD1Da2Eea6283a2a0c3e091659a6e3c89"
+  const factoryContract = new ethers.Contract(
+    factoryAddress,
+    StandardTokenFactory.abi,
+    library
+  )
+  const fotFactoryContract = new ethers.Contract(
+    fotFactoryAddress,
+    FotTokenFactory.abi,
+    library
+  )
+  const factoryWithSigner = factoryContract.connect(library.getSigner(account))
+  const fotFactoryWithSigner = fotFactoryContract.connect(
+    library.getSigner(account)
+  )
 
   React.useEffect(() => {
     if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
@@ -490,27 +511,91 @@ const DeployButton = () => {
 
   React.useEffect(() => {
     if (paymentCompleted) {
-      makeCoin()
+      if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
+        makeStandardCoin()
+      } else if (
+        cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER
+      ) {
+        makeFeeOnTransferCoin()
+      }
     }
   }, [paymentCompleted])
 
+  React.useEffect(() => {
+    if (!!tokenAddress) {
+      if (
+        cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE &&
+        cartState.step2.dexSelected
+      ) {
+        getPairAddress()
+      } else if (
+        cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER
+      ) {
+        getPairAddress()
+      }
+    }
+  }, [tokenAddress])
+
+  React.useEffect(() => {
+    if (
+      contractDeployable &&
+      cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER
+    ) {
+      var newArray = Array.from(fotFees)
+      if (!!cartState.step3.auto_liquidation) {
+        newArray[0] = parseInt(cartState.step3.auto_liquidation)
+      }
+      if (!!cartState.step3.rfi_rewards) {
+        newArray[1] = parseInt(cartState.step3.rfi_rewards)
+      }
+      if (!!cartState.step3.auto_burn) {
+        newArray[2] = parseInt(cartState.step3.auto_burn)
+      }
+      if (!!cartState.step3.auto_charity) {
+        newArray[3] = parseInt(cartState.step3.auto_charity)
+      }
+      setFotFees(newArray)
+    }
+  }, [contractDeployable, cartState])
+
+  // React.useEffect(() => {
+  //   if (cartState.step1.tokenSelected === TokenTypeIds.FEE_ON_TRANSFER && coinBuilt && !!pairAddress) {
+  //     if (!fotFees.every(item => item === 0.0)) {
+  //       setInitiateFee(true)
+  //       initiateFeeSetter()
+  //     }
+  //   }
+  // }, [pairAddress, cartState, coinBuilt])
+
+  React.useEffect(() => {
+    if (coinBuilt) {
+      if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
+        setDashboardAvailable(true)
+      } else if (cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER) {
+        if (!fotFees.every(item => item === 0.0)) {
+          if (!initiateFee) {
+            setDashboardAvailable(true)
+          }
+        } else {
+          setDashboardAvailable(true)
+        }
+      }
+    }
+  }, [coinBuilt, cartState, initiateFee])
+
   async function getTxnReceipt() {
-    
-    
     var result = null
     try {
       while (result === null) {
-        
         result = await web3Provider.getTransactionReceipt(txnHash)
+        
+        console.log(result)
       }
     } catch (error) {
       console.log("ERROR 1: ", error)
     }
-    
-    if (result.status === 1) {
+    if (result !== null && result.status === 1) {
       setPaymentCompleted(true)
-    } else {
-      setPaymentCompleted(false)
     }
   }
 
@@ -527,29 +612,110 @@ const DeployButton = () => {
       console.log("Transaction Response", txnResponse)
       setTxnHash(txnResponse.hash)
     } catch (error) {
-      setPaymentCompleted(false)
       console.error(error)
     }
   }
 
-  function makeCoin() {
+  async function makeStandardCoin() {
     console.log("Making the coin now")
-    const tx = factoryWithSigner.createStandardToken(
+    // const feeData = await web3Provider.getFeeData()
+    // const feeDataGasPrice = ethers.utils.formatUnits(feeData.gasPrice, "wei")
+    // const feeDataGasLimit = ethers.utils.formatUnits(
+    //   feeData.maxFeePerGas,
+    //   "wei"
+    // )
+    // console.log(feeDataGasPrice)
+    // console.log(feeDataGasLimit)
+    const tx = await factoryWithSigner.createStandardToken(
       cartState.step2.tokenName,
       cartState.step2.tokenSymbol,
-      (parseFloat(cartState.step2.tokenSupplyNumber) *
-            NumberMap[cartState.step2.tokenSupplyUnits]),
+      parseFloat(cartState.step2.tokenSupplyNumber) *
+        NumberMap[cartState.step2.tokenSupplyUnits],
       cartState.step2.dexSelected,
       "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"
     )
+    await tx.wait()
+    console.log("STD Token tx", tx)
     // setChargeFeeAndDeployContract(false)
   }
 
-  factoryContract.on("TokenCreated", (newAddress, event) => {
-    console.log("New Token Address",newAddress);
-    setTokenAddress(newAddress);
+  async function makeFeeOnTransferCoin() {
+    const tx = await fotFactoryWithSigner.createToken(
+      cartState.step2.tokenName,
+      cartState.step2.tokenSymbol,
+      parseFloat(cartState.step2.tokenSupplyNumber) *
+        NumberMap[cartState.step2.tokenSupplyUnits],
+      cartState.step2.tokenDecimals,
+      6,
+      0.0005 *
+        parseFloat(cartState.step2.tokenSupplyNumber) *
+        NumberMap[cartState.step2.tokenSupplyUnits],
+      !!cartState.step3.WHALE_PROTECTION
+        ? cartState.step3.WHALE_PROTECTION
+        : 0.0,
+      "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"
+    )
+    await tx.wait()
+    console.log("FOT Token tx", tx)
+  }
+
+  factoryContract.on("TokenCreated", (owner, contractAddress) => {
+    console.log("New Token Address", owner)
+    // console.log("New Token Address", address)
+    console.log("New Token Address", contractAddress)
+    setTokenAddress(contractAddress)
     setCoinBuilt(true)
   })
+
+  fotFactoryContract.on("TokenCreated", (owner, contractAddress) => {
+    setTokenAddress(contractAddress)
+    setCoinBuilt(true)
+  })
+
+  async function getPairAddress() {
+    var pairAddress = null
+    if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
+      const standardToken = new ethers.Contract(
+        tokenAddress,
+        StandardToken.abi,
+        library
+      )
+      await standardToken.deployTransaction.wait()
+
+      try {
+        const standardTokenWithSigner = standardToken.connect(
+          library.getSigner()
+        )
+        pairAddress = await standardTokenWithSigner.pairAddress()
+      } catch (error) {
+        console.log("PAIR ADDRESS: ",error)
+      }
+      console.log("PAIR ADDRESS: ", pairAddress)
+    } else if (cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER) {
+      const fotToken = new ethers.Contract(tokenAddress, FotToken.abi, library)
+
+      try {
+        const fotTokenWithSigner = fotToken.connect(library.getSigner())
+        pairAddress = await fotTokenWithSigner.pairAddress()
+        if (!fotFees.every(item => item === 0.0)) {
+          setInitiateFee(true)
+          initiateFeeSetter(fotTokenWithSigner)
+        }
+      } catch (error) {
+        console.log("PAIR ADDRESS: ",error)
+      }
+    }
+    setPairAddress(pairAddress)
+  }
+
+  async function initiateFeeSetter(fotTokenWithSigner) {
+    const txn = await fotTokenWithSigner.setFees(fotFees)
+    console.log("Set Fee logs: ", txn)
+    var result = null
+    await txn.wait()
+    setInitiateFee(false)
+  }
+
   return (
     <>
       <button
@@ -569,8 +735,26 @@ const DeployButton = () => {
         setChargeFeeAndDeployContract={setChargeFeeAndDeployContract}
         txnHash={txnHash}
         tokenAddress={tokenAddress}
+        pairAddress={pairAddress}
+        initiateFee={initiateFee}
+        dashboardAvailable={dashboardAvailable}
       />
     </>
+  )
+}
+
+const DashboardButton = ({ dashboardAvailable }) => {
+  return (
+    <button
+      className={`button deploy-contract-button ${
+        dashboardAvailable ? "" : "inactive"
+      }`}
+      type="button"
+      disabled={!dashboardAvailable}
+      onClick={() => navigate("/dashboard/")}
+    >
+      Go To Dashboard
+    </button>
   )
 }
 
@@ -580,7 +764,10 @@ const LoadingPaymentModal = ({
   coinBuilt,
   setChargeFeeAndDeployContract,
   txnHash,
-  tokenAddress
+  tokenAddress,
+  pairAddress,
+  initiateFee,
+  dashboardAvailable,
 }) => {
   function closeModal() {
     setChargeFeeAndDeployContract(false)
@@ -594,8 +781,11 @@ const LoadingPaymentModal = ({
           coinBuilt={coinBuilt}
           txnHash={txnHash}
           tokenAddress={tokenAddress}
+          pairAddress={pairAddress}
+          initiateFee={initiateFee}
+          dashboardAvailable={dashboardAvailable}
         />
-        <div className="modal-close-custom">
+        {/* <div className="modal-close-custom">
           <button
             className="button close-modal-button"
             aria-label="close"
@@ -605,7 +795,7 @@ const LoadingPaymentModal = ({
               <GoX />
             </span>
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   )
@@ -617,7 +807,15 @@ const PaymentProcessingTexts = [
   "Follow instructions on wallet",
 ]
 
-const ModalContent = ({ paymentCompleted, coinBuilt, txnHash, tokenAddress }) => {
+const ModalContent = ({
+  paymentCompleted,
+  coinBuilt,
+  txnHash,
+  tokenAddress,
+  pairAddress,
+  initiateFee,
+  dashboardAvailable,
+}) => {
   const styles = useSpring({
     loop: true,
     to: [{ opacity: 1 }],
@@ -630,6 +828,13 @@ const ModalContent = ({ paymentCompleted, coinBuilt, txnHash, tokenAddress }) =>
   // })
   return (
     <div className="container">
+      <div className="columns">
+        <div className="column">
+          <span className="is-size-5" id="warning-payments">
+            Do Not Refresh or Close this window
+          </span>
+        </div>
+      </div>
       <div className="columns">
         <div className="column">
           <span className="is-size-3">Your Transaction is Processing</span>
@@ -677,16 +882,14 @@ const ModalContent = ({ paymentCompleted, coinBuilt, txnHash, tokenAddress }) =>
               )}
             </div>
             <div className="columns">
-                <div className="column">
-                  <span className="is-size-7">
-                    Payment Transaction Hash
-                  </span>
-                </div>
-                <div className="column">
-                  <span className="is-size-6" id="txnHash">
-                    {txnHash}
-                  </span>
-                </div>
+              <div className="column">
+                <span className="is-size-7">Payment Transaction Hash</span>
+              </div>
+              <div className="column">
+                <span className="is-size-6" id="txnHash">
+                  {txnHash}
+                </span>
+              </div>
             </div>
             {paymentCompleted ? (
               <div className="columns">
@@ -724,26 +927,79 @@ const ModalContent = ({ paymentCompleted, coinBuilt, txnHash, tokenAddress }) =>
               ``
             )}
             <div className="columns">
+              <div className="column">
+                <span className="is-size-7">Your Coin Address</span>
+              </div>
+              <div className="column">
+                <span className="is-size-6" id="txnHash">
+                  {tokenAddress}
+                </span>
+              </div>
+            </div>
+            {!!pairAddress ? (
+              <div className="columns">
                 <div className="column">
-                  <span className="is-size-7">
-                    Your Coin Address
-                  </span>
+                  <span className="is-size-7">Your Dex Pool Address</span>
                 </div>
                 <div className="column">
                   <span className="is-size-6" id="txnHash">
-                    {tokenAddress}
+                    {pairAddress}
                   </span>
                 </div>
-            </div>
+              </div>
+            ) : (
+              ``
+            )}
           </span>
         </div>
       </div>
+      {paymentCompleted && coinBuilt ? (
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-4">Setting Fee</span>
+          </div>
+
+          {initiateFee ? (
+            <>
+              <div className="column">
+                <span className="is-size-3">
+                  <AiOutlineCodeSandbox className="spinner" />
+                </span>
+              </div>
+              <div className="column">
+                <span className="is-size-5">
+                  <animated.div style={styles}>Pending</animated.div>
+                </span>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="column">
+                <span className="is-size-3">
+                  <FcCheckmark />
+                </span>
+              </div>
+              <div className="column">
+                <span className="is-size-5">Completed</span>
+              </div>
+            </>
+          )}
+        </div>
+      ) : (
+        ``
+      )}
 
       <div className="columns">
         <div className="column">
-          <span className="is-size-7">
-            Please keep your Transaction Hash handy for future reference
+          <span className="is-size-7" id="warning-payments">
+            Please keep all the ADDRESSES & TRANSACTION HASH handy for future
+            reference
           </span>
+        </div>
+      </div>
+      <div className="columns">
+        <div className="column">
+          <DashboardButton dashboardAvailable={dashboardAvailable} />
         </div>
       </div>
     </div>

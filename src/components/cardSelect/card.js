@@ -485,7 +485,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
                 spellcheck="false"
                 min={input.min}
                 max={input.max}
-                step="0.1"
+                step="1"
                 disabled={disabled || !selected || input.idx === 2}
                 value={featureValue}
               />
