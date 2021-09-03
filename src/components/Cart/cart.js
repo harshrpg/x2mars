@@ -571,7 +571,9 @@ const DeployButton = () => {
     if (coinBuilt) {
       if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
         setDashboardAvailable(true)
-      } else if (cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER) {
+      } else if (
+        cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER
+      ) {
         if (!fotFees.every(item => item === 0.0)) {
           if (!initiateFee) {
             setDashboardAvailable(true)
@@ -588,7 +590,7 @@ const DeployButton = () => {
     try {
       while (result === null) {
         result = await web3Provider.getTransactionReceipt(txnHash)
-        
+
         console.log(result)
       }
     } catch (error) {
@@ -680,7 +682,6 @@ const DeployButton = () => {
         StandardToken.abi,
         library
       )
-      await standardToken.deployTransaction.wait()
 
       try {
         const standardTokenWithSigner = standardToken.connect(
@@ -688,7 +689,7 @@ const DeployButton = () => {
         )
         pairAddress = await standardTokenWithSigner.pairAddress()
       } catch (error) {
-        console.log("PAIR ADDRESS: ",error)
+        console.log("PAIR ADDRESS: ", error)
       }
       console.log("PAIR ADDRESS: ", pairAddress)
     } else if (cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER) {
@@ -702,7 +703,7 @@ const DeployButton = () => {
           initiateFeeSetter(fotTokenWithSigner)
         }
       } catch (error) {
-        console.log("PAIR ADDRESS: ",error)
+        console.log("PAIR ADDRESS: ", error)
       }
     }
     setPairAddress(pairAddress)
@@ -822,6 +823,8 @@ const ModalContent = ({
     from: { opacity: 0 },
     delay: 300,
   })
+
+  const cartState = useCartState()
 
   // React.useEffect(() => {
 
@@ -953,7 +956,9 @@ const ModalContent = ({
           </span>
         </div>
       </div>
-      {paymentCompleted && coinBuilt ? (
+      {paymentCompleted &&
+      coinBuilt &&
+      cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER ? (
         <div className="columns">
           <div className="column">
             <span className="is-size-4">Setting Fee</span>
