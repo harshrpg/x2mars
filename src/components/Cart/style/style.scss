@@ -71,3 +71,8 @@
 #warning-payments {
   color: $unsucessful-color
 }
+
+#error-box {
+  background-color: $unsucessful-color !important;
+  color: white !important;
+}

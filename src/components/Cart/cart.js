@@ -23,9 +23,8 @@ import { injectedConnector } from "../../context/helpers"
 import { AiOutlineCodeSandbox } from "@react-icons/all-files/ai/AiOutlineCodeSandbox"
 import { FcCheckmark } from "@react-icons/all-files/fc/FcCheckmark"
 import { animated, useSpring } from "@react-spring/web"
-import StandardTokenFactory from "../../abis/StandardTokenFactory.json"
+import TokenFactory from "../../abis/TokenFactory.json"
 import StandardToken from "../../abis/StandardToken.json"
-import FotTokenFactory from "../../abis/FotTokenFactory.json"
 import FotToken from "../../abis/FotToken.json"
 import { navigate } from "gatsby-link"
 
@@ -435,7 +434,6 @@ const DeployButton = () => {
   var network = ethers.providers.getNetwork(TransactionNetworkNames[chainId])
   var web3Provider = new providers.Web3Provider(library.provider, network)
   const cartState = useCartState()
-  console.log("ERROR: ", account)
   const [contractDeployable, setContractDeployable] = React.useState(false)
   const [paymentCompleted, setPaymentCompleted] = React.useState(false)
   const [coinBuilt, setCoinBuilt] = React.useState(false)
@@ -448,27 +446,19 @@ const DeployButton = () => {
   const [tokenAddress, setTokenAddress] = React.useState(null)
   const [pairAddress, setPairAddress] = React.useState(null)
   const [fotFees, setFotFees] = React.useState([0.0, 0.0, 0.0, 0.0])
-  const [initiateFee, setInitiateFee] = React.useState(false)
-  const [txnError, setTxnError] = React.useState(false)
+  const [txnError, setTxnError] = React.useState({
+    type: null,
+    errorBody: null,
+  })
   const [dashboardAvailable, setDashboardAvailable] = React.useState(false)
-
-  const factoryAddress = "0xde6b7e39d74d7cc9432F2a2C5156e000611BB12D"
-  const fotFactoryAddress = "0x27C8977DB053D54Dc0768C2D94C6A8A0D48E5Df0"
-  // const stdTokenAddress = "0xF5267A3eD1Da2Eea6283a2a0c3e091659a6e3c89"
+  console.log(process.env.GATSBY_TOKEN_FACTORY_ADDRS)
+  const tokenFactory = process.env.GATSBY_TOKEN_FACTORY_ADDRS
   const factoryContract = new ethers.Contract(
-    factoryAddress,
-    StandardTokenFactory.abi,
-    library
-  )
-  const fotFactoryContract = new ethers.Contract(
-    fotFactoryAddress,
-    FotTokenFactory.abi,
+    tokenFactory,
+    TokenFactory.abi,
     library
   )
   const factoryWithSigner = factoryContract.connect(library.getSigner(account))
-  const fotFactoryWithSigner = fotFactoryContract.connect(
-    library.getSigner(account)
-  )
 
   React.useEffect(() => {
     if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
@@ -496,19 +486,16 @@ const DeployButton = () => {
       }
     }
   }, [cartState])
-
   React.useEffect(() => {
     if (!!txnHash) {
       getTxnReceipt()
     }
   }, [txnHash])
-
   React.useEffect(() => {
     if (chargeFeeAndDeployContract) {
       chargeFeeAndGetTransactionDetails()
     }
   }, [chargeFeeAndDeployContract, library, account, cartState])
-
   React.useEffect(() => {
     if (paymentCompleted) {
       if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
@@ -520,7 +507,6 @@ const DeployButton = () => {
       }
     }
   }, [paymentCompleted])
-
   React.useEffect(() => {
     if (!!tokenAddress) {
       if (
@@ -535,7 +521,6 @@ const DeployButton = () => {
       }
     }
   }, [tokenAddress])
-
   React.useEffect(() => {
     if (
       contractDeployable &&
@@ -558,32 +543,11 @@ const DeployButton = () => {
     }
   }, [contractDeployable, cartState])
 
-  // React.useEffect(() => {
-  //   if (cartState.step1.tokenSelected === TokenTypeIds.FEE_ON_TRANSFER && coinBuilt && !!pairAddress) {
-  //     if (!fotFees.every(item => item === 0.0)) {
-  //       setInitiateFee(true)
-  //       initiateFeeSetter()
-  //     }
-  //   }
-  // }, [pairAddress, cartState, coinBuilt])
-
   React.useEffect(() => {
     if (coinBuilt) {
-      if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
-        setDashboardAvailable(true)
-      } else if (
-        cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER
-      ) {
-        if (!fotFees.every(item => item === 0.0)) {
-          if (!initiateFee) {
-            setDashboardAvailable(true)
-          }
-        } else {
-          setDashboardAvailable(true)
-        }
-      }
+      setDashboardAvailable(true)
     }
-  }, [coinBuilt, cartState, initiateFee])
+  }, [coinBuilt])
 
   async function getTxnReceipt() {
     var result = null
@@ -604,7 +568,7 @@ const DeployButton = () => {
   async function chargeFeeAndGetTransactionDetails() {
     const txn = {
       from: account,
-      to: "0xe31f4CB714260274Df74dbF1ae1Ca28e7aa746F7",
+      to: process.env.GATSBY_PAYMENT_WALLET,
       value: ethers.utils
         .parseEther(cartState.totalCharge.fee.toString())
         .toHexString(),
@@ -614,65 +578,88 @@ const DeployButton = () => {
       console.log("Transaction Response", txnResponse)
       setTxnHash(txnResponse.hash)
     } catch (error) {
-      console.error(error)
+      console.log("Error Occurred: ", error)
+      if (error.code === 4001) {
+        setTxnError({ type: "Payment Rejected Error", errorBody: error })
+      } else {
+        setTxnError({ type: "Generic Error", errorBody: error })
+      }
     }
   }
 
   async function makeStandardCoin() {
-    console.log("Making the coin now")
-    // const feeData = await web3Provider.getFeeData()
-    // const feeDataGasPrice = ethers.utils.formatUnits(feeData.gasPrice, "wei")
-    // const feeDataGasLimit = ethers.utils.formatUnits(
-    //   feeData.maxFeePerGas,
-    //   "wei"
-    // )
-    // console.log(feeDataGasPrice)
-    // console.log(feeDataGasLimit)
-    const tx = await factoryWithSigner.createStandardToken(
-      cartState.step2.tokenName,
-      cartState.step2.tokenSymbol,
-      parseFloat(cartState.step2.tokenSupplyNumber) *
-        NumberMap[cartState.step2.tokenSupplyUnits],
-      cartState.step2.dexSelected,
-      "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"
-    )
-    await tx.wait()
-    console.log("STD Token tx", tx)
-    // setChargeFeeAndDeployContract(false)
+    var dexAddress = process.env.GATSBY_UNISWAP_ROUTER
+    if (chainId === NetworkConstants.SMART_CHAIN_TESTNET) {
+      dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER_BNBT
+    } else if (chainId === NetworkConstants.SMART_CHAIN_MAINNET) {
+      dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER
+    }
+    try {
+      const tx = await factoryWithSigner.createStandardToken(
+        cartState.step2.tokenName,
+        cartState.step2.tokenSymbol,
+        parseFloat(cartState.step2.tokenSupplyNumber) *
+          NumberMap[cartState.step2.tokenSupplyUnits],
+        cartState.step2.dexSelected,
+        dexAddress
+      )
+      await tx.wait()
+    } catch {
+      console.log("Error occured in creating token", error)
+      if (error.code === 4001) {
+        setTxnError({ type: "Payment Rejected Error", errorBody: error })
+      } else {
+        setTxnError({ type: "Generic Error", errorBody: error })
+      }
+    }
   }
 
   async function makeFeeOnTransferCoin() {
-    const tx = await fotFactoryWithSigner.createToken(
-      cartState.step2.tokenName,
-      cartState.step2.tokenSymbol,
-      parseFloat(cartState.step2.tokenSupplyNumber) *
-        NumberMap[cartState.step2.tokenSupplyUnits],
-      cartState.step2.tokenDecimals,
-      6,
-      0.0005 *
+    var dexAddress = process.env.GATSBY_UNISWAP_ROUTER
+    if (chainId === NetworkConstants.SMART_CHAIN_TESTNET) {
+      dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER_BNBT
+    } else if (chainId === NetworkConstants.SMART_CHAIN_MAINNET) {
+      dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER
+    }
+    try {
+      const tx = await factoryWithSigner.createToken(
+        cartState.step2.tokenName,
+        cartState.step2.tokenSymbol,
         parseFloat(cartState.step2.tokenSupplyNumber) *
-        NumberMap[cartState.step2.tokenSupplyUnits],
-      !!cartState.step3.WHALE_PROTECTION
-        ? cartState.step3.WHALE_PROTECTION
-        : 0.0,
-      "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"
-    )
-    await tx.wait()
-    console.log("FOT Token tx", tx)
+          NumberMap[cartState.step2.tokenSupplyUnits],
+        !!cartState.step3.WHALE_PROTECTION
+          ? cartState.step3.WHALE_PROTECTION
+          : 0.0,
+        fotFees,
+        cartState.step3.charity_address,
+        dexAddress
+      )
+      await tx.wait()
+    } catch (error) {
+      console.log("Error occured in creating token", error)
+      if (error.code === 4001) {
+        setTxnError({ type: "Payment Rejected Error", errorBody: error })
+      } else {
+        setTxnError({ type: "Generic Error", errorBody: error })
+      }
+    }
   }
 
-  factoryContract.on("TokenCreated", (owner, contractAddress) => {
-    console.log("New Token Address", owner)
-    // console.log("New Token Address", address)
-    console.log("New Token Address", contractAddress)
-    setTokenAddress(contractAddress)
-    setCoinBuilt(true)
-  })
+  factoryContract.on(
+    "FotTokenCreated",
+    (owner, name, symbol, basicSupply, tokenType, contractAddress) => {
+      setTokenAddress(contractAddress)
+      setCoinBuilt(true)
+    }
+  )
 
-  fotFactoryContract.on("TokenCreated", (owner, contractAddress) => {
-    setTokenAddress(contractAddress)
-    setCoinBuilt(true)
-  })
+  factoryContract.on(
+    "StdTokenCreated",
+    (owner, name, symbol, basicSupply, tokenType, isPool, contractAddress) => {
+      setTokenAddress(contractAddress)
+      setCoinBuilt(true)
+    }
+  )
 
   async function getPairAddress() {
     var pairAddress = null
@@ -690,6 +677,7 @@ const DeployButton = () => {
         pairAddress = await standardTokenWithSigner.pairAddress()
       } catch (error) {
         console.log("PAIR ADDRESS: ", error)
+        setTxnError({ type: "Pair Creation Error", errorBody: error })
       }
       console.log("PAIR ADDRESS: ", pairAddress)
     } else if (cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER) {
@@ -698,23 +686,11 @@ const DeployButton = () => {
       try {
         const fotTokenWithSigner = fotToken.connect(library.getSigner())
         pairAddress = await fotTokenWithSigner.pairAddress()
-        if (!fotFees.every(item => item === 0.0)) {
-          setInitiateFee(true)
-          initiateFeeSetter(fotTokenWithSigner)
-        }
       } catch (error) {
         console.log("PAIR ADDRESS: ", error)
       }
     }
     setPairAddress(pairAddress)
-  }
-
-  async function initiateFeeSetter(fotTokenWithSigner) {
-    const txn = await fotTokenWithSigner.setFees(fotFees)
-    console.log("Set Fee logs: ", txn)
-    var result = null
-    await txn.wait()
-    setInitiateFee(false)
   }
 
   return (
@@ -737,8 +713,8 @@ const DeployButton = () => {
         txnHash={txnHash}
         tokenAddress={tokenAddress}
         pairAddress={pairAddress}
-        initiateFee={initiateFee}
         dashboardAvailable={dashboardAvailable}
+        txnError={txnError}
       />
     </>
   )
@@ -759,6 +735,18 @@ const DashboardButton = ({ dashboardAvailable }) => {
   )
 }
 
+const CloseModalButton = ({ setChargeFeeAndDeployContract }) => {
+  return (
+    <button
+      className={`button deploy-contract-button`}
+      type="button"
+      onClick={() => setChargeFeeAndDeployContract(false)}
+    >
+      Close this window
+    </button>
+  )
+}
+
 const LoadingPaymentModal = ({
   isActive,
   paymentCompleted,
@@ -767,12 +755,9 @@ const LoadingPaymentModal = ({
   txnHash,
   tokenAddress,
   pairAddress,
-  initiateFee,
   dashboardAvailable,
+  txnError,
 }) => {
-  function closeModal() {
-    setChargeFeeAndDeployContract(false)
-  }
   return (
     <div className={`modal ${isActive ? "is-active" : ""}`}>
       <div className="modal-background"></div>
@@ -783,8 +768,9 @@ const LoadingPaymentModal = ({
           txnHash={txnHash}
           tokenAddress={tokenAddress}
           pairAddress={pairAddress}
-          initiateFee={initiateFee}
           dashboardAvailable={dashboardAvailable}
+          txnError={txnError}
+          setChargeFeeAndDeployContract={setChargeFeeAndDeployContract}
         />
         {/* <div className="modal-close-custom">
           <button
@@ -814,8 +800,9 @@ const ModalContent = ({
   txnHash,
   tokenAddress,
   pairAddress,
-  initiateFee,
   dashboardAvailable,
+  txnError,
+  setChargeFeeAndDeployContract
 }) => {
   const styles = useSpring({
     loop: true,
@@ -850,6 +837,20 @@ const ModalContent = ({
           </span>
         </div>
       </div>
+      {!!txnError.type ? (
+        <div className="columns">
+          <div className="column" id="error-box">
+            <span className="is-size-6">
+              {`An Error has Occurred`}
+              <br /> {`Error type: ` + txnError.type}
+              <br />
+              {`Please note down the Payment Transaction Hash if payment is processed`}<br />{`Else retry creating your coin`}
+            </span>
+          </div>
+        </div>
+      ) : (
+        ``
+      )}
       <div className="columns">
         <div className="column">
           <span className="is-size-7">
@@ -956,43 +957,6 @@ const ModalContent = ({
           </span>
         </div>
       </div>
-      {paymentCompleted &&
-      coinBuilt &&
-      cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER ? (
-        <div className="columns">
-          <div className="column">
-            <span className="is-size-4">Setting Fee</span>
-          </div>
-
-          {initiateFee ? (
-            <>
-              <div className="column">
-                <span className="is-size-3">
-                  <AiOutlineCodeSandbox className="spinner" />
-                </span>
-              </div>
-              <div className="column">
-                <span className="is-size-5">
-                  <animated.div style={styles}>Pending</animated.div>
-                </span>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="column">
-                <span className="is-size-3">
-                  <FcCheckmark />
-                </span>
-              </div>
-              <div className="column">
-                <span className="is-size-5">Completed</span>
-              </div>
-            </>
-          )}
-        </div>
-      ) : (
-        ``
-      )}
 
       <div className="columns">
         <div className="column">
@@ -1002,11 +966,16 @@ const ModalContent = ({
           </span>
         </div>
       </div>
-      <div className="columns">
+      {!!txnError.type ? <div className="columns">
+        <div className="column">
+          <CloseModalButton setChargeFeeAndDeployContract={setChargeFeeAndDeployContract} />
+        </div>
+      </div>:<div className="columns">
         <div className="column">
           <DashboardButton dashboardAvailable={dashboardAvailable} />
         </div>
-      </div>
+      </div>}
+      
     </div>
   )
 }

@@ -290,9 +290,9 @@ const Step1 = props => {
   //     },
   //   })
   //   if (selectedOption === TokenTypeIds.FEE_ON_TRANSFER) {
-      
+
   //   } else if (selectedOption === TokenTypeIds.GOVERNANCE) {
-      
+
   //   }
   // }, [selectedOption])
 
@@ -655,12 +655,12 @@ const Step3 = props => {
           WHALE_PROTECTION: cartState.step3.WHALE_PROTECTION,
           auto_burn: cartState.step3.auto_burn,
           auto_charity: cartState.step3.auto_charity,
+          charity_address: cartState.step3.charity_address,
           totalFees: totalFees,
         },
       },
     })
   }, [totalFees])
-  
 
   // CALLBACKS
   const setSelection = (index, isSelected) => {
@@ -762,9 +762,7 @@ const Step3 = props => {
                 onPress={select =>
                   setSelection(FeatureIds.WHALE_PROTECTION, select)
                 }
-                callback={value =>
-                  setFees(FeatureIds.WHALE_PROTECTION, value)
-                }
+                callback={value => setFees(FeatureIds.WHALE_PROTECTION, value)}
                 selectionText={
                   tokenType === TokenTypeIds.GOVERNANCE
                     ? "Cannot add to token"
@@ -845,24 +843,24 @@ const Step3 = props => {
                 cardData={card5}
                 network={network}
                 selected={featuresSelected.features[4]}
-                // disabled={
-                //   tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : true
-                // }
-                disabled={true}
+                disabled={
+                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : true
+                }
+                // disabled={true}
                 cardImage={card5Img}
                 cardIndex={4}
                 onPress={select =>
                   setSelection(FeatureIds.AUTO_CHARITY, select)
                 }
                 callback={value => setFees(FeatureIds.AUTO_CHARITY, value)}
-                // selectionText={
-                //   tokenType === TokenTypeIds.GOVERNANCE
-                //     ? "Cannot add to token"
-                //     : featuresSelected.features[4]
-                //     ? "Remove from Contract"
-                //     : "Add to Contract"
-                // }
-                selectionText={"Coming Soon"}
+                selectionText={
+                  tokenType === TokenTypeIds.GOVERNANCE
+                    ? "Cannot add to token"
+                    : featuresSelected.features[4]
+                    ? "Remove from Contract"
+                    : "Add to Contract"
+                }
+                // selectionText={"Coming Soon"}
                 mandatory={
                   tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : undefined
                 }
