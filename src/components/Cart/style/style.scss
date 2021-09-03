@@ -63,3 +63,7 @@
   width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
   width: fill-available;
 }
+
+#txnHash {
+  color: $theme-orange
+}

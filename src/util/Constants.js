@@ -18,6 +18,16 @@ export const NetworkNames = {
     56: "BSC Mainnet",
 }
 
+export const TransactionNetworkNames = {
+    1: "homestead",
+    3: "ropsten",
+    4: "rinkeby",
+    5: "goerli",
+    42: "kovan",
+    97: "bnb",
+    56: "bnbt",
+}
+
 export const NetworkFromChainId = {
     1: "eth",
     3: "eth",
@@ -65,7 +75,7 @@ export const NumberMap= {
 export const FeatureIds = {
     AUTOMATIC_LIQUIDATION: 0,
     RFI_STATIC_REWARDS: 1,
-    ANTI_WHALE_PROTECTION: 2,
+    WHALE_PROTECTION: 2,
     AUTO_BURN: 3,
     AUTO_CHARITY: 4
 }

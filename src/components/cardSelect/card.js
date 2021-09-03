@@ -326,11 +326,11 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
           setFeatureValue(cartState.step3.rfi_rewards)
         }
         break
-      case FeatureIds.ANTI_WHALE_PROTECTION:
+      case FeatureIds.WHALE_PROTECTION:
         if (!selected && input.idx !== undefined && input.idx === 2) {
           setFeatureValue("")
         } else if (selected && input.idx !== undefined && input.idx === 2) {
-          setFeatureValue(cartState.step3.anti_whale_protection)
+          setFeatureValue(cartState.step3.WHALE_PROTECTION)
         }
         break
       case FeatureIds.AUTO_BURN:
@@ -356,7 +356,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
     if (!selected) {
       resetStateInput()
     } else {
-      if (input.idx === FeatureIds.ANTI_WHALE_PROTECTION) {
+      if (input.idx === FeatureIds.WHALE_PROTECTION) {
         var value =
           0.005 *
           (parseFloat(cartState.step2.tokenSupplyNumber) *
@@ -376,7 +376,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
             step3: {
               auto_liquidation: value,
               rfi_rewards: cartState.step3.rfi_rewards,
-              anti_whale_protection: cartState.step3.anti_whale_protection,
+              WHALE_PROTECTION: cartState.step3.WHALE_PROTECTION,
               auto_burn: cartState.step3.auto_burn,
               auto_charity: cartState.step3.auto_charity,
               totalFees: cartState.step3.totalFees,
@@ -391,7 +391,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
             step3: {
               auto_liquidation: cartState.step3.auto_liquidation,
               rfi_rewards: value,
-              anti_whale_protection: cartState.step3.anti_whale_protection,
+              WHALE_PROTECTION: cartState.step3.WHALE_PROTECTION,
               auto_burn: cartState.step3.auto_burn,
               auto_charity: cartState.step3.auto_charity,
               totalFees: cartState.step3.totalFees,
@@ -399,14 +399,14 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
           },
         })
         break
-      case FeatureIds.ANTI_WHALE_PROTECTION:
+      case FeatureIds.WHALE_PROTECTION:
         cartDispatch({
           step: 3.3,
           payload: {
             step3: {
               auto_liquidation: cartState.step3.auto_liquidation,
               rfi_rewards: cartState.step3.rfi_rewards,
-              anti_whale_protection: value,
+              WHALE_PROTECTION: value,
               auto_burn: cartState.step3.auto_burn,
               auto_charity: cartState.step3.auto_charity,
               totalFees: cartState.step3.totalFees,
@@ -421,7 +421,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
             step3: {
               auto_liquidation: cartState.step3.auto_liquidation,
               rfi_rewards: cartState.step3.rfi_rewards,
-              anti_whale_protection: cartState.step3.anti_whale_protection,
+              WHALE_PROTECTION: cartState.step3.WHALE_PROTECTION,
               auto_burn: value,
               auto_charity: cartState.step3.auto_charity,
               totalFees: cartState.step3.totalFees,
@@ -436,7 +436,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
             step3: {
               auto_liquidation: cartState.step3.auto_liquidation,
               rfi_rewards: cartState.step3.rfi_rewards,
-              anti_whale_protection: cartState.step3.anti_whale_protection,
+              WHALE_PROTECTION: cartState.step3.WHALE_PROTECTION,
               auto_burn: cartState.step3.auto_burn,
               auto_charity: value,
               totalFees: cartState.step3.totalFees,
@@ -690,7 +690,7 @@ const Step2Card2 = ({ cardData, network, callback }) => {
   //         step3: {
   //           auto_liquidation: cartState.step3.auto_liquidation,
   //           rfi_rewards: cartState.step3.rfi_rewards,
-  //           anti_whale_protection: antiWhaleProtection,
+  //           WHALE_PROTECTION: antiWhaleProtection,
   //           auto_burn: cartState.step3.auto_burn,
   //           auto_charity: cartState.step3.auto_charity,
   //           totalFees: cartState.step3.totalFees,

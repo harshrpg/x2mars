@@ -79,11 +79,14 @@ export const initialCartState = {
   step3: {
     auto_liquidation: null,
     rfi_rewards: null,
-    anti_whale_protection: null,
+    WHALE_PROTECTION: null,
     auto_burn: null,
     auto_charity: null,
     totalFees: 0.0
   },
+  totalCharge: {
+    fee: 0.0
+  }
 }
 
 export const CartReducer = (initialCartState, action) => {
@@ -133,6 +136,11 @@ export const CartReducer = (initialCartState, action) => {
       return {
         ...initialCartState,
         step3: action.payload.step3
+      }
+    case 4:
+      return {
+        ...initialCartState,
+        totalCharge: action.payload.totalCharge
       }
   }
 }

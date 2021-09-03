@@ -237,46 +237,6 @@ const Step1 = props => {
     var fee = 0.0
     if (selectedOption === TokenTypeIds.GOVERNANCE) {
       fee = step1Card1.price[network]
-    } else if (selectedOption === TokenTypeIds.FEE_ON_TRANSFER) {
-      fee = step1Card2.price[network]
-    }
-    setStep1Fee(parseFloat(fee))
-  }, [selectedOption])
-
-  const setSelection = (selectedOption, selection) => {
-    console.debug("STEP 1: Callback:: ", selectedOption)
-    if (selection) {
-      setSelectedOption(selectedOption)
-      props.onSuccess(selectedOption)
-    }
-  }
-
-  React.useEffect(() => {
-    cartDispatch({
-      step: 1,
-      payload: {
-        step1: {
-          selectedToken: selectedOption,
-          totalFees: cartState.step1.totalFees,
-        },
-      },
-    })
-    if (selectedOption === TokenTypeIds.FEE_ON_TRANSFER) {
-      cartDispatch({
-        step: 2,
-        payload: {
-          step2: {
-            tokenName: cartState.step2.tokenName,
-            tokenSymbol: cartState.step2.tokenSymbol,
-            tokenSupplyNumber: cartState.step2.tokenSupplyNumber,
-            tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
-            tokenDecimals: cartState.step2.tokenDecimals,
-            dexSelected: cartState.step2.dexSelected,
-            totalFees: 0,
-          },
-        },
-      })
-    } else if (selectedOption === TokenTypeIds.GOVERNANCE) {
       cartDispatch({
         step: 2,
         payload: {
@@ -291,22 +251,64 @@ const Step1 = props => {
           },
         },
       })
+    } else if (selectedOption === TokenTypeIds.FEE_ON_TRANSFER) {
+      fee = step1Card2.price[network]
+      cartDispatch({
+        step: 2,
+        payload: {
+          step2: {
+            tokenName: cartState.step2.tokenName,
+            tokenSymbol: cartState.step2.tokenSymbol,
+            tokenSupplyNumber: cartState.step2.tokenSupplyNumber,
+            tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
+            tokenDecimals: cartState.step2.tokenDecimals,
+            dexSelected: cartState.step2.dexSelected,
+            totalFees: 0,
+          },
+        },
+      })
     }
+    setStep1Fee(parseFloat(fee))
   }, [selectedOption])
 
+  const setSelection = (selectedOption, selection) => {
+    console.debug("STEP 1: Callback:: ", selectedOption)
+    if (selection) {
+      setSelectedOption(selectedOption)
+      props.onSuccess(selectedOption)
+    }
+  }
+
+  // React.useEffect(() => {
+  //   cartDispatch({
+  //     step: 1,
+  //     payload: {
+  //       step1: {
+  //         selectedToken: selectedOption,
+  //         totalFees: parseFloat(cartState.step1.totalFees),
+  //       },
+  //     },
+  //   })
+  //   if (selectedOption === TokenTypeIds.FEE_ON_TRANSFER) {
+      
+  //   } else if (selectedOption === TokenTypeIds.GOVERNANCE) {
+      
+  //   }
+  // }, [selectedOption])
+
   React.useEffect(() => {
-    if (step1Fee !== cartState.step1.totalFees) {
+    if (!!step1Fee) {
       cartDispatch({
         step: 1,
         payload: {
           step1: {
-            selectedToken: cartState.step1.selectedToken,
+            selectedToken: selectedOption,
             totalFees: step1Fee,
           },
         },
       })
     }
-  }, [step1Fee])
+  }, [step1Fee, selectedOption])
 
   const step1Card1Img = useImageForData(step1Card1.img)
   const step1Card2Img = useImageForData(step1Card2.img)
@@ -574,7 +576,7 @@ const Step3 = props => {
     featureFees: [
       cartState.step3.auto_liquidation,
       cartState.step3.rfi_rewards,
-      cartState.step3.anti_whale_protection,
+      cartState.step3.WHALE_PROTECTION,
       cartState.step3.auto_burn,
       cartState.step3.auto_charity,
     ],
@@ -603,7 +605,7 @@ const Step3 = props => {
         features: [
           true,
           !!cartState.step3.rfi_rewards,
-          !!cartState.step3.anti_whale_protection,
+          !!cartState.step3.WHALE_PROTECTION,
           !!cartState.step3.auto_burn,
           !!cartState.step3.auto_charity,
         ],
@@ -650,7 +652,7 @@ const Step3 = props => {
         step3: {
           auto_liquidation: cartState.step3.auto_liquidation,
           rfi_rewards: cartState.step3.rfi_rewards,
-          anti_whale_protection: cartState.step3.anti_whale_protection,
+          WHALE_PROTECTION: cartState.step3.WHALE_PROTECTION,
           auto_burn: cartState.step3.auto_burn,
           auto_charity: cartState.step3.auto_charity,
           totalFees: totalFees,
@@ -758,10 +760,10 @@ const Step3 = props => {
                 cardImage={card3Img}
                 cardIndex={2}
                 onPress={select =>
-                  setSelection(FeatureIds.ANTI_WHALE_PROTECTION, select)
+                  setSelection(FeatureIds.WHALE_PROTECTION, select)
                 }
                 callback={value =>
-                  setFees(FeatureIds.ANTI_WHALE_PROTECTION, value)
+                  setFees(FeatureIds.WHALE_PROTECTION, value)
                 }
                 selectionText={
                   tokenType === TokenTypeIds.GOVERNANCE
@@ -843,22 +845,24 @@ const Step3 = props => {
                 cardData={card5}
                 network={network}
                 selected={featuresSelected.features[4]}
-                disabled={
-                  tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : true
-                }
+                // disabled={
+                //   tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : true
+                // }
+                disabled={true}
                 cardImage={card5Img}
                 cardIndex={4}
                 onPress={select =>
                   setSelection(FeatureIds.AUTO_CHARITY, select)
                 }
                 callback={value => setFees(FeatureIds.AUTO_CHARITY, value)}
-                selectionText={
-                  tokenType === TokenTypeIds.GOVERNANCE
-                    ? "Cannot add to token"
-                    : featuresSelected.features[4]
-                    ? "Remove from Contract"
-                    : "Add to Contract"
-                }
+                // selectionText={
+                //   tokenType === TokenTypeIds.GOVERNANCE
+                //     ? "Cannot add to token"
+                //     : featuresSelected.features[4]
+                //     ? "Remove from Contract"
+                //     : "Add to Contract"
+                // }
+                selectionText={"Coming Soon"}
                 mandatory={
                   tokenType === TokenTypeIds.FEE_ON_TRANSFER ? false : undefined
                 }
