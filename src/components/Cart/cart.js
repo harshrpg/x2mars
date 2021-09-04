@@ -451,14 +451,15 @@ const DeployButton = () => {
     errorBody: null,
   })
   const [dashboardAvailable, setDashboardAvailable] = React.useState(false)
-  console.log(process.env.GATSBY_TOKEN_FACTORY_ADDRS)
+  const [factoryContractWithSigner, setFactoryContractWithSigner] = React.useState(
+    null
+  )
   const tokenFactory = process.env.GATSBY_TOKEN_FACTORY_ADDRS
-  const factoryContract = new ethers.Contract(
+  const [factoryContract, _] = React.useState(new ethers.Contract(
     tokenFactory,
     TokenFactory.abi,
     library
-  )
-  const factoryWithSigner = factoryContract.connect(library.getSigner(account))
+  ))
 
   React.useEffect(() => {
     if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
@@ -495,9 +496,9 @@ const DeployButton = () => {
     if (chargeFeeAndDeployContract) {
       chargeFeeAndGetTransactionDetails()
     }
-  }, [chargeFeeAndDeployContract, library, account, cartState])
+  }, [chargeFeeAndDeployContract])
   React.useEffect(() => {
-    if (paymentCompleted) {
+    if (paymentCompleted && !!factoryContractWithSigner) {
       if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
         makeStandardCoin()
       } else if (
@@ -506,7 +507,7 @@ const DeployButton = () => {
         makeFeeOnTransferCoin()
       }
     }
-  }, [paymentCompleted])
+  }, [paymentCompleted, factoryContractWithSigner])
   React.useEffect(() => {
     if (!!tokenAddress) {
       if (
@@ -548,6 +549,15 @@ const DeployButton = () => {
       setDashboardAvailable(true)
     }
   }, [coinBuilt])
+
+  React.useEffect(() => {
+    if (!!account) {
+      const factoryWithSigner = factoryContract.connect(
+        library.getSigner(account)
+      )
+      setFactoryContractWithSigner(factoryWithSigner)
+    }
+  }, [account, factoryContract])
 
   async function getTxnReceipt() {
     var result = null
@@ -594,22 +604,29 @@ const DeployButton = () => {
     } else if (chainId === NetworkConstants.SMART_CHAIN_MAINNET) {
       dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER
     }
-    try {
-      const tx = await factoryWithSigner.createStandardToken(
-        cartState.step2.tokenName,
-        cartState.step2.tokenSymbol,
-        parseFloat(cartState.step2.tokenSupplyNumber) *
-          NumberMap[cartState.step2.tokenSupplyUnits],
-        cartState.step2.dexSelected,
-        dexAddress
-      )
-      await tx.wait()
-    } catch(error) {
-      console.log("Error occured in creating token", error)
-      if (error.code === 4001) {
-        setTxnError({ type: "Payment Rejected Error", errorBody: error })
-      } else {
-        setTxnError({ type: "Generic Error", errorBody: error })
+    if (
+      !!cartState.step2.tokenName &&
+      !!cartState.step2.tokenSupplyNumber &&
+      !!cartState.step2.dexSelected &&
+      !!factoryContractWithSigner
+    ) {
+      try {
+        const tx = await factoryContractWithSigner.createStandardToken(
+          cartState.step2.tokenName,
+          cartState.step2.tokenSymbol,
+          parseFloat(cartState.step2.tokenSupplyNumber) *
+            NumberMap[cartState.step2.tokenSupplyUnits],
+          cartState.step2.dexSelected,
+          dexAddress
+        )
+        await tx.wait()
+      } catch (error) {
+        console.log("Error occured in creating token", error)
+        if (error.code === 4001) {
+          setTxnError({ type: "Payment Rejected Error", errorBody: error })
+        } else {
+          setTxnError({ type: "Generic Error", errorBody: error })
+        }
       }
     }
   }
@@ -621,26 +638,35 @@ const DeployButton = () => {
     } else if (chainId === NetworkConstants.SMART_CHAIN_MAINNET) {
       dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER
     }
-    try {
-      const tx = await factoryWithSigner.createToken(
-        cartState.step2.tokenName,
-        cartState.step2.tokenSymbol,
-        parseFloat(cartState.step2.tokenSupplyNumber) *
-          NumberMap[cartState.step2.tokenSupplyUnits],
-        !!cartState.step3.WHALE_PROTECTION
-          ? cartState.step3.WHALE_PROTECTION
-          : 0.0,
-        fotFees,
-        cartState.step3.charity_address,
-        dexAddress
-      )
-      await tx.wait()
-    } catch (error) {
-      console.log("Error occured in creating token", error)
-      if (error.code === 4001) {
-        setTxnError({ type: "Payment Rejected Error", errorBody: error })
-      } else {
-        setTxnError({ type: "Generic Error", errorBody: error })
+    if (
+      !!cartState.step2.tokenName &&
+      !!cartState.step2.tokenSymbol &&
+      !!cartState.step2.tokenSupplyNumber &&
+      !!fotFees &&
+      !!cartState.step3.charity_address &&
+      !!factoryContractWithSigner
+    ) {
+      try {
+        const tx = await factoryContractWithSigner.createToken(
+          cartState.step2.tokenName,
+          cartState.step2.tokenSymbol,
+          parseFloat(cartState.step2.tokenSupplyNumber) *
+            NumberMap[cartState.step2.tokenSupplyUnits],
+          !!cartState.step3.WHALE_PROTECTION
+            ? cartState.step3.WHALE_PROTECTION
+            : 0.0,
+          fotFees,
+          cartState.step3.charity_address,
+          dexAddress
+        )
+        await tx.wait()
+      } catch (error) {
+        console.log("Error occured in creating token", error)
+        if (error.code === 4001) {
+          setTxnError({ type: "Payment Rejected Error", errorBody: error })
+        } else {
+          setTxnError({ type: "Generic Error", errorBody: error })
+        }
       }
     }
   }
@@ -663,7 +689,10 @@ const DeployButton = () => {
 
   async function getPairAddress() {
     var pairAddress = null
-    if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
+    if (
+      cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE &&
+      !!tokenAddress
+    ) {
       const standardToken = new ethers.Contract(
         tokenAddress,
         StandardToken.abi,
@@ -694,7 +723,7 @@ const DeployButton = () => {
   }
 
   function openPaymentProcessWindow() {
-    setTxnError({type: null, errorBody: null})
+    setTxnError({ type: null, errorBody: null })
     setPaymentCompleted(false)
     setCoinBuilt(false)
     setPairAddress(null)
@@ -806,7 +835,7 @@ const ModalContent = ({
   pairAddress,
   dashboardAvailable,
   txnError,
-  setChargeFeeAndDeployContract
+  setChargeFeeAndDeployContract,
 }) => {
   const styles = useSpring({
     loop: true,
@@ -848,7 +877,9 @@ const ModalContent = ({
               {`An Error has Occurred`}
               <br /> {`Error type: ` + txnError.type}
               <br />
-              {`Please note down the Payment Transaction Hash if payment is processed`}<br />{`Else retry creating your coin`}
+              {`Please note down the Payment Transaction Hash if payment is processed`}
+              <br />
+              {`Else retry creating your coin`}
             </span>
           </div>
         </div>
@@ -970,16 +1001,21 @@ const ModalContent = ({
           </span>
         </div>
       </div>
-      {!!txnError.type ? <div className="columns">
-        <div className="column">
-          <CloseModalButton setChargeFeeAndDeployContract={setChargeFeeAndDeployContract} />
+      {!!txnError.type ? (
+        <div className="columns">
+          <div className="column">
+            <CloseModalButton
+              setChargeFeeAndDeployContract={setChargeFeeAndDeployContract}
+            />
+          </div>
         </div>
-      </div>:<div className="columns">
-        <div className="column">
-          <DashboardButton dashboardAvailable={dashboardAvailable} />
+      ) : (
+        <div className="columns">
+          <div className="column">
+            <DashboardButton dashboardAvailable={dashboardAvailable} />
+          </div>
         </div>
-      </div>}
-      
+      )}
     </div>
   )
 }
