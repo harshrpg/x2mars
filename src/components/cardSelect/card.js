@@ -54,6 +54,23 @@ const Card = props => {
           ``
         )}
 
+       {props.type === "select" || props.type === "feature-select" ? (
+          <div className="column is-full has-text-centered">
+            <AddToCartButton
+              selectionText={props.selectionText}
+              key={props.selected}
+              index={props.cardIndex}
+              selected={props.selected}
+              onPress={props.onPress}
+              isError={props.error !== null}
+              disabled={props.disabled}
+              isMandatory={props.mandatory}
+            />
+          </div>
+        ) : (
+          ``
+        )}
+
         <div className="column is-full">
           {props.type === "custom" ? (
             <CustomData
@@ -77,22 +94,7 @@ const Card = props => {
             />
           )}
         </div>
-        {props.type === "select" || props.type === "feature-select" ? (
-          <div className="column is-full has-text-centered">
-            <AddToCartButton
-              selectionText={props.selectionText}
-              key={props.selected}
-              index={props.cardIndex}
-              selected={props.selected}
-              onPress={props.onPress}
-              isError={props.error !== null}
-              disabled={props.disabled}
-              isMandatory={props.mandatory}
-            />
-          </div>
-        ) : (
-          ``
-        )}
+        
       </div>
     </div>
   )
@@ -328,28 +330,28 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
         break
       case FeatureIds.RFI_STATIC_REWARDS:
         if (!selected) {
-          setFeatureValue(null)
+          setFeatureValue("")
         } else {
           setFeatureValue(cartState.step3.rfi_rewards)
         }
         break
       case FeatureIds.WHALE_PROTECTION:
         if (!selected && input.idx !== undefined && input.idx === 2) {
-          setFeatureValue(null)
+          setFeatureValue("")
         } else if (selected && input.idx !== undefined && input.idx === 2) {
           setFeatureValue(cartState.step3.WHALE_PROTECTION)
         }
         break
       case FeatureIds.AUTO_BURN:
         if (!selected) {
-          setFeatureValue(null)
+          setFeatureValue("")
         } else {
           setFeatureValue(cartState.step3.auto_burn)
         }
         break
       case FeatureIds.AUTO_CHARITY:
         if (!selected) {
-          setFeatureValue(null)
+          setFeatureValue("")
         } else {
           setFeatureValue(cartState.step3.auto_charity)
         }
@@ -470,7 +472,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
     if (featureValue !== null) {
       dispatchValues(null)
       callback(null)
-      setCharityAddress(null)
+      setCharityAddress("")
     }
   }
 
