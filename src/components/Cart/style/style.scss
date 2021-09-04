@@ -63,3 +63,16 @@
   width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
   width: fill-available;
 }
+
+#txnHash {
+  color: $theme-orange
+}
+
+#warning-payments {
+  color: $unsucessful-color
+}
+
+#error-box {
+  background-color: $unsucessful-color !important;
+  color: white !important;
+}

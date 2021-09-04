@@ -7,7 +7,7 @@ import "./style/features.scss"
 const benefitsContent = [
   "0 Development Knowledge",
   "Rug-Pull Protection",
-  "Anti Whale Protection",
+  "Whale Protection",
   "Easy Deployment",
   "Community Driven",
 ]

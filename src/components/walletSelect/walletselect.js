@@ -271,14 +271,18 @@ const FortmaticWalletConnect = () => {
         </div>
         <div className="columns">
           <div className="column">
-            <button
-              className="button is-light custom-button"
-              type="button"
-              onClick={handleClick}
-              disabled={loading && walletType !== WalletTypes.FORTMATIC}
-            >
-              Connect
-            </button>
+            {loading && walletType === WalletTypes.FORTMATIC ? (
+              `Loading`
+            ) : (
+              <button
+                className="button is-light custom-button"
+                type="button"
+                onClick={handleClick}
+                disabled={loading && walletType !== WalletTypes.FORTMATIC}
+              >
+                Connect
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -1,3 +1,6 @@
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
 module.exports = {
   siteMetadata: {
     title: `X2Mars - Worl's 1st Token Factory`,
@@ -32,8 +35,8 @@ module.exports = {
       resolve: "gatsby-plugin-react-svg",
       options: {
         rule: {
-          include: `/assets/` // See below to configure properly
-        }
+          include: `/assets/`, // See below to configure properly
+        },
       },
     },
     `gatsby-plugin-gatsby-cloud`,

@@ -108,7 +108,7 @@ export const Steps = {
         img: "rfi.png",
       },
       {
-        title: "Anti Whale Protection",
+        title: "Whale Protection",
         description:
           "A limit is imposed on the number of tokens that can be included per transaction",
         type: "feature-select",

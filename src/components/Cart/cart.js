@@ -1,11 +1,13 @@
 import * as React from "react"
-import { useAuthState, useCartState } from "../../context"
+import { useAuthState, useCartDispatch, useCartState } from "../../context"
 import {
   Error,
   NetworkConstants,
   NetworkFromChainId,
+  NumberMap,
   TokenTypeIds,
   TokenTypes,
+  TransactionNetworkNames,
 } from "../../util/Constants"
 import { GoX } from "@react-icons/all-files/go/GoX"
 import "./style/style.scss"
@@ -15,6 +17,16 @@ import { Steps } from "../../util/factory-steps"
 import { useNetwork } from "../../hooks/useNetwork"
 import { NetworkIcon } from "../Icons/icons"
 import ErrorBox from "../Error/errorbox"
+import { BigNumber, ethers } from "ethers"
+import { useWeb3React, Web3ReactProvider } from "@web3-react/core"
+import { injectedConnector } from "../../context/helpers"
+import { AiOutlineCodeSandbox } from "@react-icons/all-files/ai/AiOutlineCodeSandbox"
+import { FcCheckmark } from "@react-icons/all-files/fc/FcCheckmark"
+import { animated, useSpring } from "@react-spring/web"
+import TokenFactory from "../../abis/TokenFactory.json"
+import StandardToken from "../../abis/StandardToken.json"
+import FotToken from "../../abis/FotToken.json"
+import { navigate } from "gatsby-link"
 
 export const CartWindow = ({ setCartDisplay, isActive }) => {
   return (
@@ -223,7 +235,7 @@ const FeaturesSelected = () => {
       !!network &&
       (!!cartState.step3.auto_liquidation ||
         !!cartState.step3.rfi_rewards ||
-        !!cartState.step3.anti_whale_protection ||
+        !!cartState.step3.WHALE_PROTECTION ||
         !!cartState.step3.auto_burn ||
         !!cartState.step3.auto_charity) ? (
         <div className="cart-summary-container has-text-centered">
@@ -264,7 +276,7 @@ const FeaturesSelected = () => {
           ) : (
             ``
           )}
-          {!!cartState.step3.anti_whale_protection ? (
+          {!!cartState.step3.WHALE_PROTECTION ? (
             <div className="columns">
               <div className="column">
                 <GatsbyImage
@@ -274,7 +286,7 @@ const FeaturesSelected = () => {
                   className="cart-image"
                 />
               </div>
-              <div className="column">Anti Whale Protection</div>
+              <div className="column">Whale Protection</div>
               <div className="column">
                 {Steps.Step3.cardData[2].price[network] +
                   ` ` +
@@ -335,6 +347,7 @@ const FeaturesSelected = () => {
 const TotalFees = () => {
   const user = useAuthState()
   const cartState = useCartState()
+  const cartDispatcher = useCartDispatch()
   const [totalChargeableFees, setTotalChargeableFees] = React.useState(0.0)
   const [network, setNetwork] = React.useState(
     NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
@@ -364,7 +377,7 @@ const TotalFees = () => {
       if (!!cartState.step3.rfi_rewards) {
         totalFees += parseFloat(Steps.Step3.cardData[1].price[network])
       }
-      if (!!cartState.step3.anti_whale_protection) {
+      if (!!cartState.step3.WHALE_PROTECTION) {
         totalFees += parseFloat(Steps.Step3.cardData[2].price[network])
       }
       if (!!cartState.step3.auto_burn) {
@@ -377,6 +390,19 @@ const TotalFees = () => {
 
     setTotalChargeableFees(totalFees)
   }, [cartState])
+
+  React.useEffect(() => {
+    if (totalChargeableFees !== 0.0) {
+      cartDispatcher({
+        step: 4,
+        payload: {
+          totalCharge: {
+            fee: totalChargeableFees,
+          },
+        },
+      })
+    }
+  }, [totalChargeableFees])
   var image = useImageForData("sum.png")
 
   return (
@@ -393,7 +419,9 @@ const TotalFees = () => {
         </div>
         <div className="column">Your Total</div>
         <div className="column">
-          {totalChargeableFees + ` ` + network.toUpperCase()}
+          {parseFloat(totalChargeableFees).toFixed(4) +
+            ` ` +
+            network.toUpperCase()}
         </div>
       </div>
     </div>
@@ -401,9 +429,36 @@ const TotalFees = () => {
 }
 
 const DeployButton = () => {
+  const { account, library, chainId, error } = useWeb3React()
+  var providers = ethers.providers
+  var network = ethers.providers.getNetwork(TransactionNetworkNames[chainId])
+  var web3Provider = new providers.Web3Provider(library.provider, network)
   const cartState = useCartState()
-
   const [contractDeployable, setContractDeployable] = React.useState(false)
+  const [paymentCompleted, setPaymentCompleted] = React.useState(false)
+  const [coinBuilt, setCoinBuilt] = React.useState(false)
+  const [
+    chargeFeeAndDeployContract,
+    setChargeFeeAndDeployContract,
+  ] = React.useState(false)
+
+  const [txnHash, setTxnHash] = React.useState(null)
+  const [tokenAddress, setTokenAddress] = React.useState(null)
+  const [pairAddress, setPairAddress] = React.useState(null)
+  const [fotFees, setFotFees] = React.useState([0.0, 0.0, 0.0, 0.0])
+  const [txnError, setTxnError] = React.useState({
+    type: null,
+    errorBody: null,
+  })
+  const [dashboardAvailable, setDashboardAvailable] = React.useState(false)
+  console.log(process.env.GATSBY_TOKEN_FACTORY_ADDRS)
+  const tokenFactory = process.env.GATSBY_TOKEN_FACTORY_ADDRS
+  const factoryContract = new ethers.Contract(
+    tokenFactory,
+    TokenFactory.abi,
+    library
+  )
+  const factoryWithSigner = factoryContract.connect(library.getSigner(account))
 
   React.useEffect(() => {
     if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
@@ -431,6 +486,224 @@ const DeployButton = () => {
       }
     }
   }, [cartState])
+  React.useEffect(() => {
+    if (!!txnHash) {
+      getTxnReceipt()
+    }
+  }, [txnHash])
+  React.useEffect(() => {
+    if (chargeFeeAndDeployContract) {
+      chargeFeeAndGetTransactionDetails()
+    }
+  }, [chargeFeeAndDeployContract, library, account, cartState])
+  React.useEffect(() => {
+    if (paymentCompleted) {
+      if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
+        makeStandardCoin()
+      } else if (
+        cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER
+      ) {
+        makeFeeOnTransferCoin()
+      }
+    }
+  }, [paymentCompleted])
+  React.useEffect(() => {
+    if (!!tokenAddress) {
+      if (
+        cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE &&
+        cartState.step2.dexSelected
+      ) {
+        getPairAddress()
+      } else if (
+        cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER
+      ) {
+        getPairAddress()
+      }
+    }
+  }, [tokenAddress])
+  React.useEffect(() => {
+    if (
+      contractDeployable &&
+      cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER
+    ) {
+      var newArray = Array.from(fotFees)
+      if (!!cartState.step3.auto_liquidation) {
+        newArray[0] = parseInt(cartState.step3.auto_liquidation)
+      }
+      if (!!cartState.step3.rfi_rewards) {
+        newArray[1] = parseInt(cartState.step3.rfi_rewards)
+      }
+      if (!!cartState.step3.auto_burn) {
+        newArray[2] = parseInt(cartState.step3.auto_burn)
+      }
+      if (!!cartState.step3.auto_charity) {
+        newArray[3] = parseInt(cartState.step3.auto_charity)
+      }
+      setFotFees(newArray)
+    }
+  }, [contractDeployable, cartState])
+
+  React.useEffect(() => {
+    if (coinBuilt) {
+      setDashboardAvailable(true)
+    }
+  }, [coinBuilt])
+
+  async function getTxnReceipt() {
+    var result = null
+    try {
+      while (result === null) {
+        result = await web3Provider.getTransactionReceipt(txnHash)
+
+        console.log(result)
+      }
+    } catch (error) {
+      console.log("ERROR 1: ", error)
+    }
+    if (result !== null && result.status === 1) {
+      setPaymentCompleted(true)
+    }
+  }
+
+  async function chargeFeeAndGetTransactionDetails() {
+    const txn = {
+      from: account,
+      to: process.env.GATSBY_PAYMENT_WALLET,
+      value: ethers.utils
+        .parseEther(cartState.totalCharge.fee.toString())
+        .toHexString(),
+    }
+    try {
+      const txnResponse = await library.getSigner(account).sendTransaction(txn)
+      console.log("Transaction Response", txnResponse)
+      setTxnHash(txnResponse.hash)
+    } catch (error) {
+      console.log("Error Occurred: ", error)
+      if (error.code === 4001) {
+        setTxnError({ type: "Payment Rejected Error", errorBody: error })
+      } else {
+        setTxnError({ type: "Generic Error", errorBody: error })
+      }
+    }
+  }
+
+  async function makeStandardCoin() {
+    var dexAddress = process.env.GATSBY_UNISWAP_ROUTER
+    if (chainId === NetworkConstants.SMART_CHAIN_TESTNET) {
+      dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER_BNBT
+    } else if (chainId === NetworkConstants.SMART_CHAIN_MAINNET) {
+      dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER
+    }
+    try {
+      const tx = await factoryWithSigner.createStandardToken(
+        cartState.step2.tokenName,
+        cartState.step2.tokenSymbol,
+        parseFloat(cartState.step2.tokenSupplyNumber) *
+          NumberMap[cartState.step2.tokenSupplyUnits],
+        cartState.step2.dexSelected,
+        dexAddress
+      )
+      await tx.wait()
+    } catch(error) {
+      console.log("Error occured in creating token", error)
+      if (error.code === 4001) {
+        setTxnError({ type: "Payment Rejected Error", errorBody: error })
+      } else {
+        setTxnError({ type: "Generic Error", errorBody: error })
+      }
+    }
+  }
+
+  async function makeFeeOnTransferCoin() {
+    var dexAddress = process.env.GATSBY_UNISWAP_ROUTER
+    if (chainId === NetworkConstants.SMART_CHAIN_TESTNET) {
+      dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER_BNBT
+    } else if (chainId === NetworkConstants.SMART_CHAIN_MAINNET) {
+      dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER
+    }
+    try {
+      const tx = await factoryWithSigner.createToken(
+        cartState.step2.tokenName,
+        cartState.step2.tokenSymbol,
+        parseFloat(cartState.step2.tokenSupplyNumber) *
+          NumberMap[cartState.step2.tokenSupplyUnits],
+        !!cartState.step3.WHALE_PROTECTION
+          ? cartState.step3.WHALE_PROTECTION
+          : 0.0,
+        fotFees,
+        cartState.step3.charity_address,
+        dexAddress
+      )
+      await tx.wait()
+    } catch (error) {
+      console.log("Error occured in creating token", error)
+      if (error.code === 4001) {
+        setTxnError({ type: "Payment Rejected Error", errorBody: error })
+      } else {
+        setTxnError({ type: "Generic Error", errorBody: error })
+      }
+    }
+  }
+
+  factoryContract.on(
+    "FotTokenCreated",
+    (owner, name, symbol, basicSupply, tokenType, contractAddress) => {
+      setTokenAddress(contractAddress)
+      setCoinBuilt(true)
+    }
+  )
+
+  factoryContract.on(
+    "StdTokenCreated",
+    (owner, name, symbol, basicSupply, tokenType, isPool, contractAddress) => {
+      setTokenAddress(contractAddress)
+      setCoinBuilt(true)
+    }
+  )
+
+  async function getPairAddress() {
+    var pairAddress = null
+    if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
+      const standardToken = new ethers.Contract(
+        tokenAddress,
+        StandardToken.abi,
+        library
+      )
+
+      try {
+        const standardTokenWithSigner = standardToken.connect(
+          library.getSigner()
+        )
+        pairAddress = await standardTokenWithSigner.pairAddress()
+      } catch (error) {
+        console.log("PAIR ADDRESS: ", error)
+        setTxnError({ type: "Pair Creation Error", errorBody: error })
+      }
+      console.log("PAIR ADDRESS: ", pairAddress)
+    } else if (cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER) {
+      const fotToken = new ethers.Contract(tokenAddress, FotToken.abi, library)
+
+      try {
+        const fotTokenWithSigner = fotToken.connect(library.getSigner())
+        pairAddress = await fotTokenWithSigner.pairAddress()
+      } catch (error) {
+        console.log("PAIR ADDRESS: ", error)
+      }
+    }
+    setPairAddress(pairAddress)
+  }
+
+  function openPaymentProcessWindow() {
+    setTxnError({type: null, errorBody: null})
+    setPaymentCompleted(false)
+    setCoinBuilt(false)
+    setPairAddress(null)
+    setTxnHash(null)
+    setTokenAddress(null)
+    setDashboardAvailable(false)
+    setChargeFeeAndDeployContract(true)
+  }
+
   return (
     <>
       <button
@@ -439,9 +712,274 @@ const DeployButton = () => {
         }`}
         type="button"
         disabled={!contractDeployable}
+        onClick={openPaymentProcessWindow}
       >
-        Deploy Contract
+        Pay and Make Coin
       </button>
+      <LoadingPaymentModal
+        isActive={chargeFeeAndDeployContract}
+        paymentCompleted={paymentCompleted}
+        coinBuilt={coinBuilt}
+        setChargeFeeAndDeployContract={setChargeFeeAndDeployContract}
+        txnHash={txnHash}
+        tokenAddress={tokenAddress}
+        pairAddress={pairAddress}
+        dashboardAvailable={dashboardAvailable}
+        txnError={txnError}
+      />
     </>
+  )
+}
+
+const DashboardButton = ({ dashboardAvailable }) => {
+  return (
+    <button
+      className={`button deploy-contract-button ${
+        dashboardAvailable ? "" : "inactive"
+      }`}
+      type="button"
+      disabled={!dashboardAvailable}
+      onClick={() => navigate("/dashboard/")}
+    >
+      Go To Dashboard
+    </button>
+  )
+}
+
+const CloseModalButton = ({ setChargeFeeAndDeployContract }) => {
+  return (
+    <button
+      className={`button deploy-contract-button`}
+      type="button"
+      onClick={() => setChargeFeeAndDeployContract(false)}
+    >
+      Close this window
+    </button>
+  )
+}
+
+const LoadingPaymentModal = ({
+  isActive,
+  paymentCompleted,
+  coinBuilt,
+  setChargeFeeAndDeployContract,
+  txnHash,
+  tokenAddress,
+  pairAddress,
+  dashboardAvailable,
+  txnError,
+}) => {
+  return (
+    <div className={`modal ${isActive ? "is-active" : ""}`}>
+      <div className="modal-background"></div>
+      <div className="modal-content wallet-choice-board">
+        <ModalContent
+          paymentCompleted={paymentCompleted}
+          coinBuilt={coinBuilt}
+          txnHash={txnHash}
+          tokenAddress={tokenAddress}
+          pairAddress={pairAddress}
+          dashboardAvailable={dashboardAvailable}
+          txnError={txnError}
+          setChargeFeeAndDeployContract={setChargeFeeAndDeployContract}
+        />
+        {/* <div className="modal-close-custom">
+          <button
+            className="button close-modal-button"
+            aria-label="close"
+            onClick={closeModal}
+          >
+            <span className="icon is-large">
+              <GoX />
+            </span>
+          </button>
+        </div> */}
+      </div>
+    </div>
+  )
+}
+const ModalContent = ({
+  paymentCompleted,
+  coinBuilt,
+  txnHash,
+  tokenAddress,
+  pairAddress,
+  dashboardAvailable,
+  txnError,
+  setChargeFeeAndDeployContract
+}) => {
+  const styles = useSpring({
+    loop: true,
+    to: [{ opacity: 1 }],
+    from: { opacity: 0 },
+    delay: 300,
+  })
+
+  const cartState = useCartState()
+
+  // React.useEffect(() => {
+
+  // })
+  return (
+    <div className="container">
+      <div className="columns">
+        <div className="column">
+          <span className="is-size-5" id="warning-payments">
+            Do Not Refresh or Close this window
+          </span>
+        </div>
+      </div>
+      <div className="columns">
+        <div className="column">
+          <span className="is-size-3">Your Transaction is Processing</span>
+        </div>
+      </div>
+      <div className="columns">
+        <div className="column">
+          <span className="is-size-5">
+            Please follow instructions on your wallet
+          </span>
+        </div>
+      </div>
+      {!!txnError.type ? (
+        <div className="columns">
+          <div className="column" id="error-box">
+            <span className="is-size-6">
+              {`An Error has Occurred`}
+              <br /> {`Error type: ` + txnError.type}
+              <br />
+              {`Please note down the Payment Transaction Hash if payment is processed`}<br />{`Else retry creating your coin`}
+            </span>
+          </div>
+        </div>
+      ) : (
+        ``
+      )}
+      <div className="columns">
+        <div className="column">
+          <span className="is-size-7">
+            <div className="columns">
+              <div className="column">
+                <span className="is-size-4">Payment</span>
+              </div>
+
+              {!paymentCompleted ? (
+                <>
+                  <div className="column">
+                    <span className="is-size-3">
+                      <AiOutlineCodeSandbox className="spinner" />
+                    </span>
+                  </div>
+                  <div className="column">
+                    <span className="is-size-5">
+                      <animated.div style={styles}>Pending</animated.div>
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="column">
+                    <span className="is-size-3">
+                      <FcCheckmark />
+                    </span>
+                  </div>
+                  <div className="column">
+                    <span className="is-size-5">Completed</span>
+                  </div>
+                </>
+              )}
+            </div>
+            <div className="columns">
+              <div className="column">
+                <span className="is-size-7">Payment Transaction Hash</span>
+              </div>
+              <div className="column">
+                <span className="is-size-6" id="txnHash">
+                  {txnHash}
+                </span>
+              </div>
+            </div>
+            {paymentCompleted ? (
+              <div className="columns">
+                <div className="column">
+                  <span className="is-size-4">Making Coin</span>
+                </div>
+
+                {!coinBuilt ? (
+                  <>
+                    <div className="column">
+                      <span className="is-size-3">
+                        <AiOutlineCodeSandbox className="spinner" />
+                      </span>
+                    </div>
+                    <div className="column">
+                      <span className="is-size-5">
+                        <animated.div style={styles}>Pending</animated.div>
+                      </span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="column">
+                      <span className="is-size-3">
+                        <FcCheckmark />
+                      </span>
+                    </div>
+                    <div className="column">
+                      <span className="is-size-5">Completed</span>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              ``
+            )}
+            <div className="columns">
+              <div className="column">
+                <span className="is-size-7">Your Coin Address</span>
+              </div>
+              <div className="column">
+                <span className="is-size-6" id="txnHash">
+                  {tokenAddress}
+                </span>
+              </div>
+            </div>
+            {!!pairAddress ? (
+              <div className="columns">
+                <div className="column">
+                  <span className="is-size-7">Your Dex Pool Address</span>
+                </div>
+                <div className="column">
+                  <span className="is-size-6" id="txnHash">
+                    {pairAddress}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              ``
+            )}
+          </span>
+        </div>
+      </div>
+
+      <div className="columns">
+        <div className="column">
+          <span className="is-size-7" id="warning-payments">
+            Please keep all the ADDRESSES & TRANSACTION HASH handy for future
+            reference
+          </span>
+        </div>
+      </div>
+      {!!txnError.type ? <div className="columns">
+        <div className="column">
+          <CloseModalButton setChargeFeeAndDeployContract={setChargeFeeAndDeployContract} />
+        </div>
+      </div>:<div className="columns">
+        <div className="column">
+          <DashboardButton dashboardAvailable={dashboardAvailable} />
+        </div>
+      </div>}
+      
+    </div>
   )
 }
