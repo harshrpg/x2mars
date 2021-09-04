@@ -1,45 +1,47 @@
 import * as React from "react"
+import ComingSoon from "../../../ComingSoon/comingSoon"
 
 import "./style.scss"
 
 const CommunityLaunchpad = () => {
+  const [isCommunityActive, _] = React.useState(false)
   return (
     <div className="has-text-centered">
       <div id="title">
         <span className="is-size-1">Launchpad</span>
       </div>
-      <CommunityLaunchpadContent />
+      {isCommunityActive ? <CommunityLaunchpadContent /> : <ComingSoon />}
     </div>
   )
 }
 
 const CommunityLaunchpadContent = () => {
-    const [coinsState, _] = React.useState({
-        coin1: {
-          Name: "Zapper",
-          Symbol: "ZPPR",
-          CirculatingSupply: "18 Billions",
-          Price: "0.64578$",
-          Holders: "151,768",
-          Type: "Simple",
-        },
-        coin2: {
-          Name: "Toesta",
-          Symbol: "TSTA",
-          CirculatingSupply: "13.4 Millions",
-          Price: "0.021$",
-          Holders: "98,266",
-          Type: "Simple",
-        },
-        coin3: {
-          Name: "Kliver",
-          Symbol: "KLV",
-          CirculatingSupply: "139,562",
-          Price: "0.00021$",
-          Holders: "13,900",
-          Type: "Fancy",
-        },
-      })
+  const [coinsState, _] = React.useState({
+    coin1: {
+      Name: "Zapper",
+      Symbol: "ZPPR",
+      CirculatingSupply: "18 Billions",
+      Price: "0.64578$",
+      Holders: "151,768",
+      Type: "Simple",
+    },
+    coin2: {
+      Name: "Toesta",
+      Symbol: "TSTA",
+      CirculatingSupply: "13.4 Millions",
+      Price: "0.021$",
+      Holders: "98,266",
+      Type: "Simple",
+    },
+    coin3: {
+      Name: "Kliver",
+      Symbol: "KLV",
+      CirculatingSupply: "139,562",
+      Price: "0.00021$",
+      Holders: "13,900",
+      Type: "Fancy",
+    },
+  })
   return (
     <div className="container is-fluid mycoins-container">
       <div className="columns">
@@ -129,4 +131,4 @@ const Coin = ({ coinData }) => {
   )
 }
 
-export default CommunityLaunchpad;
+export default CommunityLaunchpad

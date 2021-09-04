@@ -1,6 +1,6 @@
 @import "../../../style/index.scss";
 
-$sidebar-bg-color: $hero-image-float-text;
+$sidebar-bg-color: rgb(255, 255, 255);
 $submenu-bg-color: rgba(255, 255, 255, 0.05);
 $submenu-bg-color-collapsed: rgba(29, 29, 29, 0.95);
 $sidebar-color: #adadad;
@@ -200,4 +200,8 @@ $icon-size: 35px;
   border-radius: 15px;
   background: $unsucessful-color;
   color: $theme-white;
+}
+
+#sidebar {
+  border: 3px solid $primary-color;
 }
