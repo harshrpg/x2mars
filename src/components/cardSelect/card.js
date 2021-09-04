@@ -312,7 +312,13 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
   // STATE
   const [input, _] = React.useState(cardData.inputData[0])
   const [featureValue, setFeatureValue] = React.useState(null)
-  const [charityAddress, setCharityAddress] = React.useState(cartState.step3.charity_address)
+  const [charityAddress, setCharityAddress] = React.useState(
+    cartState.step3.charity_address !==
+      "0x000000000000000000000000000000000000dEaD"
+      ? cartState.step3.charity_address
+      : null
+  )
+  const [validCharityAddress, setValidCharityAddress] = React.useState(false)
 
   // EFFECTS
   React.useEffect(() => {
@@ -322,32 +328,32 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
         break
       case FeatureIds.RFI_STATIC_REWARDS:
         if (!selected) {
-          setFeatureValue("")  
+          setFeatureValue(null)
         } else {
           setFeatureValue(cartState.step3.rfi_rewards)
         }
         break
       case FeatureIds.WHALE_PROTECTION:
         if (!selected && input.idx !== undefined && input.idx === 2) {
-          setFeatureValue("")
+          setFeatureValue(null)
         } else if (selected && input.idx !== undefined && input.idx === 2) {
           setFeatureValue(cartState.step3.WHALE_PROTECTION)
         }
         break
       case FeatureIds.AUTO_BURN:
         if (!selected) {
-          setFeatureValue("")  
+          setFeatureValue(null)
         } else {
           setFeatureValue(cartState.step3.auto_burn)
         }
         break
       case FeatureIds.AUTO_CHARITY:
         if (!selected) {
-          setFeatureValue("")
+          setFeatureValue(null)
         } else {
           setFeatureValue(cartState.step3.auto_charity)
         }
-        
+
         break
       default:
         break
@@ -464,6 +470,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
     if (featureValue !== null) {
       dispatchValues(null)
       callback(null)
+      setCharityAddress(null)
     }
   }
 
@@ -473,6 +480,18 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
 
   React.useEffect(() => {
     if (!!charityAddress) {
+      var pattern = "^0x[a-fA-F0-9]{40}$"
+      var result = charityAddress.match(pattern)
+      if (result === null) {
+        setValidCharityAddress(false)
+      } else {
+        setValidCharityAddress(true)
+      }
+    }
+  }, [charityAddress])
+
+  React.useEffect(() => {
+    if (validCharityAddress) {
       cartDispatch({
         step: 3.7,
         payload: {
@@ -487,8 +506,23 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
           },
         },
       })
+    } else {
+      cartDispatch({
+        step: 3.7,
+        payload: {
+          step3: {
+            auto_liquidation: cartState.step3.auto_liquidation,
+            rfi_rewards: cartState.step3.rfi_rewards,
+            WHALE_PROTECTION: cartState.step3.WHALE_PROTECTION,
+            auto_burn: cartState.step3.auto_burn,
+            auto_charity: cartState.step3.auto_charity,
+            charity_address: "0x000000000000000000000000000000000000dEaD",
+            totalFees: cartState.step3.totalFees,
+          },
+        },
+      })
     }
-  }, [charityAddress])
+  }, [validCharityAddress])
 
   return (
     <>
@@ -501,7 +535,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
                   ? "disabled"
                   : input.idx === 2
                   ? "pre-selected"
-                  : featureValue !== null
+                  : featureValue !== null && featureValue !== ""
                   ? "success"
                   : ""
               }`}
@@ -527,40 +561,42 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
           </div>
         </div>
       </div>
-      
-      {input.idx === 4 ?
+
+      {input.idx === 4 ? (
         <div className="columns">
-        <div className="column">
-          <div className="centerinput">
-            <div
-              className={`input-block ${
-                !selected || disabled
-                  ? "disabled"
-                  : input.idx === 2
-                  ? "pre-selected"
-                  : featureValue !== null
-                  ? "success"
-                  : ""
-              }`}
-            >
-              <input
-                type="text"
-                onChange={handleCharityAddressChange}
-                id="featureInput"
-                required="required"
-                spellcheck="false"
-                disabled={disabled || !selected || input.idx === 2}
-                value={charityAddress}
-                pattern="^0x[a-fA-F0-9]{40}$"
-              />
-              <span className="placeholder">
-                Charity Address
-              </span>
+          <div className="column">
+            <div className="centerinput">
+              <div
+                className={`input-block ${
+                  !selected || disabled
+                    ? "disabled"
+                    : input.idx === 2
+                    ? "pre-selected"
+                    : featureValue !== null
+                    ? validCharityAddress
+                      ? "success"
+                      : ""
+                    : ""
+                }`}
+              >
+                <input
+                  type="text"
+                  onChange={handleCharityAddressChange}
+                  id="featureInput"
+                  required="required"
+                  spellcheck="false"
+                  disabled={disabled || !selected || input.idx === 2}
+                  value={charityAddress}
+                  pattern="^0x[a-fA-F0-9]{40}$"
+                />
+                <span className="placeholder">Charity Address</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-        : ``}
+      ) : (
+        ``
+      )}
     </>
   )
 }
