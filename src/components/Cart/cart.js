@@ -451,14 +451,10 @@ const DeployButton = () => {
     errorBody: null,
   })
   const [dashboardAvailable, setDashboardAvailable] = React.useState(false)
-  console.log(process.env.GATSBY_TOKEN_FACTORY_ADDRS)
-  const tokenFactory = process.env.GATSBY_TOKEN_FACTORY_ADDRS
-  const factoryContract = new ethers.Contract(
-    tokenFactory,
-    TokenFactory.abi,
-    library
+  const [factoryContractWithSigner, setFactoryContractWithSigner] = useState(
+    null
   )
-  const factoryWithSigner = factoryContract.connect(library.getSigner(account))
+  const tokenFactory = process.env.GATSBY_TOKEN_FACTORY_ADDRS
 
   React.useEffect(() => {
     if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
@@ -549,6 +545,20 @@ const DeployButton = () => {
     }
   }, [coinBuilt])
 
+  React.useEffect(() => {
+    if (!!account) {
+      const factoryContract = new ethers.Contract(
+        tokenFactory,
+        TokenFactory.abi,
+        library
+      )
+      const factoryWithSigner = factoryContract.connect(
+        library.getSigner(account)
+      )
+      setFactoryContractWithSigner(factoryWithSigner)
+    }
+  }, [])
+
   async function getTxnReceipt() {
     var result = null
     try {
@@ -597,10 +607,11 @@ const DeployButton = () => {
     if (
       !!cartState.step2.tokenName &&
       !!cartState.step2.tokenSupplyNumber &&
-      !!cartState.step2.dexSelected
+      !!cartState.step2.dexSelected &&
+      !!factoryContractWithSigner
     ) {
       try {
-        const tx = await factoryWithSigner.createStandardToken(
+        const tx = await factoryContractWithSigner.createStandardToken(
           cartState.step2.tokenName,
           cartState.step2.tokenSymbol,
           parseFloat(cartState.step2.tokenSupplyNumber) *
@@ -632,10 +643,11 @@ const DeployButton = () => {
       !!cartState.step2.tokenSymbol &&
       !!cartState.step2.tokenSupplyNumber &&
       !!fotFees &&
-      !!cartState.step3.charity_address
+      !!cartState.step3.charity_address &&
+      !!factoryContractWithSigner
     ) {
       try {
-        const tx = await factoryWithSigner.createToken(
+        const tx = await factoryContractWithSigner.createToken(
           cartState.step2.tokenName,
           cartState.step2.tokenSymbol,
           parseFloat(cartState.step2.tokenSupplyNumber) *
@@ -677,7 +689,10 @@ const DeployButton = () => {
 
   async function getPairAddress() {
     var pairAddress = null
-    if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE && !!tokenAddress) {
+    if (
+      cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE &&
+      !!tokenAddress
+    ) {
       const standardToken = new ethers.Contract(
         tokenAddress,
         StandardToken.abi,
