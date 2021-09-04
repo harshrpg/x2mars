@@ -604,29 +604,22 @@ const DeployButton = () => {
     } else if (chainId === NetworkConstants.SMART_CHAIN_MAINNET) {
       dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER
     }
-    if (
-      !!cartState.step2.tokenName &&
-      !!cartState.step2.tokenSupplyNumber &&
-      !!cartState.step2.dexSelected &&
-      !!factoryContractWithSigner
-    ) {
-      try {
-        const tx = await factoryContractWithSigner.createStandardToken(
-          cartState.step2.tokenName,
-          cartState.step2.tokenSymbol,
-          parseFloat(cartState.step2.tokenSupplyNumber) *
-            NumberMap[cartState.step2.tokenSupplyUnits],
-          cartState.step2.dexSelected,
-          dexAddress
-        )
-        await tx.wait()
-      } catch (error) {
-        console.log("Error occured in creating token", error)
-        if (error.code === 4001) {
-          setTxnError({ type: "Payment Rejected Error", errorBody: error })
-        } else {
-          setTxnError({ type: "Generic Error", errorBody: error })
-        }
+    try {
+      const tx = await factoryContractWithSigner.createStandardToken(
+        cartState.step2.tokenName,
+        cartState.step2.tokenSymbol,
+        parseFloat(cartState.step2.tokenSupplyNumber) *
+          NumberMap[cartState.step2.tokenSupplyUnits],
+        cartState.step2.dexSelected,
+        dexAddress
+      )
+      await tx.wait()
+    } catch (error) {
+      console.log("Error occured in creating token", error)
+      if (error.code === 4001) {
+        setTxnError({ type: "Payment Rejected Error", errorBody: error })
+      } else {
+        setTxnError({ type: "Generic Error", errorBody: error })
       }
     }
   }
@@ -638,35 +631,26 @@ const DeployButton = () => {
     } else if (chainId === NetworkConstants.SMART_CHAIN_MAINNET) {
       dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER
     }
-    if (
-      !!cartState.step2.tokenName &&
-      !!cartState.step2.tokenSymbol &&
-      !!cartState.step2.tokenSupplyNumber &&
-      !!fotFees &&
-      !!cartState.step3.charity_address &&
-      !!factoryContractWithSigner
-    ) {
-      try {
-        const tx = await factoryContractWithSigner.createToken(
-          cartState.step2.tokenName,
-          cartState.step2.tokenSymbol,
-          parseFloat(cartState.step2.tokenSupplyNumber) *
-            NumberMap[cartState.step2.tokenSupplyUnits],
-          !!cartState.step3.WHALE_PROTECTION
-            ? cartState.step3.WHALE_PROTECTION
-            : 0.0,
-          fotFees,
-          cartState.step3.charity_address,
-          dexAddress
-        )
-        await tx.wait()
-      } catch (error) {
-        console.log("Error occured in creating token", error)
-        if (error.code === 4001) {
-          setTxnError({ type: "Payment Rejected Error", errorBody: error })
-        } else {
-          setTxnError({ type: "Generic Error", errorBody: error })
-        }
+    try {
+      const tx = await factoryContractWithSigner.createToken(
+        cartState.step2.tokenName,
+        cartState.step2.tokenSymbol,
+        parseFloat(cartState.step2.tokenSupplyNumber) *
+          NumberMap[cartState.step2.tokenSupplyUnits],
+        !!cartState.step3.WHALE_PROTECTION
+          ? cartState.step3.WHALE_PROTECTION
+          : 0.0,
+        fotFees,
+        cartState.step3.charity_address,
+        dexAddress
+      )
+      await tx.wait()
+    } catch (error) {
+      console.log("Error occured in creating token", error)
+      if (error.code === 4001) {
+        setTxnError({ type: "Payment Rejected Error", errorBody: error })
+      } else {
+        setTxnError({ type: "Generic Error", errorBody: error })
       }
     }
   }
