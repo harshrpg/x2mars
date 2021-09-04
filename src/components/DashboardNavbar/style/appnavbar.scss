@@ -1,0 +1,97 @@
+@import "../../../style/index.scss";
+
+.navbar-item {
+  @include primaryFontFamily($textTransform: uppercase);
+}
+
+.navbar {
+  margin: 0.5rem;
+}
+
+.factory-title {
+  font-size: 2rem;
+  color: $charcoal !important;
+}
+
+@media screen and (min-width: 1024px) {
+  .navbar {
+    align-items: center !important;
+    display: flex;
+    margin: 2rem;
+    position: fixed;
+  }
+
+  .navbar-brand {
+    float: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .navbar-end {
+    align-items: center !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
+}
+
+@media screen and (max-width: 571px) {
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+.app-button {
+  padding: 1rem 2rem 1rem 2rem !important;
+  border-width: 3px !important;
+  border-color: $primary-color !important;
+}
+
+.app-button-withdata {
+  @include theme-button-filled($background-color: $secondary-color);
+  // padding: 1.5rem 2.2rem 1.5rem 2.2rem !important;
+  // border-width: 3px !important;
+  // border-color: $secondary-color !important;
+  // font-weight: bold;
+}
+
+.navbar-address-column {
+  font-size: 0.8rem;
+}
+
+.icon-profile {
+  font-size: 1rem;
+  color: white;
+}
+
+.account-address-button {
+  @include theme-button-filled($background-color: $secondary-color);
+  width: 100%;
+  width: -moz-available; /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+  width: fill-available;
+}
+
+.network-pill {
+  position: absolute;
+  top: 20%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+
+.networkName {
+  background-color: white;
+  padding: 0 0.2rem 0 0.2rem;
+}

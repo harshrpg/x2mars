@@ -208,5 +208,4 @@ const MakeYourCoinSelector = ({ customClickEvent }) => {
     </div>
   )
 }
-
 export default Interface

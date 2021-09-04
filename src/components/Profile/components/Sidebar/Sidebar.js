@@ -20,14 +20,23 @@ import {
 } from "react-pro-sidebar"
 import { NetworkIcon } from "../../../Icons/icons"
 import "./style/sidebar.scss"
-import { useProfileDispatch, useProfileState } from "../../../../context/context"
+import {
+  useProfileDispatch,
+  useProfileState,
+} from "../../../../context/context"
+import { useWeb3React } from "@web3-react/core"
+import WalletSelect from "../../../walletSelect/walletselect"
+import { NetworkConstants, NetworkFromChainId } from "../../../../util/Constants"
+import { useBalance } from "../../../../hooks/useNetwork"
 
 const SideBar = () => {
   const profile = useProfileState()
   const profileDispatch = useProfileDispatch()
 
   const [collapsed, setCollapsed] = React.useState(false)
-  const [sideBarActiveArray, setSideBarActiveArray] = React.useState(profile.profileSideBarSelection)
+  const [sideBarActiveArray, setSideBarActiveArray] = React.useState(
+    profile.profileSideBarSelection
+  )
   const collapseMenu = () => {
     setCollapsed(!collapsed)
   }
@@ -43,7 +52,7 @@ const SideBar = () => {
 
   React.useEffect(() => {
     profileDispatch({
-      sidebar: sideBarActiveArray
+      sidebar: sideBarActiveArray,
     })
   }, [sideBarActiveArray])
 
@@ -114,8 +123,8 @@ const SideBar = () => {
         </SidebarContent>
         <SidebarFooter>
           <Menu iconShape="square">
-            <MenuItem icon={<MdCreate />}>Create Contract</MenuItem>
-            <MenuItem icon={<FaHistory />}>History Transactions</MenuItem>
+            {/* <MenuItem icon={<MdCreate />}>Create Contract</MenuItem>
+            <MenuItem icon={<FaHistory />}>History Transactions</MenuItem> */}
             <MenuItem icon={<IoMdHelp />}>Help</MenuItem>
           </Menu>
         </SidebarFooter>
@@ -125,27 +134,70 @@ const SideBar = () => {
 }
 
 const ProfileHeader = () => {
+  const { active, account, chainId } = useWeb3React()
+  const [walletSelect, setWalletSelect] = React.useState(false)
+  const [cartDisplay, setCartDisplay] = React.useState(false)
+  const [cartError, setCartError] = React.useState(false)
+  const [network, setNetwork] = React.useState(NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM])
+
+  const [balance, setBalance] = React.useState()
+  const balanceHook = useBalance()
+  React.useEffect(() => {
+    if (!!balanceHook) {
+      setBalance(balanceHook)
+    }
+  }, [balanceHook])
+  React.useEffect(() => {
+    if (active && !!chainId) {
+      setNetwork(NetworkFromChainId[parseInt(chainId)])
+    }
+  }, [active, chainId])
   return (
     <>
       <div className="container">
-        <div className="columns">
-          <div className="column has-text-centered">
-            <span className="header-logo">
-              <span className="header-logo-text">
-                <NetworkIcon network="eth" />
+        {active ? (
+          <div className="columns">
+            <div className="column has-text-centered">
+              <span className="header-logo">
+                <span className="header-logo-text">
+                  <NetworkIcon network={network} />
+                </span>
               </span>
-            </span>
-          </div>
-          <div className="column">
-            <div className="columns">
-              <div className="column">Balance</div>
             </div>
-            <div className="columns">
-              <div className="column">Address</div>
+            <div className="column">
+              <div className="columns">
+                <div className="column">{balance + ` ` + network.toUpperCase()}</div>
+              </div>
+              <div className="columns">
+                <div className="column"><span>
+                {account.slice(0, 6) +
+                  "...." +
+                  account.substring(account.length - 3)}
+              </span></div>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="columns">
+            <div className="column has-text-centered">
+              <button
+                className="button is-light custom-button app-button"
+                type="button"
+                onClick={() => setWalletSelect(true)}
+              >
+                Connect Wallet
+              </button>
+            </div>
+          </div>
+        )}
       </div>
+      <WalletSelect
+        setWalletSelect={setWalletSelect}
+        isActive={walletSelect}
+        cartError={cartError}
+        setCartError={setCartError}
+        setCartDisplay={setCartDisplay}
+      />
     </>
   )
 }

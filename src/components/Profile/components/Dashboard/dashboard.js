@@ -1,12 +1,39 @@
+import { useWeb3React } from "@web3-react/core"
 import * as React from "react"
+import NonActiveSelectors from "../../../NonActiveSelector/nonActiveSelector"
+import { createClient } from "urql"
+
 import "./style.scss"
+import { _fetchData } from "@ethersproject/web"
+import {
+  NetworkConstants,
+  NetworkFromChainId,
+} from "../../../../util/Constants"
+
+const query = `
+        query {
+        createdCoins {
+            id,
+            coinAddress,
+            name,
+            symbol,
+            basicSupply,
+            isPool,
+            tokenType
+        }
+        dexPairs {
+            id,
+            pairAddress
+        }
+        }`
 const Dashboard = () => {
+  const { active, account } = useWeb3React()
   return (
     <div className="has-text-centered">
       <div id="title">
         <span className="is-size-1">Dashboard</span>
       </div>
-      <DashboardContent />
+      {active ? <DashboardContent /> : <NonActiveSelectors />}
     </div>
   )
 }
@@ -18,36 +45,102 @@ const DashboardContent = () => {
         <div className="column">
           <NumberOfCoinsView />
         </div>
-        <div className="column">
+        {/* <div className="column">
           <NumberOfHoldersView />
-        </div>
+        </div> */}
       </div>
-      <div className="columns">
+      {/* <div className="columns">
         <div className="column">
           <TotalCirculatingSupply />
         </div>
         <div className="column">
           <LargestCoinPrice />
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }
 
 const NumberOfCoinsView = () => {
+  const { active, account, chainId } = useWeb3React()
+  const [network, setNetwork] = React.useState()
+  const [apiUrl, setApiUrl] = React.useState(
+    process.env.GATSBY_GRAPH_API_URL_RINKEBY
+  )
+  const [client, setClient] = React.useState(null)
+  const [subgraphResponse, setSubgraphResponse] = React.useState(null)
+  const [coinsOwned, setCoinsOwned] = React.useState(0)
+
+  // React.useEffect(() => {
+  //   if (active && !!chainId) {
+  //     setNetwork(NetworkFromChainId[parseInt(chainId)])
+  //   }
+  // }, [active, chainId])
+
+  React.useEffect(() => {
+    if (chainId === NetworkConstants.RINKEBY) {
+      setApiUrl(process.env.GATSBY_GRAPH_API_URL_RINKEBY)
+    }
+  }, [chainId])
+
+  React.useEffect(() => {
+    if (!!apiUrl) {
+      setClient(
+        createClient({
+          url: apiUrl,
+        })
+      )
+    }
+  }, [apiUrl])
+
+  React.useEffect(() => {
+    if (!!client) {
+      fetchData()
+    }
+  }, [client])
+
+  React.useEffect(() => {
+    if (!!subgraphResponse && !!account) {
+      calculateNumberOfCoinsOwned()
+    }
+  }, [subgraphResponse, account])
+
+  async function fetchData() {
+    const response = await client.query(query).toPromise()
+    setSubgraphResponse(response)
+    console.log("response: ", response)
+  }
+
+  function calculateNumberOfCoinsOwned() {
+    var numberOfCoins = 0
+    const createdCoins = subgraphResponse.data.createdCoins
+    createdCoins.map((coin) => {
+      if (coin.id.toLowerCase() === account.toLowerCase()) {
+        numberOfCoins++
+      }
+    })
+    setCoinsOwned(numberOfCoins)
+  }
   return (
     <div className="container dashboard-view-box">
       <div className="columns">
         <div className="column">
+          <span className="is-size-3">
+            You Own
+          </span>
+        </div>
+      </div>
+      <div className="columns">
+        <div className="column">
           <div className="is-size-1">
-            <span>3</span>
+            <span>{coinsOwned}</span>
           </div>
         </div>
       </div>
       <div className="columns">
         <div className="column">
           <div className="is-size-4">
-            <span>Coins Owned</span>
+            <span>Coins</span>
           </div>
         </div>
       </div>
