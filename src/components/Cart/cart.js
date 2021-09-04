@@ -451,10 +451,15 @@ const DeployButton = () => {
     errorBody: null,
   })
   const [dashboardAvailable, setDashboardAvailable] = React.useState(false)
-  const [factoryContractWithSigner, setFactoryContractWithSigner] = useState(
+  const [factoryContractWithSigner, setFactoryContractWithSigner] = React.useState(
     null
   )
   const tokenFactory = process.env.GATSBY_TOKEN_FACTORY_ADDRS
+  const [factoryContract, _] = React.useState(new ethers.Contract(
+    tokenFactory,
+    TokenFactory.abi,
+    library
+  ))
 
   React.useEffect(() => {
     if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
@@ -491,9 +496,9 @@ const DeployButton = () => {
     if (chargeFeeAndDeployContract) {
       chargeFeeAndGetTransactionDetails()
     }
-  }, [chargeFeeAndDeployContract, library, account, cartState])
+  }, [chargeFeeAndDeployContract])
   React.useEffect(() => {
-    if (paymentCompleted) {
+    if (paymentCompleted && !!factoryContractWithSigner) {
       if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
         makeStandardCoin()
       } else if (
@@ -502,7 +507,7 @@ const DeployButton = () => {
         makeFeeOnTransferCoin()
       }
     }
-  }, [paymentCompleted])
+  }, [paymentCompleted, factoryContractWithSigner])
   React.useEffect(() => {
     if (!!tokenAddress) {
       if (
@@ -547,17 +552,12 @@ const DeployButton = () => {
 
   React.useEffect(() => {
     if (!!account) {
-      const factoryContract = new ethers.Contract(
-        tokenFactory,
-        TokenFactory.abi,
-        library
-      )
       const factoryWithSigner = factoryContract.connect(
         library.getSigner(account)
       )
       setFactoryContractWithSigner(factoryWithSigner)
     }
-  }, [])
+  }, [account, factoryContract])
 
   async function getTxnReceipt() {
     var result = null
