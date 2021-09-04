@@ -50,3 +50,7 @@
     left: 50%;
     transform: scale(0.8) translate(-50%, -50%);
 }
+
+.modal.is-active {
+    z-index: 9999 !important;
+}

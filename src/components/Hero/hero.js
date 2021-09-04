@@ -5,40 +5,40 @@ import { BgImage } from "gbimage-bridge"
 
 import "./style/hero.scss"
 import "./style/hero.css"
+import { useImageForData } from "../../hooks/useAllImages"
 
 const Hero = () => {
-  const { backgroundImage123 } = useStaticQuery(
-    graphql`
-    query {
-      backgroundImage123: file(relativePath: { eq: "Hero2.png" }) {
-        childImageSharp {
-          gatsbyImageData(
-            width: 1024
-            quality: 100
-            webpOptions: { quality: 100 }
-          )
-        }
-      }
-      backgroundImage123_mobile: file(relativePath: { eq: "Hero2.png" }) {
-        childImageSharp {
-          gatsbyImageData(
-            width: 320
-            height: 320
-            quality: 100
-            webpOptions: { quality: 100 }
-          )
-        }
-      }
-    }
-    `
-  )
+  // const { backgroundImage123 } = useStaticQuery(
+  //   graphql`
+  //   query {
+  //     backgroundImage123: file(relativePath: { eq: "Hero2.png" }) {
+  //       childImageSharp {
+  //         gatsbyImageData(
+  //           width: 1024
+  //           quality: 100
+  //           webpOptions: { quality: 100 }
+  //         )
+  //       }
+  //     }
+  //     backgroundImage123_mobile: file(relativePath: { eq: "Hero2.png" }) {
+  //       childImageSharp {
+  //         gatsbyImageData(
+  //           width: 320
+  //           height: 320
+  //           quality: 100
+  //           webpOptions: { quality: 100 }
+  //         )
+  //       }
+  //     }
+  //   }
+  //   `
+  // )
 
-  const pluginImage = getImage(backgroundImage123)
+  const pluginImage = useImageForData("hero.png")
   return (
     <section className="section">
       <div className="hero">
-        <BgImage image={pluginImage} className="hero-image">
-          <div className="centered has-text-left">
+      <div className="centered has-text-left">
             <div className="columns">
               <div className="column">
                 <div id="hero-banner-text-title">
@@ -65,7 +65,6 @@ const Hero = () => {
               </div>
             </div>
           </div>
-        </BgImage>
       </div>
     </section>
   )
