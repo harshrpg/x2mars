@@ -169,13 +169,13 @@ const ProfileButton = ({
       <div >
         <div className="columns profile-buttons">
           <div className="column balancediv" style={{ paddingRight: 0 }}>
-            <button className="button is-light custom-button2" type="button">
+            <button className="button is-light custom-button custom-button-network" type="button">
               <div>
                 <div className="columns balancedisplay">
                   <div className="column">
                     <NetworkIcon network={network} color="#807fc6"/>
                   </div>
-                  <div className="column balance" style={style}>
+                  <div className="column balance">
                     {balance}
                   </div>
                 </div>

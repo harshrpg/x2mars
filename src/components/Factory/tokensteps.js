@@ -478,7 +478,7 @@ const Step2 = props => {
       <div className="column">
         <StepTitle title={step.title} />
       </div>
-      <div className="column has-text-centered sub-title-container">
+      <div className="column has-text-centered sub-title-container update">
         <StepSubTitle
           subtitleMain={`Creating a ${TokenTypes[tokenType]}`}
           subtitleSub={`${
@@ -692,7 +692,7 @@ const Step3 = props => {
         <div className="column">
           <StepTitle title={step.title} />
         </div>
-        <div className="column has-text-centered sub-title-container">
+        <div className="column has-text-centered sub-title-container update">
           <StepSubTitle
             subtitleMain={`Creating a ${TokenTypes[tokenType]}`}
             subtitleSub={`${
@@ -1075,7 +1075,7 @@ const StepBreadCrumb = props => {
 const BreadCrumbButton = props => {
   return (
     <div
-      className={`button is-light custom-button-bottom app-button${
+      className={`button is-light custom-button custom-button-bottom app-button${
         props.disabled ? " disabled" : ""
       }${props.isSuccess ? " success" : ""}`}
       type="button"

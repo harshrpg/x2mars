@@ -34,7 +34,7 @@ const Card = props => {
     style = { opacity: 1 }
   }
   return (
-    <div className="conatiner card-container">
+    <div className="conatiner card-container mobileContainer">
       <div className="columns custom-card">
         <div className="column is-full">
           <div className="columns">
@@ -296,7 +296,7 @@ const Data = ({
         ``
       )}
       <div className="columns">
-        <div className="column">
+        <div className="column feeSpacing">
           {fees !== undefined ? <Fee fee={fees} network={network} /> : ``}
         </div>
       </div>
@@ -770,17 +770,17 @@ const CardTitle = ({ title, size }) => {
 const Fee = ({ fee, network }) => {
   return (
     <div className="container custom-container-fees">
-      <div className="columns">
-        <div className="column is-one-quarter is-half-mobile static-fee-column">
+      <div className="columns feesGroup">
+        <div className="column is-one-quarter is-half-mobile static-fee-column feeSpacing">
           <span className="is-size-7 is-size-8-mobile has-text-centered">
             Fees
           </span>
         </div>
         <div className="column">
-          <span className="is-size-6 is-size-7-mobile has-text-centered">
-            {fee}
-            {` `}
-            {fee !== "Free" ? (network === "eth" ? `ETH` : `BNB`) : ``}
+          <span className="is-size-6 is-size-7-mobile has-text-centered feeNetwork">
+            <span className="feeNumber">{fee}</span>
+            <span>{` `}</span>
+            <span className="feeMeasure">{fee !== "Free" ? (network === "eth" ? `ETH` : `BNB`) : ``}</span>
           </span>
         </div>
         <div className="column is-one-quarter">

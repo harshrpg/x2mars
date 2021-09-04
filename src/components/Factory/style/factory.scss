@@ -615,6 +615,12 @@
 }
 
 @media screen and (max-width: 768px) {
+
+  .update{
+    box-sizing: border-box !important;
+    font-size: 80% !important;
+  }
+
   .step-rows-bottom {
     display: flex !important;
     flex-wrap: wrap !important;
@@ -623,8 +629,27 @@
     padding: 0 !important;
 }
 
+.custom-step-title{
+  font-size: 80% !important;
+}
+
+.mobileContainer{
+  margin: 0% !important;
+}
+
 .custom-button-bottom{
   padding: 9% !important;
   margin: 0 !important;
 }
+
+.floating-warn{
+  top: 30%;
+  left: 10% !important;
+}
+
+.chevrons{
+  width: 50% !important;
+  margin-top: 10% !important;
+}
+
 }

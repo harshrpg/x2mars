@@ -180,3 +180,35 @@ img {
 .feestag{
   margin-left: 3%;
 }
+
+/*media queries*/
+@media screen and (max-width: 768px) {
+
+  .custom-container-fees{
+    margin: 0% !important;
+  }
+
+  .feeSpacing{
+    padding: 0% !important;
+    margin: 0% !important;
+  }
+
+  .feesGroup{
+    display: flex !important;
+  }
+
+  .feeNetwork{
+    display: flex !important;
+  }
+
+  .feeNumber{
+    font-size: larger !important;
+    font-weight: 600 !important;
+  }
+
+  .feeMeasure{
+    font-size: larger !important;
+    font-weight: 600 !important;
+    margin-left: 10% !important;
+  }
+}

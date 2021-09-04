@@ -35,6 +35,31 @@
 }
 
 @media screen and (max-width: 768px) {
+
+  #navbar-x2m{
+    background-color: rgb(252, 252, 252) !important;
+    box-shadow: none !important;
+  }
+
+  .navbar-x2m{
+    box-sizing: border-box !important;
+  }
+
+  .navbar-start{
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    font-size: small !important;
+  }
+
+  .app-button-footer{
+    font-size: 70% !important;
+  }
+
+  .dashboard-button{
+    font-size: 90% !important;
+  }
+
   .navbar {
     display: flex;
     align-items: center;
@@ -53,7 +78,7 @@
   }
 
   .cart-button{
-    width: 90%;
+    width: 80%;
     font-size: 80% !important;
   }
 
@@ -72,6 +97,7 @@
     float: right !important;
     margin-left: auto !important;
     padding: 0% !important;
+    width: 70% !important;
   }
 
   .balancedisplay{
@@ -85,7 +111,7 @@
     width: 40%;
   }
 
-  .custom-button2{
+  .custom-button-network{
     width: 90% !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -98,6 +124,29 @@
 
   .account-address-button{
     font-size: small !important;
+  }
+
+  .step-columns{
+    margin: 0 !important;
+  }
+
+  .fa-chevron-left{
+    margin: 0 !important;
+    position: fixed !important;
+    box-shadow: 5px 12px 5px 2px #c7c7c7 !important;
+    // position: sticky !important;
+    // position: -webkit-sticky !important;
+    // top: 0 !important; /* required */
+  }
+  
+  .fa-chevron-right{
+    margin: 0 !important;
+    position: fixed !important;
+    right: 10px !important;
+    box-shadow: 5px 2px 5px 12px #dfdfdf !important;
+    // position: sticky !important;
+    // position: -webkit-sticky !important;
+    // top: 0 !important; /* required */
   }
 }
 

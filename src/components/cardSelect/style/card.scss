@@ -206,3 +206,31 @@
   // background-color: #ffc421;
   color: #ffc421;
 }
+
+//media queries
+@media screen and (max-width: 768px) {
+
+  .feesGroup{
+    display: flex !important;
+  }
+
+  .feeSpacing{
+    padding: 0% !important;
+    margin: 0% !important;
+  }
+
+  .feeNetwork{
+    display: flex !important;
+  }
+
+  .feeNumber{
+    font-size: larger !important;
+    font-weight: 600 !important;
+  }
+
+  .feeMeasure{
+    font-size: larger !important;
+    font-weight: 600 !important;
+    margin-left: 10% !important;
+  }
+}
