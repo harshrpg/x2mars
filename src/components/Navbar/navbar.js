@@ -12,7 +12,9 @@ const Navbar = () => {
         <Logo data-testid="navbarLogo" />
         <button
           onClick={() => setIsActive(!isActive)}
-          className={`hamburger hamburger--emphatic ${isActive ? "is-active" : ""}`}
+          className={`hamburger hamburger--emphatic ${
+            isActive ? "is-active" : ""
+          }`}
           type="button"
           aria-label="menu"
           aria-expanded="false"
@@ -23,39 +25,32 @@ const Navbar = () => {
           </span>
         </button>
       </div>
-      <div id="navbar-x2m" className={`navbar-menu ${isActive ? "is-active" : ""}`}>
+      <div
+        id="navbar-x2m"
+        className={`navbar-menu ${isActive ? "is-active" : ""}`}
+      >
         <div className="navbar-start">
-          <Link
-            to="/"
-            className="navbar-item"
-            activeClassName="navbar-item"
-            data-testid="navbarAbout"
-          >
-            about
+          <Link to="/whitepaper" className="navbar-item" activeClassName="navbar-item">
+            about dac
           </Link>
-          <Link
+          {/* <Link
             to="/"
             className="navbar-item"
             activeClassName="navbar-item"
             data-testid="navbarBlog"
           >
             blog
-          </Link>
-          <Link
-            to="/whitepaper"
+          </Link> */}
+          {/* <Link
+            to="/"
             className="navbar-item"
             activeClassName="navbar-item"
             data-testid="navbarPaper"
           >
             whitepaper
-          </Link>
-          <Link
-            to="/"
-            className="navbar-item"
-            activeClassName="navbar-item"
-            data-testid="navbarBuy"
-          >
-            buy x2m
+          </Link> */}
+          <Link to="/token-guide" className="navbar-item" activeClassName="navbar-item">
+            token guide
           </Link>
           <Link
             to="/interface"
@@ -68,30 +63,72 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="navbar-end">
-          <Link to="/" data-testid="navbarTelegram" className="navbar-item" activeClassName="navbar-item">
-          
-            <FontAwesomeIcon icon={["fab", "telegram-plane"]} />
-          </Link>
-          <Link to="/" data-testid="navbarMedium" className="navbar-item" activeClassName="navbar-item">
-          
-            <FontAwesomeIcon icon={["fab", "medium-m"]} />
-          </Link>
-          <Link to="/" data-testid="navbarTwitter" className="navbar-item" activeClassName="navbar-item">
-          
-            <FontAwesomeIcon icon={["fab", "twitter"]} />
-          </Link>
-          <Link to="/" data-testid="navbarDiscord" className="navbar-item" activeClassName="navbar-item">
-          
-            <FontAwesomeIcon icon={["fab", "discord"]} />
-          </Link>
-          <Link to="/" data-testid="navbarYoutube" className="navbar-item" activeClassName="navbar-item">
-          
-            <FontAwesomeIcon icon={["fab", "youtube"]} />
-          </Link>
-          <Link to="/" data-testid="navbarFacebook" className="navbar-item" activeClassName="navbar-item">
-          
-            <FontAwesomeIcon icon={["fab", "facebook"]} />
-          </Link>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">Community</a>
+
+            <div class="navbar-dropdown">
+              <Link
+                to="/"
+                className="navbar-item"
+                activeClassName="navbar-item"
+              >
+                <span class="icon">
+                  <FontAwesomeIcon icon={["fab", "github"]} />
+                </span>
+                <span>GitHub</span>
+              </Link>
+              <Link
+                to="/"
+                className="navbar-item"
+                activeClassName="navbar-item"
+              >
+                <span class="icon">
+                  <FontAwesomeIcon icon={["fab", "medium-m"]} />
+                </span>
+                <span>Medium</span>
+              </Link>
+              <Link
+                to="/"
+                className="navbar-item"
+                activeClassName="navbar-item"
+              >
+                <span class="icon">
+                  <FontAwesomeIcon icon={["fab", "twitter"]} />
+                </span>
+                <span>Twitter</span>
+              </Link>
+              <Link
+                to="/"
+                className="navbar-item"
+                activeClassName="navbar-item"
+              >
+                <span class="icon">
+                  <FontAwesomeIcon icon={["fab", "discord"]} />
+                </span>
+                <span>Discord</span>
+              </Link>
+              <Link
+                to="/"
+                className="navbar-item"
+                activeClassName="navbar-item"
+              >
+                <span class="icon">
+                  <FontAwesomeIcon icon={["fab", "youtube"]} />
+                </span>
+                <span>Youtube</span>
+              </Link>
+              <Link
+                to="/"
+                className="navbar-item"
+                activeClassName="navbar-item"
+              >
+                <span class="icon">
+                  <FontAwesomeIcon icon={["fab", "facebook"]} />
+                </span>
+                <span>Facebook</span>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </nav>

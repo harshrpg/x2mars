@@ -62,12 +62,12 @@ const NonActiveSelectors = () => {
   const ReadAboutCoinMakerSelector = () => {
     const cmImage = useImageForData("cm.png")
     return (
-      <div className="container interface-view-box" onClick={() => navigate("/")}>
+      <div className="container interface-view-box" onClick={() => navigate("/whitepaper")}>
         <div className="columns">
           <div className="column">
             <GatsbyImage image={cmImage} width={2} height={2} />
           </div>
-          <div className="column">Read About Coin Maker</div>
+          <div className="column">Read About DAC</div>
         </div>
       </div>
     )

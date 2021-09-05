@@ -3,9 +3,9 @@ require("dotenv").config({
 })
 module.exports = {
   siteMetadata: {
-    title: `X2Mars - Worl's 1st Token Factory`,
+    title: `Create - Worl's 1st Token Factory`,
     description: `Kick off your next, great Fee-On-Transfer token`,
-    author: `@x2mars-community`,
+    author: `@Create-community`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

@@ -75,9 +75,9 @@ const DashboardNavbar = () => {
         >
           <div className="navbar-start">
             <div>
-              <Link to="/" className="navbar-start">
+              <Link to="/whitepaper" className="navbar-start">
                 <button className="button is-normal custom-button app-button-footer">
-                  About Coin Maker
+                  About DAC
                 </button>
               </Link>
             </div>

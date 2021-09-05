@@ -1,19 +1,38 @@
-import { GatsbyImage } from "gatsby-plugin-image"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import * as React from "react"
-import { useImageForData } from "../../hooks/useAllImages"
+import { graphql, useStaticQuery } from "gatsby"
 
 const ComingSoon = () => {
-  const comingSoonImage = useImageForData("cs.png")
+  const { backgroundImage123 } = useStaticQuery(
+    graphql`
+      query {
+        backgroundImage123: file(relativePath: { eq: "csp.png" }) {
+          childImageSharp {
+            gatsbyImageData(
+              width: 1300
+              quality: 100
+              webpOptions: { quality: 100 }
+            )
+          }
+        }
+      }
+    `
+  )
+
+  const heroImage = getImage(backgroundImage123)
   return (
     <div className="container">
       <div className="columns">
-        <div className="column is-size-1">
-          <GatsbyImage image={comingSoonImage} width={100} height={100} />
+      <div className="column">
+        <div className="columns">
+          <div className="column"><span className="is-size-1">Coming Soon</span></div>
         </div>
-      </div>
-      <div className="columns">
-        <div className="column">
-          <span className="is-size-3">Stay tuned</span>
+        <div className="columns">
+          <div className="column"><span className="is-size-4">Stay Tuned</span></div>
+        </div>
+        </div>
+        <div className="column is-size-1">
+          <GatsbyImage image={heroImage} width={100} height={100} />
         </div>
       </div>
     </div>
