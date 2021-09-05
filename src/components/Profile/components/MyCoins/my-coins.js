@@ -18,7 +18,8 @@ const query = `
             symbol,
             basicSupply,
             isPool,
-            tokenType
+            tokenType,
+            owner
         }
         dexPairs {
             id,
@@ -79,7 +80,7 @@ const MyCoins = () => {
     const newArray = new Array()
     createdCoins.map(coin => {
       const coinInfo = new Map()
-      if (coin.id.toLowerCase() === account.toLowerCase()) {
+      if (coin.owner.toLowerCase() === account.toLowerCase()) {
         coinInfo["name"] = coin.name
         coinInfo["symbol"] = coin.symbol
         coinInfo["basicSupply"] = coin.basicSupply
@@ -87,7 +88,7 @@ const MyCoins = () => {
         coinInfo["address"] = coin.coinAddress
         if (coin.isPool) {
           dexPairs.map(dexPairContent => {
-            if (dexPairContent.id === coin.coinAddress) {
+            if (dexPairContent.contract === coin.coinAddress) {
               coinInfo["dexAddress"] = dexPairContent.pairAddress
             }
           })

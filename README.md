@@ -154,4 +154,7 @@ Gatsby Cloud is an end-to-end cloud platform specifically built for the Gatsby f
 2. Create Profile page
 3. Create contract interaction page
 
+React spring cards for educational content
+https://www.crazycode.com/projects/react-spring-cards/
+
 --> LAUNCH

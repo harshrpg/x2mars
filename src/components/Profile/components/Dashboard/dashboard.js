@@ -19,7 +19,8 @@ const query = `
             symbol,
             basicSupply,
             isPool,
-            tokenType
+            tokenType,
+            owner
         }
         dexPairs {
             id,
@@ -115,7 +116,7 @@ const NumberOfCoinsView = () => {
     var numberOfCoins = 0
     const createdCoins = subgraphResponse.data.createdCoins
     createdCoins.map((coin) => {
-      if (coin.id.toLowerCase() === account.toLowerCase()) {
+      if (coin.owner.toLowerCase() === account.toLowerCase()) {
         numberOfCoins++
       }
     })

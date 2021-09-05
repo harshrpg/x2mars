@@ -46,3 +46,74 @@
   color: $theme-yellow;
 }
 
+.hero-page {
+  position: relative !important;
+  background-color: transparent !important;
+  color: $charcoal !important;
+}
+
+.hero-image {
+  position: absolute !important;
+  top: 5%;
+  right: 0%;
+}
+
+.hero-texts {
+  position: absolute !important;
+  top: 20% !important;
+  left: 5% !important;
+}
+
+.hero-sub-texts {
+  position: absolute;
+  width: 100%;
+  width: -moz-available; /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+  width: fill-available;
+  top: 40%;
+}
+
+.arrow-column {
+  width: auto;
+}
+
+
+.hero-main {
+  min-width: 100px;
+  padding: 0;
+  margin: 0 auto;
+  // height: 260px;
+}
+
+.transitionsItem {
+  overflow: hidden;
+  width: 100%;
+  color: white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  will-change: transform, opacity, height;
+  white-space: nowrap;
+  cursor: pointer;
+  // line-height: 80px;
+}
+
+.hero-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+}
+
+.animated-hero {
+  position: absolute;
+  white-space: nowrap !important;
+  top: 10% !important;
+  left: 5% !important;
+}
+
+@media screen and (max-width: 1700px) {
+  .hero-body-texts {
+    background-color: white !important;
+  }
+}
