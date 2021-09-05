@@ -37,6 +37,7 @@
     "gatsby-plugin-react-svg": "^3.0.1",
     "gatsby-plugin-sass": "^4.7.1",
     "gatsby-plugin-sharp": "^3.6.0",
+    "gatsby-plugin-testing": "^0.3.5",
     "gatsby-source-filesystem": "^3.6.0",
     "gatsby-transformer-sharp": "^3.6.0",
     "gbimage-bridge": "^0.1.4",
@@ -59,7 +60,14 @@
   },
   "devDependencies": {
     "@creativebulma/bulma-tooltip": "^1.2.0",
-    "prettier": "2.2.1"
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.0.0",
+    "babel-jest": "^26.6.3",
+    "babel-preset-gatsby": "^1.10.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^26.6.0",
+    "prettier": "2.2.1",
+    "react-test-renderer": "^17.0.2"
   },
   "keywords": [
     "gatsby"
@@ -72,7 +80,7 @@
     "start": "npm run develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+    "test": "jest --coverage"
   },
   "repository": {
     "type": "git",

@@ -43,7 +43,7 @@ const Features = () => {
             <StaticImage src="../../images/factory_alone.png" />
           </div>
         </div>
-        <SlideShow />
+         <SlideShow />
       </div>
     </section>
   )

@@ -166,16 +166,16 @@ const ProfileButton = ({
 
   return (
     <div style={{ position: "relative" }}>
-      <div className="conatiner">
-        <div className="columns">
-          <div className="column" style={{ paddingRight: 0 }}>
-            <button className="button is-light custom-button" type="button">
+      <div >
+        <div className="columns profile-buttons">
+          <div className="column balancediv" style={{ paddingRight: 0 }}>
+            <button className="button is-light custom-button custom-button-network" type="button">
               <div>
-                <div className="columns">
+                <div className="columns balancedisplay">
                   <div className="column">
                     <NetworkIcon network={network} color="#807fc6"/>
                   </div>
-                  <div className="column" >
+                  <div className="column balance">
                     {balance}
                   </div>
                 </div>
@@ -183,7 +183,7 @@ const ProfileButton = ({
             </button>
           </div>
 
-          <div className="column" style={{ paddingLeft: 0 }}>
+          <div className="column address" style={{ paddingLeft: 0 }}>
             <button
               className="button is-light custom-button account-address-button"
               type="button"

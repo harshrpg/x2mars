@@ -7,9 +7,9 @@ import "./style/navbar.scss"
 const Navbar = () => {
   const [isActive, setIsActive] = React.useState(false)
   return (
-    <nav className="navbar" role="navigation" aria-label="main navigation">
+    <nav data-testid="navbar" className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
-        <Logo />
+        <Logo data-testid="navbarLogo" />
         <button
           onClick={() => setIsActive(!isActive)}
           className={`hamburger hamburger--emphatic ${
@@ -37,6 +37,7 @@ const Navbar = () => {
             to="/"
             className="navbar-item"
             activeClassName="navbar-item"
+            data-testid="navbarBlog"
           >
             blog
           </Link> */}
@@ -44,6 +45,7 @@ const Navbar = () => {
             to="/"
             className="navbar-item"
             activeClassName="navbar-item"
+            data-testid="navbarPaper"
           >
             whitepaper
           </Link> */}
@@ -55,6 +57,7 @@ const Navbar = () => {
             className="navbar-item"
             activeClassName="navbar-item"
             type="openapp"
+            data-testid="navbarApp"
           >
             open app
           </Link>

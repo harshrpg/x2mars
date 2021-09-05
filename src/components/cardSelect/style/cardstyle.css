@@ -20,11 +20,10 @@ img {
   padding: 0 15px;
 }
 
-.selection-wrapper{
+.selection-wrapper {
   width: 100%;
   transition: 0.3s ease-in-out all;
   border: 2px solid rgb(92, 127, 243);
-  
 }
 
 .selection-wrapper:hover {
@@ -162,21 +161,67 @@ img {
   /* border: solid 4px #6566b9; */
 }
 
-
-.fees{
+.fees {
   text-align: left;
   padding: 0%;
   color: #000;
-  display:inline !important;
+  display: inline !important;
   border: solid 2px #000000;
 }
 
-.feeslabel{
+.feeslabel {
   margin-left: 3%;
   padding-right: 3%;
   border-right: solid 2px #000000;
 }
 
-.feestag{
+.feestag {
   margin-left: 3%;
+}
+
+.cart-summary-board {
+  background-color: white;
+  padding: 0 2rem 2rem 2rem;
+  width: 50% !important;
+  position: relative;
+  white-space: nowrap;
+  justify-content: center;
+}
+
+.modal-close-custom {
+  position: absolute;
+  top: 8%;
+  right: 0;
+  transform: translate(-50%, -50%);
+}
+
+/*media queries*/
+@media screen and (max-width: 768px) {
+  .custom-container-fees {
+    margin: 0% !important;
+  }
+
+  .feeSpacing {
+    padding: 0% !important;
+    margin: 0% !important;
+  }
+
+  .feesGroup {
+    display: flex !important;
+  }
+
+  .feeNetwork {
+    display: flex !important;
+  }
+
+  .feeNumber {
+    font-size: larger !important;
+    font-weight: 600 !important;
+  }
+
+  .feeMeasure {
+    font-size: larger !important;
+    font-weight: 600 !important;
+    margin-left: 10% !important;
+  }
 }

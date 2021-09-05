@@ -80,24 +80,24 @@ const ActiveSelectors = () => {
     <>
       {showSelector ? (
         <div>
-          <div className="columns has-text-centered">
+          <div className="columns has-text-centered cardSize">
             <div className="column">
               <span className="is-size-1">You can now</span>
             </div>
           </div>
-          <div className="columns has-text-centered">
+          <div className="columns has-text-centered cardSize">
             <div className="column">
               <MakeYourCoinSelector
                 customClickEvent={() => setShowSelector(false)}
               />
             </div>
           </div>
-          <div className="columns has-text-centered">
+          <div className="columns has-text-centered cardSize">
             <div className="column">
               <span className="is-size-1">Or</span>
             </div>
           </div>
-          <div className="columns has-text-centered">
+          <div className="columns has-text-centered cardSize">
             <div className="column">
               <DashboardSelector
                 customClickEvent={() => navigate("/dashboard/")}

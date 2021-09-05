@@ -46,6 +46,14 @@
   color: $theme-yellow;
 }
 
+.hero-body{
+  padding-left: 8% !important;
+}
+
+.hero-space{
+  padding: 6% 0 6% 0 !important;
+}
+
 .hero-page {
   position: relative !important;
   background-color: transparent !important;
@@ -54,7 +62,7 @@
 
 .hero-image {
   position: absolute !important;
-  top: 5%;
+  top: 0% !important;
   right: 0%;
 }
 
@@ -65,12 +73,7 @@
 }
 
 .hero-sub-texts {
-  position: absolute;
-  width: 100%;
-  width: -moz-available; /* WebKit-based browsers will ignore this. */
-  width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-  width: fill-available;
-  top: 40%;
+  padding-top: 2rem;
 }
 
 .arrow-column {
@@ -117,3 +120,14 @@
     background-color: white !important;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .hero-image {
+    top: 15% !important;
+  }
+  .hero-sub-texts {
+    padding-top: 6rem;
+  }
+}
+
+

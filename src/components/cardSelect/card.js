@@ -34,11 +34,11 @@ const Card = props => {
     style = { opacity: 1 }
   }
   return (
-    <div className="conatiner card-container">
+    <div className="conatiner card-container mobileContainer">
       <div className="columns custom-card">
         <div className="column is-full">
           <div className="columns">
-            <div className="column is-8">
+            <div data-testid="step-1" className="column is-8">
               {props.error !== null ? <ErrorBox error={props.error} /> : ``}
             </div>
             <div className="column is-4">
@@ -49,6 +49,23 @@ const Card = props => {
         {props.mandatory !== undefined ? (
           <div className="column is-full has-text-centered">
             <ShowCardSelectability isMandatory={props.mandatory} />
+          </div>
+        ) : (
+          ``
+        )}
+
+       {props.type === "select" || props.type === "feature-select" ? (
+          <div className="column is-full has-text-centered">
+            <AddToCartButton
+              selectionText={props.selectionText}
+              key={props.selected}
+              index={props.cardIndex}
+              selected={props.selected}
+              onPress={props.onPress}
+              isError={props.error !== null}
+              disabled={props.disabled}
+              isMandatory={props.mandatory}
+            />
           </div>
         ) : (
           ``
@@ -77,22 +94,7 @@ const Card = props => {
             />
           )}
         </div>
-        {props.type === "select" || props.type === "feature-select" ? (
-          <div className="column is-full has-text-centered">
-            <AddToCartButton
-              selectionText={props.selectionText}
-              key={props.selected}
-              index={props.cardIndex}
-              selected={props.selected}
-              onPress={props.onPress}
-              isError={props.error !== null}
-              disabled={props.disabled}
-              isMandatory={props.mandatory}
-            />
-          </div>
-        ) : (
-          ``
-        )}
+        
       </div>
     </div>
   )
@@ -201,23 +203,30 @@ const HelpButton = props => {
       </button>
       <div className={`modal ${isActive ? "is-active" : ""}`}>
         <div className="modal-background"></div>
-        <div className="modal-content">
+        <div className="modal-content file-summary-board">
           <HelpDescription cardData={props.cardData} />
+          <div className="modal-close-custom">
+            <button
+              className="button close-modal-button"
+              aria-label="close"
+              onClick={() => setIsActive(!isActive)}
+            >
+              <span className="icon is-large">
+                <GoX />
+              </span>
+            </button>
+          </div>
         </div>
-        <button
-          className="modal-close is-large"
-          aria-label="close"
-          onClick={() => setIsActive(!isActive)}
-        ></button>
       </div>
     </>
   )
 }
 
 const HelpDescription = props => {
+  const [isActive, setIsActive] = React.useState(false)
   return (
     <>
-      <div className="container modal-container is-clipped">
+      <div className="container has-text-centered">
         <div className="columns">
           <div className="column">
             <span className="is-size-2">{props.cardData.title}</span>
@@ -296,7 +305,7 @@ const Data = ({
         ``
       )}
       <div className="columns">
-        <div className="column">
+        <div className="column feeSpacing">
           {fees !== undefined ? <Fee fee={fees} network={network} /> : ``}
         </div>
       </div>
@@ -328,28 +337,28 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
         break
       case FeatureIds.RFI_STATIC_REWARDS:
         if (!selected) {
-          setFeatureValue(null)
+          setFeatureValue("")
         } else {
           setFeatureValue(cartState.step3.rfi_rewards)
         }
         break
       case FeatureIds.WHALE_PROTECTION:
         if (!selected && input.idx !== undefined && input.idx === 2) {
-          setFeatureValue(null)
+          setFeatureValue("")
         } else if (selected && input.idx !== undefined && input.idx === 2) {
           setFeatureValue(cartState.step3.WHALE_PROTECTION)
         }
         break
       case FeatureIds.AUTO_BURN:
         if (!selected) {
-          setFeatureValue(null)
+          setFeatureValue("")
         } else {
           setFeatureValue(cartState.step3.auto_burn)
         }
         break
       case FeatureIds.AUTO_CHARITY:
         if (!selected) {
-          setFeatureValue(null)
+          setFeatureValue("")
         } else {
           setFeatureValue(cartState.step3.auto_charity)
         }
@@ -470,7 +479,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
     if (featureValue !== null) {
       dispatchValues(null)
       callback(null)
-      setCharityAddress(null)
+      setCharityAddress("")
     }
   }
 
@@ -882,17 +891,17 @@ const CardTitle = ({ title, size }) => {
 const Fee = ({ fee, network }) => {
   return (
     <div className="container custom-container-fees">
-      <div className="columns">
-        <div className="column is-one-quarter is-half-mobile static-fee-column">
+      <div className="columns feesGroup">
+        <div className="column is-one-quarter is-half-mobile static-fee-column feeSpacing">
           <span className="is-size-7 is-size-8-mobile has-text-centered">
             Fees
           </span>
         </div>
         <div className="column">
-          <span className="is-size-6 is-size-7-mobile has-text-centered">
-            {fee}
-            {` `}
-            {fee !== "Free" ? (network === "eth" ? `ETH` : `BNB`) : ``}
+          <span className="is-size-6 is-size-7-mobile has-text-centered feeNetwork">
+            <span className="feeNumber">{fee}</span>
+            <span>{` `}</span>
+            <span className="feeMeasure">{fee !== "Free" ? (network === "eth" ? `ETH` : `BNB`) : ``}</span>
           </span>
         </div>
         <div className="column is-one-quarter">

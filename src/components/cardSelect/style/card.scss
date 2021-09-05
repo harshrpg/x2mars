@@ -206,3 +206,49 @@
   // background-color: #ffc421;
   color: #ffc421;
 }
+
+.file-summary-board {
+  border: 2px solid $primary-color !important;
+  background-color: white;
+  color: $charcoal;
+  padding: 0 2rem 2rem 2rem;
+  width: auto !important;
+  position: relative;
+  justify-content: center !important;
+}
+
+.modal-close-custom {
+  position: absolute;
+  top: 8%;
+  right: 0;
+  transform: translate(-50%, -50%);
+}
+
+//media queries
+@media screen and (max-width: 768px) {
+
+  .feesGroup{
+    display: flex !important;
+  }
+
+  .feeSpacing{
+    padding: 0% !important;
+    margin: 0% !important;
+  }
+
+  .feeNetwork{
+    display: flex !important;
+  }
+
+  .feeNumber{
+    font-size: larger !important;
+    font-weight: 600 !important;
+  }
+
+  .feeMeasure{
+    font-size: larger !important;
+    font-weight: 600 !important;
+    margin-left: 10% !important;
+  }
+}
+

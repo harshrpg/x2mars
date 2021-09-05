@@ -5,7 +5,7 @@ export const Steps = {
       {
         title: "Governance",
         description:
-          "Governance is a simple ERC-20 token governing purposes of your project",
+          "Governance is a simple ERC-20 token governing purposes of your project. These are cryptocurrencies that represent voting power on a blockchain project. With these tokens, one can create and vote on governance proposals.",
         type: "select",
         price: {
           eth: 2.0,
@@ -34,21 +34,21 @@ export const Steps = {
       {
         title: "Token Details",
         description:
-          "Token Name and Token Symbol are mandatory to create any contract based tokens",
+          "Token Name and Token Symbol are mandatory to create any contract based tokens. The symbol of the token contract is the symbol by which the token contract should be known, for example “MYT”. It is broadly equivalent to a stock ticker, and although it has no restriction on its size it is usually 3 or 4 characters in length.",
         type: "custom",
         id: "step2-1",
       },
       {
         title: "Token Supply",
         description:
-          "Token Supply is mandatory to create any contract based tokens",
+          "Token Supply is mandatory to create any contract based tokens. The tokken supply is the number of tokens that will be issued and will be in circulation.",
         type: "custom",
         id: "step2-2",
       },
       {
         title: "Create DEX Pool",
         description:
-          "DEX Pool allows you to create a pair of your token and the native coin for availing transactions of your coin. It is created for free when you are making a Fee On Transfer token",
+          "A decentralized exchange (better known as a DEX) is a peer-to-peer marketplace where transactions occur directly between crypto traders. DEX Pool allows you to create a pair of your token and the native coin for availing transactions of your coin. It is created for free when you are making a Fee On Transfer token. ",
         type: "select",
         price: {
           eth: 0.2,
@@ -110,7 +110,7 @@ export const Steps = {
       {
         title: "Whale Protection",
         description:
-          "A limit is imposed on the number of tokens that can be included per transaction",
+          "A limit is imposed on the number of tokens that can be included per transaction. This avoids market manipulation and helps identify patterns around it.",
         type: "feature-select",
         price: {
           eth: 0.2,
@@ -129,7 +129,7 @@ export const Steps = {
       },
       {
         title: "Automatic Burn per Transaction",
-        description: "A certain fee of every transaction is burned",
+        description: "A certain fee of every transaction is burned. 'Burning' a coin, in terms of cryptocurrency, refers to sending an otherwise usable token (or fraction thereof) to an unusable account. The act of burning effectively removes tokens from the available supply, increasing its relative scarcity.",
         type: "feature-select",
         price: {
           eth: 0.2,
