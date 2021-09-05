@@ -125,7 +125,7 @@ const SideBar = () => {
           <Menu iconShape="square">
             {/* <MenuItem icon={<MdCreate />}>Create Contract</MenuItem>
             <MenuItem icon={<FaHistory />}>History Transactions</MenuItem> */}
-            <MenuItem icon={<IoMdHelp />}>Help</MenuItem>
+            <MenuItem icon={<IoMdHelp />} onClick={() => setSideBarActiveState(6)}>Help</MenuItem>
           </Menu>
         </SidebarFooter>
       </ProSidebar>

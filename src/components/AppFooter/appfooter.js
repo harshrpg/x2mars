@@ -44,7 +44,7 @@ const AppFooter = () => {
           </div>
 
           <div className="column mobile-column">
-            <button className="button is-light custom-button app-button-footer">
+            <button className="button is-light custom-button app-button-footer" onClick={() => navigate("/contact")}>
               CONTACT US
             </button>
           </div>
