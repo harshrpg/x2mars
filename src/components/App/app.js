@@ -8,14 +8,16 @@ import Newsletter from "../Newsletter/newsletter"
 import RoadMap from "../Roadmap/roadmap";
 import Pricing from "../pricing/pricing";
 import Timeline from "../Timeline/timeline";
+import Benefits from "../Benefits/benefits"
 
 const App = () => {
     
   return (
     <div>
       <Hero />
-      <Telegram />
-      <Features />
+      {/* <Telegram /> */}
+      {/* <Features /> */}
+      <Benefits />
       <Discord />
       <Pricing />
       <RoadMap />

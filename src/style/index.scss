@@ -71,4 +71,8 @@ $font-color: $charcoal;
   // background-image: linear-gradient(to right, #fff, #99d9ee);
 }
 
+.orange-text {
+  color: $theme-orange !important;
+}
+
 @import "~bulma/bulma.sass";
