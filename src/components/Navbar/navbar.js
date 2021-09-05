@@ -42,7 +42,7 @@ const Navbar = () => {
             blog
           </Link>
           <Link
-            to="/"
+            to="/whitepaper"
             className="navbar-item"
             activeClassName="navbar-item"
             data-testid="navbarPaper"

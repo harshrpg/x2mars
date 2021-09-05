@@ -203,23 +203,30 @@ const HelpButton = props => {
       </button>
       <div className={`modal ${isActive ? "is-active" : ""}`}>
         <div className="modal-background"></div>
-        <div className="modal-content">
+        <div className="modal-content file-summary-board">
           <HelpDescription cardData={props.cardData} />
+          <div className="modal-close-custom">
+            <button
+              className="button close-modal-button"
+              aria-label="close"
+              onClick={() => setIsActive(!isActive)}
+            >
+              <span className="icon is-large">
+                <GoX />
+              </span>
+            </button>
+          </div>
         </div>
-        <button
-          className="modal-close is-large"
-          aria-label="close"
-          onClick={() => setIsActive(!isActive)}
-        ></button>
       </div>
     </>
   )
 }
 
 const HelpDescription = props => {
+  const [isActive, setIsActive] = React.useState(false)
   return (
     <>
-      <div className="container modal-container is-clipped">
+      <div className="container has-text-centered">
         <div className="columns">
           <div className="column">
             <span className="is-size-2">{props.cardData.title}</span>
