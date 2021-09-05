@@ -1,3 +1,4 @@
+import { useWeb3React } from "@web3-react/core"
 import * as React from "react"
 import Switch from "react-switch"
 
@@ -13,15 +14,11 @@ const Settings = () => {
 }
 
 const SettingsContent = () => {
+  const {active} = useWeb3React()
   const [darkMode, setDarkModeSelected] = React.useState(false)
-  const [walletConnected, setWalletConnected] = React.useState(true)
 
   function handleDarkModeChange(checked) {
     setDarkModeSelected(checked)
-  }
-
-  function handleWalletConnectedChange(checked) {
-    setWalletConnected(checked)
   }
   return (
     <div className="container">
@@ -58,7 +55,7 @@ const SettingsContent = () => {
               checkedIcon={false}
               uncheckedIcon={false}
               onChange={handleDarkModeChange}
-              checked={walletConnected}
+              checked={active}
               onColor="#219de9"
               offColor="#bbbbbb"
             />

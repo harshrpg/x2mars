@@ -39,7 +39,7 @@ const Why = () => {
                 <div className="column">
                   <span className="is-size-5">
                     Create uses an autonoumous coin making system deployed on
-                    both Ethereum and Binance Smart Chain. We call it{" "}
+                    both Ethereum and Binance Smart Chain. We call it the{" "}
                     <Link to="/">
                       <span className="orange-text">
                         Decentralized Autonomous Crypto Maker
