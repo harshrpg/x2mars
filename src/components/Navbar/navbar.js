@@ -47,7 +47,7 @@ const Navbar = () => {
           >
             whitepaper
           </Link> */}
-          <Link to="/" className="navbar-item" activeClassName="navbar-item">
+          <Link to="/token-guide" className="navbar-item" activeClassName="navbar-item">
             token guide
           </Link>
           <Link
