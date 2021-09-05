@@ -15,7 +15,7 @@ const Hero = () => {
         backgroundImage123: file(relativePath: { eq: "hero.png" }) {
           childImageSharp {
             gatsbyImageData(
-              width: 1300
+              width: 1100
               quality: 100
               webpOptions: { quality: 100 }
             )
@@ -28,11 +28,12 @@ const Hero = () => {
   const heroImage = getImage(backgroundImage123)
   return (
     <>
-      <section className="hero is-large is-info hero-page">
+      <section className="hero is-small is-info hero-page">
         <div class="hero-body">
-          <div className="columns">
-            <div className="column hero-body-texts">
-              <div className="hero-texts">
+          <div className="columns hero-page">
+            {/* <div className="column hero-body-texts"> */}
+            <div className="column">
+              <div className="hero-space">
                 <span className="is-size-1">
                   Create Your Own <span className="orange-text">Economy</span>
                 </span>
@@ -42,7 +43,7 @@ const Hero = () => {
                 <div className="columns">
                   <div className="column">
                     <div className="columns">
-                      <div className="column is-4">
+                      <div className="column">
                         <span className="is-size-4">
                           Unleash the power of blockchain to build a strong
                           market position for your business
@@ -58,8 +59,8 @@ const Hero = () => {
                         <HiArrowNarrowRight />
                         {` `}
                       </div>
-                      <div className="column is-4">
-                        <span className="is-size-6">
+                      <div className="column">
+                        <span className="is-size-6 hero-text-background">
                           Use your custom crypto coins to build a stronger & a
                           larger community using the power of decentralization
                         </span>
@@ -74,8 +75,8 @@ const Hero = () => {
                         <HiArrowNarrowRight />
                         {` `}
                       </div>
-                      <div className="column is-4">
-                        <span className="is-size-6">
+                      <div className="column">
+                        <span className="is-size-6 is-size-6-mobile">
                           Build your coins on multiple blockchain platforms
                         </span>
                       </div>
@@ -89,8 +90,8 @@ const Hero = () => {
                         <HiArrowNarrowRight />
                         {` `}
                       </div>
-                      <div className="column is-4">
-                        <span className="is-size-6">
+                      <div className="column">
+                        <span className="is-size-6 is-size-6-mobile">
                           Select between Governance DAO Coins or more advanced Fee
                           based crypto coins
                         </span>
@@ -105,8 +106,8 @@ const Hero = () => {
                         <HiArrowNarrowRight />
                         {` `}
                       </div>
-                      <div className="column is-4">
-                        <span className="is-size-6">
+                      <div className="column">
+                        <span className="is-size-6 is-size-6-mobile">
                           Use the first{" "}
                           <Link to="/">
                             <span className="orange-text">

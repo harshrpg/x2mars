@@ -49,3 +49,14 @@ $yellow: #f7bb60;
 }
 
 }
+
+@media screen and (max-width: 768px) {
+
+    .is-size-6{
+      font-size: 0.5em !important;
+    }
+
+    .hero-body-resize{
+        font-size: 5% !important;
+      }
+}

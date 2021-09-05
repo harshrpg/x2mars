@@ -65,14 +65,14 @@ const Benefits = () => {
           <div className="column">
             <div className="columns">
               <div className="column">
-                <span className="is-size-4">
+                <span className="is-size-4 hero-body-resize">
                   Benefits of having your own currency
                 </span>
               </div>
             </div>
             <div className="columns">
               <div className="column">
-                <div className="is-size-6">
+                <div className="is-size-6 hero-body-resize">
                   <ul>
                     {imageContent.map((content, idx) => (
                       <li
