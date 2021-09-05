@@ -1,9 +1,10 @@
 import React from "react"
 import "bulma/css/bulma.css"
 import "@fortawesome/fontawesome-free/css/all.min.css"
-import { Link } from "gatsby"
+import { Link, navigate } from "gatsby"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import "./style/appfooter.scss"
+
 
 const AppFooter = () => {
   return (
@@ -11,12 +12,12 @@ const AppFooter = () => {
       <div className="container content has-text-centered">
         <div className="columns is-mobile is-multiline">
           <div className="column is-full-mobile is-one-quarter-desktop mobile-column">
-            <h6 style={{ fontWeight: "bolder" }}>X2MARS LLC Corporation</h6>
+            <h6 style={{ fontWeight: "bolder" }}>Create LLC Corporation</h6>
             <p>Terms & Conditions</p>
           </div>
 
           <div className="column mobile-column">
-            <button className="button is-normal custom-button app-button-footer">
+            <button className="button is-normal custom-button app-button-footer" onClick={() => navigate("/whitepaper")}>
               WHITEPAPER
             </button>
           </div>

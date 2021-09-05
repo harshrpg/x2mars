@@ -8,7 +8,7 @@ const delay = 4500
 const imageContent = [
   "Fill a simple form to provide token details",
   "Connect your wallet and deploy contract",
-  "Grow your business with X2Mars Launchpad",
+  "Grow your business with Create Launchpad",
 ]
 
 const SlideShow = () => {

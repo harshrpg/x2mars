@@ -1,0 +1,10 @@
+@import "../../../style/index.scss";
+
+.note{
+    border: 2px solid $charcoal;
+    background-color: rgba(255, 192, 32, 0.377);
+    border-radius: 5px;
+    padding: 2rem;
+    color: $charcoal;
+    margin: 1rem;
+}

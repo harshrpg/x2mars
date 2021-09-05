@@ -8,8 +8,8 @@ export const Steps = {
           "Governance is a simple ERC-20 token governing purposes of your project",
         type: "select",
         price: {
-          eth: 1.0,
-          bnb: 10.0,
+          eth: 2.0,
+          bnb: 12.0,
         },
         img: "gtoken.png",
         selected: true,
@@ -21,7 +21,7 @@ export const Steps = {
         type: "select",
         price: {
           eth: 5.0,
-          bnb: 15.0,
+          bnb: 28.0,
         },
         img: "fotoken.png",
         selected: false,
@@ -52,7 +52,7 @@ export const Steps = {
         type: "select",
         price: {
           eth: 0.2,
-          bnb: 2,
+          bnb: 1,
         },
         img: {
           eth: "uni.png",
@@ -94,7 +94,7 @@ export const Steps = {
         type: "feature-select",
         price: {
           eth: 0.2,
-          bnb: 2,
+          bnb: 1,
         },
         inputData: [
           {
@@ -114,7 +114,7 @@ export const Steps = {
         type: "feature-select",
         price: {
           eth: 0.2,
-          bnb: 2,
+          bnb: 1,
         },
         inputData: [
           {
@@ -133,7 +133,7 @@ export const Steps = {
         type: "feature-select",
         price: {
           eth: 0.2,
-          bnb: 2,
+          bnb: 1,
         },
         inputData: [
           {
@@ -152,7 +152,7 @@ export const Steps = {
         type: "feature-select",
         price: {
           eth: 0.2,
-          bnb: 2,
+          bnb: 1,
         },
         inputData: [
           {
