@@ -14,7 +14,13 @@ const Newsletter = () => {
                 </span>
               </div>
               <div className="column">
-                <button className="button is-light custom-button community-mobile">Subscribe</button>
+                <input class="input" type="email" placeholder="Email" />
+                  {" "}
+              </div>
+              <div className="column">
+                <button className="button is-light custom-button community-mobile">
+                  Subscribe
+                </button>
               </div>
               {/* <div className="column">
                 <button className="button is-light">Join Telegram</button>
@@ -27,4 +33,4 @@ const Newsletter = () => {
   )
 }
 
-export default Newsletter;
+export default Newsletter

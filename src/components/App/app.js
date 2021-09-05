@@ -9,6 +9,7 @@ import RoadMap from "../Roadmap/roadmap";
 import Pricing from "../pricing/pricing";
 import Timeline from "../Timeline/timeline";
 import Benefits from "../Benefits/benefits"
+import Why from "../Why/why"
 
 const App = () => {
     
@@ -18,8 +19,9 @@ const App = () => {
       {/* <Telegram /> */}
       {/* <Features /> */}
       <Benefits />
-      <Discord />
-      <Pricing />
+      <Why />
+      {/* <Discord /> */}
+      {/* <Pricing /> */}
       <RoadMap />
       <Timeline />
       <Newsletter />

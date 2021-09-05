@@ -1,9 +1,16 @@
 import * as React from "react"
+import Layout from "../components/layout"
+import Seo from "../components/seo"
+import AboutDac from "../components/AboutDac/aboutDac"
+import { AuthProvider } from "../context"
 
 const Whitepaper = () => {
-    return (
-        <div>Test</div>
-    )
+  return (
+    <Layout>
+        <Seo title="whitepaper" />
+        <AboutDac />
+      </Layout>
+  )
 }
 
-export default Whitepaper;
+export default Whitepaper
