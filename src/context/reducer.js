@@ -1,6 +1,3 @@
-let user = localStorage.getItem("currentUser")
-  ? JSON.parse(localStorage.getItem("currentUser")).user
-  : ""
 
 let emptyUser = {
   account: "",
@@ -12,7 +9,7 @@ export const initialAuthState = {
     {
       account: "",
       balance: "",
-    } || user,
+    }
   chainId: "",
   loading: false,
   errorMessage: null,
