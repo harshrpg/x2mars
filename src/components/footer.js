@@ -38,16 +38,13 @@ const Footer = () => {
             <h6 className="title is-5">Resources</h6>
             <ul>
               <li>
-                <a href="/">Branding</a>
+                <a href="/whitepaper">About Dac</a>
               </li>
               <li>
-                <a href="/">Wallet Tracker</a>
+                <a href="/token-guide">Token Guide</a>
               </li>
               <li>
-                <a href="/">Contact</a>
-              </li>
-              <li>
-                <a href="/">White paper</a>
+                <a href="/contact">Contact</a>
               </li>
             </ul>
           </div>

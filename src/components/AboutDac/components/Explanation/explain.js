@@ -52,7 +52,7 @@ const Overview = () => {
           <div className="column">
             <span className="is-size-6">
               DAC has multiple components carefully interconnected with each
-              other to provide the best experiences to anyone who is looking to
+              other to provide the best experience to anyone who is looking to
               build their own crypto currency.{" "}
             </span>
           </div>
@@ -92,7 +92,7 @@ const Overview = () => {
               <div className="column is-1">
                 <HiArrowNarrowRight />
               </div>
-              <div className="column">Subgraph Blockchain Indexer</div>
+              <div className="column">Subgraph Transactions Indexer</div>
             </div>
             <div className="columns">
               <div className="column is-1">
@@ -152,8 +152,8 @@ const BlockchainSelector = () => {
       <div className="columns">
         <div className="column">
           <span className="is-size-5">
-            Once a wallet is connected, this component switches the app the
-            blockchain network supported by the wallet
+            Once a wallet is connected, this component switches the app to the
+            blockchain network currently active in the wallet
           </span>
         </div>
       </div>
@@ -216,11 +216,12 @@ const UserInputForm = () => {
       <div className="columns">
         <div className="column">
           <span className="is-size-5">
-            Building the coin is as simple as a 3 step procedure. By filling a
-            simple Input Form, the primary interface of DAC, anyone can create
-            their own crypto currency. Currently DAC supports creating two types
-            of coins. Form requires some additional inputs for Fee On Transfer
-            coins.
+            Building the coin is as simple as a 3 step procedure. The coin built
+            either follows ERC-20 or BEP-20 protocol depending on the network
+            selected. By filling a simple Input Form, the primary interface of
+            DAC, anyone can create their own crypto currency. Currently DAC
+            supports creating two types of coins. Form requires some additional
+            inputs for Fee On Transfer coins.
             <div className="container columns">
               <div className="column">
                 <div className="columns">
@@ -264,7 +265,7 @@ const UserInputForm = () => {
                 <div className="columns">
                   <div className="column">
                     Along with Governance DAO coins options, this coin provides
-                    more features that can be added to the contract
+                    more optional features that can be added to the contract
                   </div>
                 </div>
                 <div className="columns" style={{ marginLeft: "1rem" }}>
@@ -278,8 +279,8 @@ const UserInputForm = () => {
                     <HiArrowNarrowRight />
                   </div>
                   <div className="column">
-                    Fee charged per transaction is deposited back to the DEX pool
-                    created. This ensures a stable liquidity supply to the
+                    Fee charged per transaction is deposited back to the DEX
+                    pool created. This ensures a stable liquidity supply to the
                     market
                   </div>
                 </div>
@@ -366,7 +367,7 @@ const Subgraph = () => {
           </div>
         </div>
         <div className="columns">
-          <div className="column is-size-3">Subgraph Event Indexer</div>
+          <div className="column is-size-3">Subgraph Transactions Indexer</div>
         </div>
       </div>
       <div className="columns">
@@ -383,7 +384,7 @@ const Subgraph = () => {
 }
 
 const Dashboard = () => {
-    const image = useImageForData("DashboardAbout.png")
+  const image = useImageForData("DashboardAbout.png")
   return (
     <div className="container">
       <div className="title">
@@ -399,7 +400,8 @@ const Dashboard = () => {
       <div className="columns">
         <div className="column">
           <span className="is-size-5">
-            A place where the user can view their contracts and interact with them.
+            A place where the user can view their contracts and interact with
+            them.
           </span>
         </div>
       </div>

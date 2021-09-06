@@ -6,8 +6,8 @@ import { HiArrowNarrowRight } from "@react-icons/all-files/hi/HiArrowNarrowRight
 const delay = 4500
 const imageContent = [
   "Currency tailored to your needs",
-  "Use decentralization to grow your community",
-  "Crypto Incentives for your customers",
+  "Decentralization allows you to expand your community",
+  "Monetary gains and incentives for your loyal customers",
   "Stand out amongst your competition",
 ]
 
@@ -80,7 +80,7 @@ const Benefits = () => {
                           index === idx ? " is-explainer-active" : ""
                         }`}
                       >
-                        <div className="columns">
+                        <div className="columns" onClick={() => setIndex(idx)} style={{cursor: "pointer"}}>
                           <div className="column is-1">
                             <HiArrowNarrowRight />
                           </div>

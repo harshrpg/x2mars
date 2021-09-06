@@ -1,7 +1,9 @@
 import * as React from "react"
 import { useProfileState } from "../../../../context/context"
+import ComingSoon from "../../../ComingSoon/comingSoon"
 import CommunityLaunchpad from "../Community/community-launchpad"
 import Dashboard from "../Dashboard/dashboard"
+import Help from "../Help/help"
 import MyCoins from "../MyCoins/my-coins"
 import Settings from "../Settings/settings"
 
@@ -15,7 +17,7 @@ const Main = () => {
       {sideBarSelected[0] ? (
         <Dashboard />
       ) : sideBarSelected[1] ? (
-        <MyCoins/>
+        <MyCoins />
       ) : sideBarSelected[2] ? (
         <CommunityLaunchpad />
       ) : sideBarSelected[3] ? (
@@ -24,6 +26,8 @@ const Main = () => {
         `Earn`
       ) : sideBarSelected[5] ? (
         <Settings />
+      ) : sideBarSelected[6] ? (
+        <Help />
       ) : (
         `Error`
       )}

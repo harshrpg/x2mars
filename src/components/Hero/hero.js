@@ -7,7 +7,7 @@ import "./style/hero.scss"
 import "./style/hero.css"
 import { useImageForData } from "../../hooks/useAllImages"
 import { HiArrowNarrowRight } from "@react-icons/all-files/hi/HiArrowNarrowRight"
-
+import TextTransition, { presets } from "react-text-transition"
 const Hero = () => {
   const { backgroundImage123 } = useStaticQuery(
     graphql`
@@ -33,10 +33,17 @@ const Hero = () => {
           <div className="columns hero-page">
             {/* <div className="column hero-body-texts"> */}
             <div className="column">
-              <div className="hero-space">
-                <span className="is-size-1">
-                  Create Your Own <span className="orange-text">Economy</span>
-                </span>
+              <div className="columns">
+                <div className="column is-2" style={{ width: "auto", paddingRight: 0}}>
+                  <span className="is-size-1"><AnimatedText /></span>
+                </div>
+                <div className="column">
+                  <div className="hero-space">
+                    <span className="is-size-1">
+                      Your Own <span className="orange-text">Economy</span>
+                    </span>
+                  </div>
+                </div>
               </div>
 
               <div className="hero-sub-texts">
@@ -60,9 +67,8 @@ const Hero = () => {
                         {` `}
                       </div>
                       <div className="column">
-                        <span className="is-size-6 hero-text-background">
-                          Use your custom crypto coins to build a stronger & a
-                          larger community using the power of decentralization
+                        <span className="is-size-6 is-size-6-mobile">
+                          Build your Crypto Currency on multiple blockchain platforms
                         </span>
                       </div>
                     </div>
@@ -77,23 +83,8 @@ const Hero = () => {
                       </div>
                       <div className="column">
                         <span className="is-size-6 is-size-6-mobile">
-                          Build your coins on multiple blockchain platforms
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="columns">
-                  <div className="column">
-                    <div className="columns">
-                      <div className="column is-1" style={{ width: "auto" }}>
-                        <HiArrowNarrowRight />
-                        {` `}
-                      </div>
-                      <div className="column">
-                        <span className="is-size-6 is-size-6-mobile">
-                          Select between Governance DAO Coins or more advanced Fee
-                          based crypto coins
+                          Select between Governance DAO Coins or more advanced
+                          Fee on Transfer based crypto coins
                         </span>
                       </div>
                     </div>
@@ -109,12 +100,28 @@ const Hero = () => {
                       <div className="column">
                         <span className="is-size-6 is-size-6-mobile">
                           Use the first{" "}
-                          <Link to="/">
+                          <Link to="/whitepaper">
                             <span className="orange-text">
                               Decentralized Autonomous Crypto Maker
                             </span>
                           </Link>{" "}
                           to make your currency
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="columns">
+                  <div className="column">
+                    <div className="columns">
+                      <div className="column is-1" style={{ width: "auto" }}>
+                        <HiArrowNarrowRight />
+                        {` `}
+                      </div>
+                      <div className="column">
+                        <span className="is-size-6 hero-text-background">
+                          Use your crypto currency to build a stronger & a
+                          larger community using the power of decentralization
                         </span>
                       </div>
                     </div>
@@ -138,60 +145,37 @@ const Hero = () => {
 }
 
 const AnimatedText = () => {
-  const ref = React.useRef([])
-  const [items, setItems] = React.useState([])
-  // const transitions = useTransition(items, {
-  //   from: { opacity: 0 },
-  //   enter: { opacity: 1 },
-  //   leave: { opacity: 0 },
-  //   delay: 200,
-  //   onRest: () => setItems([]),
-  // })
-  const transitions = useTransition(items, {
-    from: {
-      opacity: 0,
-      height: 0,
-      innerHeight: 0,
-      transform: "perspective(600px) rotateX(0deg)",
-      color: "#2f4858",
-    },
-    enter: [
-      { opacity: 1, height: 80, innerHeight: 80 },
-      { transform: "perspective(600px) rotateX(180deg)", color: "#28d79f" },
-      { transform: "perspective(600px) rotateX(0deg)" },
-    ],
-    leave: [
-      { color: "#c23369" },
-      { innerHeight: 0 },
-      { opacity: 0, height: 0 },
-    ],
-    update: { color: "#2f4858" },
-    // onRest: () => setItems([])
-  })
-  const reset = React.useCallback(() => {
-    ref.current.forEach(clearTimeout)
-    ref.current = []
-    setItems([])
-    ref.current.push(setTimeout(() => setItems(["Design"]), 2000))
-    ref.current.push(setTimeout(() => setItems(["Control"]), 5000))
-    ref.current.push(setTimeout(() => setItems(["Create"]), 8000))
-  })
+  const TEXTS = ["Design", "Market", "Create"]
+  const delay = 3000  
+  const [index, setIndex] = React.useState(0)
+  const timeoutRef = React.useRef(null)
+  function resetTimeout() {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+  }
+
+  function clearIndex() {
+    setIndex(0)
+  }
+
   React.useEffect(() => {
-    reset()
-    return () => ref.current.forEach(clearTimeout)
-  }, [])
+    resetTimeout()
+    timeoutRef.current = setTimeout(
+      () => setIndex(prevIndex => (prevIndex === 2 ? 2 : prevIndex + 1)),
+      delay
+    )
+    return () => {
+      resetTimeout()
+    }
+  }, [index])
   return (
     <div className="hero-container">
-      <div className="hero-main">
-        {transitions(({ innerHeight, ...rest }, item) => (
-          <animated.div
-            className="transitionsItem"
-            style={rest}
-            onClick={reset}
-          >
-            <animated.div style={{ overflow: "hidden" }}>{item}</animated.div>
-          </animated.div>
-        ))}
+      <div className="hero-main" onClick={clearIndex} style={{cursor: "pointer"}}>
+        <TextTransition
+          text={TEXTS[index]}
+          springConfig={presets.molasses}
+        />
       </div>
     </div>
   )

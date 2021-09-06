@@ -11,6 +11,7 @@ module.exports = {
     globals: {
       __PATH_PREFIX__: ``,
     },
+    testRunner: "jest-jasmine2",
     testURL: `http://localhost`,
     setupFiles: [`<rootDir>/loadershim.js`],
     testEnvironment: `jsdom`,
