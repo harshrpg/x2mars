@@ -9,7 +9,7 @@ export const initialAuthState = {
     {
       account: "",
       balance: "",
-    }
+    },
   chainId: "",
   loading: false,
   errorMessage: null,
