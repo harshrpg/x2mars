@@ -64,6 +64,7 @@
   position: absolute !important;
   top: 0% !important;
   right: 0%;
+  z-index: 1;
 }
 
 .hero-texts {
@@ -73,6 +74,8 @@
 }
 
 .hero-sub-texts {
+  position: relative;
+  z-index: 2;
   padding-top: 2rem;
 }
 
@@ -115,19 +118,33 @@
   left: 5% !important;
 }
 
+.is-size-6-mobile{
+  background-color:rgb(248, 248, 248) !important;
+  z-index: 1 !important;
+ }
+
 @media screen and (max-width: 1700px) {
   .hero-body-texts {
     background-color: white !important;
   }
+
+  .is-size-6-mobile{
+    background-color:rgb(248, 248, 248) !important;
+   }
 }
 
 @media screen and (max-width: 768px) {
   .hero-image {
-    top: 15% !important;
+    z-index: 1;
+    top: 22% !important;
   }
   .hero-sub-texts {
     padding-top: 6rem;
   }
+
+  .is-size-6-mobile{
+    background-color:rgb(255, 255, 255) !important;
+   }
 }
 
 
