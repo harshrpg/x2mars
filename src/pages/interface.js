@@ -12,6 +12,8 @@ import { useImageForData } from "../hooks/useAllImages"
 import { GatsbyImage } from "gatsby-plugin-image"
 import { navigate } from "gatsby"
 import WalletSelect from "../components/walletSelect/walletselect"
+import Steps from "../components/Steps/steps"
+
 
 const getLibrary = provider => {
   const library = new Web3Provider(provider, "any")
@@ -106,7 +108,8 @@ const ActiveSelectors = () => {
           </div>
         </div>
       ) : (
-        <Factory />
+        // <Factory />
+        <Steps />
       )}
     </>
   )
@@ -145,7 +148,7 @@ const ReadAboutCoinMakerSelector = () => {
     <div className="container interface-view-box" onClick={() => navigate("/whitepaper")}>
       <div className="columns">
         <div className="column">
-          <GatsbyImage image={cmImage} width={2} height={2} />
+          <GatsbyImage image={cmImage} alt={"whitepaper selector"} />
         </div>
         <div className="column">Read About DAC</div>
       </div>
@@ -166,7 +169,7 @@ const ConnectWalletSelector = () => {
       >
         <div className="columns">
           <div className="column">
-            <GatsbyImage image={cwIconImage} width={2} height={2} />
+            <GatsbyImage image={cwIconImage} alt={"connect wallet selector"} />
           </div>
           <div className="column">Connect Your Wallet</div>
         </div>
@@ -175,8 +178,7 @@ const ConnectWalletSelector = () => {
         setWalletSelect={setWalletSelect}
         isActive={walletSelect}
         setCartDisplay={setCartDisplay}
-        setCartError={setCartError}
-      />
+        setCartError={setCartError} cartError={undefined}      />
     </>
   )
 }
@@ -187,7 +189,7 @@ const DashboardSelector = ({ customClickEvent }) => {
     <div className="container interface-view-box" onClick={customClickEvent}>
       <div className="columns">
         <div className="column">
-          <GatsbyImage image={dbIconImage} width={2} height={2} />
+          <GatsbyImage image={dbIconImage} alt={"dashboard selector"} />
         </div>
         <div className="column">View your Dashboard</div>
       </div>
@@ -201,7 +203,7 @@ const MakeYourCoinSelector = ({ customClickEvent }) => {
     <div className="container interface-view-box" onClick={customClickEvent}>
       <div className="columns">
         <div className="column">
-          <GatsbyImage image={macImage} width={2} height={2} />
+          <GatsbyImage image={macImage} alt={"make coin selector"} />
         </div>
         <div className="column">Make A Coin</div>
       </div>

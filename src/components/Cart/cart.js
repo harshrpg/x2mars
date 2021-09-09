@@ -13,7 +13,7 @@ import { GoX } from "@react-icons/all-files/go/GoX"
 import "./style/style.scss"
 import { GatsbyImage } from "gatsby-plugin-image"
 import { useImageForData } from "../../hooks/useAllImages"
-import { Steps } from "../../util/factory-steps"
+import { StepsModel } from "../../util/factory-steps"
 import { useNetwork } from "../../hooks/useNetwork"
 import { NetworkIcon } from "../Icons/icons"
 import ErrorBox from "../Error/errorbox"
@@ -96,8 +96,8 @@ const TokenType = () => {
   const cartState = useCartState()
   // const network = useNetwork()
 
-  const gTokenImage = useImageForData(Steps.Step1.cardData[0].img)
-  const fotTokenImage = useImageForData(Steps.Step1.cardData[1].img)
+  const gTokenImage = useImageForData(StepsModel.Step1.cardData[0].img)
+  const fotTokenImage = useImageForData(StepsModel.Step1.cardData[1].img)
 
   const [tokenImage, setTokenImage] = React.useState(gTokenImage)
   const [network, setNetwork] = React.useState(
@@ -156,7 +156,7 @@ const DexSelected = () => {
   )
 
   const [dexImage, setDexImage] = React.useState(
-    Steps.Step2.cardData[2].img[
+    StepsModel.Step2.cardData[2].img[
       NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
     ]
   )
@@ -168,7 +168,7 @@ const DexSelected = () => {
   }, [user])
 
   React.useEffect(() => {
-    setDexImage(Steps.Step2.cardData[2].img[network])
+    setDexImage(StepsModel.Step2.cardData[2].img[network])
   }, [cartState, network])
 
   var image = useImageForData(dexImage)
@@ -209,10 +209,10 @@ const FeaturesSelected = () => {
   )
 
   const [alImage, setAlImage] = React.useState()
-  const [rfiImage, setRfiImage] = React.useState(Steps.Step3.cardData[1].img)
-  const [awpImage, setAwpImage] = React.useState(Steps.Step3.cardData[2].img)
-  const [abImage, setAbImage] = React.useState(Steps.Step3.cardData[3].img)
-  const [acImage, setAcImage] = React.useState(Steps.Step3.cardData[4].img)
+  const [rfiImage, setRfiImage] = React.useState(StepsModel.Step3.cardData[1].img)
+  const [awpImage, setAwpImage] = React.useState(StepsModel.Step3.cardData[2].img)
+  const [abImage, setAbImage] = React.useState(StepsModel.Step3.cardData[3].img)
+  const [acImage, setAcImage] = React.useState(StepsModel.Step3.cardData[4].img)
   // const autoLiquidationImage = useImageForData()
 
   React.useEffect(() => {
@@ -221,7 +221,7 @@ const FeaturesSelected = () => {
     }
   }, [user])
   React.useEffect(() => {
-    setAlImage(Steps.Step3.cardData[0].img[network])
+    setAlImage(StepsModel.Step3.cardData[0].img[network])
   }, [network])
 
   const image1 = useImageForData(alImage)
@@ -268,7 +268,7 @@ const FeaturesSelected = () => {
               </div>
               <div className="column">RFI Static Rewards</div>
               <div className="column">
-                {Steps.Step3.cardData[1].price[network] +
+                {StepsModel.Step3.cardData[1].price[network] +
                   ` ` +
                   network.toUpperCase()}
               </div>
@@ -288,7 +288,7 @@ const FeaturesSelected = () => {
               </div>
               <div className="column">Whale Protection</div>
               <div className="column">
-                {Steps.Step3.cardData[2].price[network] +
+                {StepsModel.Step3.cardData[2].price[network] +
                   ` ` +
                   network.toUpperCase()}
               </div>
@@ -308,7 +308,7 @@ const FeaturesSelected = () => {
               </div>
               <div className="column">Automatic Burning</div>
               <div className="column">
-                {Steps.Step3.cardData[3].price[network] +
+                {StepsModel.Step3.cardData[3].price[network] +
                   ` ` +
                   network.toUpperCase()}
               </div>
@@ -328,7 +328,7 @@ const FeaturesSelected = () => {
               </div>
               <div className="column">Automatic Charity</div>
               <div className="column">
-                {Steps.Step3.cardData[4].price[network] +
+                {StepsModel.Step3.cardData[4].price[network] +
                   ` ` +
                   network.toUpperCase()}
               </div>
@@ -375,16 +375,16 @@ const TotalFees = () => {
         totalFees += 0.0
       }
       if (!!cartState.step3.rfi_rewards) {
-        totalFees += parseFloat(Steps.Step3.cardData[1].price[network])
+        totalFees += parseFloat(StepsModel.Step3.cardData[1].price[network])
       }
       if (!!cartState.step3.WHALE_PROTECTION) {
-        totalFees += parseFloat(Steps.Step3.cardData[2].price[network])
+        totalFees += parseFloat(StepsModel.Step3.cardData[2].price[network])
       }
       if (!!cartState.step3.auto_burn) {
-        totalFees += parseFloat(Steps.Step3.cardData[3].price[network])
+        totalFees += parseFloat(StepsModel.Step3.cardData[3].price[network])
       }
       if (!!cartState.step3.auto_charity) {
-        totalFees += parseFloat(Steps.Step3.cardData[4].price[network])
+        totalFees += parseFloat(StepsModel.Step3.cardData[4].price[network])
       }
     }
 

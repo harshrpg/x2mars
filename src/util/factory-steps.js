@@ -1,4 +1,4 @@
-export const Steps = {
+export const StepsModel = {
   Step1: {
     title: "Select Token Type",
     cardData: [
@@ -11,7 +11,7 @@ export const Steps = {
           eth: 2.0,
           bnb: 12.0,
         },
-        img: "gtoken.png",
+        img: "tailCur.png",
         selected: true,
       },
       {
@@ -23,7 +23,7 @@ export const Steps = {
           eth: 5.0,
           bnb: 28.0,
         },
-        img: "fotoken.png",
+        img: "fot.png",
         selected: false,
       },
     ],

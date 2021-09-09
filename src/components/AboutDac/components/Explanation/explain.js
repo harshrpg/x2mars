@@ -4,7 +4,7 @@ import * as React from "react"
 import { HiArrowNarrowRight } from "@react-icons/all-files/hi/HiArrowNarrowRight"
 import "../../style/style.scss"
 import { useImageForData } from "../../../../hooks/useAllImages"
-import { Steps } from "../../../../util/factory-steps"
+import { StepsModel } from "../../../../util/factory-steps"
 const Explain = () => {
   return (
     <div className="container">
@@ -199,8 +199,8 @@ const SmartContracts = () => {
 
 const UserInputForm = () => {
   const image = useImageForData("UnerInputForm.png")
-  const gTokenImage = useImageForData(Steps.Step1.cardData[0].img)
-  const fotTokenImage = useImageForData(Steps.Step1.cardData[1].img)
+  const gTokenImage = useImageForData(StepsModel.Step1.cardData[0].img)
+  const fotTokenImage = useImageForData(StepsModel.Step1.cardData[1].img)
   return (
     <div className="container">
       <div className="title">

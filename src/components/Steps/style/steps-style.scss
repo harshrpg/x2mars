@@ -1,0 +1,19 @@
+@import "../../../style/index.scss";
+
+.theme-action-button-gradient-green.padded {
+    padding: 3rem;
+    width: auto;
+}
+
+.theme-action-button-gradient-purple.contained {
+    width: auto;
+}
+
+.column.centered-text-align {
+    text-align: center;
+    text-align: -webkit-center;
+}
+
+.theme-view-box.active {
+    border-color: $theme-orange;
+}

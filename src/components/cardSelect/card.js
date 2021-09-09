@@ -1,6 +1,6 @@
 import * as React from "react"
 import "./style/card.scss"
-import { Steps } from "../../util/factory-steps"
+import { StepsModel } from "../../util/factory-steps"
 import { StaticImage } from "gatsby-plugin-image"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
