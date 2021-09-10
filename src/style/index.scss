@@ -63,7 +63,7 @@ $font-color: $charcoal;
   border: 2px solid $primary-color;
   max-width: 25rem !important;
   border-radius: 10px;
-  padding: 0 1rem 0 0 !important;
+  padding: 0 !important;
 }
 
 .interface-view-box:hover,
@@ -97,6 +97,17 @@ $font-color: $charcoal;
 
 .theme-action-button-gradient-orange {
   background-image: linear-gradient(to right, #f12711, #f5af19);
+  border-color: none !important;
+  color: white !important;
+  padding: 2rem;
+  width: 100%;
+  width: -moz-available; /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+  width: fill-available;
+}
+
+.theme-action-button-gradient-red {
+  background-image: linear-gradient(to right, #ED213A, #93291E);
   border-color: none !important;
   color: white !important;
   padding: 2rem;

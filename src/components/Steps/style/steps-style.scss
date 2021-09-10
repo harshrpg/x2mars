@@ -17,3 +17,11 @@
 .theme-view-box.active {
     border-color: $theme-orange;
 }
+
+.theme-view-box.success {
+    border-color: $successfull-color;
+}
+
+.theme-view-box.failed {
+    border-color: $unsucessful-color;
+}

@@ -3,6 +3,7 @@ import { useImageForData } from "../../hooks/useAllImages"
 import { BsArrowRight } from "@react-icons/all-files/bs/BsArrowRight"
 import { BsArrowLeft } from "@react-icons/all-files/bs/BsArrowLeft"
 import { BsCheck } from "@react-icons/all-files/bs/BsCheck"
+import { BsX } from "@react-icons/all-files/bs/BsX"
 import { BsQuestionCircle } from "@react-icons/all-files/bs/BsQuestionCircle"
 import * as React from "react"
 
@@ -37,7 +38,7 @@ const Steps = () => {
       if (chainId === 1 || chainId === 56) {
         setIsTestNetwork(false)
       } else {
-          setIsTestNetwork(true)
+        setIsTestNetwork(true)
       }
     }
   }, [chainId])
@@ -60,6 +61,15 @@ const Steps = () => {
         />
       ) : step === 2 ? (
         <Step2
+          image={image}
+          image2={image2}
+          setStep={setStep}
+          step={step}
+          network={network}
+          isTestNetwork={isTestNetwork}
+        />
+      ) : step === 3 ? (
+        <Step3
           image={image}
           image2={image2}
           setStep={setStep}
@@ -181,7 +191,7 @@ const StepsExplaination = ({ step1Image, step2Image, step3Image, setStep }) => {
                       <div className="columns">
                         <div className="column">
                           <span className="is-size-7">
-                            Select additional features for your Meme coins
+                            Select additional features for your coins
                           </span>
                         </div>
                       </div>
@@ -241,12 +251,16 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
   }, [coinSelected])
 
   function dispatchCoinSelection() {
+    var selectionPrice = 0.0
+    if (!isTestNetwork) {
+      selectionPrice = steps.cardData[coinSelected].price[network]
+    }
     cartDispatch({
       step: 1,
       payload: {
         step1: {
           selectedToken: coinSelected,
-          totalFees: steps.cardData[coinSelected].price[network],
+          totalFees: selectionPrice,
         },
       },
     })
@@ -481,7 +495,6 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
   const cartState = useCartState()
   const cartDispatch = useCartDispatch()
   const fotImage = useImageForData("fot.png")
-  const [steps, _] = React.useState(StepsModel.Step2)
   const [nextStepDisabledToolTip, setNextStepDisabledToolTip] = React.useState(
     null
   )
@@ -497,32 +510,81 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
   const [coinSupplyUnits, setCoinSupplyUnits] = React.useState(
     cartState.step2.tokenSupplyUnits
   )
-  const [dexSelected, setDexSelected] = React.useState(
-    cartState.step2.dexSelected
-  )
-  const [step2Fee, setStep2Fee] = React.useState(
-    coinSelected === TokenTypeIds.GOVERNANCE
-      ? steps.cardData[2].price[network]
-      : 0.0
-  )
+  const [dexSelected, ___] = React.useState(cartState.step2.dexSelected)
 
   function handleCoinNameChange(event) {
     setCoinName(event.target.value)
+    cartDispatch({
+      step: 2,
+      payload: {
+        step2: {
+          tokenName: event.target.value,
+          tokenSymbol: cartState.step2.tokenSymbol,
+          tokenSupplyNumber: cartState.step2.tokenSupplyNumber,
+          tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
+          tokenDecimals: cartState.step2.tokenDecimals,
+          dexSelected: cartState.step2.dexSelected,
+          totalFees: cartState.step2.totalFees,
+        },
+      },
+    })
   }
 
   function handleCoinTickerChange(event) {
     setCoinTicker(event.target.value)
+    cartDispatch({
+      step: 2,
+      payload: {
+        step2: {
+          tokenName: cartState.step2.tokenName,
+          tokenSymbol: event.target.value,
+          tokenSupplyNumber: cartState.step2.tokenSupplyNumber,
+          tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
+          tokenDecimals: cartState.step2.tokenDecimals,
+          dexSelected: cartState.step2.dexSelected,
+          totalFees: cartState.step2.totalFees,
+        },
+      },
+    })
   }
 
   function handleCoinSupplyChange(event) {
     setCoinSupplyNumber(event.target.value)
+    cartDispatch({
+      step: 2,
+      payload: {
+        step2: {
+          tokenName: cartState.step2.tokenName,
+          tokenSymbol: cartState.step2.tokenSymbol,
+          tokenSupplyNumber: event.target.value,
+          tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
+          tokenDecimals: cartState.step2.tokenDecimals,
+          dexSelected: cartState.step2.dexSelected,
+          totalFees: cartState.step2.totalFees,
+        },
+      },
+    })
   }
 
   function handleCoinSupplyUnitsChange(event) {
     setCoinSupplyUnits(event.target.value)
+    cartDispatch({
+      step: 2,
+      payload: {
+        step2: {
+          tokenName: cartState.step2.tokenName,
+          tokenSymbol: cartState.step2.tokenSymbol,
+          tokenSupplyNumber: cartState.step2.tokenSupplyNumber,
+          tokenSupplyUnits: event.target.value,
+          tokenDecimals: cartState.step2.tokenDecimals,
+          dexSelected: cartState.step2.dexSelected,
+          totalFees: cartState.step2.totalFees,
+        },
+      },
+    })
   }
 
-  function handleSaveChangesButtonClick() {
+  function dispatchValues() {
     cartDispatch({
       step: 2,
       payload: {
@@ -533,7 +595,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
           tokenSupplyUnits: coinSupplyUnits,
           tokenDecimals: cartState.step2.tokenDecimals,
           dexSelected: dexSelected,
-          totalFees: step2Fee,
+          totalFees: cartState.step2.totalFees,
         },
       },
     })
@@ -554,11 +616,13 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
 
   React.useEffect(() => {
     if (!dataProvided) {
-      setNextStepDisabledToolTip("Please complete the form with all data")
+      setNextStepDisabledToolTip("Please complete the form with required data")
     } else {
       setNextStepDisabledToolTip(null)
+      dispatchValues()
     }
-  })
+  }, [dataProvided])
+
   return (
     <>
       <div className="container">
@@ -619,18 +683,27 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
         </div>
         <div className="container columns">
           <div className="column centered-text-align">
-            <div className="theme-view-box" style={{ padding: "3rem" }}>
+            <div
+              className={`theme-view-box ${
+                dataProvided ? "success" : "failed"
+              }`}
+              style={{ padding: "3rem" }}
+            >
               <div className="columns" style={{ padding: "1rem" }}>
                 <div className="column">
                   <div className="columns">
                     <div className="column">
                       <div className="centerinput">
-                        <div className="input-block">
+                        <div
+                          className={`input-block ${
+                            !!coinName ? "success" : ""
+                          }`}
+                        >
                           <input
                             type="text"
                             required={true}
                             spellCheck={false}
-                            onBlur={handleCoinNameChange}
+                            onChange={handleCoinNameChange}
                             value={coinName}
                           />
                           <span className="placeholder">Coin Name</span>
@@ -641,12 +714,16 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
                   <div className="columns" style={{ paddingTop: 0 }}>
                     <div className="column">
                       <div className="centerinput">
-                        <div className="input-block">
+                        <div
+                          className={`input-block ${
+                            !!coinTicker ? "success" : ""
+                          }`}
+                        >
                           <input
                             type="text"
                             required={true}
                             spellCheck={false}
-                            onBlur={handleCoinTickerChange}
+                            onChange={handleCoinTickerChange}
                             value={coinTicker}
                           />
                           <span className="placeholder">Coin Ticker</span>
@@ -659,7 +736,11 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
                       <div className="columns">
                         <div className="column">
                           <div className="centerinput">
-                            <div className="input-block">
+                            <div
+                              className={`input-block ${
+                                !!coinSupplyNumber ? "success" : ""
+                              }`}
+                            >
                               <input
                                 type="number"
                                 required={true}
@@ -676,7 +757,11 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
                           </div>
                         </div>
                         <div className="column">
-                          <div className="select custom-select">
+                          <div
+                            className={`select custom-select ${
+                              coinSupplyUnits !== "Units" ? "success" : ""
+                            }`}
+                          >
                             <select
                               className="is-hovered"
                               onChange={handleCoinSupplyUnitsChange}
@@ -710,7 +795,6 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
                         <button
                           className="button theme-action-button-gradient-green has-tooltip-bottom"
                           type="button"
-                          onClick={handleSaveChangesButtonClick}
                           data-tooltip={nextStepDisabledToolTip}
                         >
                           <span>Save to Contract</span>
@@ -741,6 +825,295 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
       </div>
     </>
   )
+}
+
+const Step3 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
+  const cartState = useCartState()
+  const cartDispatch = useCartDispatch()
+  const fotImage = useImageForData("fot.png")
+  const [steps, _] = React.useState(StepsModel.Step1)
+  const [nextStepDisabledToolTip, setNextStepDisabledToolTip] = React.useState(
+    null
+  )
+  const [coinSelected, setCoinSelected] = React.useState(
+    cartState.step1.selectedToken
+  )
+
+  React.useEffect(() => {
+    if (coinSelected === -1) {
+      setNextStepDisabledToolTip("Please select a token type first")
+    } else if (coinSelected !== -1) {
+      setNextStepDisabledToolTip(null)
+      dispatchCoinSelection()
+    }
+  }, [coinSelected])
+
+  function dispatchCoinSelection() {
+    cartDispatch({
+      step: 1,
+      payload: {
+        step1: {
+          selectedToken: coinSelected,
+          totalFees: steps.cardData[coinSelected].price[network],
+        },
+      },
+    })
+    switch (coinSelected) {
+      case TokenTypeIds.GOVERNANCE:
+        cartDispatch({
+          step: 2,
+          payload: {
+            step2: {
+              tokenName: cartState.step2.tokenName,
+              tokenSymbol: cartState.step2.tokenSymbol,
+              tokenSupplyNumber: cartState.step2.tokenSupplyNumber,
+              tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
+              tokenDecimals: cartState.step2.tokenDecimals,
+              dexSelected: false,
+              totalFees: 0,
+            },
+          },
+        })
+        break
+      case TokenTypeIds.FEE_ON_TRANSFER:
+        cartDispatch({
+          step: 2,
+          payload: {
+            step2: {
+              tokenName: cartState.step2.tokenName,
+              tokenSymbol: cartState.step2.tokenSymbol,
+              tokenSupplyNumber: cartState.step2.tokenSupplyNumber,
+              tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
+              tokenDecimals: cartState.step2.tokenDecimals,
+              dexSelected: cartState.step2.dexSelected,
+              totalFees: 0,
+            },
+          },
+        })
+        break
+      default:
+        console.log("ERROR: Cannot find token type ID: ", coinSelected)
+        break
+    }
+  }
+
+  return (
+    <>
+      <div className="container">
+        <div className="columns">
+          <div className="column is-2">
+            <GatsbyImage
+              image={
+                coinSelected === TokenTypeIds.GOVERNANCE
+                  ? image
+                  : coinSelected === TokenTypeIds.FEE_ON_TRANSFER
+                  ? fotImage
+                  : image2
+              }
+              alt="step 3 image"
+            />
+          </div>
+          <div className="column">
+            <div className="columns">
+              <div className="column">
+                <span className="is-size-2">Step 3</span>
+              </div>
+            </div>
+            <div className="columns">
+              <div className="column">
+                <span className="is-size-5">
+                  {`You are creating ${TokenTypes[coinSelected]}`}
+                </span>
+              </div>
+            </div>
+            <div className="columns">
+              <div className="column">
+                {coinSelected === TokenTypeIds.GOVERNANCE ? (
+                  <span className="is-size-5">
+                    Here you can select if you need a Decentralized Exchange
+                    Pool for your Coins. If you don't know what a Decentralized
+                    Exchange Pool is you can read about it in the Help page.
+                  </span>
+                ) : (
+                  <span className="is-size-5">
+                    Here you decide how much fee do you want to charge per
+                    transaction and what do you want to do with it.
+                    Decentralized Exchange Pool is automatically created for Fee
+                    On Transfer (Meme)
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="column" style={{ textAlign: "end" }}>
+            <button
+              className="button theme-action-button-gradient-green padded"
+              type="button"
+            >
+              <span>Help Me</span>
+              <span class="icon is-size-3">
+                <BsQuestionCircle />
+              </span>
+            </button>
+          </div>
+        </div>
+        <div className="container">
+          {coinSelected === TokenTypeIds.GOVERNANCE ? (
+            <Step3GovToken network={network} isTestNetwork={isTestNetwork} />
+          ) : (
+            ``
+          )}
+        </div>
+        <div className="columns">
+          <div className="column">
+            <NextAndPreviousStep
+              prevStepDisabled={false}
+              nextStepDisabled={coinSelected === -1}
+              prevStepToolTip={null}
+              nextStepToolTip={nextStepDisabledToolTip}
+              setStep={setStep}
+              step={step}
+            />
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+const Step3GovToken = ({ network, isTestNetwork }) => {
+  const cartState = useCartState()
+  const cartDispatch = useCartDispatch()
+  const [steps, _] = React.useState(StepsModel.Step2)
+  const [dexSelected, setDexSelected] = React.useState(
+    cartState.step2.dexSelected
+  )
+  const [coinSelected, ___] = React.useState(cartState.step1.selectedToken)
+  const [step2Fee, setStep2Fee] = React.useState(0.0)
+  const imageUni = useImageForData("uni.png")
+  const imageCake = useImageForData("cake.png")
+  const imageByNetwork = {
+    eth: imageUni,
+    bnb: imageCake,
+  }
+  const dexNameByNetwork = {
+    eth: "Uniswap",
+    bnb: "Pancake Swap",
+  }
+  React.useEffect(() => {}, [network, coinSelected])
+  React.useEffect(() => {
+    if (dexSelected) {
+      if (!isTestNetwork) {
+        if (coinSelected === TokenTypeIds.GOVERNANCE) {
+          setStep2Fee(steps.cardData[2].price[network])
+        } else {
+          setStep2Fee(0.0)
+        }
+      } else {
+        setStep2Fee(0.0)
+      }
+    } else {
+      setStep2Fee(0.0)
+    }
+  }, [dexSelected, network, coinSelected])
+
+  React.useEffect(() => {
+    cartDispatch({
+      step: 2,
+      payload: {
+        step2: {
+          tokenName: cartState.step2.tokenName,
+          tokenSymbol: cartState.step2.tokenSymbol,
+          tokenSupplyNumber: cartState.step2.tokenSupplyNumber,
+          tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
+          tokenDecimals: cartState.step2.tokenDecimals,
+          dexSelected: dexSelected,
+          totalFees: step2Fee,
+        },
+      },
+    })
+  }, [dexSelected, step2Fee])
+
+  return (
+    <>
+      <div className="columns">
+        <div className="column centered-text-align">
+          <div className="theme-view-box">
+            <div className="columns" style={{ padding: "1rem" }}>
+              <div className="column" style={{textAlign: "center"}}>
+                <div className="columns">
+                  <div className="column">
+                    <GatsbyImage
+                      image={imageByNetwork[network]}
+                      alt="dex pool"
+                    />
+                  </div>
+                </div>
+                <div className="columns" style={{ paddingTop: 0 }}>
+                  <div className="column">
+                    <span className="is-size-5">{`Create a Dex Pool at ${dexNameByNetwork[network]}`}</span>
+                  </div>
+                </div>
+                <div className="columns" style={{ paddingTop: 0 }}>
+                  <div className="column">
+                    <div
+                      className="theme-price-box"
+                      style={{ whiteSpace: "nowrap" }}
+                    >
+                      <div className="columns">
+                        <div className="column">Price</div>
+                        <div className="column">
+                          <NetworkIcon network={network} />
+                        </div>
+                        {isTestNetwork ? (
+                          <div className="column">{`0  ${network.toUpperCase()}`}</div>
+                        ) : (
+                          <div className="column">{`${
+                            steps.cardData[2].price[network]
+                          }  ${network.toUpperCase()}`}</div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="columns">
+                  <div className="column">
+                    {dexSelected ? (
+                      <button
+                        className="button theme-action-button-gradient-red"
+                        type="button"
+                        onClick={() => setDexSelected(false)}
+                      >
+                        <span>Remove from Coin</span>
+                        <span class="icon is-size-3">
+                          <BsX />
+                        </span>
+                      </button>
+                    ) : (
+                      <button
+                        className="button theme-action-button-gradient-green has-tooltip-bottom"
+                        type="button"
+                        onClick={() => setDexSelected(true)}
+                      >
+                        <span>Save to Contract</span>
+                        <span class="icon is-size-3">
+                          <BsArrowRight />
+                        </span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+const Step3FotToken = ({ image, setStep, step, network, isTestNetwork }) => {
+  return <></>
 }
 
 const NextAndPreviousStep = ({
