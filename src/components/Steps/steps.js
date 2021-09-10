@@ -36,6 +36,8 @@ const Steps = () => {
       setNetwork(NetworkFromChainId[chainId])
       if (chainId === 1 || chainId === 56) {
         setIsTestNetwork(false)
+      } else {
+          setIsTestNetwork(true)
       }
     }
   }, [chainId])
@@ -483,45 +485,79 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
   const [nextStepDisabledToolTip, setNextStepDisabledToolTip] = React.useState(
     null
   )
-  const [dataProvided, setDataProvided] = React.useState(
-    false
-  )
+  const [dataProvided, setDataProvided] = React.useState(false)
   const [coinSelected, __] = React.useState(cartState.step1.selectedToken)
   const [coinName, setCoinName] = React.useState(cartState.step2.tokenName)
-  const [coinTicker, setCoinTicker] = React.useState(cartState.step2.tokenSymbol)
-  const [coinSupplyNumber, setCoinSupplyNumber] = React.useState(cartState.step2.tokenSupplyNumber)
-  const [coinSupplyUnits, setCoinSupplyUnits] = React.useState(cartState.step2.tokenSupplyUnits)
-  const [dexSelected, setDexSelected] = React.useState(cartState.step2.dexSelected)
-
+  const [coinTicker, setCoinTicker] = React.useState(
+    cartState.step2.tokenSymbol
+  )
+  const [coinSupplyNumber, setCoinSupplyNumber] = React.useState(
+    cartState.step2.tokenSupplyNumber
+  )
+  const [coinSupplyUnits, setCoinSupplyUnits] = React.useState(
+    cartState.step2.tokenSupplyUnits
+  )
+  const [dexSelected, setDexSelected] = React.useState(
+    cartState.step2.dexSelected
+  )
+  const [step2Fee, setStep2Fee] = React.useState(
+    coinSelected === TokenTypeIds.GOVERNANCE
+      ? steps.cardData[2].price[network]
+      : 0.0
+  )
 
   function handleCoinNameChange(event) {
-      setCoinName(event.target.value)
+    setCoinName(event.target.value)
   }
 
   function handleCoinTickerChange(event) {
-      setCoinTicker(event.target.value)
+    setCoinTicker(event.target.value)
   }
 
   function handleCoinSupplyChange(event) {
-      setCoinSupplyNumber(event.target.value)
+    setCoinSupplyNumber(event.target.value)
   }
 
   function handleCoinSupplyUnitsChange(event) {
-      setCoinSupplyUnits(event.target.value)
+    setCoinSupplyUnits(event.target.value)
   }
 
   function handleSaveChangesButtonClick() {
-      if (!!coinName && !!coinTicker && !!coinSupplyNumber && coinSupplyUnits !== "Units") {
-          setDataProvided(true)
-      }
+    cartDispatch({
+      step: 2,
+      payload: {
+        step2: {
+          tokenName: coinName,
+          tokenSymbol: coinTicker,
+          tokenSupplyNumber: coinSupplyNumber,
+          tokenSupplyUnits: coinSupplyUnits,
+          tokenDecimals: cartState.step2.tokenDecimals,
+          dexSelected: dexSelected,
+          totalFees: step2Fee,
+        },
+      },
+    })
   }
 
   React.useEffect(() => {
-      if (!dataProvided) {
-          setNextStepDisabledToolTip("Please complete the form with all data")
-      } else {
-        setNextStepDisabledToolTip(null)
-      }
+    if (
+      !!coinName &&
+      !!coinTicker &&
+      !!coinSupplyNumber &&
+      coinSupplyUnits !== "Units"
+    ) {
+      setDataProvided(true)
+    } else {
+      setDataProvided(false)
+    }
+  }, [coinName, coinTicker, coinSupplyNumber, coinSupplyUnits])
+
+  React.useEffect(() => {
+    if (!dataProvided) {
+      setNextStepDisabledToolTip("Please complete the form with all data")
+    } else {
+      setNextStepDisabledToolTip(null)
+    }
   })
   return (
     <>
@@ -633,7 +669,9 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
                                 min={1}
                                 max={100}
                               />
-                              <span className="placeholder">Coin Ticker [1-100]</span>
+                              <span className="placeholder">
+                                Coin Ticker [1-100]
+                              </span>
                             </div>
                           </div>
                         </div>
