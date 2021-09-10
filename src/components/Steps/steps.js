@@ -338,7 +338,7 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
           </div>
         </div>
         <div className="container columns">
-          <div className="column centered-text-align">
+          <div className="column right-text-align">
             <div
               className={`theme-view-box ${coinSelected === 0 ? "active" : ""}`}
               style={{ padding: "3rem" }}
@@ -405,7 +405,7 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
               </div>
             </div>
           </div>
-          <div className="column centered-text-align">
+          <div className="column left-text-align">
             <div
               className={`theme-view-box ${coinSelected === 1 ? "active" : ""}`}
             >
