@@ -654,18 +654,10 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
             </div>
             <div className="columns">
               <div className="column">
-                {coinSelected === TokenTypeIds.GOVERNANCE ? (
-                  <span className="is-size-5">
-                    Provide Coin Details, such as Coin Name, Coin Ticker, Coin
-                    Supply and select if you'd like a decentralized exchange
-                    pool for your coins
-                  </span>
-                ) : (
-                  <span className="is-size-5">
-                    Provide Coin Details, such as Coin Name, Coin Ticker, Coin
-                    Supply
-                  </span>
-                )}
+                <span className="is-size-5">
+                  Provide Coin Details, such as Coin Name, Coin Ticker, Coin
+                  Supply
+                </span>
               </div>
             </div>
           </div>
@@ -810,7 +802,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
             </div>
           </div>
         </div>
-        <div className="columns">
+        <div className="container columns">
           <div className="column">
             <NextAndPreviousStep
               prevStepDisabled={false}
@@ -838,64 +830,7 @@ const Step3 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
   const [coinSelected, setCoinSelected] = React.useState(
     cartState.step1.selectedToken
   )
-
-  React.useEffect(() => {
-    if (coinSelected === -1) {
-      setNextStepDisabledToolTip("Please select a token type first")
-    } else if (coinSelected !== -1) {
-      setNextStepDisabledToolTip(null)
-      dispatchCoinSelection()
-    }
-  }, [coinSelected])
-
-  function dispatchCoinSelection() {
-    cartDispatch({
-      step: 1,
-      payload: {
-        step1: {
-          selectedToken: coinSelected,
-          totalFees: steps.cardData[coinSelected].price[network],
-        },
-      },
-    })
-    switch (coinSelected) {
-      case TokenTypeIds.GOVERNANCE:
-        cartDispatch({
-          step: 2,
-          payload: {
-            step2: {
-              tokenName: cartState.step2.tokenName,
-              tokenSymbol: cartState.step2.tokenSymbol,
-              tokenSupplyNumber: cartState.step2.tokenSupplyNumber,
-              tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
-              tokenDecimals: cartState.step2.tokenDecimals,
-              dexSelected: false,
-              totalFees: 0,
-            },
-          },
-        })
-        break
-      case TokenTypeIds.FEE_ON_TRANSFER:
-        cartDispatch({
-          step: 2,
-          payload: {
-            step2: {
-              tokenName: cartState.step2.tokenName,
-              tokenSymbol: cartState.step2.tokenSymbol,
-              tokenSupplyNumber: cartState.step2.tokenSupplyNumber,
-              tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
-              tokenDecimals: cartState.step2.tokenDecimals,
-              dexSelected: cartState.step2.dexSelected,
-              totalFees: 0,
-            },
-          },
-        })
-        break
-      default:
-        console.log("ERROR: Cannot find token type ID: ", coinSelected)
-        break
-    }
-  }
+  const [moveToNextStep, setMoveToNextStep] = React.useState(false)
 
   return (
     <>
@@ -929,17 +864,16 @@ const Step3 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
             <div className="columns">
               <div className="column">
                 {coinSelected === TokenTypeIds.GOVERNANCE ? (
-                  <span className="is-size-5">
-                    Here you can select if you need a Decentralized Exchange
-                    Pool for your Coins. If you don't know what a Decentralized
-                    Exchange Pool is you can read about it in the Help page.
-                  </span>
+                  <>
+                    <span className="is-size-6">
+                      {`A Decentralized Exchange (DEX) Pool is a very important feature for any decentralized crypto coin. It allows your holders to swap ${network.toUpperCase()} for your token easily. Check out the Help Me page for more information.`}
+                    </span>
+                  </>
                 ) : (
-                  <span className="is-size-5">
+                  <span className="is-size-6">
                     Here you decide how much fee do you want to charge per
-                    transaction and what do you want to do with it.
-                    Decentralized Exchange Pool is automatically created for Fee
-                    On Transfer (Meme)
+                    transaction and what do you want to do with it. If you feel
+                    lost head over to the Help Me page.
                   </span>
                 )}
               </div>
@@ -961,14 +895,19 @@ const Step3 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
           {coinSelected === TokenTypeIds.GOVERNANCE ? (
             <Step3GovToken network={network} isTestNetwork={isTestNetwork} />
           ) : (
-            ``
+            <Step3FotToken
+              network={network}
+              isTestNetwork={isTestNetwork}
+              setNextStepDisabledToolTip={setNextStepDisabledToolTip}
+              setMoveToNextStep={setMoveToNextStep}
+            />
           )}
         </div>
-        <div className="columns">
+        <div className="container columns">
           <div className="column">
             <NextAndPreviousStep
               prevStepDisabled={false}
-              nextStepDisabled={coinSelected === -1}
+              nextStepDisabled={!moveToNextStep}
               prevStepToolTip={null}
               nextStepToolTip={nextStepDisabledToolTip}
               setStep={setStep}
@@ -1040,7 +979,7 @@ const Step3GovToken = ({ network, isTestNetwork }) => {
         <div className="column centered-text-align">
           <div className="theme-view-box">
             <div className="columns" style={{ padding: "1rem" }}>
-              <div className="column" style={{textAlign: "center"}}>
+              <div className="column" style={{ textAlign: "center" }}>
                 <div className="columns">
                   <div className="column">
                     <GatsbyImage
@@ -1084,7 +1023,7 @@ const Step3GovToken = ({ network, isTestNetwork }) => {
                         type="button"
                         onClick={() => setDexSelected(false)}
                       >
-                        <span>Remove from Coin</span>
+                        <span>I don't want a DEX Pool</span>
                         <span class="icon is-size-3">
                           <BsX />
                         </span>
@@ -1095,7 +1034,7 @@ const Step3GovToken = ({ network, isTestNetwork }) => {
                         type="button"
                         onClick={() => setDexSelected(true)}
                       >
-                        <span>Save to Contract</span>
+                        <span>Create a DEX Pool</span>
                         <span class="icon is-size-3">
                           <BsArrowRight />
                         </span>
@@ -1112,8 +1051,745 @@ const Step3GovToken = ({ network, isTestNetwork }) => {
   )
 }
 
-const Step3FotToken = ({ image, setStep, step, network, isTestNetwork }) => {
-  return <></>
+const Step3FotToken = ({
+  network,
+  isTestNetwork,
+  setNextStepDisabledToolTip,
+  setMoveToNextStep,
+}) => {
+  const imageUni = useImageForData("uni.png")
+  const imageCake = useImageForData("cake.png")
+  const imageRfi = useImageForData("rfi.png")
+  const imageWp = useImageForData("awp.png")
+  const imageAb = useImageForData("ab.png")
+  const imageAc = useImageForData("ac.png")
+  const imageByNetwork = {
+    eth: imageUni,
+    bnb: imageCake,
+  }
+  const dexNameByNetwork = {
+    eth: "Uniswap",
+    bnb: "Pancake Swap",
+  }
+  const [steps, _] = React.useState(StepsModel.Step3)
+
+  const cartState = useCartState()
+  const cartDispatch = useCartDispatch()
+
+  const [liquidityFee, setLiquidityFee] = React.useState(
+    cartState.step3.auto_liquidation
+  )
+  const [whaleProtectionFee, setWhaleProtectionFee] = React.useState(
+    cartState.step3.WHALE_PROTECTION
+  )
+  const [rfiStaticRewardsFee, setRfiStaticRewardsFee] = React.useState(
+    cartState.step3.rfi_rewards
+  )
+  const [automaticBurnFee, setAutomaticBurnFee] = React.useState(
+    cartState.step3.auto_burn
+  )
+  const [automaticCharityFee, setAutomaticCharityFee] = React.useState(
+    cartState.step3.auto_charity
+  )
+  const [automaticCharityAddress, setAutomaticCharityAddress] = React.useState(
+    cartState.step3.charity_address ===
+      "0x000000000000000000000000000000000000dEaD"
+      ? null
+      : cartState.step3.charity_address
+  )
+
+  function handleLiquidityFeeChange(event) {
+    if (event.target.value === "") {
+      setLiquidityFee(null)
+      setNextStepDisabledToolTip("Please fill in all Required fields")
+      setMoveToNextStep(false)
+    } else {
+      setLiquidityFee(event.target.value)
+      setNextStepDisabledToolTip(null)
+      setMoveToNextStep(true)
+    }
+  }
+
+  function handleRFIStaticRewardsFeeChange(event) {
+    if (event.target.value === "") {
+      setRfiStaticRewardsFee(null)
+    } else {
+      setRfiStaticRewardsFee(event.target.value)
+    }
+  }
+  function handleWhaleProtectionFeeChange(event) {
+    if (event.target.value === "") {
+      setWhaleProtectionFee(null)
+    } else {
+      setWhaleProtectionFee(event.target.value)
+    }
+  }
+  function handleAutomaticBurnFeeChange(event) {
+    if (event.target.value === "") {
+      setAutomaticBurnFee(null)
+    } else {
+      setAutomaticBurnFee(event.target.value)
+    }
+  }
+  function handleAutomaticCharityFeeChange(event) {
+    if (event.target.value === "") {
+      setAutomaticCharityFee(null)
+    } else {
+      setAutomaticCharityFee(event.target.value)
+    }
+  }
+  function handleAutomaticCharityAddressChange(event) {
+    if (event.target.value === "") {
+      setAutomaticCharityAddress(null)
+    } else {
+      var pattern = "^0x[a-fA-F0-9]{40}$"
+      var result = event.target.value.match(pattern)
+      if (result === null) {
+        setAutomaticCharityAddress(null)
+      } else {
+        setAutomaticCharityAddress(event.target.value)
+      }
+    }
+  }
+
+  function setCharityNull() {
+    setAutomaticCharityFee("")
+    setAutomaticCharityAddress("")
+  }
+
+  React.useEffect(() => {
+    setNextStepDisabledToolTip("Please fill in all Required fields")
+  }, [])
+
+  React.useEffect(() => {
+    cartDispatch({
+      step: 3.1,
+      payload: {
+        step3: {
+          auto_liquidation: liquidityFee,
+          rfi_rewards: cartState.step3.rfi_rewards,
+          WHALE_PROTECTION: cartState.step3.WHALE_PROTECTION,
+          auto_burn: cartState.step3.auto_burn,
+          auto_charity: cartState.step3.auto_charity,
+          charity_address: cartState.step3.charity_address,
+          totalFees: cartState.step3.totalFees,
+        },
+      },
+    })
+  }, [liquidityFee])
+
+  return (
+    <>
+      <div className="container">
+        <div className="columns">
+          <div className="column right-text-align">
+            <div className="theme-view-box success">
+              <div className="columns" style={{ padding: "1rem" }}>
+                <div className="column">
+                  <div className="columns">
+                    <div className="column">
+                      <button class="button is-danger is-light">
+                        Required
+                      </button>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <GatsbyImage
+                        image={imageByNetwork[network]}
+                        alt="dex-pool"
+                      />
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <span className="is-size-5">Create a DEX Pool</span>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <span className="is-size-6">
+                        {`A DEX Pool is where your holders can swap ${network.toUpperCase()} with your tokens`}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <div className="note is-small">
+                        <span className="is-size-6">
+                          Look out for your Pool's Address while checking out
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <button
+                        className="button theme-action-button-gradient-orange"
+                        type="button"
+                      >
+                        <span>Automatically Saved</span>
+                        <span class="icon is-size-3">
+                          <BsCheck />
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="column left-text-align">
+            <div
+              className={`theme-view-box ${
+                !!liquidityFee ? "success" : "failed"
+              }`}
+            >
+              <div className="columns" style={{ padding: "1rem" }}>
+                <div className="column">
+                  <div className="columns">
+                    <div className="column">
+                      <button class="button is-danger is-light">
+                        Required
+                      </button>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <GatsbyImage
+                        image={imageByNetwork[network]}
+                        alt="dex-pool"
+                      />
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <span className="is-size-5">
+                        Automate your liquidation
+                      </span>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <span className="is-size-6">
+                        The fee you charge is returned to the DEX Pool for
+                        constant supply always
+                      </span>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <div className="centerinput">
+                        <div
+                          className={`input-block ${
+                            !!liquidityFee ? "success" : ""
+                          }`}
+                        >
+                          <input
+                            type="number"
+                            required={true}
+                            spellCheck={false}
+                            onChange={handleLiquidityFeeChange}
+                            value={liquidityFee}
+                            min={5}
+                            max={15}
+                          />
+                          <span className="placeholder">Fee [5% - 15%]</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      {!!liquidityFee ? (
+                        <button
+                          className="button theme-action-button-gradient-orange"
+                          type="button"
+                        >
+                          <span>Saved</span>
+                          <span class="icon is-size-3">
+                            <BsCheck />
+                          </span>
+                        </button>
+                      ) : (
+                        <button
+                          className="button theme-action-button-gradient-green has-tooltip-bottom"
+                          type="button"
+                        >
+                          <span>Save to Contract</span>
+                          <span class="icon is-size-3">
+                            <BsArrowRight />
+                          </span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column right-text-align">
+            <div
+              className={`theme-view-box ${
+                !!rfiStaticRewardsFee ? "success" : ""
+              }`}
+            >
+              <div className="columns" style={{ padding: "1rem" }}>
+                <div className="column">
+                  <div className="columns">
+                    <div className="column">
+                      <button class="button is-warning is-light">
+                        Optional
+                      </button>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <GatsbyImage image={imageRfi} alt="dex-pool" />
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <span className="is-size-5">Reward back to Holders</span>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <span className="is-size-6">
+                        Distribute the fee back to the holders. Also called as
+                        RFI Static Rewards
+                      </span>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <div
+                        className="theme-price-box"
+                        style={{ whiteSpace: "nowrap" }}
+                      >
+                        <div className="columns">
+                          <div className="column">Price</div>
+                          <div className="column">
+                            <NetworkIcon network={network} />
+                          </div>
+                          {isTestNetwork ? (
+                            <div className="column">{`0  ${network.toUpperCase()}`}</div>
+                          ) : (
+                            <div className="column">{`${
+                              steps.cardData[1].price[network]
+                            }  ${network.toUpperCase()}`}</div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <div className="centerinput">
+                        <div
+                          className={`input-block ${
+                            !!rfiStaticRewardsFee ? "success" : ""
+                          }`}
+                        >
+                          <input
+                            type="number"
+                            required={true}
+                            spellCheck={false}
+                            onChange={handleRFIStaticRewardsFeeChange}
+                            value={rfiStaticRewardsFee}
+                            min={5}
+                            max={15}
+                          />
+                          <span className="placeholder">Fee [5% - 15%]</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      {!!rfiStaticRewardsFee ? (
+                        <button
+                          className="button theme-action-button-gradient-red"
+                          type="button"
+                          onClick={() => setRfiStaticRewardsFee("")}
+                        >
+                          <span>Remove From Contract</span>
+                          <span class="icon is-size-3">
+                            <BsX />
+                          </span>
+                        </button>
+                      ) : (
+                        <button
+                          className="button theme-action-button-gradient-green has-tooltip-bottom"
+                          type="button"
+                        >
+                          <span>Save to Contract</span>
+                          <span class="icon is-size-3">
+                            <BsArrowRight />
+                          </span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="column left-text-align">
+            <div
+              className={`theme-view-box ${
+                !!whaleProtectionFee ? "success" : ""
+              }`}
+            >
+              <div className="columns" style={{ padding: "1rem" }}>
+                <div className="column">
+                  <div className="columns">
+                    <div className="column">
+                      <button class="button is-warning is-light">
+                        Optional
+                      </button>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <GatsbyImage image={imageWp} alt="dex-pool" />
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <span className="is-size-5">Whale Protection</span>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <span className="is-size-6">
+                        Discourage Whales from manipulating your coin's value.
+                        (0.5% of total Supply)
+                      </span>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <div
+                        className="theme-price-box"
+                        style={{ whiteSpace: "nowrap" }}
+                      >
+                        <div className="columns">
+                          <div className="column">Price</div>
+                          <div className="column">
+                            <NetworkIcon network={network} />
+                          </div>
+                          {isTestNetwork ? (
+                            <div className="column">{`0  ${network.toUpperCase()}`}</div>
+                          ) : (
+                            <div className="column">{`${
+                              steps.cardData[2].price[network]
+                            }  ${network.toUpperCase()}`}</div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <div className="centerinput">
+                        <div
+                          className={`input-block ${
+                            !!whaleProtectionFee ? "success" : ""
+                          }`}
+                        >
+                          <input
+                            type="number"
+                            required={true}
+                            spellCheck={false}
+                            onChange={handleWhaleProtectionFeeChange}
+                            value={whaleProtectionFee}
+                            min={5}
+                            max={15}
+                          />
+                          <span className="placeholder">
+                            0.5% of Total Supply
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      {!!whaleProtectionFee ? (
+                        <button
+                          className="button theme-action-button-gradient-red"
+                          type="button"
+                          onClick={() => setWhaleProtectionFee("")}
+                        >
+                          <span>Remove From Contract</span>
+                          <span class="icon is-size-3">
+                            <BsX />
+                          </span>
+                        </button>
+                      ) : (
+                        <button
+                          className="button theme-action-button-gradient-green has-tooltip-bottom"
+                          type="button"
+                        >
+                          <span>Save to Contract</span>
+                          <span class="icon is-size-3">
+                            <BsArrowRight />
+                          </span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="columns" style={{ alignItems: "flex-start" }}>
+          <div className="column right-text-align">
+            <div
+              className={`theme-view-box ${
+                !!automaticBurnFee ? "success" : ""
+              }`}
+            >
+              <div className="columns" style={{ padding: "1rem" }}>
+                <div className="column">
+                  <div className="columns">
+                    <div className="column">
+                      <button class="button is-warning is-light">
+                        Optional
+                      </button>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <GatsbyImage image={imageAb} alt="dex-pool" />
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <span className="is-size-5">Burn the fee</span>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <span className="is-size-6">
+                        Reduce your coin's supply by burning (destroying) the
+                        fee at every transaction.
+                      </span>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <div
+                        className="theme-price-box"
+                        style={{ whiteSpace: "nowrap" }}
+                      >
+                        <div className="columns">
+                          <div className="column">Price</div>
+                          <div className="column">
+                            <NetworkIcon network={network} />
+                          </div>
+                          {isTestNetwork ? (
+                            <div className="column">{`0  ${network.toUpperCase()}`}</div>
+                          ) : (
+                            <div className="column">{`${
+                              steps.cardData[3].price[network]
+                            }  ${network.toUpperCase()}`}</div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <div className="centerinput">
+                        <div
+                          className={`input-block ${
+                            !!automaticBurnFee ? "success" : ""
+                          }`}
+                        >
+                          <input
+                            type="number"
+                            required={true}
+                            spellCheck={false}
+                            onChange={handleAutomaticBurnFeeChange}
+                            value={automaticBurnFee}
+                            min={5}
+                            max={15}
+                          />
+                          <span className="placeholder">Fee [5% - 15%]</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      {!!automaticBurnFee ? (
+                        <button
+                          className="button theme-action-button-gradient-red"
+                          type="button"
+                          onClick={() => setAutomaticBurnFee("")}
+                        >
+                          <span>Remove From Contract</span>
+                          <span class="icon is-size-3">
+                            <BsX />
+                          </span>
+                        </button>
+                      ) : (
+                        <button
+                          className="button theme-action-button-gradient-green has-tooltip-bottom"
+                          type="button"
+                        >
+                          <span>Save to Contract</span>
+                          <span class="icon is-size-3">
+                            <BsArrowRight />
+                          </span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="column left-text-align">
+            <div
+              className={`theme-view-box ${
+                !!automaticCharityFee && !!automaticCharityAddress
+                  ? "success"
+                  : ""
+              }`}
+            >
+              <div className="columns" style={{ padding: "1rem" }}>
+                <div className="column">
+                  <div className="columns">
+                    <div className="column">
+                      <button class="button is-warning is-light">
+                        Optional
+                      </button>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <GatsbyImage image={imageAc} alt="dex-pool" />
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <span className="is-size-5">Give to Charity</span>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <span className="is-size-6">
+                        {`Donate the fees to a charity that has a ${network.toUpperCase()} wallet`}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <div
+                        className="theme-price-box"
+                        style={{ whiteSpace: "nowrap" }}
+                      >
+                        <div className="columns">
+                          <div className="column">Price</div>
+                          <div className="column">
+                            <NetworkIcon network={network} />
+                          </div>
+                          {isTestNetwork ? (
+                            <div className="column">{`0  ${network.toUpperCase()}`}</div>
+                          ) : (
+                            <div className="column">{`${
+                              steps.cardData[4].price[network]
+                            }  ${network.toUpperCase()}`}</div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <div className="centerinput">
+                        <div
+                          className={`input-block ${
+                            !!automaticCharityFee ? "success" : ""
+                          }`}
+                        >
+                          <input
+                            type="number"
+                            required={true}
+                            spellCheck={false}
+                            onChange={handleAutomaticCharityFeeChange}
+                            value={automaticCharityFee}
+                            min={5}
+                            max={15}
+                          />
+                          <span className="placeholder">Fee [5% - 15%]</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <div className="centerinput">
+                        <div
+                          className={`input-block ${
+                            !!automaticCharityAddress ? "success" : ""
+                          }`}
+                        >
+                          <input
+                            type="text"
+                            required={true}
+                            spellCheck={false}
+                            onChange={handleAutomaticCharityAddressChange}
+                            value={automaticCharityAddress}
+                            pattern="^0x[a-fA-F0-9]{40}$"
+                          />
+                          <span className="placeholder">
+                            e.g. 0x3fw434.....09sdf
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      {!!automaticCharityFee && !!automaticCharityAddress ? (
+                        <button
+                          className="button theme-action-button-gradient-red"
+                          type="button"
+                          onClick={setCharityNull}
+                        >
+                          <span>Remove From Contract</span>
+                          <span class="icon is-size-3">
+                            <BsX />
+                          </span>
+                        </button>
+                      ) : (
+                        <button
+                          className="button theme-action-button-gradient-green has-tooltip-bottom"
+                          type="button"
+                        >
+                          <span>Save to Contract</span>
+                          <span class="icon is-size-3">
+                            <BsArrowRight />
+                          </span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
 }
 
 const NextAndPreviousStep = ({
@@ -1127,39 +1803,39 @@ const NextAndPreviousStep = ({
   return (
     <>
       <div className="columns">
-          <div className="column" style={{ textAlign: "end" }}>
-            <button
-              className="button theme-action-button-gradient-purple contained has-tooltip-bottom"
-              type="button"
-              disabled={prevStepDisabled}
-              data-tooltip={
-                prevStepDisabled ? prevStepToolTip : "Go to previous step"
-              }
-              onClick={() => setStep(step - 1)}
-            >
-              <span class="icon is-size-3">
-                <BsArrowLeft />
-              </span>
-              <span>Prev Step</span>
-            </button>
-          </div>
-          <div className="column" style={{ textAlign: "start" }}>
-            <button
-              className="button theme-action-button-gradient-purple contained has-tooltip-bottom"
-              type="button"
-              disabled={nextStepDisabled}
-              data-tooltip={
-                nextStepDisabled ? nextStepToolTip : "Go to next step"
-              }
-              onClick={() => setStep(step + 1)}
-            >
-              <span>Next Step</span>
-              <span class="icon is-size-3">
-                <BsArrowRight />
-              </span>
-            </button>
-          </div>
+        <div className="column" style={{ textAlign: "end" }}>
+          <button
+            className="button theme-action-button-gradient-purple contained has-tooltip-bottom"
+            type="button"
+            disabled={prevStepDisabled}
+            data-tooltip={
+              prevStepDisabled ? prevStepToolTip : "Go to previous step"
+            }
+            onClick={() => setStep(step - 1)}
+          >
+            <span class="icon is-size-3">
+              <BsArrowLeft />
+            </span>
+            <span>Prev Step</span>
+          </button>
         </div>
+        <div className="column" style={{ textAlign: "start" }}>
+          <button
+            className="button theme-action-button-gradient-purple contained has-tooltip-bottom"
+            type="button"
+            disabled={nextStepDisabled}
+            data-tooltip={
+              nextStepDisabled ? nextStepToolTip : "Go to next step"
+            }
+            onClick={() => setStep(step + 1)}
+          >
+            <span>Next Step</span>
+            <span class="icon is-size-3">
+              <BsArrowRight />
+            </span>
+          </button>
+        </div>
+      </div>
     </>
   )
 }
