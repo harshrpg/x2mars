@@ -474,7 +474,7 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
             </div>
           </div>
         </div>
-        <div className="columns">
+        <div className="container columns">
           <div className="column">
             <NextAndPreviousStep
               prevStepDisabled={false}
@@ -1126,8 +1126,7 @@ const NextAndPreviousStep = ({
 }) => {
   return (
     <>
-      <div className="container">
-        <div className="columns">
+      <div className="columns">
           <div className="column" style={{ textAlign: "end" }}>
             <button
               className="button theme-action-button-gradient-purple contained has-tooltip-bottom"
@@ -1144,7 +1143,7 @@ const NextAndPreviousStep = ({
               <span>Prev Step</span>
             </button>
           </div>
-          <div className="column">
+          <div className="column" style={{ textAlign: "start" }}>
             <button
               className="button theme-action-button-gradient-purple contained has-tooltip-bottom"
               type="button"
@@ -1161,7 +1160,6 @@ const NextAndPreviousStep = ({
             </button>
           </div>
         </div>
-      </div>
     </>
   )
 }
