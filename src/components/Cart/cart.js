@@ -34,7 +34,10 @@ export const CartWindow = ({ setCartDisplay, isActive }) => {
       <div className={`modal ${isActive ? "is-active" : ""}`}>
         <div class="modal-background"></div>
         <div class="modal-content cart-summary-board">
-          <CartContent />
+          <div className="container">
+            <CartContent />
+          </div>
+
           <div className="modal-close-custom">
             <button
               className="button close-modal-button"
@@ -52,9 +55,22 @@ export const CartWindow = ({ setCartDisplay, isActive }) => {
   )
 }
 
-export const CartContent = () => {
+export const CartContent = ({isSmall}) => {
+  const { chainId } = useWeb3React()
+
+  const [isTestNetwork, setIsTestNetwork] = React.useState(false)
+  React.useEffect(() => {
+    if (
+      chainId === NetworkConstants.MAINNET_ETHEREUM ||
+      chainId === NetworkConstants.SMART_CHAIN_MAINNET
+    ) {
+      setIsTestNetwork(false)
+    } else {
+      setIsTestNetwork(true)
+    }
+  }, [chainId])
   return (
-    <div className="container has-text-centered">
+    <>
       <div className="columns">
         <div className="column is-full">
           <span className="is-size-3-desktop is-size-5-mobile">
@@ -64,34 +80,34 @@ export const CartContent = () => {
       </div>
       <div className="columns">
         <div className="column">
-          <TokenType />
+          <TokenType isSmall={isSmall} />
         </div>
       </div>
       <div className="columns">
         <div className="column">
-          <DexSelected />
+          <DexSelected isSmall={isSmall} />
         </div>
       </div>
       <div className="columns">
         <div className="column">
-          <FeaturesSelected />
+          <FeaturesSelected isTestNetwork={isTestNetwork} isSmall={isSmall} />
         </div>
       </div>
       <div className="columns">
         <div className="column">
-          <TotalFees />
+          <TotalFees isTestNetwork={isTestNetwork} isSmall={isSmall} />
         </div>
       </div>
       <div className="columns">
         <div className="column">
-          <DeployButton />
+          <DeployButton isSmall={isSmall} />
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
-const TokenType = () => {
+const TokenType = ({isSmall}) => {
   const user = useAuthState()
   const cartState = useCartState()
   // const network = useNetwork()
@@ -120,15 +136,13 @@ const TokenType = () => {
   }, [cartState])
   return (
     <>
-      <div className="cart-summary-container">
+      <div className={`cart-summary-container ${isSmall ? "small" : ""}`}>
         <span className="summary-pill">Token Type</span>
         {cartState.step1.selectedToken !== -1 && !!network ? (
           <div className="columns">
             <div className="column">
               <GatsbyImage
                 image={tokenImage}
-                width={2}
-                height={2}
                 className="cart-image"
               />
             </div>
@@ -147,7 +161,7 @@ const TokenType = () => {
   )
 }
 
-const DexSelected = () => {
+const DexSelected = ({isSmall}) => {
   const user = useAuthState()
   const cartState = useCartState()
   // const network = useNetwork()
@@ -176,7 +190,7 @@ const DexSelected = () => {
   return (
     <>
       {cartState.step2.dexSelected ? (
-        <div className="cart-summary-container">
+        <div className={`cart-summary-container ${isSmall ? "small" : ""}`}>
           <span className="summary-pill">Pool Selection</span>
           <div className="columns">
             <div className="column">
@@ -200,7 +214,7 @@ const DexSelected = () => {
   )
 }
 
-const FeaturesSelected = () => {
+const FeaturesSelected = ({ isTestNetwork, isSmall }) => {
   const user = useAuthState()
   const cartState = useCartState()
   // const network = useNetwork()
@@ -209,8 +223,12 @@ const FeaturesSelected = () => {
   )
 
   const [alImage, setAlImage] = React.useState()
-  const [rfiImage, setRfiImage] = React.useState(StepsModel.Step3.cardData[1].img)
-  const [awpImage, setAwpImage] = React.useState(StepsModel.Step3.cardData[2].img)
+  const [rfiImage, setRfiImage] = React.useState(
+    StepsModel.Step3.cardData[1].img
+  )
+  const [awpImage, setAwpImage] = React.useState(
+    StepsModel.Step3.cardData[2].img
+  )
   const [abImage, setAbImage] = React.useState(StepsModel.Step3.cardData[3].img)
   const [acImage, setAcImage] = React.useState(StepsModel.Step3.cardData[4].img)
   // const autoLiquidationImage = useImageForData()
@@ -238,7 +256,7 @@ const FeaturesSelected = () => {
         !!cartState.step3.WHALE_PROTECTION ||
         !!cartState.step3.auto_burn ||
         !!cartState.step3.auto_charity) ? (
-        <div className="cart-summary-container has-text-centered">
+          <div className={`cart-summary-container ${isSmall ? "small" : ""}`}>
           <span className="summary-pill">Features Selection</span>
           {!!cartState.step3.auto_liquidation ? (
             <div className="columns">
@@ -268,9 +286,10 @@ const FeaturesSelected = () => {
               </div>
               <div className="column">RFI Static Rewards</div>
               <div className="column">
-                {StepsModel.Step3.cardData[1].price[network] +
-                  ` ` +
-                  network.toUpperCase()}
+                {isTestNetwork
+                  ? `0`
+                  : StepsModel.Step3.cardData[1].price[network]}{" "}
+                {` ${network.toUpperCase()}`}
               </div>
             </div>
           ) : (
@@ -288,9 +307,10 @@ const FeaturesSelected = () => {
               </div>
               <div className="column">Whale Protection</div>
               <div className="column">
-                {StepsModel.Step3.cardData[2].price[network] +
-                  ` ` +
-                  network.toUpperCase()}
+                {isTestNetwork
+                  ? `0`
+                  : StepsModel.Step3.cardData[2].price[network]}{" "}
+                {` ${network.toUpperCase()}`}
               </div>
             </div>
           ) : (
@@ -308,9 +328,10 @@ const FeaturesSelected = () => {
               </div>
               <div className="column">Automatic Burning</div>
               <div className="column">
-                {StepsModel.Step3.cardData[3].price[network] +
-                  ` ` +
-                  network.toUpperCase()}
+                {isTestNetwork
+                  ? `0`
+                  : StepsModel.Step3.cardData[3].price[network]}{" "}
+                {` ${network.toUpperCase()}`}
               </div>
             </div>
           ) : (
@@ -328,9 +349,10 @@ const FeaturesSelected = () => {
               </div>
               <div className="column">Automatic Charity</div>
               <div className="column">
-                {StepsModel.Step3.cardData[4].price[network] +
-                  ` ` +
-                  network.toUpperCase()}
+                {isTestNetwork
+                  ? `0`
+                  : StepsModel.Step3.cardData[4].price[network]}{" "}
+                {` ${network.toUpperCase()}`}
               </div>
             </div>
           ) : (
@@ -344,7 +366,7 @@ const FeaturesSelected = () => {
   )
 }
 
-const TotalFees = () => {
+const TotalFees = ({ isTestNetwork, isSmall }) => {
   const user = useAuthState()
   const cartState = useCartState()
   const cartDispatcher = useCartDispatch()
@@ -375,16 +397,32 @@ const TotalFees = () => {
         totalFees += 0.0
       }
       if (!!cartState.step3.rfi_rewards) {
-        totalFees += parseFloat(StepsModel.Step3.cardData[1].price[network])
+        if (isTestNetwork) {
+          totalFees += 0.0
+        } else {
+          totalFees += parseFloat(StepsModel.Step3.cardData[1].price[network])
+        }
       }
       if (!!cartState.step3.WHALE_PROTECTION) {
-        totalFees += parseFloat(StepsModel.Step3.cardData[2].price[network])
+        if (isTestNetwork) {
+          totalFees += 0.0
+        } else {
+          totalFees += parseFloat(StepsModel.Step3.cardData[2].price[network])
+        }
       }
       if (!!cartState.step3.auto_burn) {
-        totalFees += parseFloat(StepsModel.Step3.cardData[3].price[network])
+        if (isTestNetwork) {
+          totalFees += 0.0
+        } else {
+          totalFees += parseFloat(StepsModel.Step3.cardData[3].price[network])
+        }
       }
       if (!!cartState.step3.auto_charity) {
-        totalFees += parseFloat(StepsModel.Step3.cardData[4].price[network])
+        if (isTestNetwork) {
+          totalFees += 0.0
+        } else {
+          totalFees += parseFloat(StepsModel.Step3.cardData[4].price[network])
+        }
       }
     }
 
@@ -406,7 +444,7 @@ const TotalFees = () => {
   var image = useImageForData("sum.png")
 
   return (
-    <div className="cart-summary-container">
+    <div className={`cart-summary-container ${isSmall ? "small" : ""}`}>
       <span className="summary-pill">Order Total</span>
       <div className="columns">
         <div className="column">
@@ -428,7 +466,7 @@ const TotalFees = () => {
   )
 }
 
-const DeployButton = () => {
+const DeployButton = ({isSmall}) => {
   const { account, library, chainId, error } = useWeb3React()
   var providers = ethers.providers
   var network = ethers.providers.getNetwork(TransactionNetworkNames[chainId])
@@ -451,15 +489,14 @@ const DeployButton = () => {
     errorBody: null,
   })
   const [dashboardAvailable, setDashboardAvailable] = React.useState(false)
-  const [factoryContractWithSigner, setFactoryContractWithSigner] = React.useState(
-    null
-  )
+  const [
+    factoryContractWithSigner,
+    setFactoryContractWithSigner,
+  ] = React.useState(null)
   const tokenFactory = process.env.GATSBY_TOKEN_FACTORY_ADDRS
-  const [factoryContract, _] = React.useState(new ethers.Contract(
-    tokenFactory,
-    TokenFactory.abi,
-    library
-  ))
+  const [factoryContract, _] = React.useState(
+    new ethers.Contract(tokenFactory, TokenFactory.abi, library)
+  )
 
   React.useEffect(() => {
     if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
@@ -722,7 +759,7 @@ const DeployButton = () => {
       <button
         className={`button deploy-contract-button ${
           contractDeployable ? "" : "inactive"
-        }`}
+        } ${isSmall ? "small" : ""}`}
         type="button"
         disabled={!contractDeployable}
         onClick={openPaymentProcessWindow}

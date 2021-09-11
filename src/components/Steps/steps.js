@@ -21,6 +21,7 @@ import { StepsModel } from "../../util/factory-steps"
 import { useCartDispatch, useCartState } from "../../context"
 import { BsDash } from "@react-icons/all-files/bs/BsDash"
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus"
+import { CartContent } from "../Cart/cart"
 
 const Steps = () => {
   const image = useImageForData("tailCur.png")
@@ -79,6 +80,13 @@ const Steps = () => {
           step={step}
           network={network}
           isTestNetwork={isTestNetwork}
+        />
+      ) : step === 4 ? (
+        <SummaryStep
+          image={image}
+          image2={image2}
+          setStep={setStep}
+          step={step}
         />
       ) : (
         ``
@@ -792,7 +800,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
                           type="button"
                           data-tooltip={nextStepDisabledToolTip}
                         >
-                          <span>Save to Contract</span>
+                          <span>Save Feature</span>
                           <span class="icon is-size-3">
                             <BsArrowRight />
                           </span>
@@ -1118,11 +1126,15 @@ const Step3FotToken = ({
         setMoveToNextStep(true)
       } else if (liquidityFee === 1) {
         setLiquidityFee(liquidityFee - 1)
-        setNextStepDisabledToolTip("Please provide \"Automate Your Liquidation\" value")
+        setNextStepDisabledToolTip(
+          'Please provide "Automate Your Liquidation" value'
+        )
         setMoveToNextStep(false)
       }
     } else {
-      setNextStepDisabledToolTip("Please provide \"Automate Your Liquidation\" value")
+      setNextStepDisabledToolTip(
+        'Please provide "Automate Your Liquidation" value'
+      )
       setMoveToNextStep(false)
     }
   }
@@ -1187,7 +1199,9 @@ const Step3FotToken = ({
   }
 
   React.useEffect(() => {
-    setNextStepDisabledToolTip("Please provide \"Automate Your Liquidation\" value")
+    setNextStepDisabledToolTip(
+      'Please provide "Automate Your Liquidation" value'
+    )
     setMoveToNextStep(false)
   }, [])
 
@@ -1440,7 +1454,7 @@ const Step3FotToken = ({
                       {!!liquidityFee && liquidityFee !== 0 ? (
                         <span className="helper-placeholder-success">
                           Fee added successfully. You can proceed to next step
-                          or to add more features
+                          or add more features
                         </span>
                       ) : (
                         <span className="helper-placeholder-danger">
@@ -1467,7 +1481,7 @@ const Step3FotToken = ({
                           className="button theme-action-button-gradient-green has-tooltip-bottom"
                           type="button"
                         >
-                          <span>Save to Contract</span>
+                          <span>Save Feature</span>
                           <span class="icon is-size-3">
                             <BsArrowRight />
                           </span>
@@ -1572,7 +1586,7 @@ const Step3FotToken = ({
                       {!!rfiStaticRewardsFee && rfiStaticRewardsFee !== 0 ? (
                         <span className="helper-placeholder-success">
                           Fee added successfully. You can proceed to next step
-                          or to add more features
+                          or add more features
                         </span>
                       ) : (
                         <span className="helper-placeholder-primary">
@@ -1590,7 +1604,7 @@ const Step3FotToken = ({
                           type="button"
                           onClick={() => setRfiStaticRewardsFee(0)}
                         >
-                          <span>Remove From Contract</span>
+                          <span>Remove Feature</span>
                           <span class="icon is-size-3">
                             <BsX />
                           </span>
@@ -1600,7 +1614,7 @@ const Step3FotToken = ({
                           className="button theme-action-button-gradient-green has-tooltip-bottom"
                           type="button"
                         >
-                          <span>Save to Contract</span>
+                          <span>Save Feature</span>
                           <span class="icon is-size-3">
                             <BsArrowRight />
                           </span>
@@ -1679,7 +1693,7 @@ const Step3FotToken = ({
                           </button>
                         </div>
                         <div className="column">
-                          <span className="is-size-4">
+                          <span className="is-size-6">
                             {whaleProtectionLimit}
                           </span>
                         </div>
@@ -1697,7 +1711,7 @@ const Step3FotToken = ({
                         whaleProtectionLimit !== 0 ? (
                         <span className="helper-placeholder-success">
                           Limit added successfully. You can proceed to next step
-                          or to add more features.
+                          or add more features.
                         </span>
                       ) : (
                         <span className="helper-placeholder-primary">
@@ -1715,7 +1729,7 @@ const Step3FotToken = ({
                           type="button"
                           onClick={() => setWhaleProtectionLimit(0)}
                         >
-                          <span>Remove From Contract</span>
+                          <span>Remove Feature</span>
                           <span class="icon is-size-3">
                             <BsX />
                           </span>
@@ -1725,7 +1739,7 @@ const Step3FotToken = ({
                           className="button theme-action-button-gradient-green has-tooltip-bottom"
                           type="button"
                         >
-                          <span>Save to Contract</span>
+                          <span>Save Feature</span>
                           <span class="icon is-size-3">
                             <BsArrowRight />
                           </span>
@@ -1830,7 +1844,7 @@ const Step3FotToken = ({
                       {!!automaticBurnFee && automaticBurnFee !== 0 ? (
                         <span className="helper-placeholder-success">
                           Fee added successfully. You can proceed to next step
-                          or to add more features
+                          or add more features
                         </span>
                       ) : (
                         <span className="helper-placeholder-primary">
@@ -1848,7 +1862,7 @@ const Step3FotToken = ({
                           type="button"
                           onClick={() => setAutomaticBurnFee(0)}
                         >
-                          <span>Remove From Contract</span>
+                          <span>Remove Feature</span>
                           <span class="icon is-size-3">
                             <BsX />
                           </span>
@@ -1858,7 +1872,7 @@ const Step3FotToken = ({
                           className="button theme-action-button-gradient-green has-tooltip-bottom"
                           type="button"
                         >
-                          <span>Save to Contract</span>
+                          <span>Save Feature</span>
                           <span class="icon is-size-3">
                             <BsArrowRight />
                           </span>
@@ -2012,7 +2026,7 @@ const Step3FotToken = ({
                           type="button"
                           onClick={setCharityNull}
                         >
-                          <span>Remove From Contract</span>
+                          <span>Remove Feature</span>
                           <span class="icon is-size-3">
                             <BsX />
                           </span>
@@ -2022,7 +2036,7 @@ const Step3FotToken = ({
                           className="button theme-action-button-gradient-green has-tooltip-bottom"
                           type="button"
                         >
-                          <span>Save to Contract</span>
+                          <span>Save Feature</span>
                           <span class="icon is-size-3">
                             <BsArrowRight />
                           </span>
@@ -2033,6 +2047,81 @@ const Step3FotToken = ({
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+const SummaryStep = ({ image, image2, setStep, step }) => {
+  const cartState = useCartState()
+  const fotImage = useImageForData("fot.png")
+  const [coinSelected, setCoinSelected] = React.useState(
+    cartState.step1.selectedToken
+  )
+  return (
+    <>
+      <div className="container">
+        <div className="columns">
+          <div className="column is-2">
+            <GatsbyImage
+              image={
+                coinSelected === TokenTypeIds.GOVERNANCE
+                  ? image
+                  : coinSelected === TokenTypeIds.FEE_ON_TRANSFER
+                  ? fotImage
+                  : image2
+              }
+              alt="step 4 image"
+            />
+          </div>
+          <div className="column">
+            <div className="columns">
+              <div className="column">
+                <span className="is-size-2">Almost There</span>
+              </div>
+            </div>
+            <div className="columns">
+              <div className="column">
+                <span className="is-size-5">
+                  You are at the last stage. Check your coin summary and Ready
+                  to Deploy
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="column" style={{ textAlign: "end" }}>
+            <button
+              className="button theme-action-button-gradient-green padded"
+              type="button"
+            >
+              <span>Help Me</span>
+              <span class="icon is-size-3">
+                <BsQuestionCircle />
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="container">
+        <div className="columns">
+          <div className="column centered-text-align">
+            <CartContent isSmall={true} />
+          </div>
+        </div>
+      </div>
+      <div className="container ">
+        <div className="columns">
+          <div className="column centered-text-align">
+            <NextAndPreviousStep
+              prevStepDisabled={false}
+              nextStepDisabled={true}
+              prevStepToolTip={null}
+              nextStepToolTip="This is the last step"
+              setStep={setStep}
+              step={step}
+            />
           </div>
         </div>
       </div>
