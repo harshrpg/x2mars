@@ -1068,6 +1068,16 @@ const ReviewModal = ({
   openPaymentProcessWindow,
   setShowReviewModal,
 }) => {
+  const [isReviewed, setIsReviewed] = React.useState(false)
+  const [isTxnHashChecked, setIsTxnHashChecked] = React.useState(false)
+  const [isTermsAndCondAgreed, setIsTermsAndCondAgreed] = React.useState(false)
+
+  function closeModal() {
+    setIsReviewed(false)
+    setIsTxnHashChecked(false)
+    setIsTermsAndCondAgreed(false)
+    setShowReviewModal(false)
+  }
   return (
     <>
       <div className={`modal ${isActive ? "is-active" : ""}`}>
@@ -1075,12 +1085,18 @@ const ReviewModal = ({
         <div className="modal-content wallet-choice-board">
           <ReviewModalContent
             openPaymentProcessWindow={openPaymentProcessWindow}
+            isReviewed={isReviewed}
+            setIsReviewed={setIsReviewed}
+            isTxnHashChecked={isTxnHashChecked}
+            isTermsAndCondAgreed={isTermsAndCondAgreed}
+            setIsTxnHashChecked={setIsTxnHashChecked}
+            setIsTermsAndCondAgreed={setIsTermsAndCondAgreed}
           />
           <div className="modal-close-custom">
             <button
               className="button close-modal-button"
               aria-label="close"
-              onClick={() => setShowReviewModal(false)}
+              onClick={closeModal}
             >
               <span className="icon is-large">
                 <GoX />
@@ -1093,36 +1109,33 @@ const ReviewModal = ({
   )
 }
 
-const ReviewModalContent = ({ openPaymentProcessWindow }) => {
+const ReviewModalContent = ({
+  openPaymentProcessWindow,
+  isReviewed,
+  setIsReviewed,
+  isTxnHashChecked,
+  isTermsAndCondAgreed,
+  setIsTxnHashChecked,
+  setIsTermsAndCondAgreed,
+}) => {
   const user = useAuthState()
   const cartState = useCartState()
   const [network, setNetwork] = React.useState(
     NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
   )
 
-  const [isReviewed, setIsReviewed] = React.useState(false)
-  const [isTxnHashChecked, setIsTxnHashChecked] = React.useState(false)
-  const [isTermsAndCondAgreed, setIsTermsAndCondAgreed] = React.useState(false)
-
-  const [activateMakerButton, setActivateMakerButton] = React.useState(false)
-
   function handleReview(event) {
-    setIsReviewed(event.target.value)
+    event.persist();
+    setIsReviewed(event.target.checked)
   }
 
   function handleTxnHashChecked(event) {
-    setIsTxnHashChecked(event.target.value)
+    setIsTxnHashChecked(event.target.checked)
   }
 
   function handleTermsAndCondAgreed(event) {
-    setIsTermsAndCondAgreed(event.target.value)
+    setIsTermsAndCondAgreed(event.target.checked)
   }
-
-  React.useEffect(() => {
-    if (isReviewed && isTxnHashChecked && isTermsAndCondAgreed) {
-      setActivateMakerButton(true)
-    }
-  }, [isReviewed, isTxnHashChecked, isTermsAndCondAgreed])
 
   // EFFECTS
   React.useEffect(() => {
@@ -1130,6 +1143,12 @@ const ReviewModalContent = ({ openPaymentProcessWindow }) => {
       setNetwork(NetworkFromChainId[parseInt(user.chainId)])
     }
   }, [user])
+
+  React.useEffect(() => {
+    setIsReviewed(false)
+    setIsTxnHashChecked(false)
+    setIsTermsAndCondAgreed(false)
+  }, [])
   return (
     <>
       <div className="container">
@@ -1225,8 +1244,8 @@ const ReviewModalContent = ({ openPaymentProcessWindow }) => {
           <div className="column">
             <label class="checkbox">
               <input
+                checked={isReviewed}
                 type="checkbox"
-                value={isReviewed}
                 onChange={handleReview}
               />{" "}
               I understand that I will not reject the 2nd transaction
@@ -1237,8 +1256,8 @@ const ReviewModalContent = ({ openPaymentProcessWindow }) => {
           <div className="column">
             <label class="checkbox">
               <input
+                checked={isTxnHashChecked}
                 type="checkbox"
-                value={isTxnHashChecked}
                 onChange={handleTxnHashChecked}
               />{" "}
               I will keep my transaction hash handy
@@ -1249,8 +1268,8 @@ const ReviewModalContent = ({ openPaymentProcessWindow }) => {
           <div className="column">
             <label class="checkbox">
               <input
+                checked={isTermsAndCondAgreed}
                 type="checkbox"
-                value={isTermsAndCondAgreed}
                 onChange={handleTermsAndCondAgreed}
               />{" "}
               I agree to the <a href="#">terms and conditions</a>
@@ -1261,7 +1280,9 @@ const ReviewModalContent = ({ openPaymentProcessWindow }) => {
           <div className="column centered-text-align">
             <button
               className="button theme-action-button-gradient-green"
-              disabled={!activateMakerButton}
+              disabled={
+                !(isReviewed && isTxnHashChecked && isTermsAndCondAgreed)
+              }
               onClick={openPaymentProcessWindow}
             >
               I understand. Create my currency
