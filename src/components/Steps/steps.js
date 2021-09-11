@@ -302,7 +302,7 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
               tokenSupplyNumber: cartState.step2.tokenSupplyNumber,
               tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
               tokenDecimals: cartState.step2.tokenDecimals,
-              dexSelected: cartState.step2.dexSelected,
+              dexSelected: true,
               totalFees: 0,
             },
           },
@@ -835,13 +835,10 @@ const Step3 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
   const cartDispatch = useCartDispatch()
   const fotImage = useImageForData("fot.png")
   const [steps, _] = React.useState(StepsModel.Step1)
-  const [nextStepDisabledToolTip, setNextStepDisabledToolTip] = React.useState(
-    null
-  )
+
   const [coinSelected, setCoinSelected] = React.useState(
     cartState.step1.selectedToken
   )
-  const [moveToNextStep, setMoveToNextStep] = React.useState(false)
 
   return (
     <>
@@ -907,34 +904,27 @@ const Step3 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
         </div>
         <div className="container">
           {coinSelected === TokenTypeIds.GOVERNANCE ? (
-            <Step3GovToken network={network} isTestNetwork={isTestNetwork} />
+            <Step3GovToken
+              network={network}
+              isTestNetwork={isTestNetwork}
+              step={step}
+              setStep={setStep}
+            />
           ) : (
             <Step3FotToken
               network={network}
               isTestNetwork={isTestNetwork}
-              setNextStepDisabledToolTip={setNextStepDisabledToolTip}
-              setMoveToNextStep={setMoveToNextStep}
+              step={step}
+              setStep={setStep}
             />
           )}
-        </div>
-        <div className="container columns">
-          <div className="column">
-            <NextAndPreviousStep
-              prevStepDisabled={false}
-              nextStepDisabled={!moveToNextStep}
-              prevStepToolTip={null}
-              nextStepToolTip={nextStepDisabledToolTip}
-              setStep={setStep}
-              step={step}
-            />
-          </div>
         </div>
       </div>
     </>
   )
 }
 
-const Step3GovToken = ({ network, isTestNetwork }) => {
+const Step3GovToken = ({ network, isTestNetwork, step, setStep }) => {
   const cartState = useCartState()
   const cartDispatch = useCartDispatch()
   const [steps, _] = React.useState(StepsModel.Step2)
@@ -1061,16 +1051,23 @@ const Step3GovToken = ({ network, isTestNetwork }) => {
           </div>
         </div>
       </div>
+      <div className="container columns">
+        <div className="column">
+          <NextAndPreviousStep
+            prevStepDisabled={false}
+            nextStepDisabled={false}
+            prevStepToolTip={null}
+            nextStepToolTip={null}
+            setStep={setStep}
+            step={step}
+          />
+        </div>
+      </div>
     </>
   )
 }
 
-const Step3FotToken = ({
-  network,
-  isTestNetwork,
-  setNextStepDisabledToolTip,
-  setMoveToNextStep,
-}) => {
+const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
   const imageUni = useImageForData("uni.png")
   const imageCake = useImageForData("cake.png")
   const imageRfi = useImageForData("rfi.png")
@@ -1081,15 +1078,18 @@ const Step3FotToken = ({
     eth: imageUni,
     bnb: imageCake,
   }
-  const dexNameByNetwork = {
-    eth: "Uniswap",
-    bnb: "Pancake Swap",
-  }
   const [steps, _] = React.useState(StepsModel.Step3)
 
   const cartState = useCartState()
   const cartDispatch = useCartDispatch()
-
+  const [moveToNextStep, setMoveToNextStep] = React.useState(
+    cartState.step3.auto_liquidation !== 0
+  )
+  const [nextStepDisabledToolTip, setNextStepDisabledToolTip] = React.useState(
+    cartState.step3.auto_liquidation !== 0
+      ? null
+      : 'Please provide "Automate Your Liquidation" value'
+  )
   const [liquidityFee, setLiquidityFee] = React.useState(
     cartState.step3.auto_liquidation
   )
@@ -1197,13 +1197,6 @@ const Step3FotToken = ({
     setAutomaticCharityFee(0)
     setAutomaticCharityAddress("")
   }
-
-  React.useEffect(() => {
-    setNextStepDisabledToolTip(
-      'Please provide "Automate Your Liquidation" value'
-    )
-    setMoveToNextStep(false)
-  }, [])
 
   React.useEffect(() => {
     cartDispatch({
@@ -2048,6 +2041,18 @@ const Step3FotToken = ({
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div className="container columns">
+        <div className="column">
+          <NextAndPreviousStep
+            prevStepDisabled={false}
+            nextStepDisabled={!moveToNextStep}
+            prevStepToolTip={null}
+            nextStepToolTip={nextStepDisabledToolTip}
+            setStep={setStep}
+            step={step}
+          />
         </div>
       </div>
     </>

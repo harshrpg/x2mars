@@ -83,8 +83,8 @@ export const StepsModel = {
           },
         ],
         img: {
-          eth: "al_eth.png",
-          bnb: "al_bnb.png",
+          eth: "uni.png",
+          bnb: "cake.png",
         },
       },
       {

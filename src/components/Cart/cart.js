@@ -55,7 +55,7 @@ export const CartWindow = ({ setCartDisplay, isActive }) => {
   )
 }
 
-export const CartContent = ({isSmall}) => {
+export const CartContent = ({ isSmall }) => {
   const { chainId } = useWeb3React()
 
   const [isTestNetwork, setIsTestNetwork] = React.useState(false)
@@ -107,7 +107,7 @@ export const CartContent = ({isSmall}) => {
   )
 }
 
-const TokenType = ({isSmall}) => {
+const TokenType = ({ isSmall }) => {
   const user = useAuthState()
   const cartState = useCartState()
   // const network = useNetwork()
@@ -139,20 +139,31 @@ const TokenType = ({isSmall}) => {
       <div className={`cart-summary-container ${isSmall ? "small" : ""}`}>
         <span className="summary-pill">Token Type</span>
         {cartState.step1.selectedToken !== -1 && !!network ? (
-          <div className="columns">
-            <div className="column">
-              <GatsbyImage
-                image={tokenImage}
-                className="cart-image"
-              />
+          <>
+            <div className="columns">
+              <div className="column">
+                <GatsbyImage image={tokenImage} className="cart-image" />
+              </div>
+              <div className="column">
+                {TokenTypes[cartState.step1.selectedToken]}
+              </div>
+              <div className="column">
+                {cartState.step1.totalFees + ` ` + network.toUpperCase()}
+              </div>
             </div>
-            <div className="column">
-              {TokenTypes[cartState.step1.selectedToken]}
+            <div className="columns">
+              <div className="column">Name: {cartState.step2.tokenName}</div>
+              <div className="column">
+                Ticker: {cartState.step2.tokenSymbol}
+              </div>
+              <div className="column">
+                Supply:{" "}
+                {cartState.step2.tokenSupplyNumber +
+                  ` ` +
+                  cartState.step2.tokenSupplyUnits}
+              </div>
             </div>
-            <div className="column">
-              {cartState.step1.totalFees + ` ` + network.toUpperCase()}
-            </div>
-          </div>
+          </>
         ) : (
           <ErrorBox error={Error.SELECT_TOKEN} />
         )}
@@ -161,7 +172,7 @@ const TokenType = ({isSmall}) => {
   )
 }
 
-const DexSelected = ({isSmall}) => {
+const DexSelected = ({ isSmall }) => {
   const user = useAuthState()
   const cartState = useCartState()
   // const network = useNetwork()
@@ -256,7 +267,7 @@ const FeaturesSelected = ({ isTestNetwork, isSmall }) => {
         !!cartState.step3.WHALE_PROTECTION ||
         !!cartState.step3.auto_burn ||
         !!cartState.step3.auto_charity) ? (
-          <div className={`cart-summary-container ${isSmall ? "small" : ""}`}>
+        <div className={`cart-summary-container ${isSmall ? "small" : ""}`}>
           <span className="summary-pill">Features Selection</span>
           {!!cartState.step3.auto_liquidation ? (
             <div className="columns">
@@ -466,7 +477,7 @@ const TotalFees = ({ isTestNetwork, isSmall }) => {
   )
 }
 
-const DeployButton = ({isSmall}) => {
+const DeployButton = ({ isSmall }) => {
   const { account, library, chainId, error } = useWeb3React()
   var providers = ethers.providers
   var network = ethers.providers.getNetwork(TransactionNetworkNames[chainId])
@@ -497,6 +508,7 @@ const DeployButton = ({isSmall}) => {
   const [factoryContract, _] = React.useState(
     new ethers.Contract(tokenFactory, TokenFactory.abi, library)
   )
+  const [showReviewModal, setShowReviewModal] = React.useState(false)
 
   React.useEffect(() => {
     if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
@@ -745,6 +757,7 @@ const DeployButton = ({isSmall}) => {
 
   function openPaymentProcessWindow() {
     setTxnError({ type: null, errorBody: null })
+    setShowReviewModal(false)
     setPaymentCompleted(false)
     setCoinBuilt(false)
     setPairAddress(null)
@@ -752,6 +765,10 @@ const DeployButton = ({isSmall}) => {
     setTokenAddress(null)
     setDashboardAvailable(false)
     setChargeFeeAndDeployContract(true)
+  }
+
+  function openReviewWindow() {
+    setShowReviewModal(true)
   }
 
   return (
@@ -762,7 +779,7 @@ const DeployButton = ({isSmall}) => {
         } ${isSmall ? "small" : ""}`}
         type="button"
         disabled={!contractDeployable}
-        onClick={openPaymentProcessWindow}
+        onClick={openReviewWindow}
       >
         Pay and Make Coin
       </button>
@@ -776,6 +793,11 @@ const DeployButton = ({isSmall}) => {
         pairAddress={pairAddress}
         dashboardAvailable={dashboardAvailable}
         txnError={txnError}
+      />
+      <ReviewModal
+        isActive={showReviewModal}
+        openPaymentProcessWindow={openPaymentProcessWindow}
+        setShowReviewModal={setShowReviewModal}
       />
     </>
   )
@@ -1038,5 +1060,215 @@ const ModalContent = ({
         </div>
       )}
     </div>
+  )
+}
+
+const ReviewModal = ({
+  isActive,
+  openPaymentProcessWindow,
+  setShowReviewModal,
+}) => {
+  return (
+    <>
+      <div className={`modal ${isActive ? "is-active" : ""}`}>
+        <div className="modal-background"></div>
+        <div className="modal-content wallet-choice-board">
+          <ReviewModalContent
+            openPaymentProcessWindow={openPaymentProcessWindow}
+          />
+          <div className="modal-close-custom">
+            <button
+              className="button close-modal-button"
+              aria-label="close"
+              onClick={() => setShowReviewModal(false)}
+            >
+              <span className="icon is-large">
+                <GoX />
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+const ReviewModalContent = ({ openPaymentProcessWindow }) => {
+  const user = useAuthState()
+  const cartState = useCartState()
+  const [network, setNetwork] = React.useState(
+    NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
+  )
+
+  const [isReviewed, setIsReviewed] = React.useState(false)
+  const [isTxnHashChecked, setIsTxnHashChecked] = React.useState(false)
+  const [isTermsAndCondAgreed, setIsTermsAndCondAgreed] = React.useState(false)
+
+  const [activateMakerButton, setActivateMakerButton] = React.useState(false)
+
+  function handleReview(event) {
+    setIsReviewed(event.target.value)
+  }
+
+  function handleTxnHashChecked(event) {
+    setIsTxnHashChecked(event.target.value)
+  }
+
+  function handleTermsAndCondAgreed(event) {
+    setIsTermsAndCondAgreed(event.target.value)
+  }
+
+  React.useEffect(() => {
+    if (isReviewed && isTxnHashChecked && isTermsAndCondAgreed) {
+      setActivateMakerButton(true)
+    }
+  }, [isReviewed, isTxnHashChecked, isTermsAndCondAgreed])
+
+  // EFFECTS
+  React.useEffect(() => {
+    if (!!user.chainId) {
+      setNetwork(NetworkFromChainId[parseInt(user.chainId)])
+    }
+  }, [user])
+  return (
+    <>
+      <div className="container">
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-3">Before We Begin</span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-5">
+              It is important to uderstand that there will be{" "}
+              <b>
+                <u>2 transactions</u>
+              </b>
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column left-text-align">
+            <span className="is-size-5">Transaction 1: Payment</span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column left-text-align">
+            <span className="is-size-6">
+              In this step you will be asked to pay your bill of{" "}
+              {cartState.totalCharge.fee} {network.toUpperCase()} and Gas Fees.
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column left-text-align">
+            <span className="is-size-6">
+              Simply follow the instructions on your wallet and{" "}
+              <b>CONFIRM or REJECT</b> your transaction
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column left-text-align">
+            <div className="note is-small">
+              <span className="is-size-6">
+                In this step <b>YOU CAN REJECT THE TRANSACTION IF UNSURE</b>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column left-text-align">
+            <span className="is-size-5">
+              Transaction 2: Deployment of Your Coin
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column left-text-align">
+            <span className="is-size-6">
+              In this step you will again be prompted by your wallet to confirm
+              the transaction.
+              <br /> There will be no charge but only Gas Fees.
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column left-text-align">
+            <span className="is-size-6">
+              Simply follow the instructions on your wallet and <b>CONFIRM</b>{" "}
+              your transaction
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column left-text-align">
+            <div className="note is-small">
+              <span className="is-size-6">
+                In this step{" "}
+                <b>
+                  DONOT REJECT THE TRANSACTION AS YOU MAY LOOSE YOUR PAYMENT
+                </b>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column left-text-align">
+            <span className="is-size-3" id="warning-payments">
+              Always keep your transaction hash Handy
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                value={isReviewed}
+                onChange={handleReview}
+              />{" "}
+              I understand that I will not reject the 2nd transaction
+            </label>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                value={isTxnHashChecked}
+                onChange={handleTxnHashChecked}
+              />{" "}
+              I will keep my transaction hash handy
+            </label>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                value={isTermsAndCondAgreed}
+                onChange={handleTermsAndCondAgreed}
+              />{" "}
+              I agree to the <a href="#">terms and conditions</a>
+            </label>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column centered-text-align">
+            <button
+              className="button theme-action-button-gradient-green"
+              disabled={!activateMakerButton}
+              onClick={openPaymentProcessWindow}
+            >
+              I understand. Create my currency
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
