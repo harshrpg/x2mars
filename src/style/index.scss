@@ -95,6 +95,17 @@ $font-color: $charcoal;
   width: fill-available;
 }
 
+.theme-action-button-gradient-blue {
+  background-image: linear-gradient(to right, #4CB8C4, #3CD3AD);
+  border-color: none !important;
+  color: white !important;
+  padding: 2rem;
+  width: 100%;
+  width: -moz-available; /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+  width: fill-available;
+}
+
 .theme-action-button-gradient-orange {
   background-image: linear-gradient(to right, #f12711, #f5af19);
   border-color: none !important;

@@ -13,11 +13,14 @@ import { useWeb3React } from "@web3-react/core"
 import {
   NetworkConstants,
   NetworkFromChainId,
+  NumberMap,
   TokenTypeIds,
   TokenTypes,
 } from "../../util/Constants"
 import { StepsModel } from "../../util/factory-steps"
 import { useCartDispatch, useCartState } from "../../context"
+import { BsDash } from "@react-icons/all-files/bs/BsDash"
+import { BsPlus } from "@react-icons/all-files/bs/BsPlus"
 
 const Steps = () => {
   const image = useImageForData("tailCur.png")
@@ -689,7 +692,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
                         <div
                           className={`input-block ${
                             !!coinName ? "success" : ""
-                          }`}
+                          } borderless`}
                         >
                           <input
                             type="text"
@@ -709,7 +712,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
                         <div
                           className={`input-block ${
                             !!coinTicker ? "success" : ""
-                          }`}
+                          } borderless`}
                         >
                           <input
                             type="text"
@@ -731,7 +734,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
                             <div
                               className={`input-block ${
                                 !!coinSupplyNumber ? "success" : ""
-                              }`}
+                              } borderless`}
                             >
                               <input
                                 type="number"
@@ -743,7 +746,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
                                 max={100}
                               />
                               <span className="placeholder">
-                                Coin Ticker [1-100]
+                                Coin Supply [1-100]
                               </span>
                             </div>
                           </div>
@@ -871,9 +874,12 @@ const Step3 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
                   </>
                 ) : (
                   <span className="is-size-6">
-                    Here you decide how much fee do you want to charge per
-                    transaction and what do you want to do with it. If you feel
-                    lost head over to the Help Me page.
+                    In this step you decide what additional features you want to
+                    add to your coins. More features attract more customers.{" "}
+                    <br />
+                    You can select what to do with the fees that will be charged
+                    per transaction or implement a whale protection system.
+                    <br /> Head over to <b>Help Me</b> if you feel lost
                   </span>
                 )}
               </div>
@@ -1079,9 +1085,11 @@ const Step3FotToken = ({
   const [liquidityFee, setLiquidityFee] = React.useState(
     cartState.step3.auto_liquidation
   )
-  const [whaleProtectionFee, setWhaleProtectionFee] = React.useState(
+  const [whaleProtectionLimit, setWhaleProtectionLimit] = React.useState(
     cartState.step3.WHALE_PROTECTION
   )
+
+  const [whaleProtecError, setWhaleProtectionError] = React.useState(false)
   const [rfiStaticRewardsFee, setRfiStaticRewardsFee] = React.useState(
     cartState.step3.rfi_rewards
   )
@@ -1099,43 +1107,64 @@ const Step3FotToken = ({
   )
 
   function handleLiquidityFeeChange(event) {
-    if (event.target.value === "") {
-      setLiquidityFee(null)
-      setNextStepDisabledToolTip("Please fill in all Required fields")
-      setMoveToNextStep(false)
-    } else {
-      setLiquidityFee(event.target.value)
+    if (event === "increment" && liquidityFee < 15) {
+      setLiquidityFee(liquidityFee + 1)
       setNextStepDisabledToolTip(null)
       setMoveToNextStep(true)
+    } else if (event === "decrement") {
+      if (liquidityFee > 1) {
+        setLiquidityFee(liquidityFee - 1)
+        setNextStepDisabledToolTip(null)
+        setMoveToNextStep(true)
+      } else if (liquidityFee === 1) {
+        setLiquidityFee(liquidityFee - 1)
+        setNextStepDisabledToolTip("Please provide \"Automate Your Liquidation\" value")
+        setMoveToNextStep(false)
+      }
+    } else {
+      setNextStepDisabledToolTip("Please provide \"Automate Your Liquidation\" value")
+      setMoveToNextStep(false)
     }
   }
 
   function handleRFIStaticRewardsFeeChange(event) {
-    if (event.target.value === "") {
-      setRfiStaticRewardsFee(null)
-    } else {
-      setRfiStaticRewardsFee(event.target.value)
+    if (event === "increment" && rfiStaticRewardsFee < 15) {
+      setRfiStaticRewardsFee(rfiStaticRewardsFee + 1)
+    } else if (event === "decrement" && rfiStaticRewardsFee > 0) {
+      setRfiStaticRewardsFee(rfiStaticRewardsFee - 1)
     }
   }
-  function handleWhaleProtectionFeeChange(event) {
-    if (event.target.value === "") {
-      setWhaleProtectionFee(null)
+  function calculateWhaleProtectionLimit() {
+    if (
+      !!cartState.step2.tokenSupplyNumber &&
+      !!cartState.step2.tokenSupplyUnits
+    ) {
+      try {
+        var value =
+          0.005 *
+          (parseFloat(cartState.step2.tokenSupplyNumber) *
+            NumberMap[cartState.step2.tokenSupplyUnits])
+        setWhaleProtectionLimit(value)
+      } catch (error) {
+        setWhaleProtectionError(true)
+      }
     } else {
-      setWhaleProtectionFee(event.target.value)
+      setWhaleProtectionLimit(0.0)
+      setWhaleProtectionError(true)
     }
   }
   function handleAutomaticBurnFeeChange(event) {
-    if (event.target.value === "") {
-      setAutomaticBurnFee(null)
-    } else {
-      setAutomaticBurnFee(event.target.value)
+    if (event === "increment" && automaticBurnFee < 15) {
+      setAutomaticBurnFee(automaticBurnFee + 1)
+    } else if (event === "decrement" && automaticBurnFee > 0) {
+      setAutomaticBurnFee(automaticBurnFee - 1)
     }
   }
   function handleAutomaticCharityFeeChange(event) {
-    if (event.target.value === "") {
-      setAutomaticCharityFee(null)
-    } else {
-      setAutomaticCharityFee(event.target.value)
+    if (event === "increment" && automaticCharityFee < 15) {
+      setAutomaticCharityFee(automaticCharityFee + 1)
+    } else if (event === "decrement" && automaticCharityFee > 0) {
+      setAutomaticCharityFee(automaticCharityFee - 1)
     }
   }
   function handleAutomaticCharityAddressChange(event) {
@@ -1153,12 +1182,13 @@ const Step3FotToken = ({
   }
 
   function setCharityNull() {
-    setAutomaticCharityFee("")
+    setAutomaticCharityFee(0)
     setAutomaticCharityAddress("")
   }
 
   React.useEffect(() => {
-    setNextStepDisabledToolTip("Please fill in all Required fields")
+    setNextStepDisabledToolTip("Please provide \"Automate Your Liquidation\" value")
+    setMoveToNextStep(false)
   }, [])
 
   React.useEffect(() => {
@@ -1178,6 +1208,95 @@ const Step3FotToken = ({
     })
   }, [liquidityFee])
 
+  React.useEffect(() => {
+    cartDispatch({
+      step: 3.2,
+      payload: {
+        step3: {
+          auto_liquidation: cartState.step3.auto_liquidation,
+          rfi_rewards: rfiStaticRewardsFee,
+          WHALE_PROTECTION: cartState.step3.WHALE_PROTECTION,
+          auto_burn: cartState.step3.auto_burn,
+          auto_charity: cartState.step3.auto_charity,
+          charity_address: cartState.step3.charity_address,
+          totalFees: cartState.step3.totalFees,
+        },
+      },
+    })
+  }, [rfiStaticRewardsFee])
+
+  React.useEffect(() => {
+    cartDispatch({
+      step: 3.3,
+      payload: {
+        step3: {
+          auto_liquidation: cartState.step3.auto_liquidation,
+          rfi_rewards: cartState.step3.rfi_rewards,
+          WHALE_PROTECTION: whaleProtectionLimit,
+          auto_burn: cartState.step3.auto_burn,
+          auto_charity: cartState.step3.auto_charity,
+          charity_address: cartState.step3.charity_address,
+          totalFees: cartState.step3.totalFees,
+        },
+      },
+    })
+  }, [whaleProtectionLimit])
+
+  React.useEffect(() => {
+    cartDispatch({
+      step: 3.4,
+      payload: {
+        step3: {
+          auto_liquidation: cartState.step3.auto_liquidation,
+          rfi_rewards: cartState.step3.rfi_rewards,
+          WHALE_PROTECTION: cartState.step3.WHALE_PROTECTION,
+          auto_burn: automaticBurnFee,
+          auto_charity: cartState.step3.auto_charity,
+          charity_address: cartState.step3.charity_address,
+          totalFees: cartState.step3.totalFees,
+        },
+      },
+    })
+  }, [automaticBurnFee])
+
+  React.useEffect(() => {
+    cartDispatch({
+      step: 3.5,
+      payload: {
+        step3: {
+          auto_liquidation: cartState.step3.auto_liquidation,
+          rfi_rewards: cartState.step3.rfi_rewards,
+          WHALE_PROTECTION: cartState.step3.WHALE_PROTECTION,
+          auto_burn: cartState.step3.auto_burn,
+          auto_charity: automaticCharityFee,
+          charity_address: cartState.step3.charity_address,
+          totalFees: cartState.step3.totalFees,
+        },
+      },
+    })
+  }, [automaticCharityFee])
+
+  React.useEffect(() => {
+    var charityAddress = automaticCharityAddress
+    if (automaticCharityAddress === "") {
+      charityAddress = "0x000000000000000000000000000000000000dEaD"
+    }
+    cartDispatch({
+      step: 3.6,
+      payload: {
+        step3: {
+          auto_liquidation: cartState.step3.auto_liquidation,
+          rfi_rewards: cartState.step3.rfi_rewards,
+          WHALE_PROTECTION: cartState.step3.WHALE_PROTECTION,
+          auto_burn: cartState.step3.auto_burn,
+          auto_charity: cartState.step3.auto_charity,
+          charity_address: charityAddress,
+          totalFees: cartState.step3.totalFees,
+        },
+      },
+    })
+  }, [automaticCharityAddress])
+
   return (
     <>
       <div className="container">
@@ -1188,8 +1307,8 @@ const Step3FotToken = ({
                 <div className="column">
                   <div className="columns">
                     <div className="column">
-                      <button class="button is-danger is-light">
-                        Required
+                      <button class="button is-success is-light">
+                        Automatically Added
                       </button>
                     </div>
                   </div>
@@ -1220,6 +1339,14 @@ const Step3FotToken = ({
                           Look out for your Pool's Address while checking out
                         </span>
                       </div>
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column">
+                      <span className="helper-placeholder-success">
+                        This feature is automatically added and requires no
+                        further input from your end
+                      </span>
                     </div>
                   </div>
                   <div className="columns">
@@ -1272,31 +1399,55 @@ const Step3FotToken = ({
                   <div className="columns">
                     <div className="column">
                       <span className="is-size-6">
-                        The fee you charge is returned to the DEX Pool for
-                        constant supply always
+                        The fee you charge is returned to the DEX Pool for a
+                        continuous supply
                       </span>
                     </div>
                   </div>
-                  <div className="columns">
+                  <div className="columns" style={{ margin: "1rem" }}>
                     <div className="column">
-                      <div className="centerinput">
-                        <div
-                          className={`input-block ${
-                            !!liquidityFee ? "success" : ""
-                          }`}
-                        >
-                          <input
-                            type="number"
-                            required={true}
-                            spellCheck={false}
-                            onChange={handleLiquidityFeeChange}
-                            value={liquidityFee}
-                            min={5}
-                            max={15}
-                          />
-                          <span className="placeholder">Fee [5% - 15%]</span>
+                      <div className="columns">
+                        <div className="column">
+                          <button
+                            className="button"
+                            onClick={() =>
+                              handleLiquidityFeeChange("decrement")
+                            }
+                          >
+                            <BsDash />
+                          </button>
+                        </div>
+                        <div className="column">
+                          <span className="is-size-4">
+                            {liquidityFee + ` %`}
+                          </span>
+                        </div>
+                        <div className="column">
+                          <button
+                            className="button"
+                            onClick={() =>
+                              handleLiquidityFeeChange("increment")
+                            }
+                          >
+                            <BsPlus />
+                          </button>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                  <div className="columns" style={{ margin: "0.5rem" }}>
+                    <div className="column">
+                      {!!liquidityFee && liquidityFee !== 0 ? (
+                        <span className="helper-placeholder-success">
+                          Fee added successfully. You can proceed to next step
+                          or to add more features
+                        </span>
+                      ) : (
+                        <span className="helper-placeholder-danger">
+                          Please set this value to proceed. Values should be
+                          between 1% and 15%
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className="columns">
@@ -1385,26 +1536,50 @@ const Step3FotToken = ({
                       </div>
                     </div>
                   </div>
-                  <div className="columns">
+                  <div className="columns" style={{ margin: "1rem" }}>
                     <div className="column">
-                      <div className="centerinput">
-                        <div
-                          className={`input-block ${
-                            !!rfiStaticRewardsFee ? "success" : ""
-                          }`}
-                        >
-                          <input
-                            type="number"
-                            required={true}
-                            spellCheck={false}
-                            onChange={handleRFIStaticRewardsFeeChange}
-                            value={rfiStaticRewardsFee}
-                            min={5}
-                            max={15}
-                          />
-                          <span className="placeholder">Fee [5% - 15%]</span>
+                      <div className="columns">
+                        <div className="column">
+                          <button
+                            className="button"
+                            onClick={() =>
+                              handleRFIStaticRewardsFeeChange("decrement")
+                            }
+                          >
+                            <BsDash />
+                          </button>
+                        </div>
+                        <div className="column">
+                          <span className="is-size-4">
+                            {rfiStaticRewardsFee + ` %`}
+                          </span>
+                        </div>
+                        <div className="column">
+                          <button
+                            className="button"
+                            onClick={() =>
+                              handleRFIStaticRewardsFeeChange("increment")
+                            }
+                          >
+                            <BsPlus />
+                          </button>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                  <div className="columns" style={{ margin: "0.5rem" }}>
+                    <div className="column">
+                      {!!rfiStaticRewardsFee && rfiStaticRewardsFee !== 0 ? (
+                        <span className="helper-placeholder-success">
+                          Fee added successfully. You can proceed to next step
+                          or to add more features
+                        </span>
+                      ) : (
+                        <span className="helper-placeholder-primary">
+                          This field is optional. Values should be between 1%
+                          and 15%
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className="columns">
@@ -1413,7 +1588,7 @@ const Step3FotToken = ({
                         <button
                           className="button theme-action-button-gradient-red"
                           type="button"
-                          onClick={() => setRfiStaticRewardsFee("")}
+                          onClick={() => setRfiStaticRewardsFee(0)}
                         >
                           <span>Remove From Contract</span>
                           <span class="icon is-size-3">
@@ -1440,7 +1615,7 @@ const Step3FotToken = ({
           <div className="column left-text-align">
             <div
               className={`theme-view-box ${
-                !!whaleProtectionFee ? "success" : ""
+                !!whaleProtectionLimit ? "success" : ""
               }`}
             >
               <div className="columns" style={{ padding: "1rem" }}>
@@ -1492,37 +1667,53 @@ const Step3FotToken = ({
                       </div>
                     </div>
                   </div>
-                  <div className="columns">
+                  <div className="columns" style={{ margin: "1rem" }}>
                     <div className="column">
-                      <div className="centerinput">
-                        <div
-                          className={`input-block ${
-                            !!whaleProtectionFee ? "success" : ""
-                          }`}
-                        >
-                          <input
-                            type="number"
-                            required={true}
-                            spellCheck={false}
-                            onChange={handleWhaleProtectionFeeChange}
-                            value={whaleProtectionFee}
-                            min={5}
-                            max={15}
-                          />
-                          <span className="placeholder">
-                            0.5% of Total Supply
+                      <div className="columns">
+                        <div className="column">
+                          <button
+                            className="button theme-action-button-gradient-blue"
+                            onClick={() => calculateWhaleProtectionLimit()}
+                          >
+                            Calculate & Save
+                          </button>
+                        </div>
+                        <div className="column">
+                          <span className="is-size-4">
+                            {whaleProtectionLimit}
                           </span>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <div className="columns" style={{ margin: "0.5rem" }}>
+                    <div className="column">
+                      {whaleProtecError ? (
+                        <span className="helper-placeholder-danger">
+                          An error occurred with your total supply values. To
+                          resolve either head to Step 2 or refresh the browser
+                        </span>
+                      ) : !!whaleProtectionLimit &&
+                        whaleProtectionLimit !== 0 ? (
+                        <span className="helper-placeholder-success">
+                          Limit added successfully. You can proceed to next step
+                          or to add more features.
+                        </span>
+                      ) : (
+                        <span className="helper-placeholder-primary">
+                          This field is optional and auto calculated. Please
+                          Click Calculate & Save to add.
+                        </span>
+                      )}
+                    </div>
+                  </div>
                   <div className="columns">
                     <div className="column">
-                      {!!whaleProtectionFee ? (
+                      {!!whaleProtectionLimit ? (
                         <button
                           className="button theme-action-button-gradient-red"
                           type="button"
-                          onClick={() => setWhaleProtectionFee("")}
+                          onClick={() => setWhaleProtectionLimit(0)}
                         >
                           <span>Remove From Contract</span>
                           <span class="icon is-size-3">
@@ -1603,26 +1794,50 @@ const Step3FotToken = ({
                       </div>
                     </div>
                   </div>
-                  <div className="columns">
+                  <div className="columns" style={{ margin: "1rem" }}>
                     <div className="column">
-                      <div className="centerinput">
-                        <div
-                          className={`input-block ${
-                            !!automaticBurnFee ? "success" : ""
-                          }`}
-                        >
-                          <input
-                            type="number"
-                            required={true}
-                            spellCheck={false}
-                            onChange={handleAutomaticBurnFeeChange}
-                            value={automaticBurnFee}
-                            min={5}
-                            max={15}
-                          />
-                          <span className="placeholder">Fee [5% - 15%]</span>
+                      <div className="columns">
+                        <div className="column">
+                          <button
+                            className="button"
+                            onClick={() =>
+                              handleAutomaticBurnFeeChange("decrement")
+                            }
+                          >
+                            <BsDash />
+                          </button>
+                        </div>
+                        <div className="column">
+                          <span className="is-size-4">
+                            {automaticBurnFee + ` %`}
+                          </span>
+                        </div>
+                        <div className="column">
+                          <button
+                            className="button"
+                            onClick={() =>
+                              handleAutomaticBurnFeeChange("increment")
+                            }
+                          >
+                            <BsPlus />
+                          </button>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                  <div className="columns" style={{ margin: "0.5rem" }}>
+                    <div className="column">
+                      {!!automaticBurnFee && automaticBurnFee !== 0 ? (
+                        <span className="helper-placeholder-success">
+                          Fee added successfully. You can proceed to next step
+                          or to add more features
+                        </span>
+                      ) : (
+                        <span className="helper-placeholder-primary">
+                          This field is optional. Values should be between 1%
+                          and 15%
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className="columns">
@@ -1631,7 +1846,7 @@ const Step3FotToken = ({
                         <button
                           className="button theme-action-button-gradient-red"
                           type="button"
-                          onClick={() => setAutomaticBurnFee("")}
+                          onClick={() => setAutomaticBurnFee(0)}
                         >
                           <span>Remove From Contract</span>
                           <span class="icon is-size-3">
@@ -1711,35 +1926,59 @@ const Step3FotToken = ({
                       </div>
                     </div>
                   </div>
-                  <div className="columns">
+                  <div className="columns" style={{ margin: "1rem" }}>
                     <div className="column">
-                      <div className="centerinput">
-                        <div
-                          className={`input-block ${
-                            !!automaticCharityFee ? "success" : ""
-                          }`}
-                        >
-                          <input
-                            type="number"
-                            required={true}
-                            spellCheck={false}
-                            onChange={handleAutomaticCharityFeeChange}
-                            value={automaticCharityFee}
-                            min={5}
-                            max={15}
-                          />
-                          <span className="placeholder">Fee [5% - 15%]</span>
+                      <div className="columns">
+                        <div className="column">
+                          <button
+                            className="button"
+                            onClick={() =>
+                              handleAutomaticCharityFeeChange("decrement")
+                            }
+                          >
+                            <BsDash />
+                          </button>
+                        </div>
+                        <div className="column">
+                          <span className="is-size-4">
+                            {automaticCharityFee + ` %`}
+                          </span>
+                        </div>
+                        <div className="column">
+                          <button
+                            className="button"
+                            onClick={() =>
+                              handleAutomaticCharityFeeChange("increment")
+                            }
+                          >
+                            <BsPlus />
+                          </button>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="columns">
+                  <div className="columns" style={{ margin: "0.5rem" }}>
                     <div className="column">
+                      {!!automaticCharityFee && automaticCharityFee !== 0 ? (
+                        <span className="helper-placeholder-success">
+                          Fee added successfully. Please provide the charity
+                          address below if you haven't already.
+                        </span>
+                      ) : (
+                        <span className="helper-placeholder-primary">
+                          Values should be between 1% and 15%
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="columns">
+                    <div className="column" style={{ padding: 0 }}>
                       <div className="centerinput">
                         <div
                           className={`input-block ${
                             !!automaticCharityAddress ? "success" : ""
                           }`}
+                          style={{ marginBottom: 0 }}
                         >
                           <input
                             type="text"
@@ -1750,9 +1989,18 @@ const Step3FotToken = ({
                             pattern="^0x[a-fA-F0-9]{40}$"
                           />
                           <span className="placeholder">
-                            e.g. 0x3fw434.....09sdf
+                            Charity Wallet Address, e.g. 0x3fw434.....09sdf
                           </span>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="columns" style={{ margin: "0.5rem" }}>
+                    <div className="column">
+                      <div className="note is-small">
+                        <span>
+                          {`Please make sure that you have the correct network's wallet address. You are currently connected to ${network.toUpperCase()} network`}
+                        </span>
                       </div>
                     </div>
                   </div>

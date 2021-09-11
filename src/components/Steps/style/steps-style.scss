@@ -40,3 +40,15 @@
 .theme-view-box {
     text-align: center !important;
 }
+
+.helper-placeholder-danger {
+    color: $unsucessful-color;
+}
+
+.helper-placeholder-success {
+    color: $successfull-color;
+}
+
+.helper-placeholder-primary {
+    color: $primary-color;
+}

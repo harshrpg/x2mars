@@ -5,6 +5,8 @@ import Seo from "../components/seo"
 import { AuthProvider } from "../context/context"
 import * as React from "react"
 import Steps from "../components/Steps/steps"
+import { BsDash } from "@react-icons/all-files/bs/BsDash";
+import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
 const getLibrary = provider => {
   const library = new Web3Provider(provider, "any")
   library.pollingInterval = 12000
@@ -16,10 +18,36 @@ const TestSteps = () => {
       <Web3ReactProvider getLibrary={getLibrary}>
         <AppLayout>
           <Seo title="Testing" />
-          <Steps />
+          <NumberInput />
         </AppLayout>
       </Web3ReactProvider>
     </AuthProvider>
+  )
+}
+
+const NumberInput = () => {
+  const [number, setNumber] = React.useState(0)
+  function increment() {
+    if (number <= 14) {
+      setNumber(number + 1)
+    }
+  }
+  return (
+    <>
+    <div className="columns">
+      <div className="column" onClick={increment}>
+        <BsPlus	/>
+      </div>
+      <div className="column">
+        <span className="is-size-3">
+          {number}
+        </span>
+      </div>
+      <div className="column" onClick={() => setNumber(number - 1)}>
+        <BsDash	/>
+      </div>
+    </div>
+    </>
   )
 }
 
