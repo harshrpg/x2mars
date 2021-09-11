@@ -12,16 +12,19 @@
 .column.centered-text-align {
     text-align: center;
     text-align: -webkit-center;
+    text-align: -moz-center;
 }
 
 .column.right-text-align {
     text-align: right;
     text-align: -webkit-right;
+    text-align: -moz-right;
 }
 
 .column.left-text-align {
     text-align: left;
     text-align: -webkit-left;
+    text-align: -moz-left;
 }
 
 .theme-view-box.active {
