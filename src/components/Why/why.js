@@ -28,6 +28,10 @@ const Why = () => {
         <div class="container">
           <div className="columns">
             <div className="column">
+              <GatsbyImage image={heroImage} />
+            </div>
+
+            <div className="column">
               <div className="columns">
                 <div className="column">
                   <span className="is-size-2">
@@ -73,7 +77,8 @@ const Why = () => {
                     </div>
                     <div className="column is-7">
                       <span className="is-size-6">
-                        You are always in control. DAC allows you to create your own currency and maintain it using a custom dashboard
+                        You are always in control. DAC allows you to create your
+                        own currency and maintain it using a custom dashboard
                       </span>
                     </div>
                   </div>
@@ -90,10 +95,6 @@ const Why = () => {
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="column">
-              <GatsbyImage image={heroImage} />
             </div>
           </div>
         </div>

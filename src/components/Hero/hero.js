@@ -50,7 +50,7 @@ const Hero = () => {
             </div>
           </div>
           <div className="columns">
-            <div className="column is-4">
+            <div className="column">
               <div className="hero-sub-texts">
                 <div className="columns">
                   <div className="column">

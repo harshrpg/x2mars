@@ -63,38 +63,6 @@ const Benefits = () => {
       <div className="container">
         <div className="columns">
           <div className="column">
-            <div className="columns">
-              <div className="column">
-                <span className="is-size-4 hero-body-resize">
-                  Benefits of having your own currency
-                </span>
-              </div>
-            </div>
-            <div className="columns">
-              <div className="column">
-                <div className="is-size-6 hero-body-resize">
-                  <ul>
-                    {imageContent.map((content, idx) => (
-                      <li
-                        className={`explainer subtitle is-size-5-desktop is-size-5-fullhd is-size-5-widescreen is-size-6-tablet is-size-6-mobile${
-                          index === idx ? " is-explainer-active" : ""
-                        }`}
-                      >
-                        <div className="columns" onClick={() => setIndex(idx)} style={{cursor: "pointer"}}>
-                          <div className="column is-1">
-                            <HiArrowNarrowRight />
-                          </div>
-                          <div className="column">{content}</div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="column">
             <div className="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-4-fullhd">
               <div className="column">
                 <div className="slideshow">
@@ -124,6 +92,42 @@ const Benefits = () => {
                       ></div>
                     ))}
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="column">
+            <div className="columns">
+              <div className="column">
+                <span className="is-size-4 hero-body-resize">
+                  Benefits of having your own currency
+                </span>
+              </div>
+            </div>
+            <div className="columns">
+              <div className="column">
+                <div className="is-size-6 hero-body-resize">
+                  <ul>
+                    {imageContent.map((content, idx) => (
+                      <li
+                        className={`explainer subtitle is-size-5-desktop is-size-5-fullhd is-size-5-widescreen is-size-6-tablet is-size-6-mobile${
+                          index === idx ? " is-explainer-active" : ""
+                        }`}
+                      >
+                        <div
+                          className="columns"
+                          onClick={() => setIndex(idx)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          <div className="column is-1">
+                            <HiArrowNarrowRight />
+                          </div>
+                          <div className="column">{content}</div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </div>
