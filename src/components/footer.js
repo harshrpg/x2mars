@@ -38,7 +38,7 @@ const Footer = () => {
             <h6 className="title is-5">Resources</h6>
             <ul>
               <li>
-                <a href="/whitepaper">About Dac</a>
+                <a href="/whitepaper">Whitepaper</a>
               </li>
               <li>
                 <a href="/token-guide">Token Guide</a>

@@ -50,10 +50,6 @@
   padding-left: 8% !important;
 }
 
-.hero-space{
-  padding: 6% 0 6% 0 !important;
-}
-
 .hero-page {
   position: relative !important;
   background-color: transparent !important;
@@ -118,19 +114,10 @@
   left: 5% !important;
 }
 
-.is-size-6-mobile{
-  background-color:rgb(248, 248, 248) !important;
-  z-index: 1 !important;
- }
-
 @media screen and (max-width: 1700px) {
   .hero-body-texts {
     background-color: white !important;
   }
-
-  .is-size-6-mobile{
-    background-color:rgb(248, 248, 248) !important;
-   }
 }
 
 @media screen and (max-width: 768px) {

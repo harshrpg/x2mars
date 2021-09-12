@@ -67,7 +67,7 @@ const NonActiveSelectors = () => {
           <div className="column">
             <GatsbyImage image={cmImage} width={2} height={2} />
           </div>
-          <div className="column">Read About DAC</div>
+          <div className="column">Read the Whitepaper</div>
         </div>
       </div>
     )

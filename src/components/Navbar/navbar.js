@@ -31,7 +31,7 @@ const Navbar = () => {
       >
         <div className="navbar-start">
           <Link to="/whitepaper" className="navbar-item" activeClassName="navbar-item">
-            about dac
+            Whitepaper
           </Link>
           {/* <Link
             to="/"

@@ -77,7 +77,7 @@ const DashboardNavbar = () => {
             <div>
               <Link to="/whitepaper" className="navbar-start">
                 <button className="button is-normal custom-button app-button-footer">
-                  About DAC
+                  Whitepaper
                 </button>
               </Link>
             </div>

@@ -150,7 +150,7 @@ const ReadAboutCoinMakerSelector = () => {
         <div className="column">
           <GatsbyImage image={cmImage} alt={"whitepaper selector"} />
         </div>
-        <div className="column">Read About DAC</div>
+        <div className="column">Read the Whitepaper</div>
       </div>
     </div>
   )
