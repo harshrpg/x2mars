@@ -1,6 +1,7 @@
 import React from "react"
 import "bulma/css/bulma.css"
 import "@fortawesome/fontawesome-free/css/all.min.css"
+import { Link } from "gatsby"
 
 const Footer = () => {
   return (
@@ -13,6 +14,12 @@ const Footer = () => {
               Create is a decentralized smart contract building protocol
               allowing anyone to make their crypto currency and launch it on
               Ethereum or BSC
+            </p>
+            <p>
+              <Link to="/legal/terms-and-conditions">Terms and Conditions</Link>
+            </p>
+            <p>
+              <Link to="/legal/privacy-policy">Privacy Policy</Link>
             </p>
           </div>
 
@@ -44,7 +51,7 @@ const Footer = () => {
                 <a href="/token-guide">Token Guide</a>
               </li>
               <li>
-                <a href="/contact">Contact</a>
+                <a href="/contact-us">Contact</a>
               </li>
             </ul>
           </div>

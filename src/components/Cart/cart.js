@@ -1343,7 +1343,7 @@ const ReviewModalContent = ({
                 type="checkbox"
                 onChange={handleTermsAndCondAgreed}
               />{" "}
-              I agree to the <a href="#">terms and conditions</a>
+              I agree to the <Link to="/legal/terms-and-conditions">terms and conditions</Link>
             </label>
           </div>
         </div>
