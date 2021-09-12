@@ -26,7 +26,9 @@ import { animated, useSpring } from "@react-spring/web"
 import TokenFactory from "../../abis/TokenFactory.json"
 import StandardToken from "../../abis/StandardToken.json"
 import FotToken from "../../abis/FotToken.json"
+import { BsBoxArrowUpRight } from "@react-icons/all-files/bs/BsBoxArrowUpRight"
 import { navigate } from "gatsby-link"
+import { Link } from "gatsby"
 
 export const CartWindow = ({ setCartDisplay, isActive }) => {
   return (
@@ -888,6 +890,47 @@ const ModalContent = ({
   })
 
   const cartState = useCartState()
+  const { active, chainId } = useWeb3React()
+  const [network, setNetwork] = React.useState()
+  const [etherscanAddress, setEtherscanAddress] = React.useState(
+    "https://etherscan.io/address/"
+  )
+  const [etherScanTx, setEtherScanTx] = React.useState(
+    "https://etherscan.io/tx/"
+  )
+
+  const [dexAddress, setDexAddress] = React.useState(
+    "https://info.uniswap.org/#/pools/"
+  )
+
+  React.useEffect(() => {
+    if (active && !!chainId) {
+      setNetwork(NetworkFromChainId[parseInt(chainId)])
+    }
+  }, [active, chainId])
+  React.useEffect(() => {
+    if (chainId === NetworkConstants.RINKEBY) {
+      setEtherscanAddress("https://rinkeby.etherscan.io/address/")
+      setEtherScanTx("https://rinkeby.etherscan.io/tx/")
+    } else if (chainId === NetworkConstants.ROPSTEN) {
+      setEtherscanAddress("https://ropsten.etherscan.io/address/")
+      setEtherScanTx("https://ropsten.etherscan.io/tx/")
+    } else if (chainId === NetworkConstants.KOVAN) {
+      setEtherscanAddress("https://kovan.etherscan.io/address/")
+      setEtherScanTx("https://kovan.etherscan.io/tx/")
+    } else if (chainId === NetworkConstants.GOERLI) {
+      setEtherscanAddress("https://goerli.etherscan.io/address/")
+      setEtherScanTx("https://goerli.etherscan.io/tx/")
+    } else if (chainId === NetworkConstants.SMART_CHAIN_MAINNET) {
+      setEtherscanAddress("https://bscscan.com/address/")
+      setEtherScanTx("https://bscscan.com/tx/")
+      setDexAddress("https://pancakeswap.finance/info/pool/")
+    } else if (chainId === NetworkConstants.SMART_CHAIN_TESTNET) {
+      setEtherscanAddress("https://testnet.bscscan.com/address/")
+      setEtherScanTx("https://testnet.bscscan.com/tx/")
+      setDexAddress("https://pancakeswap.finance/info/pool/")
+    }
+  }, [chainId])
 
   // React.useEffect(() => {
 
@@ -896,9 +939,15 @@ const ModalContent = ({
     <div className="container">
       <div className="columns">
         <div className="column">
-          <span className="is-size-5" id="warning-payments">
-            Do Not Refresh or Close this window
-          </span>
+          {!!txnHash && !!coinBuilt ? (
+            <span className="is-size-5" id="success-payments">
+              All Transactions Processed Successfully. You can head over to Dashboard
+            </span>
+          ) : (
+            <span className="is-size-5" id="warning-payments">
+              Do Not Refresh or Close this window
+            </span>
+          )}
         </div>
       </div>
       <div className="columns">
@@ -963,16 +1012,25 @@ const ModalContent = ({
                 </>
               )}
             </div>
-            <div className="columns">
-              <div className="column">
-                <span className="is-size-7">Payment Transaction Hash</span>
+            {!!txnHash ? (
+              <div className="columns">
+                <div className="column">
+                  <span className="is-size-7">Payment Transaction Hash</span>
+                </div>
+                <div className="column">
+                  <span className="is-size-6" id="txnHash">
+                    {/* {txnHash} */}
+                    <Link to={etherScanTx + txnHash} target="_blank">
+                      View on {network === "eth" ? `Etherscan` : `Bscscan`}{" "}
+                      <BsBoxArrowUpRight />
+                    </Link>
+                  </span>
+                </div>
               </div>
-              <div className="column">
-                <span className="is-size-6" id="txnHash">
-                  {txnHash}
-                </span>
-              </div>
-            </div>
+            ) : (
+              ``
+            )}
+
             {paymentCompleted ? (
               <div className="columns">
                 <div className="column">
@@ -1008,16 +1066,25 @@ const ModalContent = ({
             ) : (
               ``
             )}
-            <div className="columns">
-              <div className="column">
-                <span className="is-size-7">Your Coin Address</span>
+            {!!tokenAddress ? (
+              <div className="columns">
+                <div className="column">
+                  <span className="is-size-7">Your Coin Address</span>
+                </div>
+                <div className="column">
+                  <span className="is-size-6" id="txnHash">
+                    {/* {tokenAddress} */}
+                    <Link to={etherscanAddress + tokenAddress} target="_blank">
+                      View on {network === "eth" ? `Etherscan` : `Bscscan`}{" "}
+                      <BsBoxArrowUpRight />
+                    </Link>
+                  </span>
+                </div>
               </div>
-              <div className="column">
-                <span className="is-size-6" id="txnHash">
-                  {tokenAddress}
-                </span>
-              </div>
-            </div>
+            ) : (
+              ``
+            )}
+
             {!!pairAddress ? (
               <div className="columns">
                 <div className="column">
@@ -1025,7 +1092,11 @@ const ModalContent = ({
                 </div>
                 <div className="column">
                   <span className="is-size-6" id="txnHash">
-                    {pairAddress}
+                    {/* {pairAddress} */}
+                    <Link to={dexAddress + tokenAddress} target="_blank">
+                      View on {network === "eth" ? `Uniswap` : `Pancakeswap`}{" "}
+                      <BsBoxArrowUpRight />
+                    </Link>
                   </span>
                 </div>
               </div>
@@ -1038,7 +1109,7 @@ const ModalContent = ({
 
       <div className="columns">
         <div className="column">
-          <span className="is-size-7" id="warning-payments">
+          <span className="is-size-4" id="warning-payments">
             Please keep all the ADDRESSES & TRANSACTION HASH handy for future
             reference
           </span>
@@ -1125,7 +1196,7 @@ const ReviewModalContent = ({
   )
 
   function handleReview(event) {
-    event.persist();
+    event.persist()
     setIsReviewed(event.target.checked)
   }
 

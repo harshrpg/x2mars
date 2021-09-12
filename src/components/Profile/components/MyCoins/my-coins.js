@@ -143,7 +143,7 @@ const Coin = ({ coinData }) => {
   )
 
   const [dexAddress, setDexAddress] = React.useState(
-    "https://info.uniswap.org/#/tokens/"
+    "https://info.uniswap.org/#/pools/"
   )
 
   React.useEffect(() => {
@@ -154,6 +154,17 @@ const Coin = ({ coinData }) => {
   React.useEffect(() => {
     if (chainId === NetworkConstants.RINKEBY) {
       setEtherscanAddress("https://rinkeby.etherscan.io/address/")
+    } else if (chainId === NetworkConstants.ROPSTEN) {
+      setEtherscanAddress("https://ropsten.etherscan.io/address/")
+    } else if (chainId === NetworkConstants.KOVAN) {
+      setEtherscanAddress("https://kovan.etherscan.io/address/")
+    } else if (chainId === NetworkConstants.GOERLI) {
+      setEtherscanAddress("https://goerli.etherscan.io/address/")
+    } else if (chainId === NetworkConstants.SMART_CHAIN_MAINNET) {
+      setEtherscanAddress("https://bscscan.com/address/")
+      setDexAddress("https://pancakeswap.finance/info/pool/")
+    } else if (chainId === NetworkConstants.SMART_CHAIN_TESTNET) {
+      setEtherscanAddress("https://testnet.bscscan.com/address/")
     }
   }, [chainId])
   return (
