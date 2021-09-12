@@ -10,6 +10,7 @@ import Pricing from "../pricing/pricing";
 import Timeline from "../Timeline/timeline";
 import Benefits from "../Benefits/benefits"
 import Why from "../Why/why"
+import IndexSteps from "../IndexSteps/indexSteps"
 
 const App = () => {
     
@@ -20,6 +21,7 @@ const App = () => {
       {/* <Features /> */}
       <Benefits />
       <Why />
+      <IndexSteps />
       {/* <Discord /> */}
       {/* <Pricing /> */}
       <RoadMap />

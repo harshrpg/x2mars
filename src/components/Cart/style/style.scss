@@ -31,6 +31,10 @@
   border-style: solid;
 }
 
+.cart-summary-container.small {
+  width: 50%;
+}
+
 .summary-pill {
   background-color: white;
   padding: 0 0.5rem 0 0.5rem;
@@ -42,11 +46,11 @@
 }
 
 .cart-image {
-  width: 2rem !important;
+  width: 4rem !important;
 }
 
 .deploy-contract-button {
-  background-image: linear-gradient(to right, #4568dc, #b06ab3);
+  background-image: linear-gradient(to right, #20BF55, #01BAEF);
   border-color: none !important;
   color: white !important;
   padding: 2rem;
@@ -64,12 +68,22 @@
   width: fill-available;
 }
 
+.deploy-contract-button.small,
+.deploy-contract-button.inactive.small {
+  width: 50% !important;
+  padding: 3rem;
+}
+
 #txnHash {
   color: $theme-orange
 }
 
 #warning-payments {
   color: $unsucessful-color
+}
+
+#success-payments {
+  color: $successfull-color
 }
 
 #error-box {

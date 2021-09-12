@@ -13,7 +13,8 @@ const AppFooter = () => {
         <div className="columns is-mobile is-multiline">
           <div className="column is-full-mobile is-one-quarter-desktop mobile-column">
             <h6 style={{ fontWeight: "bolder" }}>Create LLC Corporation</h6>
-            <p>Terms & Conditions</p>
+            <p><Link to="/legal/terms-and-conditions">Terms & Conditions</Link></p>
+            <p><Link to="/legal/privacy-policy">Privacy Policy</Link></p>
           </div>
 
           <div className="column mobile-column">
@@ -44,7 +45,7 @@ const AppFooter = () => {
           </div>
 
           <div className="column mobile-column">
-            <button className="button is-light custom-button app-button-footer" onClick={() => navigate("/contact")}>
+            <button className="button is-light custom-button app-button-footer" onClick={() => navigate("/contact-us")}>
               CONTACT US
             </button>
           </div>

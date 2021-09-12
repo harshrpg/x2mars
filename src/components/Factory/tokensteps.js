@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Steps } from "../../util/factory-steps"
+import { StepsModel } from "../../util/factory-steps"
 import Card from "../cardSelect/card"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -181,7 +181,7 @@ const FactorySteps = props => {
 }
 
 const Step1 = props => {
-  const [step1, _] = React.useState(Steps.Step1)
+  const [step1, _] = React.useState(StepsModel.Step1)
   const cartState = useCartState()
   const cartDispatch = useCartDispatch()
   const step1Card1 = step1.cardData[0]
@@ -362,7 +362,7 @@ const Step2 = props => {
   const balance = useBalance()
 
   // STATE
-  const [step, _] = React.useState(Steps.Step2)
+  const [step, _] = React.useState(StepsModel.Step2)
   const [network, setNetwork] = React.useState(
     NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
   )
@@ -564,7 +564,7 @@ const Step3 = props => {
   const balance = useBalance()
 
   // STATE
-  const [step, _] = React.useState(Steps.Step3)
+  const [step, _] = React.useState(StepsModel.Step3)
   const [network, setNetwork] = React.useState(
     NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
   )
@@ -882,7 +882,7 @@ const FinalStep = props => {
 }
 
 const Step4 = props => {
-  const [step, _] = React.useState(Steps.Step4)
+  const [step, _] = React.useState(StepsModel.Step4)
   const [isLaunchpad, setIsLaunchpad] = React.useState(true)
   const card1 = step.cardData[0]
 
@@ -936,7 +936,7 @@ const Step4 = props => {
 }
 
 const Step5 = props => {
-  const [step, _] = React.useState(Steps.Step5)
+  const [step, _] = React.useState(StepsModel.Step5)
   const card1 = step.cardData[0]
   return (
     <>

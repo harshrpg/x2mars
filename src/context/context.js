@@ -7,6 +7,8 @@ const CartStateContext = React.createContext()
 const CartDispatchContext = React.createContext()
 const ProfileStateContext = React.createContext()
 const ProfileDispatchContext = React.createContext()
+// const ImageDataContext = React.createContext()
+// const ImageDispatchContext = React.createContext()
 
 export function useAuthState() {
   const context = React.useContext(AuthStateContext)

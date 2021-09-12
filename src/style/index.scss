@@ -58,30 +58,87 @@ $font-color: $charcoal;
   font-size: 0.5rem !important;
 }
 
-.interface-view-box {
+.interface-view-box,
+.theme-view-box {
   border: 2px solid $primary-color;
   max-width: 25rem !important;
   border-radius: 10px;
-  padding: 0 1rem 0 0 !important;
+  padding: 0 !important;
 }
 
-.interface-view-box:hover {
+.interface-view-box:hover,
+.theme-view-box:hover {
   cursor: pointer;
-  border-color: $theme-orange
+  border-color: $theme-orange;
   // background-image: linear-gradient(to right, #fff, #99d9ee);
+}
+
+.theme-action-button-gradient-purple {
+  background-image: linear-gradient(to right, #4568dc, #b06ab3);
+  border-color: none !important;
+  color: white !important;
+  padding: 2rem;
+  width: 100%;
+  width: -moz-available; /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+  width: fill-available;
+}
+
+.theme-action-button-gradient-green {
+  background-image: linear-gradient(to right, #20BF55, #01BAEF);
+  border-color: none !important;
+  color: white !important;
+  padding: 2rem;
+  width: 100%;
+  width: -moz-available; /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+  width: fill-available;
+}
+
+.theme-action-button-gradient-blue {
+  background-image: linear-gradient(to right, #4CB8C4, #3CD3AD);
+  border-color: none !important;
+  color: white !important;
+  padding: 2rem;
+  width: 100%;
+  width: -moz-available; /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+  width: fill-available;
+}
+
+.theme-action-button-gradient-orange {
+  background-image: linear-gradient(to right, #f12711, #f5af19);
+  border-color: none !important;
+  color: white !important;
+  padding: 2rem;
+  width: 100%;
+  width: -moz-available; /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+  width: fill-available;
+}
+
+.theme-action-button-gradient-red {
+  background-image: linear-gradient(to right, #ED213A, #93291E);
+  border-color: none !important;
+  color: white !important;
+  padding: 2rem;
+  width: 100%;
+  width: -moz-available; /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+  width: fill-available;
 }
 
 .orange-text {
   color: $theme-orange !important;
 }
 
-@import "~bulma/bulma.sass";
 
 @media screen and (max-width: 768px) {
-
-.cardSize{
-  width: 80% !important;
-  margin-left: 5% !important;
+  .cardSize {
+    width: 80% !important;
+    margin-left: 5% !important;
+  }
 }
 
-}
+@import "~bulma/bulma.sass";
+@import "../../node_modules/@creativebulma/bulma-tooltip/src/sass/index.sass";

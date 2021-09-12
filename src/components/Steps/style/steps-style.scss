@@ -1,0 +1,61 @@
+@import "../../../style/index.scss";
+
+.theme-action-button-gradient-green.padded {
+    padding: 3rem;
+    width: auto;
+}
+
+.theme-action-button-gradient-purple.contained {
+    width: auto;
+}
+
+.column.centered-text-align {
+    text-align: center;
+    text-align: -webkit-center;
+    text-align: -moz-center;
+}
+
+.column.right-text-align {
+    text-align: right;
+    text-align: -webkit-right;
+    text-align: -moz-right;
+}
+
+.column.left-text-align {
+    text-align: left;
+    text-align: -webkit-left;
+    text-align: -moz-left;
+}
+
+.theme-view-box.active {
+    border-color: $theme-orange;
+}
+
+.theme-view-box.success {
+    border-color: $successfull-color;
+    color: $charcoal !important;
+}
+
+.theme-view-box.failed {
+    border-color: $unsucessful-color;
+}
+
+.theme-view-box {
+    text-align: center !important;
+}
+
+.helper-placeholder-danger {
+    color: $unsucessful-color;
+}
+
+.helper-placeholder-success {
+    color: $successfull-color;
+}
+
+.helper-placeholder-primary {
+    color: $primary-color;
+}
+
+.container.steps-summary {
+    margin-left: 5rem;
+}

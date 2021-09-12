@@ -14,7 +14,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css"
 import "./applayout.scss"
 import { Web3Provider } from "@ethersproject/providers"
 
-const Layout = ({ children }) => {
+const AppLayout = ({ children }) => {
   const getLibrary = provider => {
     const library = new Web3Provider(provider, "any")
     library.pollingInterval = 12000
@@ -32,8 +32,8 @@ const Layout = ({ children }) => {
   )
 }
 
-Layout.propTypes = {
+AppLayout.propTypes = {
   children: PropTypes.node.isRequired,
 }
 
-export default Layout
+export default AppLayout

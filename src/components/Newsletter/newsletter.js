@@ -4,31 +4,38 @@ import "./style/newsletter.css"
 const Newsletter = () => {
   return (
     <>
-      <section className="section is-comm">
-        <div className="container is-max-desktop has-text-centered">
-          <div id="hero-banner-text-subtitle" className=" has-text-centered">
-            <div className="columns is-gapless">
-              <div className="column ">
-                <span className="is-size-6">
-                  Signup to our newsletter and get the latest updates.
-                </span>
-              </div>
-              <div className="column">
-                <input class="input" type="email" placeholder="Email" />
-                  {" "}
-              </div>
-              <div className="column">
-                <button className="button is-light custom-button community-mobile">
-                  Subscribe
-                </button>
-              </div>
-              {/* <div className="column">
-                <button className="button is-light">Join Telegram</button>
-              </div> */}
-            </div>
+      <div className="container has-text-centered">
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-3">Stay Updated</span>
           </div>
         </div>
-      </section>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-6">Get news on upcoming events and community information straight to your inbox.</span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column is-3"></div>
+          <div className="column is-4">
+            <div className="centerinput">
+              <div className="input-block success borderless">
+                <input
+                  type="email"
+                  id="featureInput"
+                  required="required"
+                  spellcheck="false"
+                />
+                <span className="placeholder">Your Email Address</span>
+              </div>
+            </div>
+          </div>
+          <div className="column left-text-align is-2">
+            <button className="button theme-action-button-gradient-blue" type="submit" style={{marginBottom: "30px"}}>Submit</button>
+          </div>
+          <div className="column is-3"></div>
+        </div>
+      </div>
     </>
   )
 }

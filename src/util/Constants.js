@@ -34,8 +34,8 @@ export const NetworkFromChainId = {
   4: "eth",
   5: "eth",
   42: "eth",
-  97: "bsc",
-  56: "bsc",
+  97: "bnb",
+  56: "bnb",
 }
 
 export const FactoryConstants = {
@@ -51,12 +51,12 @@ export const WalletTypes = {
 export const Error = {
   CONNECT_WALLET: "Connect Your Wallet",
   NOT_ENOUGH_BALANCE: "Not Enough Balance",
-  SELECT_TOKEN: "Select A Token First",
+  SELECT_TOKEN: "Select A Coin Type First",
 }
 
 export const TokenTypes = {
-  0: "Governance Tokens",
-  1: "Fee on Transfer Tokens",
+  0: "Governance DAO Coins",
+  1: "Fee on Transfer (Meme) Coins",
 }
 
 export const TokenTypeIds = {

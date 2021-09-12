@@ -13,7 +13,7 @@ import { GoX } from "@react-icons/all-files/go/GoX"
 import "./style/style.scss"
 import { GatsbyImage } from "gatsby-plugin-image"
 import { useImageForData } from "../../hooks/useAllImages"
-import { Steps } from "../../util/factory-steps"
+import { StepsModel } from "../../util/factory-steps"
 import { useNetwork } from "../../hooks/useNetwork"
 import { NetworkIcon } from "../Icons/icons"
 import ErrorBox from "../Error/errorbox"
@@ -26,7 +26,9 @@ import { animated, useSpring } from "@react-spring/web"
 import TokenFactory from "../../abis/TokenFactory.json"
 import StandardToken from "../../abis/StandardToken.json"
 import FotToken from "../../abis/FotToken.json"
+import { BsBoxArrowUpRight } from "@react-icons/all-files/bs/BsBoxArrowUpRight"
 import { navigate } from "gatsby-link"
+import { Link } from "gatsby"
 
 export const CartWindow = ({ setCartDisplay, isActive }) => {
   return (
@@ -34,7 +36,10 @@ export const CartWindow = ({ setCartDisplay, isActive }) => {
       <div className={`modal ${isActive ? "is-active" : ""}`}>
         <div class="modal-background"></div>
         <div class="modal-content cart-summary-board">
-          <CartContent />
+          <div className="container">
+            <CartContent />
+          </div>
+
           <div className="modal-close-custom">
             <button
               className="button close-modal-button"
@@ -52,9 +57,22 @@ export const CartWindow = ({ setCartDisplay, isActive }) => {
   )
 }
 
-export const CartContent = () => {
+export const CartContent = ({ isSmall }) => {
+  const { chainId } = useWeb3React()
+
+  const [isTestNetwork, setIsTestNetwork] = React.useState(false)
+  React.useEffect(() => {
+    if (
+      chainId === NetworkConstants.MAINNET_ETHEREUM ||
+      chainId === NetworkConstants.SMART_CHAIN_MAINNET
+    ) {
+      setIsTestNetwork(false)
+    } else {
+      setIsTestNetwork(true)
+    }
+  }, [chainId])
   return (
-    <div className="container has-text-centered">
+    <>
       <div className="columns">
         <div className="column is-full">
           <span className="is-size-3-desktop is-size-5-mobile">
@@ -64,40 +82,40 @@ export const CartContent = () => {
       </div>
       <div className="columns">
         <div className="column">
-          <TokenType />
+          <TokenType isSmall={isSmall} />
         </div>
       </div>
       <div className="columns">
         <div className="column">
-          <DexSelected />
+          <DexSelected isSmall={isSmall} />
         </div>
       </div>
       <div className="columns">
         <div className="column">
-          <FeaturesSelected />
+          <FeaturesSelected isTestNetwork={isTestNetwork} isSmall={isSmall} />
         </div>
       </div>
       <div className="columns">
         <div className="column">
-          <TotalFees />
+          <TotalFees isTestNetwork={isTestNetwork} isSmall={isSmall} />
         </div>
       </div>
       <div className="columns">
         <div className="column">
-          <DeployButton />
+          <DeployButton isSmall={isSmall} />
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
-const TokenType = () => {
+const TokenType = ({ isSmall }) => {
   const user = useAuthState()
   const cartState = useCartState()
   // const network = useNetwork()
 
-  const gTokenImage = useImageForData(Steps.Step1.cardData[0].img)
-  const fotTokenImage = useImageForData(Steps.Step1.cardData[1].img)
+  const gTokenImage = useImageForData(StepsModel.Step1.cardData[0].img)
+  const fotTokenImage = useImageForData(StepsModel.Step1.cardData[1].img)
 
   const [tokenImage, setTokenImage] = React.useState(gTokenImage)
   const [network, setNetwork] = React.useState(
@@ -120,25 +138,34 @@ const TokenType = () => {
   }, [cartState])
   return (
     <>
-      <div className="cart-summary-container">
+      <div className={`cart-summary-container ${isSmall ? "small" : ""}`}>
         <span className="summary-pill">Token Type</span>
         {cartState.step1.selectedToken !== -1 && !!network ? (
-          <div className="columns">
-            <div className="column">
-              <GatsbyImage
-                image={tokenImage}
-                width={2}
-                height={2}
-                className="cart-image"
-              />
+          <>
+            <div className="columns">
+              <div className="column">
+                <GatsbyImage image={tokenImage} className="cart-image" />
+              </div>
+              <div className="column">
+                {TokenTypes[cartState.step1.selectedToken]}
+              </div>
+              <div className="column">
+                {cartState.step1.totalFees + ` ` + network.toUpperCase()}
+              </div>
             </div>
-            <div className="column">
-              {TokenTypes[cartState.step1.selectedToken]}
+            <div className="columns">
+              <div className="column">Name: {cartState.step2.tokenName}</div>
+              <div className="column">
+                Ticker: {cartState.step2.tokenSymbol}
+              </div>
+              <div className="column">
+                Supply:{" "}
+                {cartState.step2.tokenSupplyNumber +
+                  ` ` +
+                  cartState.step2.tokenSupplyUnits}
+              </div>
             </div>
-            <div className="column">
-              {cartState.step1.totalFees + ` ` + network.toUpperCase()}
-            </div>
-          </div>
+          </>
         ) : (
           <ErrorBox error={Error.SELECT_TOKEN} />
         )}
@@ -147,7 +174,7 @@ const TokenType = () => {
   )
 }
 
-const DexSelected = () => {
+const DexSelected = ({ isSmall }) => {
   const user = useAuthState()
   const cartState = useCartState()
   // const network = useNetwork()
@@ -156,7 +183,7 @@ const DexSelected = () => {
   )
 
   const [dexImage, setDexImage] = React.useState(
-    Steps.Step2.cardData[2].img[
+    StepsModel.Step2.cardData[2].img[
       NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
     ]
   )
@@ -168,7 +195,7 @@ const DexSelected = () => {
   }, [user])
 
   React.useEffect(() => {
-    setDexImage(Steps.Step2.cardData[2].img[network])
+    setDexImage(StepsModel.Step2.cardData[2].img[network])
   }, [cartState, network])
 
   var image = useImageForData(dexImage)
@@ -176,7 +203,7 @@ const DexSelected = () => {
   return (
     <>
       {cartState.step2.dexSelected ? (
-        <div className="cart-summary-container">
+        <div className={`cart-summary-container ${isSmall ? "small" : ""}`}>
           <span className="summary-pill">Pool Selection</span>
           <div className="columns">
             <div className="column">
@@ -200,7 +227,7 @@ const DexSelected = () => {
   )
 }
 
-const FeaturesSelected = () => {
+const FeaturesSelected = ({ isTestNetwork, isSmall }) => {
   const user = useAuthState()
   const cartState = useCartState()
   // const network = useNetwork()
@@ -209,10 +236,14 @@ const FeaturesSelected = () => {
   )
 
   const [alImage, setAlImage] = React.useState()
-  const [rfiImage, setRfiImage] = React.useState(Steps.Step3.cardData[1].img)
-  const [awpImage, setAwpImage] = React.useState(Steps.Step3.cardData[2].img)
-  const [abImage, setAbImage] = React.useState(Steps.Step3.cardData[3].img)
-  const [acImage, setAcImage] = React.useState(Steps.Step3.cardData[4].img)
+  const [rfiImage, setRfiImage] = React.useState(
+    StepsModel.Step3.cardData[1].img
+  )
+  const [awpImage, setAwpImage] = React.useState(
+    StepsModel.Step3.cardData[2].img
+  )
+  const [abImage, setAbImage] = React.useState(StepsModel.Step3.cardData[3].img)
+  const [acImage, setAcImage] = React.useState(StepsModel.Step3.cardData[4].img)
   // const autoLiquidationImage = useImageForData()
 
   React.useEffect(() => {
@@ -221,7 +252,7 @@ const FeaturesSelected = () => {
     }
   }, [user])
   React.useEffect(() => {
-    setAlImage(Steps.Step3.cardData[0].img[network])
+    setAlImage(StepsModel.Step3.cardData[0].img[network])
   }, [network])
 
   const image1 = useImageForData(alImage)
@@ -238,7 +269,7 @@ const FeaturesSelected = () => {
         !!cartState.step3.WHALE_PROTECTION ||
         !!cartState.step3.auto_burn ||
         !!cartState.step3.auto_charity) ? (
-        <div className="cart-summary-container has-text-centered">
+        <div className={`cart-summary-container ${isSmall ? "small" : ""}`}>
           <span className="summary-pill">Features Selection</span>
           {!!cartState.step3.auto_liquidation ? (
             <div className="columns">
@@ -268,9 +299,10 @@ const FeaturesSelected = () => {
               </div>
               <div className="column">RFI Static Rewards</div>
               <div className="column">
-                {Steps.Step3.cardData[1].price[network] +
-                  ` ` +
-                  network.toUpperCase()}
+                {isTestNetwork
+                  ? `0`
+                  : StepsModel.Step3.cardData[1].price[network]}{" "}
+                {` ${network.toUpperCase()}`}
               </div>
             </div>
           ) : (
@@ -288,9 +320,10 @@ const FeaturesSelected = () => {
               </div>
               <div className="column">Whale Protection</div>
               <div className="column">
-                {Steps.Step3.cardData[2].price[network] +
-                  ` ` +
-                  network.toUpperCase()}
+                {isTestNetwork
+                  ? `0`
+                  : StepsModel.Step3.cardData[2].price[network]}{" "}
+                {` ${network.toUpperCase()}`}
               </div>
             </div>
           ) : (
@@ -308,9 +341,10 @@ const FeaturesSelected = () => {
               </div>
               <div className="column">Automatic Burning</div>
               <div className="column">
-                {Steps.Step3.cardData[3].price[network] +
-                  ` ` +
-                  network.toUpperCase()}
+                {isTestNetwork
+                  ? `0`
+                  : StepsModel.Step3.cardData[3].price[network]}{" "}
+                {` ${network.toUpperCase()}`}
               </div>
             </div>
           ) : (
@@ -328,9 +362,10 @@ const FeaturesSelected = () => {
               </div>
               <div className="column">Automatic Charity</div>
               <div className="column">
-                {Steps.Step3.cardData[4].price[network] +
-                  ` ` +
-                  network.toUpperCase()}
+                {isTestNetwork
+                  ? `0`
+                  : StepsModel.Step3.cardData[4].price[network]}{" "}
+                {` ${network.toUpperCase()}`}
               </div>
             </div>
           ) : (
@@ -344,7 +379,7 @@ const FeaturesSelected = () => {
   )
 }
 
-const TotalFees = () => {
+const TotalFees = ({ isTestNetwork, isSmall }) => {
   const user = useAuthState()
   const cartState = useCartState()
   const cartDispatcher = useCartDispatch()
@@ -375,16 +410,32 @@ const TotalFees = () => {
         totalFees += 0.0
       }
       if (!!cartState.step3.rfi_rewards) {
-        totalFees += parseFloat(Steps.Step3.cardData[1].price[network])
+        if (isTestNetwork) {
+          totalFees += 0.0
+        } else {
+          totalFees += parseFloat(StepsModel.Step3.cardData[1].price[network])
+        }
       }
       if (!!cartState.step3.WHALE_PROTECTION) {
-        totalFees += parseFloat(Steps.Step3.cardData[2].price[network])
+        if (isTestNetwork) {
+          totalFees += 0.0
+        } else {
+          totalFees += parseFloat(StepsModel.Step3.cardData[2].price[network])
+        }
       }
       if (!!cartState.step3.auto_burn) {
-        totalFees += parseFloat(Steps.Step3.cardData[3].price[network])
+        if (isTestNetwork) {
+          totalFees += 0.0
+        } else {
+          totalFees += parseFloat(StepsModel.Step3.cardData[3].price[network])
+        }
       }
       if (!!cartState.step3.auto_charity) {
-        totalFees += parseFloat(Steps.Step3.cardData[4].price[network])
+        if (isTestNetwork) {
+          totalFees += 0.0
+        } else {
+          totalFees += parseFloat(StepsModel.Step3.cardData[4].price[network])
+        }
       }
     }
 
@@ -406,7 +457,7 @@ const TotalFees = () => {
   var image = useImageForData("sum.png")
 
   return (
-    <div className="cart-summary-container">
+    <div className={`cart-summary-container ${isSmall ? "small" : ""}`}>
       <span className="summary-pill">Order Total</span>
       <div className="columns">
         <div className="column">
@@ -428,7 +479,7 @@ const TotalFees = () => {
   )
 }
 
-const DeployButton = () => {
+const DeployButton = ({ isSmall }) => {
   const { account, library, chainId, error } = useWeb3React()
   var providers = ethers.providers
   var network = ethers.providers.getNetwork(TransactionNetworkNames[chainId])
@@ -451,15 +502,15 @@ const DeployButton = () => {
     errorBody: null,
   })
   const [dashboardAvailable, setDashboardAvailable] = React.useState(false)
-  const [factoryContractWithSigner, setFactoryContractWithSigner] = React.useState(
-    null
-  )
+  const [
+    factoryContractWithSigner,
+    setFactoryContractWithSigner,
+  ] = React.useState(null)
   const tokenFactory = process.env.GATSBY_TOKEN_FACTORY_ADDRS
-  const [factoryContract, _] = React.useState(new ethers.Contract(
-    tokenFactory,
-    TokenFactory.abi,
-    library
-  ))
+  const [factoryContract, _] = React.useState(
+    new ethers.Contract(tokenFactory, TokenFactory.abi, library)
+  )
+  const [showReviewModal, setShowReviewModal] = React.useState(false)
 
   React.useEffect(() => {
     if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
@@ -708,6 +759,7 @@ const DeployButton = () => {
 
   function openPaymentProcessWindow() {
     setTxnError({ type: null, errorBody: null })
+    setShowReviewModal(false)
     setPaymentCompleted(false)
     setCoinBuilt(false)
     setPairAddress(null)
@@ -717,15 +769,19 @@ const DeployButton = () => {
     setChargeFeeAndDeployContract(true)
   }
 
+  function openReviewWindow() {
+    setShowReviewModal(true)
+  }
+
   return (
     <>
       <button
         className={`button deploy-contract-button ${
           contractDeployable ? "" : "inactive"
-        }`}
+        } ${isSmall ? "small" : ""}`}
         type="button"
         disabled={!contractDeployable}
-        onClick={openPaymentProcessWindow}
+        onClick={openReviewWindow}
       >
         Pay and Make Coin
       </button>
@@ -739,6 +795,11 @@ const DeployButton = () => {
         pairAddress={pairAddress}
         dashboardAvailable={dashboardAvailable}
         txnError={txnError}
+      />
+      <ReviewModal
+        isActive={showReviewModal}
+        openPaymentProcessWindow={openPaymentProcessWindow}
+        setShowReviewModal={setShowReviewModal}
       />
     </>
   )
@@ -829,6 +890,47 @@ const ModalContent = ({
   })
 
   const cartState = useCartState()
+  const { active, chainId } = useWeb3React()
+  const [network, setNetwork] = React.useState()
+  const [etherscanAddress, setEtherscanAddress] = React.useState(
+    "https://etherscan.io/address/"
+  )
+  const [etherScanTx, setEtherScanTx] = React.useState(
+    "https://etherscan.io/tx/"
+  )
+
+  const [dexAddress, setDexAddress] = React.useState(
+    "https://info.uniswap.org/#/pools/"
+  )
+
+  React.useEffect(() => {
+    if (active && !!chainId) {
+      setNetwork(NetworkFromChainId[parseInt(chainId)])
+    }
+  }, [active, chainId])
+  React.useEffect(() => {
+    if (chainId === NetworkConstants.RINKEBY) {
+      setEtherscanAddress("https://rinkeby.etherscan.io/address/")
+      setEtherScanTx("https://rinkeby.etherscan.io/tx/")
+    } else if (chainId === NetworkConstants.ROPSTEN) {
+      setEtherscanAddress("https://ropsten.etherscan.io/address/")
+      setEtherScanTx("https://ropsten.etherscan.io/tx/")
+    } else if (chainId === NetworkConstants.KOVAN) {
+      setEtherscanAddress("https://kovan.etherscan.io/address/")
+      setEtherScanTx("https://kovan.etherscan.io/tx/")
+    } else if (chainId === NetworkConstants.GOERLI) {
+      setEtherscanAddress("https://goerli.etherscan.io/address/")
+      setEtherScanTx("https://goerli.etherscan.io/tx/")
+    } else if (chainId === NetworkConstants.SMART_CHAIN_MAINNET) {
+      setEtherscanAddress("https://bscscan.com/address/")
+      setEtherScanTx("https://bscscan.com/tx/")
+      setDexAddress("https://pancakeswap.finance/info/pool/")
+    } else if (chainId === NetworkConstants.SMART_CHAIN_TESTNET) {
+      setEtherscanAddress("https://testnet.bscscan.com/address/")
+      setEtherScanTx("https://testnet.bscscan.com/tx/")
+      setDexAddress("https://pancakeswap.finance/info/pool/")
+    }
+  }, [chainId])
 
   // React.useEffect(() => {
 
@@ -837,9 +939,15 @@ const ModalContent = ({
     <div className="container">
       <div className="columns">
         <div className="column">
-          <span className="is-size-5" id="warning-payments">
-            Do Not Refresh or Close this window
-          </span>
+          {!!txnHash && !!coinBuilt ? (
+            <span className="is-size-5" id="success-payments">
+              All Transactions Processed Successfully. You can head over to Dashboard
+            </span>
+          ) : (
+            <span className="is-size-5" id="warning-payments">
+              Do Not Refresh or Close this window
+            </span>
+          )}
         </div>
       </div>
       <div className="columns">
@@ -904,16 +1012,25 @@ const ModalContent = ({
                 </>
               )}
             </div>
-            <div className="columns">
-              <div className="column">
-                <span className="is-size-7">Payment Transaction Hash</span>
+            {!!txnHash ? (
+              <div className="columns">
+                <div className="column">
+                  <span className="is-size-7">Payment Transaction Hash</span>
+                </div>
+                <div className="column">
+                  <span className="is-size-6" id="txnHash">
+                    {/* {txnHash} */}
+                    <Link to={etherScanTx + txnHash} target="_blank">
+                      View on {network === "eth" ? `Etherscan` : `Bscscan`}{" "}
+                      <BsBoxArrowUpRight />
+                    </Link>
+                  </span>
+                </div>
               </div>
-              <div className="column">
-                <span className="is-size-6" id="txnHash">
-                  {txnHash}
-                </span>
-              </div>
-            </div>
+            ) : (
+              ``
+            )}
+
             {paymentCompleted ? (
               <div className="columns">
                 <div className="column">
@@ -949,16 +1066,25 @@ const ModalContent = ({
             ) : (
               ``
             )}
-            <div className="columns">
-              <div className="column">
-                <span className="is-size-7">Your Coin Address</span>
+            {!!tokenAddress ? (
+              <div className="columns">
+                <div className="column">
+                  <span className="is-size-7">Your Coin Address</span>
+                </div>
+                <div className="column">
+                  <span className="is-size-6" id="txnHash">
+                    {/* {tokenAddress} */}
+                    <Link to={etherscanAddress + tokenAddress} target="_blank">
+                      View on {network === "eth" ? `Etherscan` : `Bscscan`}{" "}
+                      <BsBoxArrowUpRight />
+                    </Link>
+                  </span>
+                </div>
               </div>
-              <div className="column">
-                <span className="is-size-6" id="txnHash">
-                  {tokenAddress}
-                </span>
-              </div>
-            </div>
+            ) : (
+              ``
+            )}
+
             {!!pairAddress ? (
               <div className="columns">
                 <div className="column">
@@ -966,7 +1092,11 @@ const ModalContent = ({
                 </div>
                 <div className="column">
                   <span className="is-size-6" id="txnHash">
-                    {pairAddress}
+                    {/* {pairAddress} */}
+                    <Link to={dexAddress + tokenAddress} target="_blank">
+                      View on {network === "eth" ? `Uniswap` : `Pancakeswap`}{" "}
+                      <BsBoxArrowUpRight />
+                    </Link>
                   </span>
                 </div>
               </div>
@@ -979,7 +1109,7 @@ const ModalContent = ({
 
       <div className="columns">
         <div className="column">
-          <span className="is-size-7" id="warning-payments">
+          <span className="is-size-4" id="warning-payments">
             Please keep all the ADDRESSES & TRANSACTION HASH handy for future
             reference
           </span>
@@ -1001,5 +1131,236 @@ const ModalContent = ({
         </div>
       )}
     </div>
+  )
+}
+
+const ReviewModal = ({
+  isActive,
+  openPaymentProcessWindow,
+  setShowReviewModal,
+}) => {
+  const [isReviewed, setIsReviewed] = React.useState(false)
+  const [isTxnHashChecked, setIsTxnHashChecked] = React.useState(false)
+  const [isTermsAndCondAgreed, setIsTermsAndCondAgreed] = React.useState(false)
+
+  function closeModal() {
+    setIsReviewed(false)
+    setIsTxnHashChecked(false)
+    setIsTermsAndCondAgreed(false)
+    setShowReviewModal(false)
+  }
+  return (
+    <>
+      <div className={`modal ${isActive ? "is-active" : ""}`}>
+        <div className="modal-background"></div>
+        <div className="modal-content wallet-choice-board">
+          <ReviewModalContent
+            openPaymentProcessWindow={openPaymentProcessWindow}
+            isReviewed={isReviewed}
+            setIsReviewed={setIsReviewed}
+            isTxnHashChecked={isTxnHashChecked}
+            isTermsAndCondAgreed={isTermsAndCondAgreed}
+            setIsTxnHashChecked={setIsTxnHashChecked}
+            setIsTermsAndCondAgreed={setIsTermsAndCondAgreed}
+          />
+          <div className="modal-close-custom">
+            <button
+              className="button close-modal-button"
+              aria-label="close"
+              onClick={closeModal}
+            >
+              <span className="icon is-large">
+                <GoX />
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+const ReviewModalContent = ({
+  openPaymentProcessWindow,
+  isReviewed,
+  setIsReviewed,
+  isTxnHashChecked,
+  isTermsAndCondAgreed,
+  setIsTxnHashChecked,
+  setIsTermsAndCondAgreed,
+}) => {
+  const user = useAuthState()
+  const cartState = useCartState()
+  const [network, setNetwork] = React.useState(
+    NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
+  )
+
+  function handleReview(event) {
+    event.persist()
+    setIsReviewed(event.target.checked)
+  }
+
+  function handleTxnHashChecked(event) {
+    setIsTxnHashChecked(event.target.checked)
+  }
+
+  function handleTermsAndCondAgreed(event) {
+    setIsTermsAndCondAgreed(event.target.checked)
+  }
+
+  // EFFECTS
+  React.useEffect(() => {
+    if (!!user.chainId) {
+      setNetwork(NetworkFromChainId[parseInt(user.chainId)])
+    }
+  }, [user])
+
+  React.useEffect(() => {
+    setIsReviewed(false)
+    setIsTxnHashChecked(false)
+    setIsTermsAndCondAgreed(false)
+  }, [])
+  return (
+    <>
+      <div className="container">
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-3">Before We Begin</span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-5">
+              It is important to uderstand that there will be{" "}
+              <b>
+                <u>2 transactions</u>
+              </b>
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column left-text-align">
+            <span className="is-size-5">Transaction 1: Payment</span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column left-text-align">
+            <span className="is-size-6">
+              In this step you will be asked to pay your bill of{" "}
+              {cartState.totalCharge.fee} {network.toUpperCase()} and Gas Fees.
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column left-text-align">
+            <span className="is-size-6">
+              Simply follow the instructions on your wallet and{" "}
+              <b>CONFIRM or REJECT</b> your transaction
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column left-text-align">
+            <div className="note is-small">
+              <span className="is-size-6">
+                In this step <b>YOU CAN REJECT THE TRANSACTION IF UNSURE</b>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column left-text-align">
+            <span className="is-size-5">
+              Transaction 2: Deployment of Your Coin
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column left-text-align">
+            <span className="is-size-6">
+              In this step you will again be prompted by your wallet to confirm
+              the transaction.
+              <br /> There will be no charge but only Gas Fees.
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column left-text-align">
+            <span className="is-size-6">
+              Simply follow the instructions on your wallet and <b>CONFIRM</b>{" "}
+              your transaction
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column left-text-align">
+            <div className="note is-small">
+              <span className="is-size-6">
+                In this step{" "}
+                <b>
+                  DONOT REJECT THE TRANSACTION AS YOU MAY LOOSE YOUR PAYMENT
+                </b>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column left-text-align">
+            <span className="is-size-3" id="warning-payments">
+              Always keep your transaction hash Handy
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <label class="checkbox">
+              <input
+                checked={isReviewed}
+                type="checkbox"
+                onChange={handleReview}
+              />{" "}
+              I understand that I will not reject the 2nd transaction
+            </label>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <label class="checkbox">
+              <input
+                checked={isTxnHashChecked}
+                type="checkbox"
+                onChange={handleTxnHashChecked}
+              />{" "}
+              I will keep my transaction hash handy
+            </label>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <label class="checkbox">
+              <input
+                checked={isTermsAndCondAgreed}
+                type="checkbox"
+                onChange={handleTermsAndCondAgreed}
+              />{" "}
+              I agree to the <Link to="/legal/terms-and-conditions">terms and conditions</Link>
+            </label>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column centered-text-align">
+            <button
+              className="button theme-action-button-gradient-green"
+              disabled={
+                !(isReviewed && isTxnHashChecked && isTermsAndCondAgreed)
+              }
+              onClick={openPaymentProcessWindow}
+            >
+              I understand. Create my currency
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
