@@ -323,7 +323,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
   const [featureValue, setFeatureValue] = React.useState(null)
   const [charityAddress, setCharityAddress] = React.useState(
     cartState.step3.charity_address !==
-      "0x000000000000000000000000000000000000dEaD"
+      process.env.GATSBY_DEAD_ADDRESS
       ? cartState.step3.charity_address
       : null
   )
@@ -525,7 +525,7 @@ const FeatureInputData = ({ cardData, disabled, selected, callback }) => {
             WHALE_PROTECTION: cartState.step3.WHALE_PROTECTION,
             auto_burn: cartState.step3.auto_burn,
             auto_charity: cartState.step3.auto_charity,
-            charity_address: "0x000000000000000000000000000000000000dEaD",
+            charity_address: process.env.GATSBY_DEAD_ADDRESS,
             totalFees: cartState.step3.totalFees,
           },
         },

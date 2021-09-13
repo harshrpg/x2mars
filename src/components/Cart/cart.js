@@ -70,7 +70,7 @@ export const CartContent = ({ isSmall }) => {
     } else {
       setIsTestNetwork(true)
     }
-  }, [chainId])
+  }, [])
   return (
     <>
       <div className="columns">
@@ -692,7 +692,9 @@ const DeployButton = ({ isSmall }) => {
           ? cartState.step3.WHALE_PROTECTION
           : 0.0,
         fotFees,
-        cartState.step3.charity_address,
+        !!cartState.step3.charity_address
+          ? cartState.step3.charity_address
+          : process.env.GATSBY_DEAD_ADDRESS,
         dexAddress
       )
       await tx.wait()
@@ -941,7 +943,8 @@ const ModalContent = ({
         <div className="column">
           {!!txnHash && !!coinBuilt ? (
             <span className="is-size-5" id="success-payments">
-              All Transactions Processed Successfully. You can head over to Dashboard
+              All Transactions Processed Successfully. You can head over to
+              Dashboard
             </span>
           ) : (
             <span className="is-size-5" id="warning-payments">
@@ -1343,7 +1346,10 @@ const ReviewModalContent = ({
                 type="checkbox"
                 onChange={handleTermsAndCondAgreed}
               />{" "}
-              I agree to the <Link to="/legal/terms-and-conditions">terms and conditions</Link>
+              I agree to the{" "}
+              <Link to="/legal/terms-and-conditions" target="_blank">
+                terms and conditions
+              </Link>
             </label>
           </div>
         </div>

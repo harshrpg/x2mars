@@ -1094,9 +1094,12 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
     cartState.step3.auto_liquidation
   )
   const [whaleProtectionLimit, setWhaleProtectionLimit] = React.useState(
-    cartState.step3.WHALE_PROTECTION
+    0.005 *
+      (parseFloat(cartState.step2.tokenSupplyNumber) *
+        NumberMap[cartState.step2.tokenSupplyUnits])
   )
 
+  const [showWhaleProtectionLimit, setShowWhaleProtectionLimit] = React.useState(false)
   const [whaleProtecError, setWhaleProtectionError] = React.useState(false)
   const [rfiStaticRewardsFee, setRfiStaticRewardsFee] = React.useState(
     cartState.step3.rfi_rewards
@@ -1109,7 +1112,7 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
   )
   const [automaticCharityAddress, setAutomaticCharityAddress] = React.useState(
     cartState.step3.charity_address ===
-      "0x000000000000000000000000000000000000dEaD"
+      process.env.GATSBY_DEAD_ADDRESS
       ? null
       : cartState.step3.charity_address
   )
@@ -1157,12 +1160,15 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
           (parseFloat(cartState.step2.tokenSupplyNumber) *
             NumberMap[cartState.step2.tokenSupplyUnits])
         setWhaleProtectionLimit(value)
+        setShowWhaleProtectionLimit(true)
       } catch (error) {
         setWhaleProtectionError(true)
+        setShowWhaleProtectionLimit(false)
       }
     } else {
       setWhaleProtectionLimit(0.0)
       setWhaleProtectionError(true)
+      setShowWhaleProtectionLimit(false)
     }
   }
   function handleAutomaticBurnFeeChange(event) {
@@ -1286,7 +1292,7 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
   React.useEffect(() => {
     var charityAddress = automaticCharityAddress
     if (automaticCharityAddress === "") {
-      charityAddress = "0x000000000000000000000000000000000000dEaD"
+      charityAddress = process.env.GATSBY_DEAD_ADDRESS
     }
     cartDispatch({
       step: 3.6,
@@ -1622,7 +1628,7 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
           <div className="column left-text-align">
             <div
               className={`theme-view-box ${
-                !!whaleProtectionLimit ? "success" : ""
+                !!showWhaleProtectionLimit ? "success" : ""
               }`}
             >
               <div className="columns" style={{ padding: "1rem" }}>
@@ -1687,7 +1693,7 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
                         </div>
                         <div className="column">
                           <span className="is-size-6">
-                            {whaleProtectionLimit}
+                            {showWhaleProtectionLimit ? whaleProtectionLimit : 0} {` `} {cartState.step2.tokenSymbol}{`s`}
                           </span>
                         </div>
                       </div>
