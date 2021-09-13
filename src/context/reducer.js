@@ -79,7 +79,7 @@ export const initialCartState = {
     WHALE_PROTECTION: 0,
     auto_burn: 0,
     auto_charity: 0,
-    charity_address: "0x000000000000000000000000000000000000dEaD",
+    charity_address: process.env.GATSBY_DEAD_ADDRESS,
     totalFees: 0.0,
   },
   totalCharge: {
