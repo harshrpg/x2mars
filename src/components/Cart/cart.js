@@ -1347,9 +1347,9 @@ const ReviewModalContent = ({
                 onChange={handleTermsAndCondAgreed}
               />{" "}
               I agree to the{" "}
-              <Link to="/legal/terms-and-conditions" target="_blank">
+              <a href="/legal/terms-and-conditions/" target="_blank">
                 terms and conditions
-              </Link>
+              </a>
             </label>
           </div>
         </div>

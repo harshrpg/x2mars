@@ -1722,11 +1722,11 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
                   </div>
                   <div className="columns">
                     <div className="column">
-                      {!!whaleProtectionLimit ? (
+                      {!!showWhaleProtectionLimit ? (
                         <button
                           className="button theme-action-button-gradient-red"
                           type="button"
-                          onClick={() => setWhaleProtectionLimit(0)}
+                          onClick={() => setShowWhaleProtectionLimit(false)}
                         >
                           <span>Remove Feature</span>
                           <span class="icon is-size-3">
