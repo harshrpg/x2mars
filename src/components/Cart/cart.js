@@ -443,7 +443,16 @@ const TotalFees = ({ isTestNetwork, isSmall }) => {
   }, [cartState])
 
   React.useEffect(() => {
-    if (totalChargeableFees !== 0.0) {
+    if (isTestNetwork) {
+      cartDispatcher({
+        step: 4,
+        payload: {
+          totalCharge: {
+            fee: 0.0,
+          },
+        },
+      })
+    } else {
       cartDispatcher({
         step: 4,
         payload: {
@@ -640,10 +649,23 @@ const DeployButton = ({ isSmall }) => {
       setTxnHash(txnResponse.hash)
     } catch (error) {
       console.log("Error Occurred: ", error)
-      if (error.code === 4001) {
-        setTxnError({ type: "Payment Rejected Error", errorBody: error })
+      setTxnError({ type: error.code, errorBody: error })
+      if (typeof error.code === "number") {
+        if (error.code === 4001) {
+          setTxnError({ type: "Payment Rejected", errorBody: error })
+        } else if (error.code === 4100) {
+          setTxnError({ type: "Unauthorized Request", errorBody: error })
+        } else if (error.code === 4200) {
+          setTxnError({ type: "Unsupported", errorBody: error })
+        } else if (error.code === 4900) {
+          setTxnError({ type: "RPC Disconnected", errorBody: error })
+        } else if (error.code === 4901) {
+          setTxnError({ type: "Network Disconnected", errorBody: error })
+        }
+      } else if (typeof error.code === "string") {
+        setTxnError({ type: error.code, errorBody: error })
       } else {
-        setTxnError({ type: "Generic Error", errorBody: error })
+        setTxnError({ type: "Unknown Error" + error.code, errorBody: error })
       }
     }
   }
@@ -667,10 +689,22 @@ const DeployButton = ({ isSmall }) => {
       await tx.wait()
     } catch (error) {
       console.log("Error occured in creating token", error)
-      if (error.code === 4001) {
-        setTxnError({ type: "Payment Rejected Error", errorBody: error })
+      if (typeof error.code === "number") {
+        if (error.code === 4001) {
+          setTxnError({ type: "Payment Rejected", errorBody: error })
+        } else if (error.code === 4100) {
+          setTxnError({ type: "Unauthorized Request", errorBody: error })
+        } else if (error.code === 4200) {
+          setTxnError({ type: "Unsupported", errorBody: error })
+        } else if (error.code === 4900) {
+          setTxnError({ type: "RPC Disconnected", errorBody: error })
+        } else if (error.code === 4901) {
+          setTxnError({ type: "Network Disconnected", errorBody: error })
+        }
+      } else if (typeof error.code === "string") {
+        setTxnError({ type: error.code, errorBody: error })
       } else {
-        setTxnError({ type: "Generic Error", errorBody: error })
+        setTxnError({ type: "Unknown Error" + error.code, errorBody: error })
       }
     }
   }
@@ -700,10 +734,22 @@ const DeployButton = ({ isSmall }) => {
       await tx.wait()
     } catch (error) {
       console.log("Error occured in creating token", error)
-      if (error.code === 4001) {
-        setTxnError({ type: "Payment Rejected Error", errorBody: error })
+      if (typeof error.code === "number") {
+        if (error.code === 4001) {
+          setTxnError({ type: "Payment Rejected", errorBody: error })
+        } else if (error.code === 4100) {
+          setTxnError({ type: "Unauthorized Request", errorBody: error })
+        } else if (error.code === 4200) {
+          setTxnError({ type: "Unsupported", errorBody: error })
+        } else if (error.code === 4900) {
+          setTxnError({ type: "RPC Disconnected", errorBody: error })
+        } else if (error.code === 4901) {
+          setTxnError({ type: "Network Disconnected", errorBody: error })
+        }
+      } else if (typeof error.code === "string") {
+        setTxnError({ type: error.code, errorBody: error })
       } else {
-        setTxnError({ type: "Generic Error", errorBody: error })
+        setTxnError({ type: "Unknown Error" + error.code, errorBody: error })
       }
     }
   }
