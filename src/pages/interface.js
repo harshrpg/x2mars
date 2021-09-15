@@ -6,7 +6,6 @@ import { library } from "@fortawesome/fontawesome-svg-core"
 import { fab } from "@fortawesome/free-brands-svg-icons"
 import { useWeb3React, Web3ReactProvider } from "@web3-react/core"
 import { Web3Provider } from "@ethersproject/providers"
-import Factory from "../components/Factory/factory"
 import { AuthProvider } from "../context"
 import { useImageForData } from "../hooks/useAllImages"
 import { GatsbyImage } from "gatsby-plugin-image"
@@ -27,7 +26,6 @@ const Interface = () => {
       <Web3ReactProvider getLibrary={getLibrary}>
         <AppLayout>
           <Seo title="App" />
-          {/* <Factory /> */}
           <InterfaceSelector />
         </AppLayout>
       </Web3ReactProvider>

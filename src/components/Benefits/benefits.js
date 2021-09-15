@@ -116,7 +116,7 @@ const Benefits = () => {
                         }`}
                       >
                         <div
-                          className="columns"
+                          className="columns is-mobile"
                           onClick={() => setIndex(idx)}
                           style={{ cursor: "pointer" }}
                         >

@@ -59,7 +59,7 @@ const Why = () => {
               </div>
               <div className="columns">
                 <div className="column">
-                  <div className="columns">
+                  <div className="columns is-mobile">
                     <div className="column is-1">
                       <HiArrowNarrowRight />
                       {` `}
@@ -70,7 +70,7 @@ const Why = () => {
                       </span>
                     </div>
                   </div>
-                  <div className="columns">
+                  <div className="columns is-mobile">
                     <div className="column is-1">
                       <HiArrowNarrowRight />
                       {` `}
@@ -82,7 +82,7 @@ const Why = () => {
                       </span>
                     </div>
                   </div>
-                  <div className="columns">
+                  <div className="columns is-mobile">
                     <div className="column is-1">
                       <HiArrowNarrowRight />
                       {` `}

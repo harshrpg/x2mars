@@ -58,62 +58,41 @@ const Hero = () => {
                     </span>
                   </div>
                 </div>
-                <div className="columns">
+                <div className="columns is-mobile">
                   <div className="column is-1" style={{ width: "auto" }}>
                     <HiArrowNarrowRight />
                     {` `}
                   </div>
                   <div className="column">
                     <span className="is-size-6 is-size-6-mobile">
-                      {/* Build your Crypto Currency on multiple blockchain
-                      platforms */}
                       Extend your community to the decentralized world
                     </span>
                   </div>
                 </div>
-                <div className="columns">
+                <div className="columns is-mobile">
                   <div className="column is-1" style={{ width: "auto" }}>
                     <HiArrowNarrowRight />
                     {` `}
                   </div>
                   <div className="column">
                     <span className="is-size-6 is-size-6-mobile">
-                      {/* Select between Governance DAO Coins or more advanced Fee
-                      on Transfer based crypto coins */}
                       Incentivize your fans using your crypto currency
                     </span>
                   </div>
                 </div>
-                <div className="columns">
+                <div className="columns is-mobile">
                   <div className="column is-1" style={{ width: "auto" }}>
                     <HiArrowNarrowRight />
                     {` `}
                   </div>
                   <div className="column">
                     <span className="is-size-6 is-size-6-mobile">
-                      {/* Use the first{" "}
-                      <Link to="/whitepaper">
-                        <span className="orange-text">
-                          Decentralized Autonomous Crypto Maker
-                        </span>
-                      </Link>{" "}
-                      to make your currency */}
                       Discover your worth by quantifying your relationship with
                       your community
                     </span>
                   </div>
                 </div>
                 <div className="columns is-mobile" style={{paddingTop: "2rem"}}>
-                  {/* <div className="column is-1" style={{ width: "auto" }}>
-                    <HiArrowNarrowRight />
-                    {` `}
-                  </div>
-                  <div className="column">
-                    <span className="is-size-6 hero-text-background">
-                      Use your crypto currency to build a stronger & a larger
-                      community using the power of decentralization
-                    </span>
-                  </div> */}
                   <div className="column is-half is-offset-one-quarter">
                     <button
                       className="button theme-action-button-gradient-blue padded"
