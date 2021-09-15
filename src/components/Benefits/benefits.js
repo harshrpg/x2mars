@@ -1,13 +1,13 @@
 import * as React from "react"
-import SlideShow from "./slideshow"
 import { graphql, useStaticQuery } from "gatsby"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import { HiArrowNarrowRight } from "@react-icons/all-files/hi/HiArrowNarrowRight"
-const delay = 4500
+import "./style/slideshow.scss"
+const delay = 6000
 const imageContent = [
-  "Currency tailored to your needs",
-  "Decentralization allows you to expand your community",
-  "Monetary gains and incentives for your loyal customers",
+  "Your currency signifies you and your business",
+  "Open your business to a bigger world of decentralized community",
+  "Easy monitization of your customer's support and fanbase",
   "Stand out amongst your competition",
 ]
 
@@ -30,7 +30,7 @@ const Benefits = () => {
             gatsbyImageData(width: 640, quality: 100, aspectRatio: 1.33)
           }
         }
-        image4: file(relativePath: { eq: "stdout.png" }) {
+        image4: file(relativePath: { eq: "stdOut.png" }) {
           childImageSharp {
             gatsbyImageData(width: 640, quality: 100, aspectRatio: 1.33)
           }
@@ -98,10 +98,10 @@ const Benefits = () => {
           </div>
 
           <div className="column">
-            <div className="columns">
+            <div className="columns is-mobile">
               <div className="column">
-                <span className="is-size-4 hero-body-resize">
-                  Benefits of having your own currency
+                <span className="is-size-3 hero-body-resize">
+                  Why should you have your currency?
                 </span>
               </div>
             </div>

@@ -19,7 +19,7 @@ const Newsletter = () => {
           <div className="column is-3"></div>
           <div className="column is-4">
             <div className="centerinput">
-              <div className="input-block success borderless">
+              <div className="input-block default borderless">
                 <input
                   type="email"
                   id="featureInput"

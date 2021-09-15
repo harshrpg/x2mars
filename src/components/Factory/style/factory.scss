@@ -469,6 +469,19 @@
     font-size: 1.2em;
   }
 
+  .centerinput .input-block.default.borderless input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid $theme-orange;
+    outline: none;
+    background: none;
+    padding: 10px;
+    font-size: 1.2em;
+  }
+
   .centerinput .input-block.pre-selected input {
     position: absolute;
     top: 0;

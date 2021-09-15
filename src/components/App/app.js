@@ -11,12 +11,14 @@ import Timeline from "../Timeline/timeline";
 import Benefits from "../Benefits/benefits"
 import Why from "../Why/why"
 import IndexSteps from "../IndexSteps/indexSteps"
+import Discover from "../Discover/discover"
 
 const App = () => {
     
   return (
     <div>
       <Hero />
+      {/* <Discover /> */}
       {/* <Telegram /> */}
       {/* <Features /> */}
       <Benefits />

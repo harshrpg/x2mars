@@ -228,7 +228,7 @@ const StepsExplaination = ({ step1Image, step2Image, step3Image, setStep }) => {
               type="button"
               onClick={() => setStep(1)}
             >
-              <span>Lets Create My Currency</span>
+              <span>Lets Create Your Currency</span>
               <span class="icon is-size-3">
                 <BsArrowRight />
               </span>

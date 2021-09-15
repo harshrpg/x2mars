@@ -42,7 +42,7 @@ const Why = () => {
               <div className="columns">
                 <div className="column">
                   <span className="is-size-5">
-                    Create uses an autonoumous coin making system deployed on
+                    Create uses world's first <span className="orange-text">Form Based</span> decentralized autonoumous coin making system deployed on
                     both Ethereum and Binance Smart Chain. We call it the{" "}
                     <Link to="/">
                       <span className="orange-text">
@@ -66,7 +66,7 @@ const Why = () => {
                     </div>
                     <div className="column is-7">
                       <span className="is-size-6">
-                        Anyone can make their currency. No development needed
+                        Anyone can make their currency. No development needed. A Simple Form Based UI
                       </span>
                     </div>
                   </div>
@@ -78,7 +78,7 @@ const Why = () => {
                     <div className="column is-7">
                       <span className="is-size-6">
                         You are always in control. DAC allows you to create your
-                        own currency and maintain it using a custom dashboard
+                        own currency and maintain it using a custom dashboard. You can create as many you like
                       </span>
                     </div>
                   </div>
@@ -89,7 +89,7 @@ const Why = () => {
                     </div>
                     <div className="column is-7">
                       <span className="is-size-6">
-                        Super affordable. You can start with as low as 2 ETH
+                        Super fast and cheap. Get your currency in your wallet in 5 minutes with fees as low as 2 ETH
                       </span>
                     </div>
                   </div>

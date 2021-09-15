@@ -52,12 +52,15 @@
 }
 
 .is-explainer-active {
-  animation: effect 2.2s linear infinite alternate;
+  animation: effect 6s linear infinite alternate;
 }
 
 @keyframes effect {
   0% {
     color: #2f4858;
+  }
+  10% {
+    color: #ff8300;
   }
   25% {
     color: #ff8300;
@@ -68,7 +71,10 @@
   75% {
     color: #ff8300;
   }
-  100% {
+  90% {
     color: #ff8300;
+  }
+  100% {
+    color: #2f4858;
   }
 }
