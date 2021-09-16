@@ -34,7 +34,7 @@ const Hero = () => {
               <div className="hero-sub-texts">
                 <div className="columns is-mobile" style={{paddingBottom: "2rem"}}>
                   <div
-                    className="column left-text-align is-3 is-3-mobile is-narrow-widescreen "
+                    className="column left-text-align is-narrow"
                     style={{ padding: 0 }}
                   >
                     <span className="is-size-1 orange-text">
