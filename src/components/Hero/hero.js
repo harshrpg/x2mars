@@ -32,7 +32,7 @@ const Hero = () => {
           <div className="columns">
             <div className="column">
               <div className="hero-sub-texts">
-                <div className="columns" style={{paddingBottom: "2rem"}}>
+                <div className="columns is-mobile" style={{paddingBottom: "2rem"}}>
                   <div
                     className="column left-text-align is-3 is-3-mobile is-narrow-widescreen "
                     style={{ padding: 0 }}
@@ -93,7 +93,7 @@ const Hero = () => {
                   </div>
                 </div>
                 <div className="columns is-mobile" style={{paddingTop: "2rem"}}>
-                  <div className="column is-half is-offset-one-quarter">
+                  <div className="column is-half is-offset-one-quarter-desktop is-half-mobile">
                     <button
                       className="button theme-action-button-gradient-blue padded"
                       type="button"

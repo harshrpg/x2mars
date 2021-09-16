@@ -64,7 +64,7 @@ const Why = () => {
                       <HiArrowNarrowRight />
                       {` `}
                     </div>
-                    <div className="column is-7">
+                    <div className="column">
                       <span className="is-size-6">
                         Anyone can make their currency. No development needed. A Simple Form Based UI
                       </span>
@@ -75,7 +75,7 @@ const Why = () => {
                       <HiArrowNarrowRight />
                       {` `}
                     </div>
-                    <div className="column is-7">
+                    <div className="column">
                       <span className="is-size-6">
                         You are always in control. DAC allows you to create your
                         own currency and maintain it using a custom dashboard. You can create as many you like
@@ -87,7 +87,7 @@ const Why = () => {
                       <HiArrowNarrowRight />
                       {` `}
                     </div>
-                    <div className="column is-7">
+                    <div className="column">
                       <span className="is-size-6">
                         Super fast and cheap. Get your currency in your wallet in 5 minutes with fees as low as 2 ETH
                       </span>
