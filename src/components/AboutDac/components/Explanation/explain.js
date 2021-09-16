@@ -64,37 +64,37 @@ const Overview = () => {
         </div>
         <div className="columns">
           <div className="column">
-            <div className="columns">
+            <div className="columns is-mobile">
               <div className="column is-1">
                 <HiArrowNarrowRight />
               </div>
               <div className="column">Wallet Connector</div>
             </div>
-            <div className="columns">
+            <div className="columns is-mobile">
               <div className="column is-1">
                 <HiArrowNarrowRight />
               </div>
               <div className="column">Blockchain Selector</div>
             </div>
-            <div className="columns">
+            <div className="columns is-mobile">
               <div className="column is-1">
                 <HiArrowNarrowRight />
               </div>
               <div className="column">Smart Contracts</div>
             </div>
-            <div className="columns">
+            <div className="columns is-mobile">
               <div className="column is-1">
                 <HiArrowNarrowRight />
               </div>
               <div className="column">User Input Form</div>
             </div>
-            <div className="columns">
+            <div className="columns is-mobile">
               <div className="column is-1">
                 <HiArrowNarrowRight />
               </div>
               <div className="column">Subgraph Transactions Indexer</div>
             </div>
-            <div className="columns">
+            <div className="columns is-mobile">
               <div className="column is-1">
                 <HiArrowNarrowRight />
               </div>
@@ -224,31 +224,31 @@ const UserInputForm = () => {
             inputs for Fee On Transfer coins.
             <div className="container columns">
               <div className="column">
-                <div className="columns">
+                <div className="columns is-mobile">
                   <div className="column is-1">
                     <GatsbyImage image={gTokenImage} />
                   </div>
                   <div className="column">Governance DAO coins</div>
                 </div>
-                <div className="columns" style={{ marginLeft: "1rem" }}>
+                <div className="columns is-mobile" style={{ marginLeft: "1rem" }}>
                   <div className="column is-1">
                     <HiArrowNarrowRight />
                   </div>
                   <div className="column">Token Name</div>
                 </div>
-                <div className="columns" style={{ marginLeft: "1rem" }}>
+                <div className="columns is-mobile" style={{ marginLeft: "1rem" }}>
                   <div className="column is-1">
                     <HiArrowNarrowRight />
                   </div>
                   <div className="column">Token Symbol</div>
                 </div>
-                <div className="columns" style={{ marginLeft: "1rem" }}>
+                <div className="columns is-mobile" style={{ marginLeft: "1rem" }}>
                   <div className="column is-1">
                     <HiArrowNarrowRight />
                   </div>
                   <div className="column">Token Supply</div>
                 </div>
-                <div className="columns" style={{ marginLeft: "1rem" }}>
+                <div className="columns is-mobile" style={{ marginLeft: "1rem" }}>
                   <div className="column is-1">
                     <HiArrowNarrowRight />
                   </div>
@@ -256,7 +256,7 @@ const UserInputForm = () => {
                     An Optional input if Dex Pool is needed with the coin
                   </div>
                 </div>
-                <div className="columns">
+                <div className="columns is-mobile">
                   <div className="column is-1">
                     <GatsbyImage image={fotTokenImage} />
                   </div>
@@ -268,13 +268,13 @@ const UserInputForm = () => {
                     more optional features that can be added to the contract
                   </div>
                 </div>
-                <div className="columns" style={{ marginLeft: "1rem" }}>
+                <div className="columns is-mobile" style={{ marginLeft: "1rem" }}>
                   <div className="column is-1">
                     <HiArrowNarrowRight />
                   </div>
                   <div className="column">Automatic Liquidation</div>
                 </div>
-                <div className="columns" style={{ marginLeft: "2rem" }}>
+                <div className="columns is-mobile" style={{ marginLeft: "2rem" }}>
                   <div className="column is-1">
                     <HiArrowNarrowRight />
                   </div>
@@ -284,13 +284,13 @@ const UserInputForm = () => {
                     market
                   </div>
                 </div>
-                <div className="columns" style={{ marginLeft: "1rem" }}>
+                <div className="columns is-mobile" style={{ marginLeft: "1rem" }}>
                   <div className="column is-1">
                     <HiArrowNarrowRight />
                   </div>
                   <div className="column">Whale Protection</div>
                 </div>
-                <div className="columns" style={{ marginLeft: "2rem" }}>
+                <div className="columns is-mobile" style={{ marginLeft: "2rem" }}>
                   <div className="column is-1">
                     <HiArrowNarrowRight />
                   </div>
@@ -301,13 +301,13 @@ const UserInputForm = () => {
                     manipulate the market.
                   </div>
                 </div>
-                <div className="columns" style={{ marginLeft: "1rem" }}>
+                <div className="columns is-mobile" style={{ marginLeft: "1rem" }}>
                   <div className="column is-1">
                     <HiArrowNarrowRight />
                   </div>
                   <div className="column">RFI Static Rewards</div>
                 </div>
-                <div className="columns" style={{ marginLeft: "2rem" }}>
+                <div className="columns is-mobile" style={{ marginLeft: "2rem" }}>
                   <div className="column is-1">
                     <HiArrowNarrowRight />
                   </div>
@@ -316,13 +316,13 @@ const UserInputForm = () => {
                     the holders
                   </div>
                 </div>
-                <div className="columns" style={{ marginLeft: "1rem" }}>
+                <div className="columns is-mobile" style={{ marginLeft: "1rem" }}>
                   <div className="column is-1">
                     <HiArrowNarrowRight />
                   </div>
                   <div className="column">Automatic Burn</div>
                 </div>
-                <div className="columns" style={{ marginLeft: "2rem" }}>
+                <div className="columns is-mobile" style={{ marginLeft: "2rem" }}>
                   <div className="column is-1">
                     <HiArrowNarrowRight />
                   </div>
@@ -331,13 +331,13 @@ const UserInputForm = () => {
                     to the 'DEAD' burn address
                   </div>
                 </div>
-                <div className="columns" style={{ marginLeft: "1rem" }}>
+                <div className="columns is-mobile" style={{ marginLeft: "1rem" }}>
                   <div className="column is-1">
                     <HiArrowNarrowRight />
                   </div>
                   <div className="column">Automatic Charity Donation</div>
                 </div>
-                <div className="columns" style={{ marginLeft: "2rem" }}>
+                <div className="columns is-mobile" style={{ marginLeft: "2rem" }}>
                   <div className="column is-1">
                     <HiArrowNarrowRight />
                   </div>
