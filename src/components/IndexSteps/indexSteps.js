@@ -29,7 +29,7 @@ const IndexSteps = () => {
           <div className="columns">
             <div className="column is-4">
               <div className="columns">
-                <div className="column">
+                <div className="column centered-text-align">
                   <div className="theme-view-box">
                     <div className="columns" style={{ paddingLeft: "2rem" }}>
                       <div className="column">
@@ -67,7 +67,7 @@ const IndexSteps = () => {
             </div>
             <div className="column is-4">
               <div className="columns">
-                <div className="column">
+                <div className="column centered-text-align">
                   <div className="theme-view-box">
                     <div className="columns" style={{ paddingLeft: "2rem" }}>
                       <div className="column">
@@ -105,7 +105,7 @@ const IndexSteps = () => {
             </div>
             <div className="column is-4">
               <div className="columns">
-                <div className="column">
+                <div className="column centered-text-align">
                   <div className="theme-view-box">
                     <div className="columns" style={{ paddingLeft: "2rem" }}>
                       <div className="column">
