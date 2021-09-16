@@ -979,10 +979,6 @@ const ModalContent = ({
       setDexAddress("https://pancakeswap.finance/info/pool/")
     }
   }, [chainId])
-
-  // React.useEffect(() => {
-
-  // })
   return (
     <div className="container">
       <div className="columns">
@@ -1243,6 +1239,9 @@ const ReviewModalContent = ({
   const [network, setNetwork] = React.useState(
     NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
   )
+  
+  const [gasTracker, setGasTracker] = React.useState("https://etherscan.io/gastracker")
+
 
   function handleReview(event) {
     event.persist()
@@ -1263,6 +1262,14 @@ const ReviewModalContent = ({
       setNetwork(NetworkFromChainId[parseInt(user.chainId)])
     }
   }, [user])
+
+  React.useEffect(() => {
+    if (network === "eth") {
+      setGasTracker("https://etherscan.io/gastracker")
+    } else if (network === "bnb") {
+      setGasTracker("https://bscscan.com/gastracker")
+    }
+  }, [network])
 
   React.useEffect(() => {
     setIsReviewed(false)
@@ -1296,7 +1303,7 @@ const ReviewModalContent = ({
           <div className="column left-text-align">
             <span className="is-size-6">
               In this step you will be asked to pay your bill of{" "}
-              {cartState.totalCharge.fee} {network.toUpperCase()} and Gas Fees.
+              {cartState.totalCharge.fee} {network.toUpperCase()} and <Link to={gasTracker} target="_blank"> Gas Fees{" "}<BsBoxArrowUpRight />.</Link>
             </span>
           </div>
         </div>
