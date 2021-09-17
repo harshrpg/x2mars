@@ -6,7 +6,7 @@ import { BsCheck } from "@react-icons/all-files/bs/BsCheck"
 import { BsX } from "@react-icons/all-files/bs/BsX"
 import { BsQuestionCircle } from "@react-icons/all-files/bs/BsQuestionCircle"
 import * as React from "react"
-
+import { GoX } from "@react-icons/all-files/go/GoX"
 import "./style/steps-style.scss"
 import { NetworkIcon } from "../Icons/icons"
 import { useWeb3React } from "@web3-react/core"
@@ -251,6 +251,7 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
   const [coinSelected, setCoinSelected] = React.useState(
     cartState.step1.selectedToken
   )
+  const [isHelpOpen, setIsHelpOpen] = React.useState(false)
 
   React.useEffect(() => {
     if (coinSelected === -1) {
@@ -340,6 +341,7 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
             <button
               className="button theme-action-button-gradient-green padded"
               type="button"
+              onClick={() => setIsHelpOpen(true)}
             >
               <span>Help Me</span>
               <span class="icon is-size-3">
@@ -498,6 +500,7 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
           </div>
         </div>
       </div>
+      <Step1Help isActive={isHelpOpen} setIsHelpOpen={setIsHelpOpen} />
     </>
   )
 }
@@ -522,6 +525,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
     cartState.step2.tokenSupplyUnits
   )
   const [dexSelected, ___] = React.useState(cartState.step2.dexSelected)
+  const [isHelpOpen, setIsHelpOpen] = React.useState(false)
 
   function handleCoinNameChange(event) {
     setCoinName(event.target.value)
@@ -560,7 +564,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
   }
 
   function handleCoinSupplyChange(event) {
-    if (event.target.value<0 || event.target.value > 1000) {
+    if (event.target.value < 0 || event.target.value > 1000) {
       setCoinSupplyNumber(0.0)
     } else {
       setCoinSupplyNumber(event.target.value)
@@ -683,6 +687,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
             <button
               className="button theme-action-button-gradient-green padded"
               type="button"
+              onClick={() => setIsHelpOpen(true)}
             >
               <span>Help Me</span>
               <span class="icon is-size-3">
@@ -833,6 +838,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
           </div>
         </div>
       </div>
+      <Step2Help />
     </>
   )
 }
@@ -846,6 +852,7 @@ const Step3 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
   const [coinSelected, setCoinSelected] = React.useState(
     cartState.step1.selectedToken
   )
+  const [isHelpOpen, setIsHelpOpen] = React.useState(false)
 
   return (
     <>
@@ -901,6 +908,7 @@ const Step3 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
             <button
               className="button theme-action-button-gradient-green padded"
               type="button"
+              onClick={() => setIsHelpOpen(true)}
             >
               <span>Help Me</span>
               <span class="icon is-size-3">
@@ -927,6 +935,7 @@ const Step3 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
           )}
         </div>
       </div>
+      <Step3Help />
     </>
   )
 }
@@ -1106,7 +1115,10 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
         NumberMap[cartState.step2.tokenSupplyUnits])
   )
 
-  const [showWhaleProtectionLimit, setShowWhaleProtectionLimit] = React.useState(false)
+  const [
+    showWhaleProtectionLimit,
+    setShowWhaleProtectionLimit,
+  ] = React.useState(false)
   const [whaleProtecError, setWhaleProtectionError] = React.useState(false)
   const [rfiStaticRewardsFee, setRfiStaticRewardsFee] = React.useState(
     cartState.step3.rfi_rewards
@@ -1118,8 +1130,7 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
     cartState.step3.auto_charity
   )
   const [automaticCharityAddress, setAutomaticCharityAddress] = React.useState(
-    cartState.step3.charity_address ===
-      process.env.GATSBY_DEAD_ADDRESS
+    cartState.step3.charity_address === process.env.GATSBY_DEAD_ADDRESS
       ? null
       : cartState.step3.charity_address
   )
@@ -1277,7 +1288,6 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
         },
       })
     }
-    
   }, [showWhaleProtectionLimit])
 
   React.useEffect(() => {
@@ -1718,7 +1728,11 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
                         </div>
                         <div className="column">
                           <span className="is-size-6">
-                            {showWhaleProtectionLimit ? whaleProtectionLimit : 0} {` `} {cartState.step2.tokenSymbol}{`s`}
+                            {showWhaleProtectionLimit
+                              ? whaleProtectionLimit
+                              : 0}{" "}
+                            {` `} {cartState.step2.tokenSymbol}
+                            {`s`}
                           </span>
                         </div>
                       </div>
@@ -2213,4 +2227,84 @@ const NextAndPreviousStep = ({
   )
 }
 
+const Step1Help = ({isActive, setIsHelpOpen}) => {
+
+  function closeModal() {
+    setIsHelpOpen(false)
+  }
+
+  return (
+    <>
+      <div className={`modal ${isActive ? "is-active" : ""}`}>
+        <div className="modal-background"></div>
+        <div className="modal-content wallet-choice-board">
+          {/* CONTENT HERE */}
+        </div>
+        <div className="modal-close-custom">
+            <button
+              className="button close-modal-button"
+              aria-label="close"
+              onClick={closeModal}
+            >
+              <span className="icon is-large">
+                <GoX />
+              </span>
+            </button>
+          </div>
+      </div>
+    </>
+  )
+}
+
+const Step2Help = ({isActive, setIsHelpOpen}) => {
+
+  function closeModal() {
+    setIsHelpOpen(false)
+  }
+return (
+    <>
+      <div className={`modal ${isActive ? "is-active" : ""}`}>
+        <div className="modal-background"></div>
+        <div className="modal-content wallet-choice-board"></div>
+      </div>
+    </>
+  )
+}
+
+const Step3Help = ({isActive, setIsHelpOpen}) => {
+
+  const cartState = useCartState()
+
+
+
+  function closeModal() {
+    setIsHelpOpen(false)
+  }
+return (
+    <>
+      <div className={`modal ${isActive ? "is-active" : ""}`}>
+        <div className="modal-background"></div>
+        <div className="modal-content wallet-choice-board">
+          {cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE ? <Step3GovHelpContent /> : <Step3FotHelpContent />}
+        </div>
+      </div>
+    </>
+  )
+}
+
+const Step3GovHelpContent = () => {
+  return (
+    <>
+      Test Gov
+    </>
+  )
+}
+
+const Step3FotHelpContent = () => {
+  return (
+    <>
+      Test Fot
+    </>
+  )
+}
 export default Steps
