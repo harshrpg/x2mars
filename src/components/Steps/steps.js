@@ -22,6 +22,7 @@ import { useCartDispatch, useCartState } from "../../context"
 import { BsDash } from "@react-icons/all-files/bs/BsDash"
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus"
 import { CartContent } from "../Cart/cart"
+import { HiArrowNarrowRight } from "@react-icons/all-files/hi/HiArrowNarrowRight"
 
 const Steps = () => {
   const image = useImageForData("tailCur.png")
@@ -838,7 +839,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
           </div>
         </div>
       </div>
-      <Step2Help />
+      <Step2Help isActive={isHelpOpen} setIsHelpOpen={setIsHelpOpen} />
     </>
   )
 }
@@ -935,7 +936,7 @@ const Step3 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
           )}
         </div>
       </div>
-      <Step3Help />
+      <Step3Help isActive={isHelpOpen} setIsHelpOpen={setIsHelpOpen} />
     </>
   )
 }
@@ -2141,7 +2142,7 @@ const SummaryStep = ({ image, image2, setStep, step }) => {
               </div>
             </div>
           </div>
-          <div className="column" style={{ textAlign: "end" }}>
+          {/* <div className="column" style={{ textAlign: "end" }}>
             <button
               className="button theme-action-button-gradient-green padded"
               type="button"
@@ -2151,7 +2152,7 @@ const SummaryStep = ({ image, image2, setStep, step }) => {
                 <BsQuestionCircle />
               </span>
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="container">
@@ -2227,8 +2228,7 @@ const NextAndPreviousStep = ({
   )
 }
 
-const Step1Help = ({isActive, setIsHelpOpen}) => {
-
+const Step1Help = ({ isActive, setIsHelpOpen }) => {
   function closeModal() {
     setIsHelpOpen(false)
   }
@@ -2239,8 +2239,69 @@ const Step1Help = ({isActive, setIsHelpOpen}) => {
         <div className="modal-background"></div>
         <div className="modal-content wallet-choice-board">
           {/* CONTENT HERE */}
-        </div>
-        <div className="modal-close-custom">
+          <div className="container">
+            <div className="columns">
+              <div className="column">
+                <span className="is-size-1">Select your Coin Type</span>
+              </div>
+            </div>
+            <div className="columns">
+              <div className="column">
+                <span className="is-size-4">
+                  Here you can choose between{" "}
+                  <span className="orange-text">Governance Coin</span> or{" "}
+                  <span className="orange-text">Fee On Transfer Coin</span>
+                </span>
+              </div>
+            </div>
+            <div
+              className="columns is-mobile"
+              style={{ alignItems: "flex-start" }}
+            >
+              <div className="column">
+                <div className="columns">
+                  <div className="column">
+                    <span className="is-size-2">Governance Coins</span>
+                  </div>
+                </div>
+                <div className="columns">
+                  <div className="column">
+                    <span className="is-size-6">
+                      These are special coins. Governance coins are
+                      cryptocurrencies that give voting power on a blockchain
+                      project. They allow projects to distribute powers and
+                      rights to users (to their coin holders). With this coin
+                      you can give more control of your customer's needs to your
+                      customers.
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="column">
+                <div className="columns">
+                  <div className="column">
+                    <span className="is-size-2">Fee on Transfer Coins</span>
+                  </div>
+                </div>
+                <div className="columns">
+                  <div className="column">
+                    <span className="is-size-6">
+                      We prefer to call them as fancy coins. They are also
+                      termed as Meme coins in the blockchain industry. With this
+                      coin you can provide everything that a Governance coin
+                      provides but an added advantage of debitting certain fee
+                      if your customer decides to trade the coin. You can decide
+                      what to do with the fees by selecting some features on
+                      Step 3. For e.g., you can reward all your holders with the
+                      fee charged or give that fee to charity to support for a
+                      noble cause.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="modal-close-custom">
             <button
               className="button close-modal-button"
               aria-label="close"
@@ -2251,41 +2312,93 @@ const Step1Help = ({isActive, setIsHelpOpen}) => {
               </span>
             </button>
           </div>
+        </div>
       </div>
     </>
   )
 }
 
-const Step2Help = ({isActive, setIsHelpOpen}) => {
-
+const Step2Help = ({ isActive, setIsHelpOpen }) => {
   function closeModal() {
     setIsHelpOpen(false)
   }
-return (
-    <>
-      <div className={`modal ${isActive ? "is-active" : ""}`}>
-        <div className="modal-background"></div>
-        <div className="modal-content wallet-choice-board"></div>
-      </div>
-    </>
-  )
-}
-
-const Step3Help = ({isActive, setIsHelpOpen}) => {
-
-  const cartState = useCartState()
-
-
-
-  function closeModal() {
-    setIsHelpOpen(false)
-  }
-return (
+  return (
     <>
       <div className={`modal ${isActive ? "is-active" : ""}`}>
         <div className="modal-background"></div>
         <div className="modal-content wallet-choice-board">
-          {cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE ? <Step3GovHelpContent /> : <Step3FotHelpContent />}
+          <div className="container">
+            <div className="columns">
+              <div className="column">
+                <span className="is-size-1">Provide your coin Details</span>
+              </div>
+            </div>
+            <div className="columns">
+              <div className="column">
+                <p>
+                  <span className="is-size-6">
+                    Here you need to provide with essential details about your
+                    coin like Coin Name, Coin Symbol (e.g., ETH), Coin Supply.
+                  </span>
+                </p>
+                <p>
+                  <div className="note">
+                    <span className="is-size-6">
+                      The coin supply also known as token supply. For now token
+                      supply is fixed. We will soon be launching mintable tokens
+                      (where the token supply is unlimited) as well. If you are
+                      confused, then simply start with 1 Million.
+                    </span>
+                  </div>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="modal-close-custom">
+            <button
+              className="button close-modal-button"
+              aria-label="close"
+              onClick={closeModal}
+            >
+              <span className="icon is-large">
+                <GoX />
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+const Step3Help = ({ isActive, setIsHelpOpen }) => {
+  const cartState = useCartState()
+
+  function closeModal() {
+    setIsHelpOpen(false)
+  }
+  return (
+    <>
+      <div className={`modal ${isActive ? "is-active" : ""}`}>
+        <div className="modal-background"></div>
+        <div className="modal-content wallet-choice-board">
+          {cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE ? (
+            <Step3GovHelpContent />
+          ) : (
+            <Step3FotHelpContent />
+          )}
+
+          <div className="modal-close-custom">
+            <button
+              className="button close-modal-button"
+              aria-label="close"
+              onClick={closeModal}
+            >
+              <span className="icon is-large">
+                <GoX />
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </>
@@ -2295,7 +2408,33 @@ return (
 const Step3GovHelpContent = () => {
   return (
     <>
-      Test Gov
+      <div className="container">
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-1">
+              Select features for your Governance Coin Type
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-6">
+              <p>
+                Select if you need a Decentralized Exchange Pool for your coin.
+                Here you can allow your customers to easily swap and exchange
+                ETH (on Ethereum) or BNB (on Binance Smart Chain) for your coin
+                very easily.
+              </p>
+              <p>
+                If you are connected to Ethereum then this pool will be created
+                on Uniswap else it will be created on Pancake swap. Watch out
+                for your pool's address on checkout. If you miss it no worries
+                you can always find it in your Dashboard
+              </p>
+            </span>
+          </div>
+        </div>
+      </div>
     </>
   )
 }
@@ -2303,7 +2442,121 @@ const Step3GovHelpContent = () => {
 const Step3FotHelpContent = () => {
   return (
     <>
-      Test Fot
+      <div className="container">
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-1">
+              Select features for your Fee On Transfer Coin Type
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-4">
+              Here you can choose between a few features, they are individually
+              explained below:
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-5 orange-text">
+              Decentralized Exchange Pool
+            </span>
+          </div>
+        </div>
+        <div className="columns is-mobile">
+          <div className="column is-1">
+            <HiArrowNarrowRight />
+          </div>
+          <div className="column">
+            <p>
+              A Decentralized Exchange Pool for your coin.
+              Here you can allow your customers to easily swap and exchange ETH
+              (on Ethereum) or BNB (on Binance Smart Chain) for your coin very
+              easily.
+            </p>
+            <p>
+              If you are connected to Ethereum then this pool will be created on
+              Uniswap else it will be created on Pancake swap. Watch out for
+              your pool's address on checkout. If you miss it no worries you can
+              always find it in your Dashboard
+            </p>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-5 orange-text">Automatic Liquidation</span>
+          </div>
+        </div>
+        <div className="columns is-mobile">
+          <div className="column is-1">
+            <HiArrowNarrowRight />
+          </div>
+          <div className="column">
+            Fee charged per transaction is deposited back to the DEX pool
+            created. This ensures a stable liquidity supply to the market
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-5 orange-text">RFI Static Rewards</span>
+          </div>
+        </div>
+        <div className="columns is-mobile">
+          <div className="column is-1">
+            <HiArrowNarrowRight />
+          </div>
+          <div className="column">
+          Fee charged per transaction is divided and rewarded back to
+                    the holders. The holders coin quantity will increase if anyone within your community buys or sells your coin.
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-5 orange-text">Automatic Burn</span>
+          </div>
+        </div>
+        <div className="columns is-mobile">
+          <div className="column is-1">
+            <HiArrowNarrowRight />
+          </div>
+          <div className="column">
+          Fee charged per transaction is completely burned. Transfered
+                    to the 'DEAD' burn address. Destruction of coins increases your coin's value with demand.
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-5 orange-text">Whale Protection</span>
+          </div>
+        </div>
+        <div className="columns is-mobile">
+          <div className="column is-1">
+            <HiArrowNarrowRight />
+          </div>
+          <div className="column">
+          If this feature is selected, a hard limit of 0.5% of the
+                    total supply is imposed on any transaction that can be
+                    performed for the coin. This makes sure that whales do not
+                    manipulate the market.
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-5 orange-text">Automatic Charity Donation</span>
+          </div>
+        </div>
+        <div className="columns is-mobile">
+          <div className="column is-1">
+            <HiArrowNarrowRight />
+          </div>
+          <div className="column">
+          Fee charged per transaction is donated to charity. The
+                    wallet address for the charity is also needed.
+          </div>
+        </div>
+      </div>
     </>
   )
 }
