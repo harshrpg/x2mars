@@ -15,7 +15,11 @@ $icon-size: 35px;
 //   color: $theme-white;
 //   position: relative;
 // }
-
+.container {
+  margin: 0 auto;
+  padding: 50px 0 0;
+  width: 100%;
+}
 .app {
     display: flex;
     position: relative;

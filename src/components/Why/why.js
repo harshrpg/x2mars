@@ -42,7 +42,7 @@ const Why = () => {
               <div className="columns">
                 <div className="column">
                   <span className="is-size-5">
-                    Create uses an autonoumous coin making system deployed on
+                    Create uses world's first decentralized autonoumous coin making system deployed on
                     both Ethereum and Binance Smart Chain. We call it the{" "}
                     <Link to="/">
                       <span className="orange-text">
@@ -59,37 +59,37 @@ const Why = () => {
               </div>
               <div className="columns">
                 <div className="column">
-                  <div className="columns">
+                  <div className="columns is-mobile">
                     <div className="column is-1">
                       <HiArrowNarrowRight />
                       {` `}
                     </div>
-                    <div className="column is-7">
+                    <div className="column">
                       <span className="is-size-6">
-                        Anyone can make their currency. No development needed
+                        Anyone can make their currency. No development needed. Your Currency with you in less than 5 minutes
                       </span>
                     </div>
                   </div>
-                  <div className="columns">
+                  <div className="columns is-mobile">
                     <div className="column is-1">
                       <HiArrowNarrowRight />
                       {` `}
                     </div>
-                    <div className="column is-7">
+                    <div className="column">
                       <span className="is-size-6">
                         You are always in control. DAC allows you to create your
-                        own currency and maintain it using a custom dashboard
+                        own currency and maintain it using a custom dashboard. You can create as many you like
                       </span>
                     </div>
                   </div>
-                  <div className="columns">
+                  <div className="columns is-mobile">
                     <div className="column is-1">
                       <HiArrowNarrowRight />
                       {` `}
                     </div>
-                    <div className="column is-7">
+                    <div className="column">
                       <span className="is-size-6">
-                        Super affordable. You can start with as low as 2 ETH
+                        Superfast and cheap. Get your currency in your wallet in 5 minutes with fees as low as 2 ETH
                       </span>
                     </div>
                   </div>

@@ -1,11 +1,10 @@
 import * as React from "react"
-import { graphql, Link, useStaticQuery } from "gatsby"
+import { graphql, useStaticQuery } from "gatsby"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
-import { BgImage } from "gbimage-bridge"
-import { animated, useTransition } from "@react-spring/web"
+import { navigate } from "gatsby-link"
+import { BsArrowRight } from "@react-icons/all-files/bs/BsArrowRight"
 import "./style/hero.scss"
 import "./style/hero.css"
-import { useImageForData } from "../../hooks/useAllImages"
 import { HiArrowNarrowRight } from "@react-icons/all-files/hi/HiArrowNarrowRight"
 import TextTransition, { presets } from "react-text-transition"
 const Hero = () => {
@@ -33,78 +32,78 @@ const Hero = () => {
           <div className="columns">
             <div className="column">
               <div className="hero-sub-texts">
-              <div className="columns">
-                <div
-                  className="column left-text-align is-3 is-3-mobile is-narrow-widescreen "
-                  style={{padding: 0}}
-                >
-                  <span className="is-size-1 orange-text">
-                    <AnimatedText />
-                  </span>
+                <div className="columns is-mobile" style={{paddingBottom: "2rem"}}>
+                  <div
+                    className="column left-text-align is-narrow"
+                    style={{ padding: 0 }}
+                  >
+                    <span className="is-size-1 orange-text">
+                      <AnimatedText />
+                    </span>
+                  </div>
+                  <div className="column has-text-centered-mobile">
+                    <span
+                      className="is-size-1"
+                      style={{ whiteSpace: "nowrap" }}
+                    >
+                      Your Own Economy
+                    </span>
+                  </div>
                 </div>
-                <div className="column has-text-centered-mobile">
-                  <span className="is-size-1" style={{whiteSpace: "nowrap"}}>Your Own Economy</span>
-                </div>
-              </div>
                 <div className="columns">
                   <div className="column">
                     <span className="is-size-4">
                       Unleash the power of blockchain to build a strong market
-                      position for your business
+                      position for yourself
                     </span>
                   </div>
                 </div>
-                <div className="columns">
+                <div className="columns is-mobile">
                   <div className="column is-1" style={{ width: "auto" }}>
                     <HiArrowNarrowRight />
                     {` `}
                   </div>
                   <div className="column">
                     <span className="is-size-6 is-size-6-mobile">
-                      Build your Crypto Currency on multiple blockchain
-                      platforms
+                      Extend your community to the decentralized world
                     </span>
                   </div>
                 </div>
-                <div className="columns">
+                <div className="columns is-mobile">
                   <div className="column is-1" style={{ width: "auto" }}>
                     <HiArrowNarrowRight />
                     {` `}
                   </div>
                   <div className="column">
                     <span className="is-size-6 is-size-6-mobile">
-                      Select between Governance DAO Coins or more advanced Fee
-                      on Transfer based crypto coins
+                      Incentivize your fans using your crypto currency
                     </span>
                   </div>
                 </div>
-                <div className="columns">
+                <div className="columns is-mobile">
                   <div className="column is-1" style={{ width: "auto" }}>
                     <HiArrowNarrowRight />
                     {` `}
                   </div>
                   <div className="column">
                     <span className="is-size-6 is-size-6-mobile">
-                      Use the first{" "}
-                      <Link to="/whitepaper">
-                        <span className="orange-text">
-                          Decentralized Autonomous Crypto Maker
-                        </span>
-                      </Link>{" "}
-                      to make your currency
+                      Discover your worth by quantifying your relationship with
+                      your community
                     </span>
                   </div>
                 </div>
-                <div className="columns">
-                  <div className="column is-1" style={{ width: "auto" }}>
-                    <HiArrowNarrowRight />
-                    {` `}
-                  </div>
-                  <div className="column">
-                    <span className="is-size-6 hero-text-background">
-                      Use your crypto currency to build a stronger & a larger
-                      community using the power of decentralization
-                    </span>
+                <div className="columns is-mobile" style={{paddingTop: "2rem"}}>
+                  <div className="column is-half is-offset-one-quarter-desktop is-half-mobile">
+                    <button
+                      className="button theme-action-button-gradient-blue padded"
+                      type="button"
+                      onClick={() => navigate("/interface/")}
+                    >
+                      <span>Lets Create Your Currency</span>
+                      <span class="icon is-size-3">
+                        <BsArrowRight />
+                      </span>
+                    </button>
                   </div>
                 </div>
               </div>

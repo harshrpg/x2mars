@@ -228,7 +228,7 @@ const StepsExplaination = ({ step1Image, step2Image, step3Image, setStep }) => {
               type="button"
               onClick={() => setStep(1)}
             >
-              <span>Lets Create My Currency</span>
+              <span>Lets Create Your Currency</span>
               <span class="icon is-size-3">
                 <BsArrowRight />
               </span>
@@ -560,14 +560,21 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
   }
 
   function handleCoinSupplyChange(event) {
-    setCoinSupplyNumber(event.target.value)
+    if (event.target.value<0 || event.target.value > 1000) {
+      setCoinSupplyNumber(0.0)
+    } else {
+      setCoinSupplyNumber(event.target.value)
+    }
+  }
+
+  React.useEffect(() => {
     cartDispatch({
       step: 2,
       payload: {
         step2: {
           tokenName: cartState.step2.tokenName,
           tokenSymbol: cartState.step2.tokenSymbol,
-          tokenSupplyNumber: event.target.value,
+          tokenSupplyNumber: coinSupplyNumber,
           tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
           tokenDecimals: cartState.step2.tokenDecimals,
           dexSelected: cartState.step2.dexSelected,
@@ -575,7 +582,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
         },
       },
     })
-  }
+  }, [coinSupplyNumber])
 
   function handleCoinSupplyUnitsChange(event) {
     setCoinSupplyUnits(event.target.value)
@@ -751,10 +758,10 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
                                 onChange={handleCoinSupplyChange}
                                 value={coinSupplyNumber}
                                 min={1}
-                                max={100}
+                                max={1000}
                               />
                               <span className="placeholder">
-                                Coin Supply [1-100]
+                                Coin Supply [1-1000]
                               </span>
                             </div>
                           </div>
@@ -1239,21 +1246,39 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
   }, [rfiStaticRewardsFee])
 
   React.useEffect(() => {
-    cartDispatch({
-      step: 3.3,
-      payload: {
-        step3: {
-          auto_liquidation: cartState.step3.auto_liquidation,
-          rfi_rewards: cartState.step3.rfi_rewards,
-          WHALE_PROTECTION: whaleProtectionLimit,
-          auto_burn: cartState.step3.auto_burn,
-          auto_charity: cartState.step3.auto_charity,
-          charity_address: cartState.step3.charity_address,
-          totalFees: cartState.step3.totalFees,
+    if (showWhaleProtectionLimit) {
+      cartDispatch({
+        step: 3.3,
+        payload: {
+          step3: {
+            auto_liquidation: cartState.step3.auto_liquidation,
+            rfi_rewards: cartState.step3.rfi_rewards,
+            WHALE_PROTECTION: whaleProtectionLimit,
+            auto_burn: cartState.step3.auto_burn,
+            auto_charity: cartState.step3.auto_charity,
+            charity_address: cartState.step3.charity_address,
+            totalFees: cartState.step3.totalFees,
+          },
         },
-      },
-    })
-  }, [whaleProtectionLimit])
+      })
+    } else {
+      cartDispatch({
+        step: 3.3,
+        payload: {
+          step3: {
+            auto_liquidation: cartState.step3.auto_liquidation,
+            rfi_rewards: cartState.step3.rfi_rewards,
+            WHALE_PROTECTION: 0.0,
+            auto_burn: cartState.step3.auto_burn,
+            auto_charity: cartState.step3.auto_charity,
+            charity_address: cartState.step3.charity_address,
+            totalFees: cartState.step3.totalFees,
+          },
+        },
+      })
+    }
+    
+  }, [showWhaleProtectionLimit])
 
   React.useEffect(() => {
     cartDispatch({

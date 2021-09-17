@@ -14,12 +14,9 @@ import "./style/style.scss"
 import { GatsbyImage } from "gatsby-plugin-image"
 import { useImageForData } from "../../hooks/useAllImages"
 import { StepsModel } from "../../util/factory-steps"
-import { useNetwork } from "../../hooks/useNetwork"
-import { NetworkIcon } from "../Icons/icons"
 import ErrorBox from "../Error/errorbox"
-import { BigNumber, ethers } from "ethers"
-import { useWeb3React, Web3ReactProvider } from "@web3-react/core"
-import { injectedConnector } from "../../context/helpers"
+import { ethers } from "ethers"
+import { useWeb3React } from "@web3-react/core"
 import { AiOutlineCodeSandbox } from "@react-icons/all-files/ai/AiOutlineCodeSandbox"
 import { FcCheckmark } from "@react-icons/all-files/fc/FcCheckmark"
 import { animated, useSpring } from "@react-spring/web"
@@ -443,7 +440,16 @@ const TotalFees = ({ isTestNetwork, isSmall }) => {
   }, [cartState])
 
   React.useEffect(() => {
-    if (totalChargeableFees !== 0.0) {
+    if (isTestNetwork) {
+      cartDispatcher({
+        step: 4,
+        payload: {
+          totalCharge: {
+            fee: 0.0,
+          },
+        },
+      })
+    } else {
       cartDispatcher({
         step: 4,
         payload: {
@@ -640,10 +646,23 @@ const DeployButton = ({ isSmall }) => {
       setTxnHash(txnResponse.hash)
     } catch (error) {
       console.log("Error Occurred: ", error)
-      if (error.code === 4001) {
-        setTxnError({ type: "Payment Rejected Error", errorBody: error })
+      setTxnError({ type: error.code, errorBody: error })
+      if (typeof error.code === "number") {
+        if (error.code === 4001) {
+          setTxnError({ type: "Payment Rejected", errorBody: error })
+        } else if (error.code === 4100) {
+          setTxnError({ type: "Unauthorized Request", errorBody: error })
+        } else if (error.code === 4200) {
+          setTxnError({ type: "Unsupported", errorBody: error })
+        } else if (error.code === 4900) {
+          setTxnError({ type: "RPC Disconnected", errorBody: error })
+        } else if (error.code === 4901) {
+          setTxnError({ type: "Network Disconnected", errorBody: error })
+        }
+      } else if (typeof error.code === "string") {
+        setTxnError({ type: error.code, errorBody: error })
       } else {
-        setTxnError({ type: "Generic Error", errorBody: error })
+        setTxnError({ type: "Unknown Error" + error.code, errorBody: error })
       }
     }
   }
@@ -667,10 +686,22 @@ const DeployButton = ({ isSmall }) => {
       await tx.wait()
     } catch (error) {
       console.log("Error occured in creating token", error)
-      if (error.code === 4001) {
-        setTxnError({ type: "Payment Rejected Error", errorBody: error })
+      if (typeof error.code === "number") {
+        if (error.code === 4001) {
+          setTxnError({ type: "Payment Rejected", errorBody: error })
+        } else if (error.code === 4100) {
+          setTxnError({ type: "Unauthorized Request", errorBody: error })
+        } else if (error.code === 4200) {
+          setTxnError({ type: "Unsupported", errorBody: error })
+        } else if (error.code === 4900) {
+          setTxnError({ type: "RPC Disconnected", errorBody: error })
+        } else if (error.code === 4901) {
+          setTxnError({ type: "Network Disconnected", errorBody: error })
+        }
+      } else if (typeof error.code === "string") {
+        setTxnError({ type: error.code, errorBody: error })
       } else {
-        setTxnError({ type: "Generic Error", errorBody: error })
+        setTxnError({ type: "Unknown Error" + error.code, errorBody: error })
       }
     }
   }
@@ -700,10 +731,22 @@ const DeployButton = ({ isSmall }) => {
       await tx.wait()
     } catch (error) {
       console.log("Error occured in creating token", error)
-      if (error.code === 4001) {
-        setTxnError({ type: "Payment Rejected Error", errorBody: error })
+      if (typeof error.code === "number") {
+        if (error.code === 4001) {
+          setTxnError({ type: "Payment Rejected", errorBody: error })
+        } else if (error.code === 4100) {
+          setTxnError({ type: "Unauthorized Request", errorBody: error })
+        } else if (error.code === 4200) {
+          setTxnError({ type: "Unsupported", errorBody: error })
+        } else if (error.code === 4900) {
+          setTxnError({ type: "RPC Disconnected", errorBody: error })
+        } else if (error.code === 4901) {
+          setTxnError({ type: "Network Disconnected", errorBody: error })
+        }
+      } else if (typeof error.code === "string") {
+        setTxnError({ type: error.code, errorBody: error })
       } else {
-        setTxnError({ type: "Generic Error", errorBody: error })
+        setTxnError({ type: "Unknown Error" + error.code, errorBody: error })
       }
     }
   }
@@ -933,10 +976,6 @@ const ModalContent = ({
       setDexAddress("https://pancakeswap.finance/info/pool/")
     }
   }, [chainId])
-
-  // React.useEffect(() => {
-
-  // })
   return (
     <div className="container">
       <div className="columns">
@@ -1197,6 +1236,9 @@ const ReviewModalContent = ({
   const [network, setNetwork] = React.useState(
     NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
   )
+  
+  const [gasTracker, setGasTracker] = React.useState("https://etherscan.io/gastracker")
+
 
   function handleReview(event) {
     event.persist()
@@ -1217,6 +1259,14 @@ const ReviewModalContent = ({
       setNetwork(NetworkFromChainId[parseInt(user.chainId)])
     }
   }, [user])
+
+  React.useEffect(() => {
+    if (network === "eth") {
+      setGasTracker("https://etherscan.io/gastracker")
+    } else if (network === "bnb") {
+      setGasTracker("https://bscscan.com/gastracker")
+    }
+  }, [network])
 
   React.useEffect(() => {
     setIsReviewed(false)
@@ -1250,7 +1300,7 @@ const ReviewModalContent = ({
           <div className="column left-text-align">
             <span className="is-size-6">
               In this step you will be asked to pay your bill of{" "}
-              {cartState.totalCharge.fee} {network.toUpperCase()} and Gas Fees.
+              {cartState.totalCharge.fee} {network.toUpperCase()} and <Link to={gasTracker} target="_blank"> Gas Fees{" "}<BsBoxArrowUpRight />.</Link>
             </span>
           </div>
         </div>
