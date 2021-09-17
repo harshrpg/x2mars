@@ -42,7 +42,7 @@ const Why = () => {
               <div className="columns">
                 <div className="column">
                   <span className="is-size-5">
-                    Create uses world's first <span className="orange-text">Form Based</span> decentralized autonoumous coin making system deployed on
+                    Create uses world's first decentralized autonoumous coin making system deployed on
                     both Ethereum and Binance Smart Chain. We call it the{" "}
                     <Link to="/">
                       <span className="orange-text">
@@ -66,7 +66,7 @@ const Why = () => {
                     </div>
                     <div className="column">
                       <span className="is-size-6">
-                        Anyone can make their currency. No development needed. A Simple Form Based UI
+                        Anyone can make their currency. No development needed. Your Currency with you in less than 5 minutes
                       </span>
                     </div>
                   </div>
@@ -89,7 +89,7 @@ const Why = () => {
                     </div>
                     <div className="column">
                       <span className="is-size-6">
-                        Super fast and cheap. Get your currency in your wallet in 5 minutes with fees as low as 2 ETH
+                        Superfast and cheap. Get your currency in your wallet in 5 minutes with fees as low as 2 ETH
                       </span>
                     </div>
                   </div>

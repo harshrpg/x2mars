@@ -101,7 +101,7 @@ const Benefits = () => {
             <div className="columns is-mobile">
               <div className="column">
                 <span className="is-size-3 hero-body-resize">
-                  Why should you have your currency?
+                  Why you should have your currency?
                 </span>
               </div>
             </div>

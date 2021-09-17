@@ -1,6 +1,7 @@
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import * as React from "react"
-import { graphql, useStaticQuery } from "gatsby"
+import { graphql, Link, useStaticQuery } from "gatsby"
+import { BsBoxArrowUpRight } from "@react-icons/all-files/bs/BsBoxArrowUpRight"
 
 const TnC = () => {
   const { backgroundImage123 } = useStaticQuery(
@@ -475,7 +476,11 @@ const TnC = () => {
               <div className="column">
                 <span className="is-size-6">
                   Your submission of personal information through the store is
-                  governed by our Privacy Policy. To view our Privacy Policy.
+                  governed by our{" "}
+                  <a href="/legal/privacy-policy" target="_blank">
+                    {" "}
+                    Privacy Policy <BsBoxArrowUpRight />.
+                  </a>
                 </span>
               </div>
             </div>
@@ -516,7 +521,45 @@ const TnC = () => {
             </div>
             <div className="columns">
               <div className="column">
-                <span className="is-size-4">SECTION 12 - PROHIBITED USES</span>
+                <span className="is-size-6">
+                  Occasionally there might be network losses during the
+                  transaction. If it happens that your payment has occurred but
+                  your coin is not made then we can only assist you if you have
+                  the transaction hash and the connected wallet address at the
+                  time handy and provided to us.
+                </span>
+              </div>
+            </div>
+            <div className="columns">
+              <div className="column">
+                <span className="is-size-4">
+                  SECTION 12 - REQUIREMENTS FROM THE USER
+                </span>
+              </div>
+            </div>
+            <div className="columns">
+              <div className="column">
+                <span className="is-size-6">
+                  It is expected from the user to save their respective{" "}
+                  <a
+                    href="https://info.etherscan.com/what-is-a-transaction-hash-txhash/#:~:text=A%20transaction%20hash%20(Txn%20Hash)%2C%20or%20also%20known%20as,initiated%20on%20the%20Ethereum%20Blockchain.&text=The%20details%20of%20the%20transaction,transaction%20hash%20entered%20is%20valid."
+                    target="_blank"
+                  >
+                    transaction hash <BsBoxArrowUpRight />{" "}
+                  </a>{" "}
+                  of the payment as displayed by either the app or by their
+                  wallet. Only if the correct transaction hash combined with the
+                  their wallet address is provided we shall be able to provide
+                  any assistance. We are not responsible if any payment is loss
+                  during the transaction process what ever the reason may be. We
+                  are not responsible if the user has not saved their
+                  transaction hash.
+                </span>
+              </div>
+            </div>
+            <div className="columns">
+              <div className="column">
+                <span className="is-size-4">SECTION 13 - PROHIBITED USES</span>
               </div>
             </div>
             <div className="columns">
@@ -551,7 +594,7 @@ const TnC = () => {
             <div className="columns">
               <div className="column">
                 <span className="is-size-4">
-                  SECTION 13 - DISCLAIMER OF WARRANTIES; LIMITATION OF LIABILITY
+                  SECTION 14 - DISCLAIMER OF WARRANTIES; LIMITATION OF LIABILITY
                 </span>
               </div>
             </div>
@@ -611,7 +654,7 @@ const TnC = () => {
             </div>
             <div className="columns">
               <div className="column">
-                <span className="is-size-4">SECTION 14 - INDEMNIFICATION</span>
+                <span className="is-size-4">SECTION 15 - INDEMNIFICATION</span>
               </div>
             </div>
             <div className="columns">
@@ -631,7 +674,7 @@ const TnC = () => {
             </div>
             <div className="columns">
               <div className="column">
-                <span className="is-size-4">SECTION 15 - SEVERABILITY</span>
+                <span className="is-size-4">SECTION 16 - SEVERABILITY</span>
               </div>
             </div>
             <div className="columns">
@@ -649,7 +692,7 @@ const TnC = () => {
             </div>
             <div className="columns">
               <div className="column">
-                <span className="is-size-4">SECTION 16 - TERMINATION</span>
+                <span className="is-size-4">SECTION 17 - TERMINATION</span>
               </div>
             </div>
             <div className="columns">
@@ -680,7 +723,7 @@ const TnC = () => {
             </div>
             <div className="columns">
               <div className="column">
-                <span className="is-size-4">SECTION 17 - ENTIRE AGREEMENT</span>
+                <span className="is-size-4">SECTION 18 - ENTIRE AGREEMENT</span>
               </div>
             </div>
             <div className="columns">
@@ -710,7 +753,7 @@ const TnC = () => {
             </div>
             <div className="columns">
               <div className="column">
-                <span className="is-size-4">SECTION 18 - GOVERNING LAW</span>
+                <span className="is-size-4">SECTION 19 - GOVERNING LAW</span>
               </div>
             </div>
             <div className="columns">
@@ -726,7 +769,7 @@ const TnC = () => {
             <div className="columns">
               <div className="column">
                 <span className="is-size-4">
-                  SECTION 19 - CHANGES TO TERMS OF SERVICE
+                  SECTION 20 - CHANGES TO TERMS OF SERVICE
                 </span>
               </div>
             </div>
@@ -754,7 +797,7 @@ const TnC = () => {
             <div className="columns">
               <div className="column">
                 <span className="is-size-4">
-                  SECTION 20 - CONTACT INFORMATION
+                  SECTION 21 - CONTACT INFORMATION
                 </span>
               </div>
             </div>
