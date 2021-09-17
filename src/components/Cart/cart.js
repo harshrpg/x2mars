@@ -586,10 +586,10 @@ const DeployButton = ({ isSmall }) => {
     ) {
       var newArray = Array.from(fotFees)
       if (!!cartState.step3.auto_liquidation) {
-        newArray[0] = parseInt(cartState.step3.auto_liquidation)
+        newArray[1] = parseInt(cartState.step3.auto_liquidation)
       }
       if (!!cartState.step3.rfi_rewards) {
-        newArray[1] = parseInt(cartState.step3.rfi_rewards)
+        newArray[0] = parseInt(cartState.step3.rfi_rewards)
       }
       if (!!cartState.step3.auto_burn) {
         newArray[2] = parseInt(cartState.step3.auto_burn)
