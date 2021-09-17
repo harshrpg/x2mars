@@ -7,14 +7,16 @@ import Timeline from "../Timeline/timeline";
 import Benefits from "../Benefits/benefits"
 import Why from "../Why/why"
 import IndexSteps from "../IndexSteps/indexSteps"
+import HeroFeatures from "../HeroFeatures/hero-features";
 
 const App = () => {
     
   return (
     <div>
       <Hero />
-      <Benefits />
       <Why />
+      <HeroFeatures />
+      <Benefits />
       <IndexSteps />
       <RoadMap />
       <Timeline />
