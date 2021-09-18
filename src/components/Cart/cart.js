@@ -635,8 +635,12 @@ const DeployButton = ({ isSmall }) => {
         setDexAddress(process.env.GATSBY_UNISWAP_ROUTER)
         break
       case NetworkConstants.SMART_CHAIN_TESTNET:
-        setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_ROPSTEN)
+        setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_BNB_TESTNET)
         setDexAddress(process.env.GATSBY_PANCAKE_SWAP_ROUTER_BNBT)
+        break
+      case NetworkConstants.SMART_CHAIN_MAINNET:
+        setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_BNB_MAINNET)
+        setDexAddress(process.env.GATSBY_PANCAKE_SWAP_ROUTER)
         break
       default:
         setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_RINKEBY)
