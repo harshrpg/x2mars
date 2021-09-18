@@ -488,8 +488,12 @@ const TotalFees = ({ isTestNetwork, isSmall }) => {
 const DeployButton = ({ isSmall }) => {
   const { account, library, chainId, error } = useWeb3React()
   var providers = ethers.providers
-  var network = ethers.providers.getNetwork(TransactionNetworkNames[chainId])
-  var web3Provider = new providers.Web3Provider(library.provider, network)
+  const [network, setNetwork] = React.useState(
+    ethers.providers.getNetwork("homestead")
+  )
+  const [web3Provider, setWeb3Provider] = React.useState(
+    new providers.Web3Provider(library.provider, network)
+  )
   const cartState = useCartState()
   const [contractDeployable, setContractDeployable] = React.useState(false)
   const [paymentCompleted, setPaymentCompleted] = React.useState(false)
@@ -575,7 +579,9 @@ const DeployButton = ({ isSmall }) => {
     }
   }, [paymentCompleted, factoryContractWithSigner])
   React.useEffect(() => {
+    console.log("Token Address Effect")
     if (!!tokenAddress) {
+      console.log("Token Address: ", tokenAddress)
       if (
         cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE &&
         cartState.step2.dexSelected
@@ -584,6 +590,7 @@ const DeployButton = ({ isSmall }) => {
       } else if (
         cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER
       ) {
+        console.log("Getting pair address")
         getPairAddress()
       }
     }
@@ -615,7 +622,12 @@ const DeployButton = ({ isSmall }) => {
       setDashboardAvailable(true)
     }
   }, [coinBuilt])
-
+  React.useEffect(() => {
+    if (!!network) {
+      console.log("Setting web 3 provider for network: ", TransactionNetworkNames[chainId])
+      setWeb3Provider(new providers.Web3Provider(library.provider, network))
+    }
+  }, [network])
   React.useEffect(() => {
     if (!!account) {
       const factoryWithSigner = factoryContract.connect(
@@ -625,6 +637,11 @@ const DeployButton = ({ isSmall }) => {
     }
   }, [account, factoryContract])
   React.useEffect(() => {
+    console.log("Chain id: ", chainId)
+    if (!!chainId) {
+      console.log("Setting network to: ", TransactionNetworkNames[chainId])
+      setNetwork(ethers.providers.getNetwork(TransactionNetworkNames[chainId]))
+    }
     switch (chainId) {
       case NetworkConstants.GOERLI:
         setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_GOERLI)
@@ -642,9 +659,16 @@ const DeployButton = ({ isSmall }) => {
         setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_BNB_MAINNET)
         setDexAddress(process.env.GATSBY_PANCAKE_SWAP_ROUTER)
         break
-      default:
+      case NetworkConstants.MAINNET_ETHEREUM:
+        setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_ETH_MAINNET)
+        setDexAddress(process.env.GATSBY_UNISWAP_ROUTER)
+        break
+      case NetworkConstants.RINKEBY:
         setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_RINKEBY)
         setDexAddress(process.env.GATSBY_UNISWAP_ROUTER)
+        break
+      default:
+        console.warn("Incompatible Chain Id", chainId)
         break
     }
   }, [chainId])
@@ -716,6 +740,9 @@ const DeployButton = ({ isSmall }) => {
   }
 
   async function makeStandardCoin() {
+    console.log("-----------------------------------------------------------")
+    console.log(tokenFactory)
+    console.log("-----------------------------------------------------------")
     try {
       const tx = await factoryContractWithSigner.createStandardToken(
         cartState.step2.tokenName,
@@ -749,6 +776,9 @@ const DeployButton = ({ isSmall }) => {
   }
 
   async function makeFeeOnTransferCoin() {
+    console.log("-----------------------------------------------------------")
+    console.log(tokenFactory)
+    console.log("-----------------------------------------------------------")
     try {
       const tx = await factoryContractWithSigner.createToken(
         cartState.step2.tokenName,
@@ -826,6 +856,7 @@ const DeployButton = ({ isSmall }) => {
       }
       console.log("PAIR ADDRESS: ", pairAddress)
     } else if (cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER) {
+      console.log("TOKEN ADDRESS: ", tokenAddress)
       const fotToken = new ethers.Contract(tokenAddress, FotToken.abi, library)
 
       try {
@@ -904,7 +935,7 @@ const DashboardButton = ({ dashboardAvailable }) => {
 const CloseModalButton = ({ setChargeFeeAndDeployContract }) => {
   return (
     <button
-      className={`button deploy-contract-button`}
+      className={`button deploy-contract-button theme-action-button-gradient-red`}
       type="button"
       onClick={() => setChargeFeeAndDeployContract(false)}
     >
@@ -1171,7 +1202,7 @@ const ModalContent = ({
                 <div className="column">
                   <span className="is-size-6" id="txnHash">
                     {/* {pairAddress} */}
-                    <Link to={dexAddress + tokenAddress} target="_blank">
+                    <Link to={dexAddress + pairAddress} target="_blank">
                       View on {network === "eth" ? `Uniswap` : `Pancakeswap`}{" "}
                       <BsBoxArrowUpRight />
                     </Link>

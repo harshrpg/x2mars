@@ -8,8 +8,8 @@ export const StepsModel = {
           "Governance is a simple ERC-20 token governing purposes of your project. These are cryptocurrencies that represent voting power on a blockchain project. With these tokens, one can create and vote on governance proposals.",
         type: "select",
         price: {
-          eth: 2.0,
-          bnb: 12.0,
+          eth: 0.0,
+          bnb: 0.0,
         },
         img: "tailCur.png",
         selected: true,
@@ -20,8 +20,8 @@ export const StepsModel = {
           "Fee on Transfer are a simple type of ERC-20 tokens allowing you to charge fees while tokens are being transacted across the chain",
         type: "select",
         price: {
-          eth: 5.0,
-          bnb: 28.0,
+          eth: 0.0,
+          bnb: 0.0,
         },
         img: "fot.png",
         selected: false,
@@ -51,8 +51,8 @@ export const StepsModel = {
           "A decentralized exchange (better known as a DEX) is a peer-to-peer marketplace where transactions occur directly between crypto traders. DEX Pool allows you to create a pair of your token and the native coin for availing transactions of your coin. It is created for free when you are making a Fee On Transfer token. ",
         type: "select",
         price: {
-          eth: 0.2,
-          bnb: 1,
+          eth: 0.0,
+          bnb: 0.0,
         },
         img: {
           eth: "uni.png",
@@ -93,8 +93,8 @@ export const StepsModel = {
           "A certain fee of every transaction is shared with all the current holders of your token",
         type: "feature-select",
         price: {
-          eth: 0.2,
-          bnb: 1,
+          eth: 0.0,
+          bnb: 0.0,
         },
         inputData: [
           {
@@ -113,8 +113,8 @@ export const StepsModel = {
           "A limit is imposed on the number of tokens that can be included per transaction. This avoids market manipulation and helps identify patterns around it.",
         type: "feature-select",
         price: {
-          eth: 0.2,
-          bnb: 1,
+          eth: 0.0,
+          bnb: 0.0,
         },
         inputData: [
           {
@@ -132,8 +132,8 @@ export const StepsModel = {
         description: "A certain fee of every transaction is burned. 'Burning' a coin, in terms of cryptocurrency, refers to sending an otherwise usable token (or fraction thereof) to an unusable account. The act of burning effectively removes tokens from the available supply, increasing its relative scarcity.",
         type: "feature-select",
         price: {
-          eth: 0.2,
-          bnb: 1,
+          eth: 0.0,
+          bnb: 0.0,
         },
         inputData: [
           {
@@ -151,8 +151,8 @@ export const StepsModel = {
         description: "A certain fee of every transaction is given to charity",
         type: "feature-select",
         price: {
-          eth: 0.2,
-          bnb: 1,
+          eth: 0.0,
+          bnb: 0.0,
         },
         inputData: [
           {
@@ -176,8 +176,8 @@ export const StepsModel = {
           "Every member of our community will be notified about your project and will become a member of your community",
         type: "feature-select",
         price: {
-          eth: 5.0,
-          bnb: 50.0,
+          eth: 0.0,
+          bnb: 0.0,
         },
         inputData: [
           {
