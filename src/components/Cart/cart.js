@@ -512,7 +512,7 @@ const DeployButton = ({ isSmall }) => {
     factoryContractWithSigner,
     setFactoryContractWithSigner,
   ] = React.useState(null)
-  const tokenFactory = process.env.GATSBY_TOKEN_FACTORY_ADDRS
+  const [tokenFactory, setTokenFactory] = React.useState(process.env.GATSBY_TOKEN_FACTORY_ADDRS_RINKEBY)
   const [factoryContract, _] = React.useState(
     new ethers.Contract(tokenFactory, TokenFactory.abi, library)
   )
@@ -615,6 +615,19 @@ const DeployButton = ({ isSmall }) => {
       setFactoryContractWithSigner(factoryWithSigner)
     }
   }, [account, factoryContract])
+  React.useEffect(() => {
+    switch(chainId) {
+      case NetworkConstants.GOERLI:
+        setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_GOERLI)
+        break
+      case NetworkConstants.ROPSTEN:
+        setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_ROPSTEN)
+        break
+      default:
+        setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_RINKEBY)
+        break
+    }
+  }, [chainId])
 
   async function getTxnReceipt() {
     var result = null
