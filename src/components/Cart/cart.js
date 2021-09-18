@@ -512,9 +512,18 @@ const DeployButton = ({ isSmall }) => {
     factoryContractWithSigner,
     setFactoryContractWithSigner,
   ] = React.useState(null)
-  const [tokenFactory, setTokenFactory] = React.useState(process.env.GATSBY_TOKEN_FACTORY_ADDRS_RINKEBY)
-  const [factoryContract, _] = React.useState(
-    new ethers.Contract(tokenFactory, TokenFactory.abi, library)
+  const [tokenFactory, setTokenFactory] = React.useState(
+    process.env.GATSBY_TOKEN_FACTORY_ADDRS_RINKEBY
+  )
+  const [factoryContract, setFactoryContract] = React.useState(
+    new ethers.Contract(
+      process.env.GATSBY_TOKEN_FACTORY_ADDRS_RINKEBY,
+      TokenFactory.abi,
+      library
+    )
+  )
+  const [dexAddress, setDexAddress] = React.useState(
+    process.env.GATSBY_UNISWAP_ROUTER
   )
   const [showReviewModal, setShowReviewModal] = React.useState(false)
 
@@ -616,18 +625,40 @@ const DeployButton = ({ isSmall }) => {
     }
   }, [account, factoryContract])
   React.useEffect(() => {
-    switch(chainId) {
+    switch (chainId) {
       case NetworkConstants.GOERLI:
         setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_GOERLI)
+        setDexAddress(process.env.GATSBY_UNISWAP_ROUTER)
         break
       case NetworkConstants.ROPSTEN:
         setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_ROPSTEN)
+        setDexAddress(process.env.GATSBY_UNISWAP_ROUTER)
+        break
+      case NetworkConstants.SMART_CHAIN_TESTNET:
+        setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_ROPSTEN)
+        setDexAddress(process.env.GATSBY_PANCAKE_SWAP_ROUTER_BNBT)
         break
       default:
         setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_RINKEBY)
+        setDexAddress(process.env.GATSBY_UNISWAP_ROUTER)
         break
     }
   }, [chainId])
+  React.useEffect(() => {
+    if (!!tokenFactory) {
+      setFactoryContract(
+        new ethers.Contract(tokenFactory, TokenFactory.abi, library)
+      )
+    } else {
+      setFactoryContract(
+        new ethers.Contract(
+          process.env.GATSBY_TOKEN_FACTORY_ADDRS_RINKEBY,
+          TokenFactory.abi,
+          library
+        )
+      )
+    }
+  }, [tokenFactory])
 
   async function getTxnReceipt() {
     var result = null
@@ -681,12 +712,6 @@ const DeployButton = ({ isSmall }) => {
   }
 
   async function makeStandardCoin() {
-    var dexAddress = process.env.GATSBY_UNISWAP_ROUTER
-    if (chainId === NetworkConstants.SMART_CHAIN_TESTNET) {
-      dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER_BNBT
-    } else if (chainId === NetworkConstants.SMART_CHAIN_MAINNET) {
-      dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER
-    }
     try {
       const tx = await factoryContractWithSigner.createStandardToken(
         cartState.step2.tokenName,
@@ -720,12 +745,6 @@ const DeployButton = ({ isSmall }) => {
   }
 
   async function makeFeeOnTransferCoin() {
-    var dexAddress = process.env.GATSBY_UNISWAP_ROUTER
-    if (chainId === NetworkConstants.SMART_CHAIN_TESTNET) {
-      dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER_BNBT
-    } else if (chainId === NetworkConstants.SMART_CHAIN_MAINNET) {
-      dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER
-    }
     try {
       const tx = await factoryContractWithSigner.createToken(
         cartState.step2.tokenName,
@@ -1249,9 +1268,10 @@ const ReviewModalContent = ({
   const [network, setNetwork] = React.useState(
     NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
   )
-  
-  const [gasTracker, setGasTracker] = React.useState("https://etherscan.io/gastracker")
 
+  const [gasTracker, setGasTracker] = React.useState(
+    "https://etherscan.io/gastracker"
+  )
 
   function handleReview(event) {
     event.persist()
@@ -1313,7 +1333,11 @@ const ReviewModalContent = ({
           <div className="column left-text-align">
             <span className="is-size-6">
               In this step you will be asked to pay your bill of{" "}
-              {cartState.totalCharge.fee} {network.toUpperCase()} and <Link to={gasTracker} target="_blank"> Gas Fees{" "}<BsBoxArrowUpRight />.</Link>
+              {cartState.totalCharge.fee} {network.toUpperCase()} and{" "}
+              <Link to={gasTracker} target="_blank">
+                {" "}
+                Gas Fees <BsBoxArrowUpRight />.
+              </Link>
             </span>
           </div>
         </div>
