@@ -764,10 +764,10 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
                                 onChange={handleCoinSupplyChange}
                                 value={coinSupplyNumber}
                                 min={1}
-                                max={1000}
+                                max={999}
                               />
                               <span className="placeholder">
-                                Coin Supply [1-1000]
+                                Coin Supply [1-999]
                               </span>
                             </div>
                           </div>

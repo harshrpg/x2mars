@@ -593,6 +593,24 @@ const DeployButton = ({ isSmall }) => {
         console.log("Getting pair address")
         getPairAddress()
       }
+      if (window.ethereum) {
+        var web3provider = window.ethereum
+        web3provider.sendAsync(
+          {
+            method: "wallet_watchAsset",
+            params: {
+              type: "ERC20",
+              options: {
+                address: tokenAddress,
+                symbol: cartState.step2.tokenSymbol,
+                decimals: 18,
+                image: null
+              },
+            },
+          },
+          console.log
+        )
+      }
     }
   }, [tokenAddress])
   React.useEffect(() => {
@@ -624,7 +642,10 @@ const DeployButton = ({ isSmall }) => {
   }, [coinBuilt])
   React.useEffect(() => {
     if (!!network) {
-      console.log("Setting web 3 provider for network: ", TransactionNetworkNames[chainId])
+      console.log(
+        "Setting web 3 provider for network: ",
+        TransactionNetworkNames[chainId]
+      )
       setWeb3Provider(new providers.Web3Provider(library.provider, network))
     }
   }, [network])
