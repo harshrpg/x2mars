@@ -23,7 +23,7 @@ const Why = () => {
 
   const heroImage = getImage(backgroundImage123)
   return (
-    <section className="hero is-halfheight custom-hero">
+    <section className="hero is-halfheight">
       <div class="hero-body">
         <div class="container">
           <div className="columns">
@@ -93,6 +93,18 @@ const Why = () => {
                       </span>
                     </div>
                   </div>
+                  <div className="columns is-mobile">
+                    <div className="column is-1">
+                      <HiArrowNarrowRight />
+                      {` `}
+                    </div>
+                    <div className="column">
+                      <span className="is-size-6">
+                        The source code is verified and published
+                      </span>
+                    </div>
+                  </div>
+                  
                 </div>
               </div>
             </div>

@@ -488,8 +488,12 @@ const TotalFees = ({ isTestNetwork, isSmall }) => {
 const DeployButton = ({ isSmall }) => {
   const { account, library, chainId, error } = useWeb3React()
   var providers = ethers.providers
-  var network = ethers.providers.getNetwork(TransactionNetworkNames[chainId])
-  var web3Provider = new providers.Web3Provider(library.provider, network)
+  const [network, setNetwork] = React.useState(
+    ethers.providers.getNetwork("homestead")
+  )
+  const [web3Provider, setWeb3Provider] = React.useState(
+    new providers.Web3Provider(library.provider, network)
+  )
   const cartState = useCartState()
   const [contractDeployable, setContractDeployable] = React.useState(false)
   const [paymentCompleted, setPaymentCompleted] = React.useState(false)
@@ -512,9 +516,18 @@ const DeployButton = ({ isSmall }) => {
     factoryContractWithSigner,
     setFactoryContractWithSigner,
   ] = React.useState(null)
-  const tokenFactory = process.env.GATSBY_TOKEN_FACTORY_ADDRS
-  const [factoryContract, _] = React.useState(
-    new ethers.Contract(tokenFactory, TokenFactory.abi, library)
+  const [tokenFactory, setTokenFactory] = React.useState(
+    process.env.GATSBY_TOKEN_FACTORY_ADDRS_RINKEBY
+  )
+  const [factoryContract, setFactoryContract] = React.useState(
+    new ethers.Contract(
+      process.env.GATSBY_TOKEN_FACTORY_ADDRS_RINKEBY,
+      TokenFactory.abi,
+      library
+    )
+  )
+  const [dexAddress, setDexAddress] = React.useState(
+    process.env.GATSBY_UNISWAP_ROUTER
   )
   const [showReviewModal, setShowReviewModal] = React.useState(false)
 
@@ -566,7 +579,9 @@ const DeployButton = ({ isSmall }) => {
     }
   }, [paymentCompleted, factoryContractWithSigner])
   React.useEffect(() => {
+    console.log("Token Address Effect")
     if (!!tokenAddress) {
+      console.log("Token Address: ", tokenAddress)
       if (
         cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE &&
         cartState.step2.dexSelected
@@ -575,7 +590,26 @@ const DeployButton = ({ isSmall }) => {
       } else if (
         cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER
       ) {
+        console.log("Getting pair address")
         getPairAddress()
+      }
+      if (window.ethereum) {
+        var web3provider = window.ethereum
+        web3provider.sendAsync(
+          {
+            method: "wallet_watchAsset",
+            params: {
+              type: "ERC20",
+              options: {
+                address: tokenAddress,
+                symbol: cartState.step2.tokenSymbol,
+                decimals: 18,
+                image: null
+              },
+            },
+          },
+          console.log
+        )
       }
     }
   }, [tokenAddress])
@@ -586,10 +620,10 @@ const DeployButton = ({ isSmall }) => {
     ) {
       var newArray = Array.from(fotFees)
       if (!!cartState.step3.auto_liquidation) {
-        newArray[0] = parseInt(cartState.step3.auto_liquidation)
+        newArray[1] = parseInt(cartState.step3.auto_liquidation)
       }
       if (!!cartState.step3.rfi_rewards) {
-        newArray[1] = parseInt(cartState.step3.rfi_rewards)
+        newArray[0] = parseInt(cartState.step3.rfi_rewards)
       }
       if (!!cartState.step3.auto_burn) {
         newArray[2] = parseInt(cartState.step3.auto_burn)
@@ -606,7 +640,15 @@ const DeployButton = ({ isSmall }) => {
       setDashboardAvailable(true)
     }
   }, [coinBuilt])
-
+  React.useEffect(() => {
+    if (!!network) {
+      console.log(
+        "Setting web 3 provider for network: ",
+        TransactionNetworkNames[chainId]
+      )
+      setWeb3Provider(new providers.Web3Provider(library.provider, network))
+    }
+  }, [network])
   React.useEffect(() => {
     if (!!account) {
       const factoryWithSigner = factoryContract.connect(
@@ -615,6 +657,57 @@ const DeployButton = ({ isSmall }) => {
       setFactoryContractWithSigner(factoryWithSigner)
     }
   }, [account, factoryContract])
+  React.useEffect(() => {
+    console.log("Chain id: ", chainId)
+    if (!!chainId) {
+      console.log("Setting network to: ", TransactionNetworkNames[chainId])
+      setNetwork(ethers.providers.getNetwork(TransactionNetworkNames[chainId]))
+    }
+    switch (chainId) {
+      case NetworkConstants.GOERLI:
+        setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_GOERLI)
+        setDexAddress(process.env.GATSBY_UNISWAP_ROUTER)
+        break
+      case NetworkConstants.ROPSTEN:
+        setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_ROPSTEN)
+        setDexAddress(process.env.GATSBY_UNISWAP_ROUTER)
+        break
+      case NetworkConstants.SMART_CHAIN_TESTNET:
+        setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_BNB_TESTNET)
+        setDexAddress(process.env.GATSBY_PANCAKE_SWAP_ROUTER_BNBT)
+        break
+      case NetworkConstants.SMART_CHAIN_MAINNET:
+        setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_BNB_MAINNET)
+        setDexAddress(process.env.GATSBY_PANCAKE_SWAP_ROUTER)
+        break
+      case NetworkConstants.MAINNET_ETHEREUM:
+        setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_ETH_MAINNET)
+        setDexAddress(process.env.GATSBY_UNISWAP_ROUTER)
+        break
+      case NetworkConstants.RINKEBY:
+        setTokenFactory(process.env.GATSBY_TOKEN_FACTORY_ADDRS_RINKEBY)
+        setDexAddress(process.env.GATSBY_UNISWAP_ROUTER)
+        break
+      default:
+        console.warn("Incompatible Chain Id", chainId)
+        break
+    }
+  }, [chainId])
+  React.useEffect(() => {
+    if (!!tokenFactory) {
+      setFactoryContract(
+        new ethers.Contract(tokenFactory, TokenFactory.abi, library)
+      )
+    } else {
+      setFactoryContract(
+        new ethers.Contract(
+          process.env.GATSBY_TOKEN_FACTORY_ADDRS_RINKEBY,
+          TokenFactory.abi,
+          library
+        )
+      )
+    }
+  }, [tokenFactory])
 
   async function getTxnReceipt() {
     var result = null
@@ -668,12 +761,9 @@ const DeployButton = ({ isSmall }) => {
   }
 
   async function makeStandardCoin() {
-    var dexAddress = process.env.GATSBY_UNISWAP_ROUTER
-    if (chainId === NetworkConstants.SMART_CHAIN_TESTNET) {
-      dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER_BNBT
-    } else if (chainId === NetworkConstants.SMART_CHAIN_MAINNET) {
-      dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER
-    }
+    console.log("-----------------------------------------------------------")
+    console.log(tokenFactory)
+    console.log("-----------------------------------------------------------")
     try {
       const tx = await factoryContractWithSigner.createStandardToken(
         cartState.step2.tokenName,
@@ -707,12 +797,9 @@ const DeployButton = ({ isSmall }) => {
   }
 
   async function makeFeeOnTransferCoin() {
-    var dexAddress = process.env.GATSBY_UNISWAP_ROUTER
-    if (chainId === NetworkConstants.SMART_CHAIN_TESTNET) {
-      dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER_BNBT
-    } else if (chainId === NetworkConstants.SMART_CHAIN_MAINNET) {
-      dexAddress = process.env.GATSBY_PANCAKE_SWAP_ROUTER
-    }
+    console.log("-----------------------------------------------------------")
+    console.log(tokenFactory)
+    console.log("-----------------------------------------------------------")
     try {
       const tx = await factoryContractWithSigner.createToken(
         cartState.step2.tokenName,
@@ -790,6 +877,7 @@ const DeployButton = ({ isSmall }) => {
       }
       console.log("PAIR ADDRESS: ", pairAddress)
     } else if (cartState.step1.selectedToken === TokenTypeIds.FEE_ON_TRANSFER) {
+      console.log("TOKEN ADDRESS: ", tokenAddress)
       const fotToken = new ethers.Contract(tokenAddress, FotToken.abi, library)
 
       try {
@@ -868,7 +956,7 @@ const DashboardButton = ({ dashboardAvailable }) => {
 const CloseModalButton = ({ setChargeFeeAndDeployContract }) => {
   return (
     <button
-      className={`button deploy-contract-button`}
+      className={`button deploy-contract-button theme-action-button-gradient-red`}
       type="button"
       onClick={() => setChargeFeeAndDeployContract(false)}
     >
@@ -1135,7 +1223,7 @@ const ModalContent = ({
                 <div className="column">
                   <span className="is-size-6" id="txnHash">
                     {/* {pairAddress} */}
-                    <Link to={dexAddress + tokenAddress} target="_blank">
+                    <Link to={dexAddress + pairAddress} target="_blank">
                       View on {network === "eth" ? `Uniswap` : `Pancakeswap`}{" "}
                       <BsBoxArrowUpRight />
                     </Link>
@@ -1236,9 +1324,10 @@ const ReviewModalContent = ({
   const [network, setNetwork] = React.useState(
     NetworkFromChainId[NetworkConstants.MAINNET_ETHEREUM]
   )
-  
-  const [gasTracker, setGasTracker] = React.useState("https://etherscan.io/gastracker")
 
+  const [gasTracker, setGasTracker] = React.useState(
+    "https://etherscan.io/gastracker"
+  )
 
   function handleReview(event) {
     event.persist()
@@ -1300,7 +1389,11 @@ const ReviewModalContent = ({
           <div className="column left-text-align">
             <span className="is-size-6">
               In this step you will be asked to pay your bill of{" "}
-              {cartState.totalCharge.fee} {network.toUpperCase()} and <Link to={gasTracker} target="_blank"> Gas Fees{" "}<BsBoxArrowUpRight />.</Link>
+              {cartState.totalCharge.fee} {network.toUpperCase()} and{" "}
+              <Link to={gasTracker} target="_blank">
+                {" "}
+                Gas Fees <BsBoxArrowUpRight />.
+              </Link>
             </span>
           </div>
         </div>

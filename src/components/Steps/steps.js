@@ -6,7 +6,7 @@ import { BsCheck } from "@react-icons/all-files/bs/BsCheck"
 import { BsX } from "@react-icons/all-files/bs/BsX"
 import { BsQuestionCircle } from "@react-icons/all-files/bs/BsQuestionCircle"
 import * as React from "react"
-
+import { GoX } from "@react-icons/all-files/go/GoX"
 import "./style/steps-style.scss"
 import { NetworkIcon } from "../Icons/icons"
 import { useWeb3React } from "@web3-react/core"
@@ -22,6 +22,7 @@ import { useCartDispatch, useCartState } from "../../context"
 import { BsDash } from "@react-icons/all-files/bs/BsDash"
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus"
 import { CartContent } from "../Cart/cart"
+import { HiArrowNarrowRight } from "@react-icons/all-files/hi/HiArrowNarrowRight"
 
 const Steps = () => {
   const image = useImageForData("tailCur.png")
@@ -241,6 +242,7 @@ const StepsExplaination = ({ step1Image, step2Image, step3Image, setStep }) => {
 }
 
 const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
+  const { chainId } = useWeb3React()
   const cartState = useCartState()
   const cartDispatch = useCartDispatch()
   const fotImage = useImageForData("fot.png")
@@ -251,6 +253,9 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
   const [coinSelected, setCoinSelected] = React.useState(
     cartState.step1.selectedToken
   )
+  const [isHelpOpen, setIsHelpOpen] = React.useState(false)
+
+  const [netWorkNotSupported, setNetworkNotSupported] = React.useState(false)
 
   React.useEffect(() => {
     if (coinSelected === -1) {
@@ -260,6 +265,18 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
       dispatchCoinSelection()
     }
   }, [coinSelected])
+
+  React.useEffect(() => {
+    if (chainId === NetworkConstants.KOVAN) {
+      setNetworkNotSupported(true)
+      setNextStepDisabledToolTip(
+        "This network is not supported, please change the network in your wallet"
+      )
+    } else {
+      setNetworkNotSupported(false)
+      setNextStepDisabledToolTip(null)
+    }
+  }, [chainId])
 
   function dispatchCoinSelection() {
     var selectionPrice = 0.0
@@ -340,6 +357,7 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
             <button
               className="button theme-action-button-gradient-green padded"
               type="button"
+              onClick={() => setIsHelpOpen(true)}
             >
               <span>Help Me</span>
               <span class="icon is-size-3">
@@ -348,6 +366,19 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
             </button>
           </div>
         </div>
+
+        {netWorkNotSupported ? (
+          <div className="container columns">
+            <div className="column is-half is-offset-one-quarter-desktop is-half-mobile">
+              <span className="is-size-6" id="warning-payments">
+                This network is not supported. Please change the network in your
+                wallet
+              </span>
+            </div>
+          </div>
+        ) : (
+          ``
+        )}
         <div className="container columns">
           <div className="column right-text-align">
             <div
@@ -489,7 +520,7 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
           <div className="column">
             <NextAndPreviousStep
               prevStepDisabled={false}
-              nextStepDisabled={coinSelected === -1}
+              nextStepDisabled={netWorkNotSupported || coinSelected === -1}
               prevStepToolTip={null}
               nextStepToolTip={nextStepDisabledToolTip}
               setStep={setStep}
@@ -498,6 +529,7 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
           </div>
         </div>
       </div>
+      <Step1Help isActive={isHelpOpen} setIsHelpOpen={setIsHelpOpen} />
     </>
   )
 }
@@ -522,6 +554,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
     cartState.step2.tokenSupplyUnits
   )
   const [dexSelected, ___] = React.useState(cartState.step2.dexSelected)
+  const [isHelpOpen, setIsHelpOpen] = React.useState(false)
 
   function handleCoinNameChange(event) {
     setCoinName(event.target.value)
@@ -560,7 +593,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
   }
 
   function handleCoinSupplyChange(event) {
-    if (event.target.value<0 || event.target.value > 1000) {
+    if (event.target.value < 0 || event.target.value > 1000) {
       setCoinSupplyNumber(0.0)
     } else {
       setCoinSupplyNumber(event.target.value)
@@ -683,6 +716,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
             <button
               className="button theme-action-button-gradient-green padded"
               type="button"
+              onClick={() => setIsHelpOpen(true)}
             >
               <span>Help Me</span>
               <span class="icon is-size-3">
@@ -758,10 +792,10 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
                                 onChange={handleCoinSupplyChange}
                                 value={coinSupplyNumber}
                                 min={1}
-                                max={1000}
+                                max={999}
                               />
                               <span className="placeholder">
-                                Coin Supply [1-1000]
+                                Coin Supply [1-999]
                               </span>
                             </div>
                           </div>
@@ -833,6 +867,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
           </div>
         </div>
       </div>
+      <Step2Help isActive={isHelpOpen} setIsHelpOpen={setIsHelpOpen} />
     </>
   )
 }
@@ -846,6 +881,7 @@ const Step3 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
   const [coinSelected, setCoinSelected] = React.useState(
     cartState.step1.selectedToken
   )
+  const [isHelpOpen, setIsHelpOpen] = React.useState(false)
 
   return (
     <>
@@ -901,6 +937,7 @@ const Step3 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
             <button
               className="button theme-action-button-gradient-green padded"
               type="button"
+              onClick={() => setIsHelpOpen(true)}
             >
               <span>Help Me</span>
               <span class="icon is-size-3">
@@ -927,6 +964,7 @@ const Step3 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
           )}
         </div>
       </div>
+      <Step3Help isActive={isHelpOpen} setIsHelpOpen={setIsHelpOpen} />
     </>
   )
 }
@@ -1106,7 +1144,10 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
         NumberMap[cartState.step2.tokenSupplyUnits])
   )
 
-  const [showWhaleProtectionLimit, setShowWhaleProtectionLimit] = React.useState(false)
+  const [
+    showWhaleProtectionLimit,
+    setShowWhaleProtectionLimit,
+  ] = React.useState(false)
   const [whaleProtecError, setWhaleProtectionError] = React.useState(false)
   const [rfiStaticRewardsFee, setRfiStaticRewardsFee] = React.useState(
     cartState.step3.rfi_rewards
@@ -1118,8 +1159,7 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
     cartState.step3.auto_charity
   )
   const [automaticCharityAddress, setAutomaticCharityAddress] = React.useState(
-    cartState.step3.charity_address ===
-      process.env.GATSBY_DEAD_ADDRESS
+    cartState.step3.charity_address === process.env.GATSBY_DEAD_ADDRESS
       ? null
       : cartState.step3.charity_address
   )
@@ -1277,7 +1317,6 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
         },
       })
     }
-    
   }, [showWhaleProtectionLimit])
 
   React.useEffect(() => {
@@ -1718,7 +1757,11 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
                         </div>
                         <div className="column">
                           <span className="is-size-6">
-                            {showWhaleProtectionLimit ? whaleProtectionLimit : 0} {` `} {cartState.step2.tokenSymbol}{`s`}
+                            {showWhaleProtectionLimit
+                              ? whaleProtectionLimit
+                              : 0}{" "}
+                            {` `} {cartState.step2.tokenSymbol}
+                            {`s`}
                           </span>
                         </div>
                       </div>
@@ -2127,7 +2170,7 @@ const SummaryStep = ({ image, image2, setStep, step }) => {
               </div>
             </div>
           </div>
-          <div className="column" style={{ textAlign: "end" }}>
+          {/* <div className="column" style={{ textAlign: "end" }}>
             <button
               className="button theme-action-button-gradient-green padded"
               type="button"
@@ -2137,7 +2180,7 @@ const SummaryStep = ({ image, image2, setStep, step }) => {
                 <BsQuestionCircle />
               </span>
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="container">
@@ -2213,4 +2256,338 @@ const NextAndPreviousStep = ({
   )
 }
 
+const Step1Help = ({ isActive, setIsHelpOpen }) => {
+  function closeModal() {
+    setIsHelpOpen(false)
+  }
+
+  return (
+    <>
+      <div className={`modal ${isActive ? "is-active" : ""}`}>
+        <div className="modal-background"></div>
+        <div className="modal-content wallet-choice-board">
+          {/* CONTENT HERE */}
+          <div className="container">
+            <div className="columns">
+              <div className="column">
+                <span className="is-size-1">Select your Coin Type</span>
+              </div>
+            </div>
+            <div className="columns">
+              <div className="column">
+                <span className="is-size-4">
+                  Here you can choose between{" "}
+                  <span className="orange-text">Governance Coin</span> or{" "}
+                  <span className="orange-text">Fee On Transfer Coin</span>
+                </span>
+              </div>
+            </div>
+            <div
+              className="columns is-mobile"
+              style={{ alignItems: "flex-start" }}
+            >
+              <div className="column">
+                <div className="columns">
+                  <div className="column">
+                    <span className="is-size-2">Governance Coins</span>
+                  </div>
+                </div>
+                <div className="columns">
+                  <div className="column">
+                    <span className="is-size-6">
+                      These are special coins. Governance coins are
+                      cryptocurrencies that give voting power on a blockchain
+                      project. They allow projects to distribute powers and
+                      rights to users (to their coin holders). With this coin
+                      you can give more control of your customer's needs to your
+                      customers.
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="column">
+                <div className="columns">
+                  <div className="column">
+                    <span className="is-size-2">Fee on Transfer Coins</span>
+                  </div>
+                </div>
+                <div className="columns">
+                  <div className="column">
+                    <span className="is-size-6">
+                      We prefer to call them as fancy coins. They are also
+                      termed as Meme coins in the blockchain industry. With this
+                      coin you can provide everything that a Governance coin
+                      provides but an added advantage of debitting certain fee
+                      if your customer decides to trade the coin. You can decide
+                      what to do with the fees by selecting some features on
+                      Step 3. For e.g., you can reward all your holders with the
+                      fee charged or give that fee to charity to support for a
+                      noble cause.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="modal-close-custom">
+            <button
+              className="button close-modal-button"
+              aria-label="close"
+              onClick={closeModal}
+            >
+              <span className="icon is-large">
+                <GoX />
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+const Step2Help = ({ isActive, setIsHelpOpen }) => {
+  function closeModal() {
+    setIsHelpOpen(false)
+  }
+  return (
+    <>
+      <div className={`modal ${isActive ? "is-active" : ""}`}>
+        <div className="modal-background"></div>
+        <div className="modal-content wallet-choice-board">
+          <div className="container">
+            <div className="columns">
+              <div className="column">
+                <span className="is-size-1">Provide your coin Details</span>
+              </div>
+            </div>
+            <div className="columns">
+              <div className="column">
+                <p>
+                  <span className="is-size-6">
+                    Here you need to provide with essential details about your
+                    coin like Coin Name, Coin Symbol (e.g., ETH), Coin Supply.
+                  </span>
+                </p>
+                <p>
+                  <div className="note">
+                    <span className="is-size-6">
+                      The coin supply also known as token supply. For now token
+                      supply is fixed. We will soon be launching mintable tokens
+                      (where the token supply is unlimited) as well. If you are
+                      confused, then simply start with 1 Million.
+                    </span>
+                  </div>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="modal-close-custom">
+            <button
+              className="button close-modal-button"
+              aria-label="close"
+              onClick={closeModal}
+            >
+              <span className="icon is-large">
+                <GoX />
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+const Step3Help = ({ isActive, setIsHelpOpen }) => {
+  const cartState = useCartState()
+
+  function closeModal() {
+    setIsHelpOpen(false)
+  }
+  return (
+    <>
+      <div className={`modal ${isActive ? "is-active" : ""}`}>
+        <div className="modal-background"></div>
+        <div className="modal-content wallet-choice-board">
+          {cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE ? (
+            <Step3GovHelpContent />
+          ) : (
+            <Step3FotHelpContent />
+          )}
+
+          <div className="modal-close-custom">
+            <button
+              className="button close-modal-button"
+              aria-label="close"
+              onClick={closeModal}
+            >
+              <span className="icon is-large">
+                <GoX />
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+const Step3GovHelpContent = () => {
+  return (
+    <>
+      <div className="container">
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-1">
+              Select features for your Governance Coin Type
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-6">
+              <p>
+                Select if you need a Decentralized Exchange Pool for your coin.
+                Here you can allow your customers to easily swap and exchange
+                ETH (on Ethereum) or BNB (on Binance Smart Chain) for your coin
+                very easily.
+              </p>
+              <p>
+                If you are connected to Ethereum then this pool will be created
+                on Uniswap else it will be created on Pancake swap. Watch out
+                for your pool's address on checkout. If you miss it no worries
+                you can always find it in your Dashboard
+              </p>
+            </span>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+const Step3FotHelpContent = () => {
+  return (
+    <>
+      <div className="container">
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-1">
+              Select features for your Fee On Transfer Coin Type
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-4">
+              Here you can choose between a few features, they are individually
+              explained below:
+            </span>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-5 orange-text">
+              Decentralized Exchange Pool
+            </span>
+          </div>
+        </div>
+        <div className="columns is-mobile">
+          <div className="column is-1">
+            <HiArrowNarrowRight />
+          </div>
+          <div className="column">
+            <p>
+              A Decentralized Exchange Pool for your coin. Here you can allow
+              your customers to easily swap and exchange ETH (on Ethereum) or
+              BNB (on Binance Smart Chain) for your coin very easily.
+            </p>
+            <p>
+              If you are connected to Ethereum then this pool will be created on
+              Uniswap else it will be created on Pancake swap. Watch out for
+              your pool's address on checkout. If you miss it no worries you can
+              always find it in your Dashboard
+            </p>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-5 orange-text">Automatic Liquidation</span>
+          </div>
+        </div>
+        <div className="columns is-mobile">
+          <div className="column is-1">
+            <HiArrowNarrowRight />
+          </div>
+          <div className="column">
+            Fee charged per transaction is deposited back to the DEX pool
+            created. This ensures a stable liquidity supply to the market
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-5 orange-text">RFI Static Rewards</span>
+          </div>
+        </div>
+        <div className="columns is-mobile">
+          <div className="column is-1">
+            <HiArrowNarrowRight />
+          </div>
+          <div className="column">
+            Fee charged per transaction is divided and rewarded back to the
+            holders. The holders coin quantity will increase if anyone within
+            your community buys or sells your coin.
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-5 orange-text">Automatic Burn</span>
+          </div>
+        </div>
+        <div className="columns is-mobile">
+          <div className="column is-1">
+            <HiArrowNarrowRight />
+          </div>
+          <div className="column">
+            Fee charged per transaction is completely burned. Transfered to the
+            'DEAD' burn address. Destruction of coins increases your coin's
+            value with demand.
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-5 orange-text">Whale Protection</span>
+          </div>
+        </div>
+        <div className="columns is-mobile">
+          <div className="column is-1">
+            <HiArrowNarrowRight />
+          </div>
+          <div className="column">
+            If this feature is selected, a hard limit of 0.5% of the total
+            supply is imposed on any transaction that can be performed for the
+            coin. This makes sure that whales do not manipulate the market.
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <span className="is-size-5 orange-text">
+              Automatic Charity Donation
+            </span>
+          </div>
+        </div>
+        <div className="columns is-mobile">
+          <div className="column is-1">
+            <HiArrowNarrowRight />
+          </div>
+          <div className="column">
+            Fee charged per transaction is donated to charity. The wallet
+            address for the charity is also needed.
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
 export default Steps

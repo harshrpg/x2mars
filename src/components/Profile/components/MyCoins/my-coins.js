@@ -35,10 +35,36 @@ const MyCoins = () => {
   const [client, setClient] = React.useState(null)
   const [subgraphResponse, setSubgraphResponse] = React.useState(null)
   const [coins, setCoins] = React.useState([null])
-  const [dexPair, setDexPair] = React.useState([null])
+  const [error, setError] = React.useState(null)
   React.useEffect(() => {
-    if (chainId === NetworkConstants.RINKEBY) {
-      setApiUrl(process.env.GATSBY_GRAPH_API_URL_RINKEBY)
+    switch (chainId) {
+      case NetworkConstants.RINKEBY:
+        setApiUrl(process.env.GATSBY_GRAPH_API_URL_RINKEBY)
+        setError(null)
+        break
+      case NetworkConstants.ROPSTEN:
+        setApiUrl(process.env.GATSBY_GRAPH_API_URL_ROPSTEN)
+        setError(null)
+        break
+      case NetworkConstants.GOERLI:
+        setApiUrl(process.env.GATSBY_GRAPH_API_URL_GOERLI)
+        setError(null)
+        break
+      case NetworkConstants.SMART_CHAIN_TESTNET:
+        setApiUrl(process.env.GATSBY_GRAPH_API_URL_CHAPEL)
+        setError(null)
+        break
+      case NetworkConstants.SMART_CHAIN_MAINNET:
+        setApiUrl(process.env.GATSBY_GRAPH_API_URL_BSC)
+        setError(null)
+        break
+      case NetworkConstants.MAINNET_ETHEREUM:
+        setApiUrl(process.env.GATSBY_GRAPH_API_URL_ETH)
+        setError(null)
+        break
+      default:
+        setError("Network Not supported")
+        break
     }
   }, [chainId])
 

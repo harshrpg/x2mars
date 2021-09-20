@@ -59,75 +59,79 @@ const Benefits = () => {
     }
   }, [index])
   return (
-    <section className="section">
-      <div className="container">
-        <div className="columns">
-          <div className="column">
-            <div className="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-4-fullhd">
-              <div className="column">
-                <div className="slideshow">
-                  <div
-                    className="slideshowSlider"
-                    style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}
-                  >
-                    {images.map((image, index) => (
-                      <GatsbyImage
-                        className="slide slide-image"
-                        key={index}
-                        image={getImage(image)}
-                      />
-                    ))}
-                  </div>
+    <section className="hero is-halfheight custom-hero">
+      <div className="hero-body">
+        <div className="container">
+          <div className="columns">
+            <div className="column">
+              <div className="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-4-fullhd">
+                <div className="column">
+                  <div className="slideshow">
+                    <div
+                      className="slideshowSlider"
+                      style={{
+                        transform: `translate3d(${-index * 100}%, 0, 0)`,
+                      }}
+                    >
+                      {images.map((image, index) => (
+                        <GatsbyImage
+                          className="slide slide-image"
+                          key={index}
+                          image={getImage(image)}
+                        />
+                      ))}
+                    </div>
 
-                  <div className="slideshowDots">
-                    {images.map((_, idx) => (
-                      <div
-                        key={idx}
-                        className={`slideshowDot${
-                          index === idx ? " active" : ""
-                        }`}
-                        onClick={() => {
-                          setIndex(idx)
-                        }}
-                      ></div>
-                    ))}
+                    <div className="slideshowDots">
+                      {images.map((_, idx) => (
+                        <div
+                          key={idx}
+                          className={`slideshowDot${
+                            index === idx ? " active" : ""
+                          }`}
+                          onClick={() => {
+                            setIndex(idx)
+                          }}
+                        ></div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="column">
-            <div className="columns is-mobile">
-              <div className="column">
-                <span className="is-size-3 hero-body-resize">
-                  Why you should have your currency?
-                </span>
+            <div className="column">
+              <div className="columns is-mobile">
+                <div className="column">
+                  <span className="is-size-2 hero-body-resize">
+                    Why you should have your currency?
+                  </span>
+                </div>
               </div>
-            </div>
-            <div className="columns">
-              <div className="column">
-                <div className="is-size-6 hero-body-resize">
-                  <ul>
-                    {imageContent.map((content, idx) => (
-                      <li
-                        className={`explainer subtitle is-size-5-desktop is-size-5-fullhd is-size-5-widescreen is-size-6-tablet is-size-6-mobile${
-                          index === idx ? " is-explainer-active" : ""
-                        }`}
-                      >
-                        <div
-                          className="columns is-mobile"
-                          onClick={() => setIndex(idx)}
-                          style={{ cursor: "pointer" }}
+              <div className="columns">
+                <div className="column">
+                  <div className="is-size-6 hero-body-resize">
+                    <ul>
+                      {imageContent.map((content, idx) => (
+                        <li
+                          className={`explainer subtitle is-size-5-desktop is-size-5-fullhd is-size-5-widescreen is-size-6-tablet is-size-6-mobile${
+                            index === idx ? " is-explainer-active" : ""
+                          }`}
                         >
-                          <div className="column is-1">
-                            <HiArrowNarrowRight />
+                          <div
+                            className="columns is-mobile"
+                            onClick={() => setIndex(idx)}
+                            style={{ cursor: "pointer" }}
+                          >
+                            <div className="column is-1">
+                              <HiArrowNarrowRight />
+                            </div>
+                            <div className="column">{content}</div>
                           </div>
-                          <div className="column">{content}</div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>

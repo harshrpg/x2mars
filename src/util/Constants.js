@@ -24,8 +24,8 @@ export const TransactionNetworkNames = {
   4: "rinkeby",
   5: "goerli",
   42: "kovan",
-  97: "bnb",
-  56: "bnbt",
+  97: "bnbt",
+  56: "bnb",
 }
 
 export const NetworkFromChainId = {

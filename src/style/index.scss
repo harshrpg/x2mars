@@ -6,6 +6,7 @@
 $logo-family: "Rift", sans-serif;
 $charcoal: #2f4858;
 $primary-color: #2b75ac;
+$primary-color-dimmed: rgba(77, 153, 211, 0.5);
 $secondary-color: #807fc6;
 $inactive-color: #c4c4c4;
 $unsucessful-color: #e53935;
@@ -64,6 +65,11 @@ $font-color: $charcoal;
   max-width: 25rem !important;
   border-radius: 10px;
   padding: 0 !important;
+}
+
+.hero-theme-view-box {
+  border: 2px solid $theme-orange;
+  border-radius: 10px;
 }
 
 .interface-view-box:hover,

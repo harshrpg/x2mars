@@ -63,24 +63,44 @@ const DashboardContent = () => {
 }
 
 const NumberOfCoinsView = () => {
-  const { active, account, chainId } = useWeb3React()
-  const [network, setNetwork] = React.useState()
+  const { account, chainId } = useWeb3React()
   const [apiUrl, setApiUrl] = React.useState(
     process.env.GATSBY_GRAPH_API_URL_RINKEBY
   )
   const [client, setClient] = React.useState(null)
   const [subgraphResponse, setSubgraphResponse] = React.useState(null)
   const [coinsOwned, setCoinsOwned] = React.useState(0)
-
-  // React.useEffect(() => {
-  //   if (active && !!chainId) {
-  //     setNetwork(NetworkFromChainId[parseInt(chainId)])
-  //   }
-  // }, [active, chainId])
+  const [error, setError] = React.useState(null)
 
   React.useEffect(() => {
-    if (chainId === NetworkConstants.RINKEBY) {
-      setApiUrl(process.env.GATSBY_GRAPH_API_URL_RINKEBY)
+    switch (chainId) {
+      case NetworkConstants.RINKEBY:
+        setApiUrl(process.env.GATSBY_GRAPH_API_URL_RINKEBY)
+        setError(null)
+        break
+      case NetworkConstants.ROPSTEN:
+        setApiUrl(process.env.GATSBY_GRAPH_API_URL_ROPSTEN)
+        setError(null)
+        break
+      case NetworkConstants.GOERLI:
+        setApiUrl(process.env.GATSBY_GRAPH_API_URL_GOERLI)
+        setError(null)
+        break
+      case NetworkConstants.SMART_CHAIN_TESTNET:
+        setApiUrl(process.env.GATSBY_GRAPH_API_URL_CHAPEL)
+        setError(null)
+        break
+      case NetworkConstants.SMART_CHAIN_MAINNET:
+        setApiUrl(process.env.GATSBY_GRAPH_API_URL_BSC)
+        setError(null)
+        break
+      case NetworkConstants.MAINNET_ETHEREUM:
+        setApiUrl(process.env.GATSBY_GRAPH_API_URL_ETH)
+        setError(null)
+        break
+      default:
+        setError("Network Not supported")
+        break
     }
   }, [chainId])
 
@@ -102,6 +122,7 @@ const NumberOfCoinsView = () => {
 
   React.useEffect(() => {
     if (!!subgraphResponse && !!account) {
+      console.log("From subgraph: ",subgraphResponse)
       calculateNumberOfCoinsOwned()
     }
   }, [subgraphResponse, account])
@@ -114,8 +135,9 @@ const NumberOfCoinsView = () => {
 
   function calculateNumberOfCoinsOwned() {
     var numberOfCoins = 0
+    console.log("From subgraph api", apiUrl)
     const createdCoins = subgraphResponse.data.createdCoins
-    createdCoins.map((coin) => {
+    createdCoins.map(coin => {
       if (coin.owner.toLowerCase() === account.toLowerCase()) {
         numberOfCoins++
       }
@@ -124,27 +146,37 @@ const NumberOfCoinsView = () => {
   }
   return (
     <div className="container dashboard-view-box">
-      <div className="columns">
-        <div className="column">
-          <span className="is-size-3">
-            You Own
-          </span>
-        </div>
-      </div>
-      <div className="columns">
-        <div className="column">
-          <div className="is-size-1">
-            <span>{coinsOwned}</span>
+      {error ? (
+        <>
+          <div className="columns">
+            <div className="column">
+              <span className="is-size-3">This network is not supported</span>
+            </div>
           </div>
-        </div>
-      </div>
-      <div className="columns">
-        <div className="column">
-          <div className="is-size-4">
-            <span>Coins</span>
+        </>
+      ) : (
+        <>
+          <div className="columns">
+            <div className="column">
+              <span className="is-size-3">You Own</span>
+            </div>
           </div>
-        </div>
-      </div>
+          <div className="columns">
+            <div className="column">
+              <div className="is-size-1">
+                <span>{coinsOwned}</span>
+              </div>
+            </div>
+          </div>
+          <div className="columns">
+            <div className="column">
+              <div className="is-size-4">
+                <span>Coins</span>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }
