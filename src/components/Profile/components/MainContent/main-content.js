@@ -14,6 +14,7 @@ const Main = () => {
 
   return (
     <div className="container main-container">
+      <div className="note">This app is currently under experimentation phase</div>
       {sideBarSelected[0] ? (
         <Dashboard />
       ) : sideBarSelected[1] ? (
