@@ -242,6 +242,7 @@ const StepsExplaination = ({ step1Image, step2Image, step3Image, setStep }) => {
 }
 
 const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
+  const { chainId } = useWeb3React()
   const cartState = useCartState()
   const cartDispatch = useCartDispatch()
   const fotImage = useImageForData("fot.png")
@@ -254,6 +255,8 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
   )
   const [isHelpOpen, setIsHelpOpen] = React.useState(false)
 
+  const [netWorkNotSupported, setNetworkNotSupported] = React.useState(false)
+
   React.useEffect(() => {
     if (coinSelected === -1) {
       setNextStepDisabledToolTip("Please select a token type first")
@@ -262,6 +265,18 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
       dispatchCoinSelection()
     }
   }, [coinSelected])
+
+  React.useEffect(() => {
+    if (chainId === NetworkConstants.KOVAN) {
+      setNetworkNotSupported(true)
+      setNextStepDisabledToolTip(
+        "This network is not supported, please change the network in your wallet"
+      )
+    } else {
+      setNetworkNotSupported(false)
+      setNextStepDisabledToolTip(null)
+    }
+  }, [chainId])
 
   function dispatchCoinSelection() {
     var selectionPrice = 0.0
@@ -351,6 +366,19 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
             </button>
           </div>
         </div>
+
+        {netWorkNotSupported ? (
+          <div className="container columns">
+            <div className="column is-half is-offset-one-quarter-desktop is-half-mobile">
+              <span className="is-size-6" id="warning-payments">
+                This network is not supported. Please change the network in your
+                wallet
+              </span>
+            </div>
+          </div>
+        ) : (
+          ``
+        )}
         <div className="container columns">
           <div className="column right-text-align">
             <div
@@ -492,7 +520,7 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
           <div className="column">
             <NextAndPreviousStep
               prevStepDisabled={false}
-              nextStepDisabled={coinSelected === -1}
+              nextStepDisabled={netWorkNotSupported || coinSelected === -1}
               prevStepToolTip={null}
               nextStepToolTip={nextStepDisabledToolTip}
               setStep={setStep}
@@ -2471,10 +2499,9 @@ const Step3FotHelpContent = () => {
           </div>
           <div className="column">
             <p>
-              A Decentralized Exchange Pool for your coin.
-              Here you can allow your customers to easily swap and exchange ETH
-              (on Ethereum) or BNB (on Binance Smart Chain) for your coin very
-              easily.
+              A Decentralized Exchange Pool for your coin. Here you can allow
+              your customers to easily swap and exchange ETH (on Ethereum) or
+              BNB (on Binance Smart Chain) for your coin very easily.
             </p>
             <p>
               If you are connected to Ethereum then this pool will be created on
@@ -2508,8 +2535,9 @@ const Step3FotHelpContent = () => {
             <HiArrowNarrowRight />
           </div>
           <div className="column">
-          Fee charged per transaction is divided and rewarded back to
-                    the holders. The holders coin quantity will increase if anyone within your community buys or sells your coin.
+            Fee charged per transaction is divided and rewarded back to the
+            holders. The holders coin quantity will increase if anyone within
+            your community buys or sells your coin.
           </div>
         </div>
         <div className="columns">
@@ -2522,8 +2550,9 @@ const Step3FotHelpContent = () => {
             <HiArrowNarrowRight />
           </div>
           <div className="column">
-          Fee charged per transaction is completely burned. Transfered
-                    to the 'DEAD' burn address. Destruction of coins increases your coin's value with demand.
+            Fee charged per transaction is completely burned. Transfered to the
+            'DEAD' burn address. Destruction of coins increases your coin's
+            value with demand.
           </div>
         </div>
         <div className="columns">
@@ -2536,15 +2565,16 @@ const Step3FotHelpContent = () => {
             <HiArrowNarrowRight />
           </div>
           <div className="column">
-          If this feature is selected, a hard limit of 0.5% of the
-                    total supply is imposed on any transaction that can be
-                    performed for the coin. This makes sure that whales do not
-                    manipulate the market.
+            If this feature is selected, a hard limit of 0.5% of the total
+            supply is imposed on any transaction that can be performed for the
+            coin. This makes sure that whales do not manipulate the market.
           </div>
         </div>
         <div className="columns">
           <div className="column">
-            <span className="is-size-5 orange-text">Automatic Charity Donation</span>
+            <span className="is-size-5 orange-text">
+              Automatic Charity Donation
+            </span>
           </div>
         </div>
         <div className="columns is-mobile">
@@ -2552,8 +2582,8 @@ const Step3FotHelpContent = () => {
             <HiArrowNarrowRight />
           </div>
           <div className="column">
-          Fee charged per transaction is donated to charity. The
-                    wallet address for the charity is also needed.
+            Fee charged per transaction is donated to charity. The wallet
+            address for the charity is also needed.
           </div>
         </div>
       </div>
