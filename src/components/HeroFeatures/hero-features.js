@@ -32,7 +32,7 @@ const HeroSelectCoinTypeFeatures = () => {
             Select between two types of coins
           </span>
           <div
-            className="columns is-mobile"
+            className="columns"
             style={{ alignItems: "flex-start" }}
           >
             <div className="column">
@@ -43,7 +43,7 @@ const HeroSelectCoinTypeFeatures = () => {
                       <div className="column">
                         <span
                           className="is-size-4"
-                          style={{ whiteSpace: "nowrap" }}
+                          // // style={{ whiteSpace: "nowrap" }}
                         >
                           Governance (DAO) Coins
                         </span>
@@ -79,7 +79,7 @@ const HeroSelectCoinTypeFeatures = () => {
                       <div className="column">
                         <span
                           className="is-size-4"
-                          style={{ whiteSpace: "nowrap" }}
+                          // // style={{ whiteSpace: "nowrap" }}
                         >
                           Fee On Transfer (Meme) Coins
                         </span>
@@ -125,7 +125,7 @@ const HeroSelectFeatures = () => {
             Select Exciting features for your coins
           </span>
           <div
-            className="columns is-mobile"
+            className="columns"
             style={{ alignItems: "flex-start" }}
           >
             <div className="column">
@@ -136,7 +136,7 @@ const HeroSelectFeatures = () => {
                       <div className="column">
                         <span
                           className="is-size-4"
-                          style={{ whiteSpace: "nowrap" }}
+                          // style={{ whiteSpace: "nowrap" }}
                         >
                           Decentralized Exchange Pool
                         </span>
@@ -175,7 +175,7 @@ const HeroSelectFeatures = () => {
                       <div className="column">
                         <span
                           className="is-size-4"
-                          style={{ whiteSpace: "nowrap" }}
+                          // style={{ whiteSpace: "nowrap" }}
                         >
                           Automatic Liquidation
                         </span>
@@ -207,7 +207,7 @@ const HeroSelectFeatures = () => {
             </div>
           </div>
           <div
-            className="columns is-mobile"
+            className="columns"
             style={{ alignItems: "flex-start" }}
           >
             <div className="column">
@@ -218,7 +218,7 @@ const HeroSelectFeatures = () => {
                       <div className="column">
                         <span
                           className="is-size-4"
-                          style={{ whiteSpace: "nowrap" }}
+                          // style={{ whiteSpace: "nowrap" }}
                         >
                           RFI Static Rewards
                         </span>
@@ -258,7 +258,7 @@ const HeroSelectFeatures = () => {
                       <div className="column">
                         <span
                           className="is-size-4"
-                          style={{ whiteSpace: "nowrap" }}
+                          // style={{ whiteSpace: "nowrap" }}
                         >
                           Whale Protection
                         </span>
@@ -292,7 +292,7 @@ const HeroSelectFeatures = () => {
             </div>
           </div>
           <div
-            className="columns is-mobile"
+            className="columns"
             style={{ alignItems: "flex-start" }}
           >
             <div className="column">
@@ -303,7 +303,7 @@ const HeroSelectFeatures = () => {
                       <div className="column">
                         <span
                           className="is-size-4"
-                          style={{ whiteSpace: "nowrap" }}
+                          // style={{ whiteSpace: "nowrap" }}
                         >
                           Automatic Fee Burn
                         </span>
@@ -340,7 +340,7 @@ const HeroSelectFeatures = () => {
                       <div className="column">
                         <span
                           className="is-size-4"
-                          style={{ whiteSpace: "nowrap" }}
+                          // style={{ whiteSpace: "nowrap" }}
                         >
                           Automatic Charity Donation
                         </span>
@@ -387,7 +387,7 @@ const HeroDashboardFeatures = () => {
               Interact with your coin through your own Dashboard
             </span>
             <div
-              className="columns is-mobile"
+              className="columns"
               style={{ alignItems: "flex-start" }}
             >
               <div className="column">
@@ -398,7 +398,7 @@ const HeroDashboardFeatures = () => {
                         <div className="column">
                           <span
                             className="is-size-3"
-                            style={{ whiteSpace: "nowrap" }}
+                            // style={{ whiteSpace: "nowrap" }}
                           >
                             Dashboard
                           </span>

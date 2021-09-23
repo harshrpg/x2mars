@@ -171,7 +171,7 @@ const NumberOfCoinsView = () => {
           <div className="columns">
             <div className="column">
               <div className="is-size-4">
-                <span>Coins</span>
+                <span>{coinsOwned === 1 ? `Coin` : `Coins`}</span>
               </div>
             </div>
           </div>
