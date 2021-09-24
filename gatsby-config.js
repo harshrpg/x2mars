@@ -3,7 +3,7 @@ require("dotenv").config({
 })
 module.exports = {
   siteMetadata: {
-    title: `Create - Worl's 1st Token Factory`,
+    title: `Create - World's 1st Token Factory`,
     description: `Kick off your next, great Fee-On-Transfer token`,
     author: `@Create-community`,
   },

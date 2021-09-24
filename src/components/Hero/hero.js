@@ -32,7 +32,7 @@ const Hero = () => {
           <div className="columns">
             <div className="column">
               <div className="hero-sub-texts">
-                <div className="columns is-mobile" style={{paddingBottom: "2rem"}}>
+                <div className="columns" style={{paddingBottom: "2rem"}}>
                   <div
                     className="column left-text-align is-narrow"
                     style={{ padding: 0 }}
@@ -44,7 +44,7 @@ const Hero = () => {
                   <div className="column has-text-centered-mobile">
                     <span
                       className="is-size-1"
-                      style={{ whiteSpace: "nowrap" }}
+                      // style={{ whiteSpace: "nowrap" }}
                     >
                       Your Own Economy
                     </span>
