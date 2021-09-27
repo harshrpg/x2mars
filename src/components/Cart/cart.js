@@ -604,7 +604,7 @@ const DeployButton = ({ isSmall }) => {
                 address: tokenAddress,
                 symbol: cartState.step2.tokenSymbol,
                 decimals: 18,
-                image: null
+                image: cartState.step2.tokenLogo
               },
             },
           },

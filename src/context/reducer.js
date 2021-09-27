@@ -72,6 +72,7 @@ export const initialCartState = {
     tokenDecimals: 18,
     dexSelected: false,
     totalFees: 0.0,
+    tokenLogo: null,
   },
   step3: {
     auto_liquidation: 0,
