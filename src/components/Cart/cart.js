@@ -604,7 +604,7 @@ const DeployButton = ({ isSmall }) => {
                 address: tokenAddress,
                 symbol: cartState.step2.tokenSymbol,
                 decimals: 18,
-                image: null
+                image: null,
               },
             },
           },
@@ -765,11 +765,13 @@ const DeployButton = ({ isSmall }) => {
     console.log(tokenFactory)
     console.log("-----------------------------------------------------------")
     try {
+      const totalSupply =
+        parseFloat(cartState.step2.tokenSupplyNumber) *
+        NumberMap[cartState.step2.tokenSupplyUnits]
       const tx = await factoryContractWithSigner.createStandardToken(
         cartState.step2.tokenName,
         cartState.step2.tokenSymbol,
-        parseFloat(cartState.step2.tokenSupplyNumber) *
-          NumberMap[cartState.step2.tokenSupplyUnits],
+        totalSupply.toString(),
         cartState.step2.dexSelected,
         dexAddress
       )
@@ -801,11 +803,13 @@ const DeployButton = ({ isSmall }) => {
     console.log(tokenFactory)
     console.log("-----------------------------------------------------------")
     try {
+      const totalSupply =
+        parseFloat(cartState.step2.tokenSupplyNumber) *
+        NumberMap[cartState.step2.tokenSupplyUnits]
       const tx = await factoryContractWithSigner.createToken(
         cartState.step2.tokenName,
         cartState.step2.tokenSymbol,
-        parseFloat(cartState.step2.tokenSupplyNumber) *
-          NumberMap[cartState.step2.tokenSupplyUnits],
+        totalSupply.toString(),
         !!cartState.step3.WHALE_PROTECTION
           ? cartState.step3.WHALE_PROTECTION
           : 0.0,
