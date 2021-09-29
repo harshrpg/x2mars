@@ -495,6 +495,7 @@ const DeployButton = ({ isSmall }) => {
     new providers.Web3Provider(library.provider, network)
   )
   const cartState = useCartState()
+  const authState = useAuthState()
   const [contractDeployable, setContractDeployable] = React.useState(false)
   const [paymentCompleted, setPaymentCompleted] = React.useState(false)
   const [coinBuilt, setCoinBuilt] = React.useState(false)
@@ -530,6 +531,7 @@ const DeployButton = ({ isSmall }) => {
     process.env.GATSBY_UNISWAP_ROUTER
   )
   const [showReviewModal, setShowReviewModal] = React.useState(false)
+  const [balance, setBalance] = React.useState(authState.userDetails.balance);
 
   React.useEffect(() => {
     if (cartState.step1.selectedToken === TokenTypeIds.GOVERNANCE) {
@@ -912,7 +914,7 @@ const DeployButton = ({ isSmall }) => {
 
   return (
     <>
-      <button
+    {balance >= cartState.totalCharge.fee ?<button
         className={`button deploy-contract-button ${
           contractDeployable ? "" : "inactive"
         } ${isSmall ? "small" : ""}`}
@@ -920,8 +922,15 @@ const DeployButton = ({ isSmall }) => {
         disabled={!contractDeployable}
         onClick={openReviewWindow}
       >
-        Pay and Make Coin
-      </button>
+        Pay and Create Coin
+      </button> :<button
+        className={`button deploy-contract-button inactive small`}
+        type="button"
+        disabled={true}
+      >
+        Insufficient Funds
+      </button> }
+      
       <LoadingPaymentModal
         isActive={chargeFeeAndDeployContract}
         paymentCompleted={paymentCompleted}
