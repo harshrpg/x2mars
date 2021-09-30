@@ -21,11 +21,10 @@ import { StepsModel } from "../../util/factory-steps"
 import { useCartDispatch, useCartState } from "../../context"
 import { BsDash } from "@react-icons/all-files/bs/BsDash"
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus"
+import { VscLoading } from "@react-icons/all-files/vsc/VscLoading";
+import { FcCheckmark } from "@react-icons/all-files/fc/FcCheckmark"
 import { CartContent } from "../Cart/cart"
 import { HiArrowNarrowRight } from "@react-icons/all-files/hi/HiArrowNarrowRight"
-import Button from '@material-ui/core/Button';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import IconButton from '@material-ui/core/IconButton';
 
 const Steps = () => {
   const image = useImageForData("tailCur.png")
@@ -665,9 +664,14 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
   }
 
   function fileSelectedHandler(event) {
-
+    document.querySelector('.fileInfo').innerHTML = ``;
+    document.querySelector('.fileInfo').innerHTML = `<div><VscLoading /></div>`;
+    
     const uploadedFile = event.target.files[0];
-
+    
+    document.querySelector('.fileInfo').innerHTML = ``;
+    document.querySelector('.fileInfo').innerHTML = `<div><span class="info"><FcCheckmark></FcCheckmark>${event.target.files[0].name}</span></div>`;
+  
     const toBase64 = file => new Promise((resolve, reject) => {
 	    const reader = new FileReader();
 	    reader.readAsDataURL(file);
@@ -683,9 +687,6 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
 		.catch(err => {
 			console.log(err);
 		})
-    
-    //setSelectLogoFile(event.target.files[0]);
-    //console.log("logo stuff", selectLogoFile, event.target.files[0]);
   }
 
   
@@ -895,23 +896,25 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
                           />
                           <span className="placeholder">Optional</span>
                         </div>
-                        <span className="info">Size required - 28px*28px</span>
+                        
                       </div>
                     </div>
                     <div className="column">
+                    <span className="info">Size required - 28px*28px</span>
                     <div class="file is-small">
                       <label class="file-label">
                         <input class="file-input" type="file" accept="image/*" name="resume" onChange={fileSelectedHandler}/>
-                        <span class="file-cta">
+                        <span class="file-cta button theme-action-button-gradient-blue">
                           <span class="file-icon">
                             <i class="fas fa-upload"></i>
                           </span>
-                          <span class="file-label button theme-action-button-gradient-blue">
+                          <span class="file-label">
                             Select File
                           </span>
                         </span>
                       </label>
                     </div>
+                    <div className="fileInfo"><br></br></div>
                     </div>
                   </div>
 
