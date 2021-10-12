@@ -21,6 +21,8 @@ import { StepsModel } from "../../util/factory-steps"
 import { useCartDispatch, useCartState } from "../../context"
 import { BsDash } from "@react-icons/all-files/bs/BsDash"
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus"
+import { VscLoading } from "@react-icons/all-files/vsc/VscLoading";
+import { FcCheckmark } from "@react-icons/all-files/fc/FcCheckmark"
 import { CartContent } from "../Cart/cart"
 import { HiArrowNarrowRight } from "@react-icons/all-files/hi/HiArrowNarrowRight"
 
@@ -305,6 +307,7 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
               tokenDecimals: cartState.step2.tokenDecimals,
               dexSelected: false,
               totalFees: 0,
+              tokenLogo: cartState.step2.tokenLogo
             },
           },
         })
@@ -321,6 +324,7 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
               tokenDecimals: cartState.step2.tokenDecimals,
               dexSelected: true,
               totalFees: 0,
+              tokenLogo: cartState.step2.tokenLogo
             },
           },
         })
@@ -555,6 +559,8 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
   )
   const [dexSelected, ___] = React.useState(cartState.step2.dexSelected)
   const [isHelpOpen, setIsHelpOpen] = React.useState(false)
+  
+  const [selectLogoFile, setSelectLogoFile] = React.useState(null)
 
   function handleCoinNameChange(event) {
     setCoinName(event.target.value)
@@ -569,6 +575,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
           tokenDecimals: cartState.step2.tokenDecimals,
           dexSelected: cartState.step2.dexSelected,
           totalFees: cartState.step2.totalFees,
+          tokenLogo: cartState.step2.tokenLogo
         },
       },
     })
@@ -587,6 +594,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
           tokenDecimals: cartState.step2.tokenDecimals,
           dexSelected: cartState.step2.dexSelected,
           totalFees: cartState.step2.totalFees,
+          tokenLogo: cartState.step2.tokenLogo
         },
       },
     })
@@ -612,6 +620,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
           tokenDecimals: cartState.step2.tokenDecimals,
           dexSelected: cartState.step2.dexSelected,
           totalFees: cartState.step2.totalFees,
+          tokenLogo: cartState.step2.tokenLogo
         },
       },
     })
@@ -630,6 +639,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
           tokenDecimals: cartState.step2.tokenDecimals,
           dexSelected: cartState.step2.dexSelected,
           totalFees: cartState.step2.totalFees,
+          tokenLogo: cartState.step2.tokenLogo
         },
       },
     })
@@ -647,10 +657,58 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
           tokenDecimals: cartState.step2.tokenDecimals,
           dexSelected: dexSelected,
           totalFees: cartState.step2.totalFees,
+          tokenLogo: cartState.step2.tokenLogo
         },
       },
     })
   }
+
+  function fileSelectedHandler(event) {
+    document.querySelector('.fileInfo').innerHTML = ``;
+    document.querySelector('.fileInfo').innerHTML = `<div><VscLoading /></div>`;
+    
+    const uploadedFile = event.target.files[0];
+    
+    document.querySelector('.fileInfo').innerHTML = ``;
+    document.querySelector('.fileInfo').innerHTML = `<div><span class="info"><FcCheckmark></FcCheckmark>${event.target.files[0].name}</span></div>`;
+  
+    const toBase64 = file => new Promise((resolve, reject) => {
+	    const reader = new FileReader();
+	    reader.readAsDataURL(file);
+	    reader.onload = () => resolve(reader.result);
+	    reader.onerror = error => reject(error);
+	});
+
+		toBase64(uploadedFile)
+		.then(res => {
+			console.log("logo stuff",res);
+      setSelectLogoFile(res);
+		})
+		.catch(err => {
+			console.log(err);
+		})
+  }
+
+  
+  React.useEffect(() => {
+    if(!!selectLogoFile){
+      cartDispatch({
+        step: 2,
+        payload: {
+          step2: {
+            tokenName: cartState.step2.tokenName,
+            tokenSymbol: cartState.step2.tokenSymbol,
+            tokenSupplyNumber: cartState.step2.tokenSupplyNumber,
+            tokenSupplyUnits: cartState.step2.tokenSupplyUnits,
+            tokenDecimals: cartState.step2.tokenDecimals,
+            dexSelected: cartState.step2.dexSelected,
+            totalFees: cartState.step2.totalFees,
+            tokenLogo: selectLogoFile
+          },
+        },
+      })
+    }
+  },[selectLogoFile]);
 
   React.useEffect(() => {
     if (
@@ -823,6 +881,43 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
                       </div>
                     </div>
                   </div>
+
+                  <div className="columns" style={{ paddingTop: 0 }}>
+                    <div className="column">
+                      <div className="centerinput">
+                      <div
+                          className="input-block borderlessLogo selectFile"
+                        >
+                          <input
+                            type="text"
+                            required={false}
+                            spellCheck={false}
+                            value="Upload Logo"
+                          />
+                          <span className="placeholder">Optional</span>
+                        </div>
+                        
+                      </div>
+                    </div>
+                    <div className="column">
+                    <span className="info">Size required - 28px*28px</span>
+                    <div class="file is-small">
+                      <label class="file-label">
+                        <input class="file-input" type="file" accept="image/*" name="resume" onChange={fileSelectedHandler}/>
+                        <span class="file-cta button theme-action-button-gradient-blue">
+                          <span class="file-icon">
+                            <i class="fas fa-upload"></i>
+                          </span>
+                          <span class="file-label">
+                            Select File
+                          </span>
+                        </span>
+                      </label>
+                    </div>
+                    <div className="fileInfo"><br></br></div>
+                    </div>
+                  </div>
+
                   <div className="columns">
                     <div className="column">
                       {dataProvided ? (
@@ -1017,6 +1112,7 @@ const Step3GovToken = ({ network, isTestNetwork, step, setStep }) => {
           tokenDecimals: cartState.step2.tokenDecimals,
           dexSelected: dexSelected,
           totalFees: step2Fee,
+          tokenLogo: cartState.step2.tokenLogo
         },
       },
     })

@@ -492,6 +492,20 @@ h1 {
   font-size: 1.2em;
 }
 
+.centerinput .input-block.borderlessLogo input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border: none;
+  outline: none;
+  background: none;
+  padding: 10px;
+  padding-bottom: 0px !important;
+  margin-bottom: 0px !important;
+  font-size: 1.2em;
+}
+
 .centerinput .input-block.inactive input {
   position: absolute;
   top: 0;
