@@ -82,7 +82,7 @@ const ActiveSelectors = () => {
         <div>
           <div className="columns has-text-centered cardSize">
             <div className="column">
-              <span className="is-size-1">You can now</span>
+              <span className="is-size-1 changeColor">You can now</span>
             </div>
           </div>
           <div className="columns has-text-centered cardSize">
@@ -94,7 +94,7 @@ const ActiveSelectors = () => {
           </div>
           <div className="columns has-text-centered cardSize">
             <div className="column">
-              <span className="is-size-1">Or</span>
+              <span className="is-size-1 changeColor">Or</span>
             </div>
           </div>
           <div className="columns has-text-centered cardSize">
@@ -118,7 +118,7 @@ const NonActiveSelectors = () => {
     <div>
       <div className="columns has-text-centered">
         <div className="column">
-          <span className="is-size-1">To Begin</span>
+          <span className="is-size-1 changeColor">To Begin</span>
         </div>
       </div>
       <div className="columns has-text-centered">
@@ -128,7 +128,7 @@ const NonActiveSelectors = () => {
       </div>
       <div className="columns has-text-centered">
         <div className="column">
-          <span className="is-size-1">Or</span>
+          <span className="is-size-1 changeColor">Or</span>
         </div>
       </div>
       <div className="columns has-text-centered">
@@ -143,12 +143,15 @@ const NonActiveSelectors = () => {
 const ReadAboutCoinMakerSelector = () => {
   const cmImage = useImageForData("cm.png")
   return (
-    <div className="container interface-view-box" onClick={() => navigate("/whitepaper")}>
+    <div
+      className="container interface-view-box"
+      onClick={() => navigate("/whitepaper")}
+    >
       <div className="columns">
         <div className="column">
           <GatsbyImage image={cmImage} alt={"whitepaper selector"} />
         </div>
-        <div className="column">Read the Whitepaper</div>
+        <div className="column changeColor">Read the Whitepaper</div>
       </div>
     </div>
   )
@@ -169,14 +172,16 @@ const ConnectWalletSelector = () => {
           <div className="column">
             <GatsbyImage image={cwIconImage} alt={"connect wallet selector"} />
           </div>
-          <div className="column">Connect Your Wallet</div>
+          <div className="column changeColor">Connect Your Wallet</div>
         </div>
       </div>
       <WalletSelect
         setWalletSelect={setWalletSelect}
         isActive={walletSelect}
         setCartDisplay={setCartDisplay}
-        setCartError={setCartError} cartError={undefined}      />
+        setCartError={setCartError}
+        cartError={undefined}
+      />
     </>
   )
 }
@@ -189,7 +194,7 @@ const DashboardSelector = ({ customClickEvent }) => {
         <div className="column">
           <GatsbyImage image={dbIconImage} alt={"dashboard selector"} />
         </div>
-        <div className="column">View your Dashboard</div>
+        <div className="column changeColor">View your Dashboard</div>
       </div>
     </div>
   )
@@ -203,7 +208,7 @@ const MakeYourCoinSelector = ({ customClickEvent }) => {
         <div className="column">
           <GatsbyImage image={macImage} alt={"make coin selector"} />
         </div>
-        <div className="column">Make A Coin</div>
+        <div className="column changeColor">Make A Coin</div>
       </div>
     </div>
   )

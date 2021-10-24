@@ -2,13 +2,33 @@
 
 
 
+// .logo {
+//     font-family: rift, sans-serif;
+//     font-style: italic;
+//     font-weight: bolder !important;
+//     color: $charcoal;
+// }
+
 .logo {
-    font-family: rift, sans-serif;
-    font-style: italic;
-    font-weight: bolder !important;
-    color: $charcoal;
+  color: white;
+  font-family: flegrei, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.2rem;
+}
+
+.logoCreateA {
+  color: #21c46b;
+}
+
+.logoA {
+  color: #41ead4;
 }
 
 .logo:hover {
   cursor: pointer;
+}
+
+.logoO {
+  color: #ea349b;
 }

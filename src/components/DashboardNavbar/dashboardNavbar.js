@@ -161,11 +161,9 @@ const ProfileButton = ({
               <div>
                 <div className="columns">
                   <div className="column">
-                    <NetworkIcon network={network} color="#807fc6"/>
+                    <NetworkIcon network={network} color="#011627" />
                   </div>
-                  <div className="column" >
-                    {balance}
-                  </div>
+                  <div className="column">{balance}</div>
                 </div>
               </div>
             </button>
@@ -190,9 +188,7 @@ const ProfileButton = ({
       </div>
 
       <div className="network-pill has-text-centered is-size-7">
-        <span className="networkName">
-          {NetworkNames[chainId]}
-        </span>
+        <span className="networkName">{NetworkNames[chainId]}</span>
       </div>
     </div>
   )

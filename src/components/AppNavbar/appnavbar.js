@@ -14,7 +14,7 @@ import { useBalance, useNetwork } from "../../hooks/useNetwork"
 import {CartWindow} from "../Cart/cart"
 import { useCartState } from "../../context"
 import { FaChartPie } from "@react-icons/all-files/fa/FaChartPie"
-import Logo from "../Logo/logo"
+import { Logo, PlaygroundLogo } from "../Logo/logo"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const AppNavbar = () => {
@@ -51,7 +51,16 @@ const AppNavbar = () => {
 
   return (
     <>
-      <nav className="navbar" role="navigation" aria-label="main navigation">
+      <nav className={`navbar nav is-fixed-top`} aria-label="main navigation">
+        <div className="navbar-start">
+          <a
+            className={`navbar-item navItem}`}
+            href="https://www.the-playground.io/"
+            style={{ textShadow: "none" }}
+          >
+            <PlaygroundLogo />
+          </a>
+        </div>
         <div className="navbar-brand">
           <Logo />
           <button
@@ -74,13 +83,6 @@ const AppNavbar = () => {
           className={`navbar-menu ${isActive ? "is-active" : ""}`}
         >
           <div className="navbar-start">
-            <div>
-              <Link to="/whitepaper" className="navbar-start">
-                <button className="button is-normal custom-button app-button-footer">
-                  Whitepaper
-                </button>
-              </Link>
-            </div>
             {active ? (
               <div>
                 <button
@@ -116,13 +118,24 @@ const AppNavbar = () => {
               </div>
             ) : (
               <div>
-                <button
+                {/* <button
                   className="button is-light custom-button app-button"
                   type="button"
                   onClick={() => setWalletSelect(true)}
                 >
                   Connect Wallet
-                </button>
+                </button> */}
+                <a>
+                  <button
+                    className="button navPrimaryButtonBack"
+                    type="button"
+                    onClick={() => setWalletSelect(true)}
+                  >
+                    <span className="navPrimaryButtonFront">
+                      Connect Wallet
+                    </span>
+                  </button>
+                </a>
               </div>
             )}
             <div>
@@ -166,18 +179,19 @@ const ProfileButton = ({
 
   return (
     <div style={{ position: "relative" }}>
-      <div >
+      <div>
         <div className="columns profile-buttons">
           <div className="column balancediv" style={{ paddingRight: 0 }}>
-            <button className="button is-light custom-button custom-button-network" type="button">
+            <button
+              className="button is-light custom-button custom-button-network"
+              type="button"
+            >
               <div>
                 <div className="columns balancedisplay">
                   <div className="column">
-                    <NetworkIcon network={network} color="#807fc6"/>
+                    <NetworkIcon network={network} color="#011627" />
                   </div>
-                  <div className="column balance">
-                    {balance}
-                  </div>
+                  <div className="column balance">{balance}</div>
                 </div>
               </div>
             </button>
@@ -202,9 +216,7 @@ const ProfileButton = ({
       </div>
 
       <div className="network-pill has-text-centered is-size-7">
-        <span className="networkName">
-          {NetworkNames[chainId]}
-        </span>
+        <span className="networkName">{NetworkNames[chainId]}</span>
       </div>
     </div>
   )
