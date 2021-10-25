@@ -52,15 +52,6 @@ const AppNavbar = () => {
   return (
     <>
       <nav className={`navbar nav is-fixed-top`} aria-label="main navigation">
-        <div className="navbar-start">
-          <a
-            className={`navbar-item navItem}`}
-            href="https://www.the-playground.io/"
-            style={{ textShadow: "none" }}
-          >
-            <PlaygroundLogo />
-          </a>
-        </div>
         <div className="navbar-brand">
           <Logo />
           <button
@@ -82,6 +73,15 @@ const AppNavbar = () => {
           id="navbar-x2m"
           className={`navbar-menu ${isActive ? "is-active" : ""}`}
         >
+          <div className="navbar-start">
+            <a
+              className={`navbar-item navItem}`}
+              href="https://www.the-playground.io/"
+              style={{ textShadow: "none" }}
+            >
+              <PlaygroundLogo />
+            </a>
+          </div>
           <div className="navbar-start">
             {active ? (
               <div>
