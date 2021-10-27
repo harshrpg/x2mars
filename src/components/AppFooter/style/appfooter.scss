@@ -9,29 +9,6 @@ $off-white-background: #5f5f5f;
   background-color: #00111f !important;
 }
 
-.columnAlign{
-    text-align: center;
-}
-
-.footerItem {
-  color: #FDFFFC !important;
-  margin: 0 !important;
-}
-
-.footerItem::after {
-  color: #FDFFFC !important;
-}
-
-.footerItem:hover {
-  background-color: transparent !important;
-  color: #FDFFFC;
-  text-shadow:1px 1px 10px #fff, 1px 1px 10px #ccc;
-}
-
-.footerEnd {
-  align-items: center !important;
-}
-
 .navPrimaryButtonBack {
   background: $off-white-background !important;
   margin-left: 2rem !important;

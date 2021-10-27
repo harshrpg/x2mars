@@ -10,8 +10,8 @@ const AppFooter = () => {
   return (
     <footer className="footer">
       <div className="container">
-        <div className="columns is-mobile">
-          <div className="column is-half-mobile is-three-quarters-mobile is-one-quarter-desktop">
+        <div className="columns">
+          <div className="column is-one-quarter-desktop">
             <h6 className="title is-5" style={{ color: "white" }}>
               CREATE
             </h6>
@@ -27,7 +27,7 @@ const AppFooter = () => {
             </p>
           </div>
 
-          <div className="column is-three-quarters-mobile">
+          <div className="column">
             <h6 className="title is-5">Resources</h6>
             <ul>
               <li>
@@ -39,7 +39,7 @@ const AppFooter = () => {
             </ul>
           </div>
 
-          <div className="column is-half-mobile is-three-quarters-mobile is-one-quarter-desktop">
+          <div className="column is-one-quarter-desktop">
             <h6 className="title is-5">Social</h6>
             <ul>
               <li>

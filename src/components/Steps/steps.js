@@ -413,9 +413,7 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
                           {isTestNetwork ? (
                             <div className="column">{`0  ${network.toUpperCase()}`}</div>
                           ) : (
-                            <div className="column">{`${
-                              steps.cardData[0].price[network]
-                            }  ${network.toUpperCase()}`}</div>
+                            <div className="column">{`0  ${network.toUpperCase()}`}</div>
                           )}
                         </div>
                       </div>
@@ -481,9 +479,7 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
                           {isTestNetwork ? (
                             <div className="column changeColor">{`0  ${network.toUpperCase()}`}</div>
                           ) : (
-                            <div className="column changeColor">{`${
-                              steps.cardData[1].price[network]
-                            }  ${network.toUpperCase()}`}</div>
+                            <div className="column changeColor">{`0  ${network.toUpperCase()}`}</div>
                           )}
                         </div>
                       </div>

@@ -14,8 +14,7 @@ import { useBalance, useNetwork } from "../../hooks/useNetwork"
 import {CartWindow} from "../Cart/cart"
 import { useCartState } from "../../context"
 import { FaChartPie } from "@react-icons/all-files/fa/FaChartPie"
-import Logo from "../Logo/logo"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {Logo} from "../Logo/logo"
 
 const DashboardNavbar = () => {
   const { account, library, chainId, active } = useWeb3React()

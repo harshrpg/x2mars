@@ -14,10 +14,6 @@ export const PlaygroundLogo = () => {
 }
 
 export const Logo = () => (
-  // <div className="logo is-size-1" onClick={() => navigate("/")}>
-  //     <span>CREATE</span>
-  // </div>
-
   <div className="logo" style={{ fontSize: "2rem" }}>
     Cre<span className="logoCreateA">a</span>te
   </div>

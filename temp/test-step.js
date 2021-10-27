@@ -1,10 +1,10 @@
 import { Web3Provider } from "@ethersproject/providers"
 import { Web3ReactProvider } from "@web3-react/core"
-import AppLayout from "../components/applayout"
-import Seo from "../components/seo"
-import { AuthProvider } from "../context/context"
+import AppLayout from "../src/components/applayout"
+import Seo from "../src/components/seo"
+import { AuthProvider } from "../src/context/context"
 import * as React from "react"
-import Steps from "../components/Steps/steps"
+import Steps from "../src/components/Steps/steps"
 import { BsDash } from "@react-icons/all-files/bs/BsDash";
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
 const getLibrary = provider => {

@@ -154,7 +154,7 @@ const ProfileHeader = () => {
   }, [active, chainId])
   return (
     <>
-      <div className="container">
+      <div className="container changeColor">
         {active ? (
           <div className="columns">
             <div className="column has-text-centered">

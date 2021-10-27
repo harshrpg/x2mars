@@ -1,5 +1,7 @@
 import * as React from "react"
 import { Link, navigate } from "gatsby"
+import { graphql, useStaticQuery } from "gatsby"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import { useWeb3React } from "@web3-react/core"
 import { FaFileContract } from "@react-icons/all-files/fa/FaFileContract"
 import { MdAccountCircle } from "@react-icons/all-files/md/MdAccountCircle"
@@ -15,9 +17,29 @@ import {CartWindow} from "../Cart/cart"
 import { useCartState } from "../../context"
 import { FaChartPie } from "@react-icons/all-files/fa/FaChartPie"
 import { Logo, PlaygroundLogo } from "../Logo/logo"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import yourSVG from '../../images/Logo_playground.svg'
+
 
 const AppNavbar = () => {
+
+  // const { playgroundLogo } = useStaticQuery(
+  //   graphql`
+  //     query {
+  //       playgroundLogo: file(relativePath: { eq: "Logo_playground.svg" }) {
+  //         childImageSharp {
+  //           gatsbyImageData(
+  //             width: 200
+  //             quality: 100
+  //             webpOptions: { quality: 100 }
+  //           )
+  //         }
+  //       }
+  //     }
+  //   `
+  // )
+
+  // const playLogo = getImage(playgroundLogo)
+
   const { account, library, chainId, active } = useWeb3React()
   const networkHook = useNetwork()
   const balanceHook = useBalance()
@@ -54,6 +76,7 @@ const AppNavbar = () => {
       <nav className={`navbar nav is-fixed-top`} aria-label="main navigation">
         <div className="navbar-brand">
           <Logo />
+
           <button
             onClick={() => setIsActive(!isActive)}
             className={`hamburger hamburger--emphatic ${
@@ -79,7 +102,7 @@ const AppNavbar = () => {
               href="https://www.the-playground.io/"
               style={{ textShadow: "none" }}
             >
-              <PlaygroundLogo />
+              <img src={yourSVG} alt="Home"></img>
             </a>
           </div>
           <div className="navbar-start">
@@ -102,7 +125,7 @@ const AppNavbar = () => {
           </div>
           <div className="navbar-end">
             {active ? (
-              <div>
+              <div className="menuSpacing">
                 <div>
                   {balance > FactoryConstants.MINIMUM_COIN_TO_PROCEED ? (
                     <ProfileButton
@@ -117,7 +140,7 @@ const AppNavbar = () => {
                 </div>
               </div>
             ) : (
-              <div>
+              <div className="menuSpacing">
                 {/* <button
                   className="button is-light custom-button app-button"
                   type="button"
@@ -138,7 +161,7 @@ const AppNavbar = () => {
                 </a>
               </div>
             )}
-            <div>
+            <div className="menuSpacing">
               <button
                 className="button is-light cart-button"
                 type="button"

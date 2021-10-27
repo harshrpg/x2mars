@@ -1,9 +1,12 @@
 @charset "utf-8";
 
 @import url("https://use.typekit.net/rlw7mil.css");
+@import "https://use.typekit.net/rlw7mil.css";
+@import url("https://use.typekit.net/qyi6ezy.css");
 @import "hamburgers";
 
 $logo-family: "Rift", sans-serif;
+$family-sans-serif: "bc-alphapipe", sans-serif;
 $charcoal: #2f4858;
 $primary-color: #2b75ac;
 $primary-color-dimmed: rgba(77, 153, 211, 0.5);
@@ -15,7 +18,6 @@ $theme-orange: #ff7d00;
 $theme-yellow: #ffc120;
 $hero-image-float-text: #f7ecca;
 $theme-white: rgba(255, 255, 255, 0.911);
-$family-sans-serif: roboto-slab, serif;
 $family-primary: $family-sans-serif;
 $title-family: $family-primary;
 $title-color: $charcoal;
