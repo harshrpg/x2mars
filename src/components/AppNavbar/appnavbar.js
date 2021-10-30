@@ -86,16 +86,16 @@ const AppNavbar = () => {
           <div className="navbar-start">
             {active ? (
               <div>
-                <button
-                  className="button is-light dashboard-button"
-                  type="button"
-                  onClick={() => navigate("/dashboard/")}
-                >
-                  <span>Dashboard</span>
-                  <span className="icon is-small dashboard-icon">
-                    <FaChartPie />
-                  </span>
-                </button>
+                <button className="button navPrimaryButtonBack" onClick={() => navigate("/dashboard/")}>
+                      <span className="navPrimaryButtonFront">
+                        <div className="columns is-mobile is-vcentered">
+                          <div className="column">Dashboard</div>
+                          <div className="column" style={{ color: "#21C46B" }}>
+                          <FaChartPie />
+                          </div>
+                        </div>
+                      </span>
+                    </button>
               </div>
             ) : (
               ``
