@@ -60,10 +60,10 @@ const AppFooter = () => {
               <li>
                 <a href="https:www.the-playground.io/contact">
                   <button
-                    className="button navPrimaryButtonBack"
+                    className="button footerPrimaryButtonBack"
                     style={{ marginTop: "1rem" }}
                   >
-                    <span className="navPrimaryButtonFront">Contact</span>
+                    <span className="footerPrimaryButtonFront">Contact</span>
                   </button>
                 </a>
               </li>

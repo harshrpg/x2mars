@@ -36,7 +36,7 @@ $off-white-background: #5f5f5f;
 
 .navPrimaryButtonBack {
   background: $off-white-background !important;
-  margin-left: 2rem !important;
+  margin: 0 2rem !important;
   border-radius: 0 !important;
   padding: 0 !important;
   border: none !important;
@@ -52,6 +52,10 @@ $off-white-background: #5f5f5f;
   background: transparent !important;
   color: $off-white !important;
   transform: translate(-7%, -15%) !important;
+}
+
+.navPrimaryButtonBack:active .navPrimaryButtonFront {
+  transform: translate(-2%, -7%) !important;
 }
 
 /*playground end*/
@@ -91,14 +95,6 @@ $off-white-background: #5f5f5f;
 
   .navbar-end {
     align-items: center !important;
-  }
-
-  .balancediv{
-    align-items: center !important;
-    float: right !important;
-    margin-left: auto !important;
-    padding: 0% !important;
-    width: 50% !important;
   }
 
   .address{
@@ -162,14 +158,6 @@ $off-white-background: #5f5f5f;
   .balance{
     padding: 0%;
     margin: 0%;
-  }
-
-  .balancediv{
-    align-items: center !important;
-    float: right !important;
-    margin-left: auto !important;
-    padding: 0% !important;
-    width: 70% !important;
   }
 
   .balancedisplay{

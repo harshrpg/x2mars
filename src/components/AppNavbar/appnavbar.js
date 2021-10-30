@@ -1,44 +1,22 @@
 import * as React from "react"
-import { Link, navigate } from "gatsby"
-import { graphql, useStaticQuery } from "gatsby"
-import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import { navigate } from "gatsby"
 import { useWeb3React } from "@web3-react/core"
 import { FaFileContract } from "@react-icons/all-files/fa/FaFileContract"
 import { MdAccountCircle } from "@react-icons/all-files/md/MdAccountCircle"
 
 import { Error, FactoryConstants, NetworkNames } from "../../util/Constants"
-import AppLogo from "../Logo/applogo"
 import WalletSelect from "../walletSelect/walletselect"
 
 import "./style/appnavbar.scss"
 import { NetworkIcon } from "../Icons/icons"
 import { useBalance, useNetwork } from "../../hooks/useNetwork"
 import {CartWindow} from "../Cart/cart"
-import { useCartState } from "../../context"
 import { FaChartPie } from "@react-icons/all-files/fa/FaChartPie"
-import { Logo, PlaygroundLogo } from "../Logo/logo"
-import yourSVG from '../../images/Logo_playground.svg'
+import { Logo } from "../Logo/logo"
+import { StaticImage } from "gatsby-plugin-image"
 
 
 const AppNavbar = () => {
-
-  // const { playgroundLogo } = useStaticQuery(
-  //   graphql`
-  //     query {
-  //       playgroundLogo: file(relativePath: { eq: "Logo_playground.svg" }) {
-  //         childImageSharp {
-  //           gatsbyImageData(
-  //             width: 200
-  //             quality: 100
-  //             webpOptions: { quality: 100 }
-  //           )
-  //         }
-  //       }
-  //     }
-  //   `
-  // )
-
-  // const playLogo = getImage(playgroundLogo)
 
   const { account, library, chainId, active } = useWeb3React()
   const networkHook = useNetwork()
@@ -102,7 +80,7 @@ const AppNavbar = () => {
               href="https://www.the-playground.io/"
               style={{ textShadow: "none" }}
             >
-              <img src={yourSVG} alt="Home"></img>
+              <StaticImage src="../../images/Logo_playground.svg" alt="logo" />
             </a>
           </div>
           <div className="navbar-start">
@@ -203,8 +181,8 @@ const ProfileButton = ({
   return (
     <div style={{ position: "relative" }}>
       <div>
-        <div className="columns profile-buttons">
-          <div className="column balancediv" style={{ paddingRight: 0 }}>
+        <div className="columns is-vcentered is-mobile">
+          <div className="column ">
             <button
               className="button is-light custom-button custom-button-network"
               type="button"

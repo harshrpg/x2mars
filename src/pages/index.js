@@ -157,7 +157,7 @@ const ReadAboutCoinMakerSelector = () => {
       className="container interface-view-box"
       onClick={() => navigate("/whitepaper")}
     >
-      <div className="columns">
+      <div className="columns is-vcentered">
         <div className="column">
           <GatsbyImage image={cmImage} alt={"whitepaper selector"} />
         </div>
@@ -178,7 +178,7 @@ const ConnectWalletSelector = () => {
         className="container interface-view-box"
         onClick={() => setWalletSelect(true)}
       >
-        <div className="columns">
+        <div className="columns is-vcentered">
           <div className="column">
             <GatsbyImage image={cwIconImage} alt={"connect wallet selector"} />
           </div>
@@ -200,7 +200,7 @@ const DashboardSelector = ({ customClickEvent }) => {
   const dbIconImage = useImageForData("db_icon.png")
   return (
     <div className="container interface-view-box" onClick={customClickEvent}>
-      <div className="columns">
+      <div className="columns is-vcentered">
         <div className="column">
           <GatsbyImage image={dbIconImage} alt={"dashboard selector"} />
         </div>
@@ -214,7 +214,7 @@ const MakeYourCoinSelector = ({ customClickEvent }) => {
   const macImage = useImageForData("mac.png")
   return (
     <div className="container interface-view-box" onClick={customClickEvent}>
-      <div className="columns">
+      <div className="columns is-vcentered">
         <div className="column">
           <GatsbyImage image={macImage} alt={"make coin selector"} />
         </div>
