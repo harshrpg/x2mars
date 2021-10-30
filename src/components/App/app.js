@@ -14,7 +14,7 @@ const App = () => {
     <div>
       <Hero />
       <Why />
-      <HeroFeatures />
+      {/* <HeroFeatures /> */}
       <Benefits />
       <div style={{margin: "1rem"}}>
         <IndexSteps />

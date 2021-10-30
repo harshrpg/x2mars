@@ -3,9 +3,9 @@ require("dotenv").config({
 })
 module.exports = {
   siteMetadata: {
-    title: `Create - World's 1st Token Factory`,
-    description: `Kick off your next, great Fee-On-Transfer token`,
-    author: `@Create-community`,
+    title: `Create | Playground`,
+    description: `Decentralized and fully automated creator economy designing platform`,
+    author: `@Playground-community`,
   },
   plugins: [
     {
@@ -55,7 +55,7 @@ module.exports = {
     },
     `gatsby-plugin-gatsby-cloud`,
     `gatsby-plugin-sass`,
-    `gatsby-plugin-fontawesome-css`
+    `gatsby-plugin-fontawesome-css`,
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,

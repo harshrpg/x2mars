@@ -13,8 +13,10 @@ const Main = () => {
   const sideBarSelected = profileState.profileSideBarSelection
 
   return (
-    <div className="container main-container">
-      <div className="note">This app is currently under experimentation phase</div>
+    <div className="container main-container changeColor">
+      <div className="note changeColor">
+        This app is currently under experimentation phase
+      </div>
       {sideBarSelected[0] ? (
         <Dashboard />
       ) : sideBarSelected[1] ? (

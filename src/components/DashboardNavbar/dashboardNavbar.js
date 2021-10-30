@@ -14,8 +14,7 @@ import { useBalance, useNetwork } from "../../hooks/useNetwork"
 import {CartWindow} from "../Cart/cart"
 import { useCartState } from "../../context"
 import { FaChartPie } from "@react-icons/all-files/fa/FaChartPie"
-import Logo from "../Logo/logo"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {Logo} from "../Logo/logo"
 
 const DashboardNavbar = () => {
   const { account, library, chainId, active } = useWeb3React()
@@ -161,11 +160,9 @@ const ProfileButton = ({
               <div>
                 <div className="columns">
                   <div className="column">
-                    <NetworkIcon network={network} color="#807fc6"/>
+                    <NetworkIcon network={network} color="#011627" />
                   </div>
-                  <div className="column" >
-                    {balance}
-                  </div>
+                  <div className="column">{balance}</div>
                 </div>
               </div>
             </button>
@@ -190,9 +187,7 @@ const ProfileButton = ({
       </div>
 
       <div className="network-pill has-text-centered is-size-7">
-        <span className="networkName">
-          {NetworkNames[chainId]}
-        </span>
+        <span className="networkName">{NetworkNames[chainId]}</span>
       </div>
     </div>
   )

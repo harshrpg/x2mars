@@ -1163,10 +1163,10 @@ const ModalContent = ({
                 <div className="column">
                   <span className="is-size-6" id="txnHash">
                     {/* {txnHash} */}
-                    <Link to={etherScanTx + txnHash} target="_blank">
+                    <a href={etherScanTx + txnHash} target="_blank">
                       View on {network === "eth" ? `Etherscan` : `Bscscan`}{" "}
                       <BsBoxArrowUpRight />
-                    </Link>
+                    </a>
                   </span>
                 </div>
               </div>
@@ -1236,10 +1236,10 @@ const ModalContent = ({
                 <div className="column">
                   <span className="is-size-6" id="txnHash">
                     {/* {pairAddress} */}
-                    <Link to={dexAddress + pairAddress} target="_blank">
+                    <a href={dexAddress + pairAddress} target="_blank">
                       View on {network === "eth" ? `Uniswap` : `Pancakeswap`}{" "}
                       <BsBoxArrowUpRight />
-                    </Link>
+                    </a>
                   </span>
                 </div>
               </div>
@@ -1403,10 +1403,10 @@ const ReviewModalContent = ({
             <span className="is-size-6">
               In this step you will be asked to pay your bill of{" "}
               {cartState.totalCharge.fee} {network.toUpperCase()} and{" "}
-              <Link to={gasTracker} target="_blank">
+              <a href={gasTracker} target="_blank">
                 {" "}
                 Gas Fees <BsBoxArrowUpRight />.
-              </Link>
+              </a>
             </span>
           </div>
         </div>
@@ -1503,7 +1503,7 @@ const ReviewModalContent = ({
                 onChange={handleTermsAndCondAgreed}
               />{" "}
               I agree to the{" "}
-              <a href="/legal/terms-and-conditions/" target="_blank">
+              <a href="https://www.the-playground.io/tnc" target="_blank">
                 terms and conditions
               </a>
             </label>

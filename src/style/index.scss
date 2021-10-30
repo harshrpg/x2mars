@@ -1,13 +1,16 @@
 @charset "utf-8";
 
 @import url("https://use.typekit.net/rlw7mil.css");
+@import "https://use.typekit.net/rlw7mil.css";
+@import url("https://use.typekit.net/qyi6ezy.css");
 @import "hamburgers";
 
 $logo-family: "Rift", sans-serif;
+$family-sans-serif: "bc-alphapipe", sans-serif;
 $charcoal: #2f4858;
 $primary-color: #2b75ac;
 $primary-color-dimmed: rgba(77, 153, 211, 0.5);
-$secondary-color: #807fc6;
+$secondary-color: #011627;
 $inactive-color: #c4c4c4;
 $unsucessful-color: #e53935;
 $successfull-color: #00c853;
@@ -15,7 +18,6 @@ $theme-orange: #ff7d00;
 $theme-yellow: #ffc120;
 $hero-image-float-text: #f7ecca;
 $theme-white: rgba(255, 255, 255, 0.911);
-$family-sans-serif: roboto-slab, serif;
 $family-primary: $family-sans-serif;
 $title-family: $family-primary;
 $title-color: $charcoal;
@@ -49,6 +51,10 @@ $font-color: $charcoal;
   background-color: $background-color !important;
   border-color: transparent !important;
   color: $theme-white !important;
+}
+
+.changeColor{
+  color: rgb(228, 228, 228);
 }
 
 .border-class {
@@ -400,7 +406,7 @@ h1 {
 .centerinput {
   padding: 3%;
   position: relative;
-  background: #fff;
+  background: transparent;
   // border: 3px solid rgb(48, 129, 177) !important;
   margin-left: 3%;
 }
@@ -477,6 +483,7 @@ h1 {
   background: none;
   padding: 10px;
   font-size: 1.2em;
+  color: white !important;
 }
 
 .centerinput .input-block.borderless input {
@@ -555,7 +562,7 @@ h1 {
   position: absolute;
   margin: 17px 0;
   padding: 0 4px;
-  color:  #6c757d;
+  color:  #d4d6d8;
   display: flex;
   align-items: center;
   font-size: 0.75rem;
@@ -571,35 +578,35 @@ h1 {
 .centerinput .input-block input:focus + span.placeholder {
   transform: scale(0.8) translateY(-30px);
   color: $inactive-color;
-  background: white;
+  background: transparent;
 }
 
 .centerinput .input-block.inactive input:valid + span.placeholder,
 .centerinput .input-block.inactive span.placeholder {
   transform: scale(0.8) translateY(-30px);
   color: $inactive-color;
-  background: white;
+  background: transparent;
 }
 
 .centerinput .input-block.pre-selected input:valid + span.placeholder,
 .centerinput .input-block.pre-selected span.placeholder {
   transform: scale(0.8) translateY(-30px);
   color: $inactive-color;
-  background: white;
+  background: transparent;
 }
 
 .centerinput .input-block input:focus{
-  color: #284B63;
+  color: #ffffff;
   border-color: #45ee4d;
 }
 
 .centerinput .input-block input::after {
-  color: #284B63;
+  color: #ffffff;
   border-color: #45ee4d;
 }
 
 .centerinput .input-block input::first-letter {
-  color: #284B63;
+  color: #ffffff;
   font-size: 2rem;
 }
 

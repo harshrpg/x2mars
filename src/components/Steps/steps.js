@@ -104,7 +104,7 @@ const StepsExplaination = ({ step1Image, step2Image, step3Image, setStep }) => {
       <div className="container">
         <div className="columns">
           <div className="column">
-            <span className="is-size-1">
+            <span className="is-size-1 changeColor">
               Create your currency in 3 simple steps
             </span>
           </div>
@@ -119,7 +119,7 @@ const StepsExplaination = ({ step1Image, step2Image, step3Image, setStep }) => {
                       <div className="columns">
                         <div className="column">
                           <span
-                            className="is-size-4"
+                            className="is-size-4 changeColor"
                             style={{ whiteSpace: "nowrap" }}
                           >
                             Step 1
@@ -128,7 +128,7 @@ const StepsExplaination = ({ step1Image, step2Image, step3Image, setStep }) => {
                       </div>
                       <div className="columns">
                         <div className="column">
-                          <span className="is-size-7">
+                          <span className="is-size-7 changeColor">
                             Select between Governance DAO Coins or Fee On
                             Transfer (Meme) Coins
                           </span>
@@ -157,7 +157,7 @@ const StepsExplaination = ({ step1Image, step2Image, step3Image, setStep }) => {
                       <div className="columns">
                         <div className="column">
                           <span
-                            className="is-size-4"
+                            className="is-size-4 changeColor"
                             style={{ whiteSpace: "nowrap" }}
                           >
                             Step 2
@@ -166,7 +166,7 @@ const StepsExplaination = ({ step1Image, step2Image, step3Image, setStep }) => {
                       </div>
                       <div className="columns">
                         <div className="column">
-                          <span className="is-size-7">
+                          <span className="is-size-7 changeColor">
                             Provide Coin Details, such as Coin Name, Coin
                             Ticker, Coin Supply
                           </span>
@@ -195,7 +195,7 @@ const StepsExplaination = ({ step1Image, step2Image, step3Image, setStep }) => {
                       <div className="columns">
                         <div className="column">
                           <span
-                            className="is-size-4"
+                            className="is-size-4 changeColor"
                             style={{ whiteSpace: "nowrap" }}
                           >
                             Step 3
@@ -204,7 +204,7 @@ const StepsExplaination = ({ step1Image, step2Image, step3Image, setStep }) => {
                       </div>
                       <div className="columns">
                         <div className="column">
-                          <span className="is-size-7">
+                          <span className="is-size-7 changeColor">
                             Select additional features for your coins
                           </span>
                         </div>
@@ -231,7 +231,7 @@ const StepsExplaination = ({ step1Image, step2Image, step3Image, setStep }) => {
               type="button"
               onClick={() => setStep(1)}
             >
-              <span>Lets Create Your Currency</span>
+              <span className="changeColor">Lets Create Your Currency</span>
               <span class="icon is-size-3">
                 <BsArrowRight />
               </span>
@@ -337,7 +337,7 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
 
   return (
     <>
-      <div className="container">
+      <div className="container changeColor">
         <div className="columns">
           <div className="column is-2">
             <GatsbyImage image={image} alt="step 1 image" />
@@ -413,9 +413,7 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
                           {isTestNetwork ? (
                             <div className="column">{`0  ${network.toUpperCase()}`}</div>
                           ) : (
-                            <div className="column">{`${
-                              steps.cardData[0].price[network]
-                            }  ${network.toUpperCase()}`}</div>
+                            <div className="column">{`0  ${network.toUpperCase()}`}</div>
                           )}
                         </div>
                       </div>
@@ -462,7 +460,7 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
                 <div className="column">
                   <div className="columns">
                     <div className="column">
-                      <span className="is-size-5">
+                      <span className="is-size-5 changeColor">
                         Fee On Transfer (Meme) Coins
                       </span>
                     </div>
@@ -474,16 +472,14 @@ const Step1 = ({ image, setStep, step, network, isTestNetwork }) => {
                         style={{ whiteSpace: "nowrap" }}
                       >
                         <div className="columns">
-                          <div className="column">Price</div>
+                          <div className="column changeColor">Price</div>
                           <div className="column">
                             <NetworkIcon network={network} />
                           </div>
                           {isTestNetwork ? (
-                            <div className="column">{`0  ${network.toUpperCase()}`}</div>
+                            <div className="column changeColor">{`0  ${network.toUpperCase()}`}</div>
                           ) : (
-                            <div className="column">{`${
-                              steps.cardData[1].price[network]
-                            }  ${network.toUpperCase()}`}</div>
+                            <div className="column changeColor">{`0  ${network.toUpperCase()}`}</div>
                           )}
                         </div>
                       </div>
@@ -670,7 +666,9 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
     const uploadedFile = event.target.files[0];
     
     document.querySelector('.fileInfo').innerHTML = ``;
-    document.querySelector('.fileInfo').innerHTML = `<div><span class="info"><FcCheckmark></FcCheckmark>${event.target.files[0].name}</span></div>`;
+    document.querySelector(
+      ".fileInfo"
+    ).innerHTML = `<div><span class="info changeColor"><FcCheckmark></FcCheckmark>${event.target.files[0].name}</span></div>`
   
     const toBase64 = file => new Promise((resolve, reject) => {
 	    const reader = new FileReader();
@@ -751,19 +749,19 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
           <div className="column">
             <div className="columns">
               <div className="column">
-                <span className="is-size-2">Step 2</span>
+                <span className="is-size-2 changeColor">Step 2</span>
               </div>
             </div>
             <div className="columns">
               <div className="column">
-                <span className="is-size-5">
+                <span className="is-size-5 changeColor">
                   {`You are creating ${TokenTypes[coinSelected]}`}
                 </span>
               </div>
             </div>
             <div className="columns">
               <div className="column">
-                <span className="is-size-5">
+                <span className="is-size-5 changeColor">
                   Provide Coin Details, such as Coin Name, Coin Ticker, Coin
                   Supply
                 </span>
@@ -885,9 +883,7 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
                   <div className="columns" style={{ paddingTop: 0 }}>
                     <div className="column">
                       <div className="centerinput">
-                      <div
-                          className="input-block borderlessLogo selectFile"
-                        >
+                        <div className="input-block borderlessLogo selectFile">
                           <input
                             type="text"
                             required={false}
@@ -896,25 +892,32 @@ const Step2 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
                           />
                           <span className="placeholder">Optional</span>
                         </div>
-                        
                       </div>
                     </div>
                     <div className="column">
-                    <span className="info">Size required - 28px*28px</span>
-                    <div class="file is-small">
-                      <label class="file-label">
-                        <input class="file-input" type="file" accept="image/*" name="resume" onChange={fileSelectedHandler}/>
-                        <span class="file-cta button theme-action-button-gradient-blue">
-                          <span class="file-icon">
-                            <i class="fas fa-upload"></i>
+                      <span className="info changeColor">
+                        Size required - 28px*28px
+                      </span>
+                      <div class="file is-small">
+                        <label class="file-label">
+                          <input
+                            class="file-input"
+                            type="file"
+                            accept="image/*"
+                            name="resume"
+                            onChange={fileSelectedHandler}
+                          />
+                          <span class="file-cta button theme-action-button-gradient-blue">
+                            <span class="file-icon">
+                              <i class="fas fa-upload"></i>
+                            </span>
+                            <span class="file-label">Select File</span>
                           </span>
-                          <span class="file-label">
-                            Select File
-                          </span>
-                        </span>
-                      </label>
-                    </div>
-                    <div className="fileInfo"><br></br></div>
+                        </label>
+                      </div>
+                      <div className="fileInfo">
+                        <br></br>
+                      </div>
                     </div>
                   </div>
 
@@ -980,7 +983,7 @@ const Step3 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
 
   return (
     <>
-      <div className="container">
+      <div className="container changeColor">
         <div className="columns">
           <div className="column is-2">
             <GatsbyImage
@@ -1041,7 +1044,7 @@ const Step3 = ({ image, image2, setStep, step, network, isTestNetwork }) => {
             </button>
           </div>
         </div>
-        <div className="container">
+        <div className="container changeColor">
           {coinSelected === TokenTypeIds.GOVERNANCE ? (
             <Step3GovToken
               network={network}
@@ -1472,7 +1475,7 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
 
   return (
     <>
-      <div className="container">
+      <div className="container changeColor">
         <div className="columns">
           <div className="column right-text-align">
             <div className="theme-view-box success">
@@ -1495,12 +1498,14 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
                   </div>
                   <div className="columns">
                     <div className="column">
-                      <span className="is-size-5">Create a DEX Pool</span>
+                      <span className="is-size-5 changeColor">
+                        Create a DEX Pool
+                      </span>
                     </div>
                   </div>
                   <div className="columns">
                     <div className="column">
-                      <span className="is-size-6">
+                      <span className="is-size-6 changeColor">
                         {`A DEX Pool is where your holders can swap ${network.toUpperCase()} with your tokens`}
                       </span>
                     </div>
@@ -1508,7 +1513,7 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
                   <div className="columns">
                     <div className="column">
                       <div className="note is-small">
-                        <span className="is-size-6">
+                        <span className="is-size-6 changeColor">
                           Look out for your Pool's Address while checking out
                         </span>
                       </div>
@@ -2175,7 +2180,7 @@ const Step3FotToken = ({ network, isTestNetwork, step, setStep }) => {
                   <div className="columns" style={{ margin: "0.5rem" }}>
                     <div className="column">
                       <div className="note is-small">
-                        <span>
+                        <span style={{color: "white"}}>
                           {`Please make sure that you have the correct network's wallet address. You are currently connected to ${network.toUpperCase()} network`}
                         </span>
                       </div>
@@ -2237,7 +2242,7 @@ const SummaryStep = ({ image, image2, setStep, step }) => {
   )
   return (
     <>
-      <div className="container">
+      <div className="container changeColor">
         <div className="columns">
           <div className="column is-2">
             <GatsbyImage
@@ -2279,7 +2284,7 @@ const SummaryStep = ({ image, image2, setStep, step }) => {
           </div> */}
         </div>
       </div>
-      <div className="container">
+      <div className="container changeColor">
         <div className="columns">
           <div className="column centered-text-align">
             <CartContent isSmall={true} />

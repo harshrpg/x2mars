@@ -1,7 +1,7 @@
 import * as React from "react"
-import ComingSoon from "../components/ComingSoon/comingSoon"
-import Layout from "../components/layout"
-import Seo from "../components/seo"
+import ComingSoon from "../src/components/ComingSoon/comingSoon"
+import Layout from "../src/components/layout"
+import Seo from "../src/components/seo"
 
 const Contact = () => {
     return (
