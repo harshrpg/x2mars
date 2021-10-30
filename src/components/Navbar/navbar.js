@@ -64,7 +64,7 @@ const Navbar = () => {
         </div>
         <div className="navbar-end">
           <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">Community</a>
+            <Link to="/" class="navbar-link">Community</Link>
 
             <div class="navbar-dropdown">
               <Link

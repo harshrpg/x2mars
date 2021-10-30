@@ -20,10 +20,10 @@ const AppFooter = () => {
               allowing anyone to make their crypto currency and launch.
             </p>
             <p>
-              <Link to="/legal/terms-and-conditions">Terms and Conditions</Link>
+              <a href="https://www.the-playground.io/tnc" target="_blank">Terms and Conditions</a>
             </p>
             <p>
-              <Link to="/legal/privacy-policy">Privacy Policy</Link>
+              <a href="https://www.the-playground.io/privacyPolicy" target="_blank">Privacy Policy</a>
             </p>
           </div>
 
@@ -31,10 +31,10 @@ const AppFooter = () => {
             <h6 className="title is-5">Resources</h6>
             <ul>
               <li>
-                <a href="/whitepaper">Litepaper</a>
+                <Link to="/whitepaper">Litepaper</Link>
               </li>
               <li>
-                <a href="/token-guide">Token Guide</a>
+                <Link to="/token-guide">Token Guide</Link>
               </li>
             </ul>
           </div>

@@ -262,12 +262,12 @@ const Coin = ({ coinData }) => {
           <div className="columns">
             <div className="column">
               <span className="is-size-6">
-                <Link
-                  to={etherscanAddress + `` + coinData.address}
+                <a
+                  href={etherscanAddress + `` + coinData.address}
                   target="_blank"
                 >
                   View on Etherscan
-                </Link>
+                </a>
               </span>
             </div>
           </div>
@@ -275,12 +275,12 @@ const Coin = ({ coinData }) => {
             <div className="columns">
               <div className="column">
                 <span className="is-size-6">
-                  <Link
-                    to={dexAddress + `` + coinData.address}
+                  <a
+                    href={dexAddress + `` + coinData.address}
                     target="_blank"
                   >
                     View on Dex
-                  </Link>
+                  </a>
                 </span>
               </div>
             </div>

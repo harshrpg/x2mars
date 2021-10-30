@@ -477,10 +477,10 @@ const TnC = () => {
                 <span className="is-size-6">
                   Your submission of personal information through the store is
                   governed by our{" "}
-                  <a href="/legal/privacy-policy" target="_blank">
+                  <Link to="/legal/privacy-policy" target="_blank">
                     {" "}
                     Privacy Policy <BsBoxArrowUpRight />.
-                  </a>
+                  </Link>
                 </span>
               </div>
             </div>
