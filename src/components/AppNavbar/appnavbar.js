@@ -55,7 +55,7 @@ const AppNavbar = () => {
         <div className="navbar-brand">
           <Logo />
 
-          <button
+          {/* <button
             onClick={() => setIsActive(!isActive)}
             className={`hamburger hamburger--emphatic ${
               isActive ? "is-active" : ""
@@ -68,7 +68,20 @@ const AppNavbar = () => {
             <span className="hamburger-box">
               <span className="hamburger-inner"></span>
             </span>
-          </button>
+          </button> */}
+
+          <a
+            onClick={() => setIsActive(!isActive)}
+            role="button"
+            className={`navbar-burger ${isActive ? "is-active" : ""}`}
+            aria-label="menu"
+            aria-expanded="false"
+            data-target="navbarBasicExample"
+          >
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
         </div>
         <div
           id="navbar-x2m"
@@ -86,16 +99,19 @@ const AppNavbar = () => {
           <div className="navbar-start">
             {active ? (
               <div>
-                <button className="button navPrimaryButtonBack" onClick={() => navigate("/dashboard/")}>
-                      <span className="navPrimaryButtonFront">
-                        <div className="columns is-mobile is-vcentered">
-                          <div className="column">Dashboard</div>
-                          <div className="column" style={{ color: "#21C46B" }}>
-                          <FaChartPie />
-                          </div>
-                        </div>
-                      </span>
-                    </button>
+                <button
+                  className="button navPrimaryButtonBack"
+                  onClick={() => navigate("/dashboard/")}
+                >
+                  <span className="navPrimaryButtonFront">
+                    <div className="columns is-mobile is-vcentered">
+                      <div className="column">Dashboard</div>
+                      <div className="column" style={{ color: "#21C46B" }}>
+                        <FaChartPie />
+                      </div>
+                    </div>
+                  </span>
+                </button>
               </div>
             ) : (
               ``

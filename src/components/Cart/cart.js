@@ -1271,6 +1271,18 @@ const ModalContent = ({
           <div className="column">
             <DashboardButton dashboardAvailable={dashboardAvailable} />
           </div>
+          <div className="column">
+            <a
+              className={`button deploy-contract-button ${
+                dashboardAvailable ? "" : "inactive"
+              }`}
+              type="button"
+              disabled={!dashboardAvailable}
+              href="https://www.the-playground.io/"
+            >
+              Home
+            </a>
+          </div>
         </div>
       )}
     </div>
